@@ -26,10 +26,10 @@ refactor : 기능의 변화가 아닌 코드 리팩터링 ex) 변수 이름 변�
 test      : 테스트 코드 추가/수정
 release : 버전 릴리즈
 
-###Body
+### Body
 헤더로 표현이 가능하다면 생략이 가능
 아닌 경우에는 자세한 내용을 함께 적어 본문을 구성
 
-###Footer
+### Footer
 참조 정보들을 추가, 어떠한 이슈에 대한 commit 인지 issue number 를 포함
 close #1 처럼 close 를 통해 해당 이슈를 닫을 수 있음
