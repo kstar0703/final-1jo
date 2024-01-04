@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardMapper">
+  	<!-- 커뮤니티공지 목록조회 (관리자) -->
+	<select id="" resultType="">
+	SELECT 
+	    FACILITIES_NOTICE_NO
+	    , N.FACILITIES_NO
+	    , N.MANAGER_NO
+	    , TITLE
+	    , N.ENROLL_DATE
+	    , N.MODIFY_DATE
+	    , N.DEL_YN
+	    , FACILITIES_NAME
+	    , ID
+	FROM FACILITIES F
+	JOIN FACILITIES_NOTICE N ON F.FACILITIES_NO = N.FACILITIES_NO
+	JOIN MANAGER M ON M.MANAGER_NO = N.MANAGER_NO
+	</select>
+	
+	<!-- 커뮤니티공지 상세조회 -->
+	<select id="" resultType="">
+	SELECT 
+	    FACILITIES_NOTICE_NO
+	    , N.FACILITIES_NO
+	    , N.MANAGER_NO
+	    , TITLE
+	    , CONTENT
+	    , N.ENROLL_DATE
+	    , N.MODIFY_DATE
+	    , N.DEL_YN
+	    , FILE_NAME
+	    , FILE_NAME_RAW
+	    , FACILITIES_NAME
+	    , ID
+	FROM FACILITIES F
+	JOIN FACILITIES_NOTICE N ON F.FACILITIES_NO = N.FACILITIES_NO
+	JOIN MANAGER M ON M.MANAGER_NO = N.MANAGER_NO
+	WHERE FACILITIES_NOTICE_NO = ?
+	</select>
+	
+	<!-- 커뮤니티공지 목록조회 (사용자) -->
+	<select id="" resultType="">
+	SELECT 
+	    FACILITIES_NOTICE_NO
+	    , N.FACILITIES_NO
+	    , N.MANAGER_NO
+	    , TITLE
+	    , N.ENROLL_DATE
+	    , N.MODIFY_DATE
+	    , N.DEL_YN
+	    , FACILITIES_NAME
+	    , ID
+	FROM FACILITIES_NOTICE N
+	JOIN FACILITIES F ON F.FACILITIES_NO = N.FACILITIES_NO
+	LEFT JOIN MANAGER M ON M.MANAGER_NO = N.MANAGER_NO
+	WHERE N.DEL_YN = 'N'
+	</select>
+	
+	<!-- 커뮤니티공지 상세조회 (사용자) -->
+	<select id="" resultType="">
+	SELECT 
+	    FACILITIES_NOTICE_NO
+	    , N.FACILITIES_NO
+	    , N.MANAGER_NO
+	    , TITLE
+	    , CONTENT
+	    , N.ENROLL_DATE
+	    , N.MODIFY_DATE
+	    , N.DEL_YN
+	    , FILE_NAME
+	    , FILE_NAME_RAW
+	    , FACILITIES_NAME
+	    , ID
+	FROM FACILITIES_NOTICE N
+	JOIN FACILITIES F ON F.FACILITIES_NO = N.FACILITIES_NO
+	JOIN MANAGER M ON M.MANAGER_NO = N.MANAGER_NO
+	WHERE FACILITIES_NOTICE_NO = ?
+	AND N.DEL_YN = 'N'
+	</select>
+	
+	<!-- 커뮤니티공지 등록 (관리자) -->
+	<insert id="">
+	INSERT INTO FACILITIES_NOTICE(
+	    FACILITIES_NOTICE_NO
+	    , FACILITIES_NO
+	    , MANAGER_NO
+	    , TITLE
+	    , CONTENT
+	    , FILE_NAME
+	    , FILE_NAME_RAW
+	) VALUES (
+	    SEQ_FACILITIES_NOTICE.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	)
+	</insert>
+	
+	<!-- 커뮤니티공지 수정 (관리자) -->
+	<update id="">
+	UPDATE FACILITIES_NOTICE
+	SET
+	    FACILITIES_NO = ?
+	    , TITLE = ?
+	    , CONTENT = ?
+	    , MODIFY_DATE = SYSDATE
+	    , FILE_NAME = ?
+	    , FILE_NAME_RAW = ?
+	WHERE FACILITIES_NOTICE_NO = ?
+	;
+	
+	--커뮤니티공지 삭제 (관리자)
+	UPDATE FACILITIES_NOTICE
+	SET
+	    DEL_YN = 'Y'
+	WHERE FACILITIES_NOTICE_NO = ?
+	</update>
+	
+	<!-- -->
+	<update id="">
+	
+	</update>
+</mapper>
