@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class FacilityVo {
 	private String facilitiesNo;
-	private String facilitiesNname;
+	private String facilitiesName;
 	private String unitPrice;
 	private String location;
 	private String operationTime;

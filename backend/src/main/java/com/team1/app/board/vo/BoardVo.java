@@ -24,5 +24,4 @@ public class BoardVo {
 	private String dong;
 	private String ho;
 	
-	
 }

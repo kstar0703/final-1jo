@@ -1,4 +1,4 @@
-package com.team1.app.facility.vo;
+package com.team1.app.facilitynotice.vo;
 
 import lombok.Data;
 
