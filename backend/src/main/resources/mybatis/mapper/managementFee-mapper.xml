@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardMapper">
+  	<!-- 관리비 전체 관리비 조회 -->
+	<select id="" resultType="">
+	SELECT 
+	    BILLING_NO
+	    , M.UNIT_NO
+	    , USAGE_PERIOD
+	    , BASIC_FEE
+	    , MAINTERNANCE_FEE
+	    , FACILITIES_FEE
+	    , TOTAL_AMOUNT
+	    , DONG
+	    , HO
+	    , SCALE
+	    , VEH_TIME
+	FROM MANAGEMENT_FEE M
+	JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
+	</select>
+	
+	<!-- 세대정보와 기간으로(동적쿼리) 관리비 조회 -->
+	<select id="" resultType="">
+	SELECT 
+	    BILLING_NO
+	    , M.UNIT_NO
+	    , USAGE_PERIOD
+	    , BASIC_FEE
+	    , MAINTERNANCE_FEE
+	    , FACILITIES_FEE
+	    , TOTAL_AMOUNT
+	    , DONG
+	    , HO
+	    , SCALE
+	    , VEH_TIME
+	FROM UNIT U
+	JOIN MANAGEMENT_FEE M ON M.UNIT_NO = U.UNIT_NO
+	WHERE ? <= USAGE_PERIOD  
+	AND USAGE_PERIOD <= ?
+	AND U.UNIT_NO = ?
+	</select>
+	
+</mapper>

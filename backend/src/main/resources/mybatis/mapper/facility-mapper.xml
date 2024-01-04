@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FacilityMapper">
+  	<!-- 커뮤니티시설 목록조회(+상세조회) (관리자) -->
+	<select id="" resultType="">
+		SELECT 
+		    FACILITIES_NO
+		    , FACILITIES_NAME
+		    , UNIT_PRICE
+		    , LOCATION
+		    , OPERATION_TIME
+		    , DAY_OFF
+		    , CONTACT
+		    , AMENITY
+		    , IMAGE
+		    , ENROLL_DATE
+		    , MODIFY_DATE
+		    , DEL_YN
+		FROM FACILITIES
+	</select>
+		
+	<!-- 커뮤니티시설 등록 -->
+	<insert id="">
+	INSERT INTO FACILITIES(
+	    FACILITIES_NO
+	    , FACILITIES_NAME
+	    , UNIT_PRICE
+	    , LOCATION
+	    , OPERATION_TIME
+	    , DAY_OFF
+	    , CONTACT
+	    , AMENITY
+	    , IMAGE
+	) VALUES (
+	    SEQ_FACILITIES_NO.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	)
+	</insert>
+	
+	<!-- 커뮤니티시설 수정 -->
+	<update id="">
+	UPDATE FACILITIES
+		SET
+		    FACILITIES_NAME = ?
+		    , UNIT_PRICE = ?
+		    , LOCATION = ?
+		    , OPERATION_TIME = ?
+		    , DAY_OFF = ?
+		    , CONTACT = ?
+		    , AMENITY = ?
+		    , IMAGE = ?
+		    , MODIFY_DATE = SYSDATE
+		WHERE FACILITIES_NO = ?
+	</update>
+	
+	<!-- 커뮤니티시설 삭제 -->
+	<update id="">
+	UPDATE FACILITIES
+		SET
+		    DEL_YN = 'Y'
+		    , MODIFY_DATE = SYSDATE
+		WHERE FACILITIES_NO = ?
+	</update>
+	
+	<!-- 커뮤니티시설 목록조회 (사용자) -->
+	<select id="" resultType="">
+	SELECT 
+	    FACILITIES_NO
+	    , FACILITIES_NAME
+	    , IMAGE
+	FROM FACILITIES
+	WHERE DEL_YN = 'N'
+	</select>
+	
+	<!-- 커뮤니티시설 상세정보조회 (사용자) -->
+	<select id="" resultType="">
+	SELECT 
+	    FACILITIES_NO
+	    , FACILITIES_NAME
+	    , UNIT_PRICE
+	    , LOCATION
+	    , OPERATION_TIME
+	    , DAY_OFF
+	    , CONTACT
+	    , AMENITY
+	    , IMAGE
+	FROM FACILITIES 
+	WHERE FACILITIES_NO = ?
+	AND DEL_YN = 'N'
+	</select>
+	
+	<!-- 예약내역조회 (사용자) -->
+	<select id="" resultType="">
+	SELECT 
+	    F.FACILITIES_NO
+	    , FACILITIES_NAME
+	    , APPLICATION_NO
+	    , H.MEMBER_NO
+	    , APPLICATION_DATE
+	    , USE_DATE
+	    , PRICE
+	    , CANCEL_DATE        
+	    , NAME   
+	FROM FACILITIES F
+	JOIN FACILITIES_HISTORY H ON F.FACILITIES_NO = H.FACILITIES_NO
+	JOIN MEMBER M ON M.MEMBER_NO = H.MEMBER_NO
+	WHERE M.MEMBER_NO = ?
+	</select>
+	
+	<!-- 기간으로 예약내역조회 (사용자) -->
+	<select id="" resultType="">
+	SELECT 
+	    F.FACILITIES_NO
+	    , FACILITIES_NAME
+	    , APPLICATION_NO
+	    , M.MEMBER_NO
+	    , APPLICATION_DATE
+	    , USE_DATE
+	    , PRICE
+	    , CANCEL_DATE        
+	    , NAME   
+	FROM FACILITIES F
+	JOIN FACILITIES_HISTORY H ON F.FACILITIES_NO = H.FACILITIES_NO
+	JOIN MEMBER M ON M.MEMBER_NO = H.MEMBER_NO
+	WHERE M.MEMBER_NO = ?
+	AND ? <= USE_DATE
+	AND USE_DATE <= ?
+	</select>
+	
+	<!-- 예약추가(회원번호, 이용일) -->
+	<insert id="">
+	INSERT INTO FACILITIES_HISTORY(
+	    APPLICATION_NO
+	    , FACILITIES_NO
+	    , MEMBER_NO
+	    , USE_DATE
+	    , PRICE
+	) VALUES (
+	    SEQ_FACILITIES_HISTORY_NO.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	)
+	</insert>
+	
+	<!-- 예약취소(신청번호) -->
+	<update id="">
+	UPDATE 
+	    FACILITIES_HISTORY
+	SET 
+	    APPLICATION_NO = 1
+	    , CANCEL_DATE = SYSDATE
+	WHERE MEMBER_NO = 1
+	</update>
+	
+</mapper>
