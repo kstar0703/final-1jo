@@ -11,4 +11,10 @@ public class BoardReplyVo {
 	private String enrollDate;
 	private String modifyDate;
 	private String deyYn;
+	
+	private String unitNo;
+	private String name;
+		
+	private String dong;
+	private String ho;
 }

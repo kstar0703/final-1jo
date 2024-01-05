@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="BoardMapper">
+<mapper namespace="ManagementFeeMapper">
   	<!-- 관리비 전체 관리비 조회 -->
-	<select id="" resultType="">
+	<select id="list" resultType="ManagementFeeVo">
 	SELECT 
 	    BILLING_NO
 	    , M.UNIT_NO
@@ -21,8 +21,8 @@
 	JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
 	</select>
 	
-	<!-- 세대정보와 기간으로(동적쿼리) 관리비 조회 -->
-	<select id="" resultType="">
+	<!-- 관리비 조회 (세대정보, 기간)-->
+	<select id="listByUnitAndPeriod" resultType="ManagementFeeVo">
 	SELECT 
 	    BILLING_NO
 	    , M.UNIT_NO
@@ -37,9 +37,8 @@
 	    , VEH_TIME
 	FROM UNIT U
 	JOIN MANAGEMENT_FEE M ON M.UNIT_NO = U.UNIT_NO
-	WHERE ? <= USAGE_PERIOD  
-	AND USAGE_PERIOD <= ?
-	AND U.UNIT_NO = ?
+	WHERE  USAGE_PERIOD BETWEEN #{startDate} AND #{endDate}
+	AND U.UNIT_NO = #{unitNo}
 	</select>
 	
 </mapper>

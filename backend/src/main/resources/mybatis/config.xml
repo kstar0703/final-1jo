@@ -10,7 +10,24 @@
 	</settings>
 
 	<typeAliases>
+	<!-- 어디 -->
+	
+	
+	<!-- 입주민 게시판 -->
 	  <typeAlias type="com.team1.app.board.vo.BoardVo" alias="BoardVo"/>
+	  <typeAlias type="com.team1.app.board.vo.BoardImgVo" alias="BoardImgVo"/>
+	  <typeAlias type="com.team1.app.board.vo.BoardLikeVo" alias="BoardLikeVo"/>
+	  <typeAlias type="com.team1.app.board.vo.BoardReplyVo" alias="BoardReplyVo"/>
+	  <typeAlias type="com.team1.app.board.vo.CategoryVo" alias="CategoryVo"/>
+	
+	<!-- 커뮤니티 -->
+	  <typeAlias type="com.team1.app.facility.vo.FacilityHistoryVo" alias="FacilityHistoryVo"/>
+	  <typeAlias type="com.team1.app.facility.vo.FacilityVo" alias="FacilityVo"/>
+	  <typeAlias type="com.team1.app.facilitynotice.vo.FacilityNoticeVo" alias="FacilityNoticeVo"/>
+
+	<!-- 관리비 -->
+	  <typeAlias type="com.team1.app.managementfee.vo.ManagementFeeVo" alias="ManagementFeeVo"/>
+	  
   </typeAliases>
 
   
