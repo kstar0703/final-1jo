@@ -1,0 +1,115 @@
+<#{}xml version="1.0" encoding="UTF-8" #{}>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VoteMapper">
+
+	<!-- 유저 전체 게시글 조회 -->
+	<select id="list" resultType="VoteVo">
+	
+		SELECT 
+		    VOTE_NO
+		    ,V.MANAGER_NO
+		    ,TITLE
+		    ,CONTENT
+		    ,ID
+		FROM 
+		    VOTE_BOARD V
+		JOIN
+		    MANAGER M
+		ON 
+		    M.MANAGER_NO = V.MANAGER_NO
+		WHERE 
+		    DEL_YN = 'N'
+		ORDER BY 
+		    VOTE_NO DESC
+	
+	</select>
+	
+	<!-- 유저 게시글 상세 조회 -->
+	<select id="detailBoard" resultType="VoteVo">
+		SELECT 
+		    VOTE_NO
+		    ,V.MANAGER_NO
+		    ,TITLE
+		    ,CONTENT
+		    ,ENROLL_DATE
+		    ,MODIFY_DATE
+		    ,DEADLINE_DATE
+		    ,ACCEPT_YN
+		    ,ID
+		FROM 
+		    VOTE_BOARD V
+		JOIN
+		    MANAGER M
+		ON 
+		    M.MANAGER_NO = V.MANAGER_NO
+		WHERE 
+		    DEL_YN = 'N'
+		AND
+		    VOTE_NO = #{voteNo} 
+		ORDER BY 
+		    VOTE_NO DESC
+	</select>
+	
+	<!-- 게시글의 투표 항목 조회 -->
+	<select id="detailItem" resultType="VoteVo">
+		
+	SELECT 
+	    ITEM_NO
+	    ,VOTE_NO
+	    ,ITEM_NAME
+	    ,VOTE_ORDER
+	    ,VOTE_TYPE
+	FROM    
+	    VOTE_ITEM
+	WHERE 
+	    VOTE_NO = #{voteNo}
+		
+	</select>
+	
+	<!-- 게시글 작성 + 투표 항목 선정 -->
+	<insert id="insertBoard">
+		INSERT INTO 
+			VOTE_BOARD
+		(
+		    VOTE_NO
+		    ,MANAGER_NO
+		    ,TITLE
+		    ,CONTENT
+		)
+		VALUES 
+		(
+		    SEQ_VOTE_BOARD_NO.NEXTVAL
+		    ,#{managerNo}
+		    ,#{title}
+		    ,#{content}
+		)
+	</insert>
+	
+	<insert id="insertItem">
+		<foreach item="item" index="index" collection="itemList" >
+			INSERT INTO 
+				VOTE_ITEM
+			(
+			    ITEM_NO
+			    ,VOTE_NO
+			    ,ITEM_NAME
+			    ,VOTE_ORDER
+			    ,VOTE_TYPE
+			)
+			VALUES
+			(
+			    SEQ_VOTE_ITEM_NO.NEXTVAL
+			    ,#{voteNo}
+			    ,#{itemName}
+			    ,#{voteOrder}
+			    ,#{voteType}
+			)
+		</foreach>	
+		
+		
+	</insert>
+	
+
+</mapper>

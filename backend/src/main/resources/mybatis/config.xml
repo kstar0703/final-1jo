@@ -12,6 +12,11 @@
 	<typeAliases>
 	<!-- 어디 -->
 	
+	<!-- 전자투표 -->
+	<typeAlias type="com.team1.app.vote.vo.VoteVo" alias="VoteVo"/>
+	
+	<!-- 민원 하자 게시판 -->
+	<typeAlias type="com.team1.app.complaint.vo.ComplaintVo" alias="ComplaintVo"/>
 	
 	<!-- 입주민 게시판 -->
 	  <typeAlias type="com.team1.app.board.vo.BoardVo" alias="BoardVo"/>
