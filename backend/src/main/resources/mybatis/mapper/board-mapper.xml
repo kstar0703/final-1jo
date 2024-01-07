@@ -61,12 +61,20 @@
 	</select>
 		
 	<!-- 좋아요수 조회 -->
-	<select id="liskLikeCount" resultType="BoardLikeVo">
+	<select id="listLikeCount" resultType="BoardLikeVo">
 		SELECT COUNT(MEMBER_NO)
 			FROM BOARD_LIKE
 			WHERE BOARD_NO = #{boardNo}
 	</select>
 
+	<!-- 좋아요 클릭여부 조회 (글번호 +회원번호)-->
+	<select id="selectLikeByMemeberNo" resultType="BoardLikeVo">
+		SELECT COUNT(MEMBER_NO)
+			FROM BOARD_LIKE
+			WHERE BOARD_NO = #{boardNo}
+			AND MEMBER_NO = #{memberNo}
+	</select>
+	
 	<!-- 좋아요 추가 -->
 	<insert id="insertLike">
 		INSERT INTO BOARD_LIKE(
