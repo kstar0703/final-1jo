@@ -19,9 +19,15 @@ public class BoardDao {
 		return sst.selectList("BoardMapper.list");
 	}
 
-	//게시글 상세 조회
-	public BoardVo detail(SqlSessionTemplate sst, BoardVo vo) {
-		return sst.selectOne("BoardMapper.detail", vo);
+	//게시글 상세 조회 )
+	public BoardVo detail(SqlSessionTemplate sst, String boardNo) {
+		System.out.println(boardNo);
+		return sst.selectOne("BoardMapper.detail", boardNo);
+	}
+	
+	//게시글 상세 조회 - 첨부 이미지 조회 
+	public List<BoardImgVo> selectImg(SqlSessionTemplate sst, String boardNo) {
+		return sst.selectList("BoardMapper.selectImg", boardNo);
 	}
 
 	//게시글 작성
@@ -35,8 +41,8 @@ public class BoardDao {
 	}
 
 	//이미지 저장 
-	public int insertImg(SqlSessionTemplate sst, List<BoardImgVo> imgs) {
-		return sst.insert("BoardMapper.insertImg", imgs);
+	public int insertImg(SqlSessionTemplate sst, BoardImgVo vo) {
+		return sst.insert("BoardMapper.insertImg", vo);
 	}
 
 	// 게시글 삭제

@@ -1,5 +1,6 @@
 package com.team1.app.board.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,18 +35,24 @@ public class BoardService {
 	}
 
 	//게시글 상세 조회 
-	public BoardVo detail(BoardVo vo) {
-		return dao.detail(sst, vo);
+	public BoardVo detail(String boardNo) {
+		BoardVo boardVo = dao.detail(sst, boardNo);
+		List<BoardImgVo> imgs = dao.selectImg(sst, boardNo);
+		boardVo.setImgs(imgs);
+		return boardVo;
 	}
+	
+
 
 	//게시글 작성
 	public int insert(BoardVo vo) {
+		
 		return dao.insert(sst, vo);
 	}
 
 	//이미지 저장
-	public int insertImg(List<BoardImgVo> imgs) {
-		return dao.insertImg(sst, imgs);
+	public int insertImg(BoardImgVo img) {
+		return dao.insertImg(sst, img);
 	}
 
 	//게시글 수정

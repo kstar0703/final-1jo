@@ -1,16 +1,25 @@
 package com.team1.app.board.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.board.service.BoardService;
 import com.team1.app.board.vo.BoardImgVo;
@@ -23,52 +32,70 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("board")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class BoardController {
 	private final BoardService service;
 
-	// 전체 게시글 조회
+	// 전체 게시글 조회 (+댓글수 + 좋아요수 추가)
 	@GetMapping("list")
-	public List<BoardVo> list(){
-		return service.list();
+	public Map<String, Object> list(){
+		List<BoardVo> boardVoList = service.list();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardVoList", boardVoList);
+		map.put("msg", "good");
+		return map;
 	}
 
 	//게시글 상세 조회
 	@GetMapping("detail")
-	public Map<String, Object> detail(@RequestBody BoardVo vo){
-		BoardVo boardVo = service.detail(vo);
+	public Map<String, Object> detail(String boardNo){
+		BoardVo boardVo = service.detail(boardNo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardVo", boardVo);
+		map.put("msg", "good");
 		return map; 
 	}
 
 	//게시글 작성
-	@PostMapping("insert")
-	public Map<String, String> insert(@RequestBody BoardVo vo){
-		int boardResult = service.insert(vo); 
-
-		int imgResult = 0;
-		List<BoardImgVo> imgs = vo.getImgs(); 
-		if(imgs != null) {
-			imgResult = service.insertImg(imgs);
-		}
+	@PostMapping
+	public Map<String, String> insert(BoardVo vo, List<MultipartFile> f, HttpServletRequest req) throws Exception{
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("msg", "bad");
-		if(boardResult == 1 && imgResult == 1) {
-			map.put("msg", "good");
+		List<String> paths = new ArrayList<String>();
+		String root = req.getServletContext().getRealPath("/");
+		String path = "";
+		for (MultipartFile file : f) {
+			path = saveFile(file, root);
+			paths.add(path);
+		}
+
+		vo.setPaths(paths);
+		int result = service.insert(vo); 
+		map.put("msg", "good");
+		if(result != 1) {
+			map.put("msg", "bad");
 		}
 		return map;
 	}
 	
+	//서버에 파일저장
+	private String saveFile(MultipartFile file, String root) throws Exception {
+		String path = "resources/upload/board/img/";
+		String originName = file.getOriginalFilename();
+		String extension = originName.substring(originName.lastIndexOf("."));
+		String imgName = UUID.randomUUID() + extension;
+		File target = new File(root + path + imgName);
+		file.transferTo(target);
+		return path + imgName;
+	}
+
 	//게시글 수정
-	@PostMapping("edit")
+	@PutMapping
 	public Map<String, String> edit(@RequestBody BoardVo vo){
 		int boardResult = service.edit(vo); 
 
 		int imgResult = 0;
 		List<BoardImgVo> imgs = vo.getImgs(); 
 		if(imgs != null) {
-			imgResult = service.insertImg(imgs);
+//			imgResult = service.insertImg(imgs);
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "bad");
@@ -79,7 +106,7 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제
-	@GetMapping("delete")
+	@DeleteMapping
 	public Map<String, String> delete(@RequestBody BoardVo vo){
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -115,7 +142,7 @@ public class BoardController {
 	}
 	
 	//댓글 수정
-	@PostMapping("replyEdit")
+	@PutMapping("replyEdit")
 	public Map<String, String> replyEdit(@RequestBody BoardReplyVo vo) {
 		int result = service.replyEdit(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -127,7 +154,7 @@ public class BoardController {
 	}
 	
 	//댓글 삭제
-	@GetMapping("replyDelete")
+	@DeleteMapping("replyDelete")
 	public Map<String, String> replyDelete(@RequestBody BoardReplyVo vo){
 		int result = service.replyDelete(vo);
 		Map<String, String> map = new HashMap<String, String>();
