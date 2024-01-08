@@ -1,400 +1,246 @@
-<#{}xml version="1.0" encoding="UTF-8" #{}>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="VoteMapper">
+<mapper namespace="ComplaintMapper">
 
-	<!-- 유저 전체 게시글 조회 -->
-	<select id="list" resultType="VoteVo">
-	
+	<!-- 내 민원 글조회 (썸네일 사용 시) -->
+	<select id="mySumitList" resultType="ComplaintVo">
 		SELECT 
-		    VOTE_NO
-		    ,V.MANAGER_NO
+		    C.COMPLAINT_NO
+		    ,MEMBER_NO
 		    ,TITLE
-		    ,CONTENT
-		    ,ID
-		FROM 
-		    VOTE_BOARD V
-		JOIN
-		    MANAGER M
-		ON 
-		    M.MANAGER_NO = V.MANAGER_NO
-		WHERE 
-		    DEL_YN = 'N'
-		ORDER BY 
-		    VOTE_NO DESC
-	
-	</select>
-	
-	<!-- 유저 게시글 상세 조회 -->
-	<select id="detailBoard" resultType="VoteVo">
-		SELECT 
-		    VOTE_NO
-		    ,V.MANAGER_NO
-		    ,TITLE
-		    ,CONTENT
 		    ,ENROLL_DATE
-		    ,MODIFY_DATE
-		    ,DEADLINE_DATE
-		    ,ACCEPT_YN
-		    ,ID
-		FROM 
-		    VOTE_BOARD V
+		    ,STATUS
+		    ,IMG_NO
+		    ,IMG_NAME
+		    ,PATH
+		FROM
+		    COMPLAINT C
 		JOIN
-		    MANAGER M
-		ON 
-		    M.MANAGER_NO = V.MANAGER_NO
-		WHERE 
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
+		WHERE
 		    DEL_YN = 'N'
 		AND
-		    VOTE_NO = #{voteNo} 
-		ORDER BY 
-		    VOTE_NO DESC
+		    C.MEMBER_NO = #{memberNo}
+		ORDER BY
+		    COMPLAINT_NO DESC	
 	</select>
-	
-	<!-- 게시글의 투표 항목 조회 -->
-	<select id="detailItem" resultType="VoteVo">
-		
-	SELECT 
-	    ITEM_NO
-	    ,VOTE_NO
-	    ,ITEM_NAME
-	    ,VOTE_ORDER
-	    ,VOTE_TYPE
-	FROM    
-	    VOTE_ITEM
-	WHERE 
-	    VOTE_NO = #{voteNo}
-		
-	</select>
-	
-	<!-- 게시글 작성 + 투표 항목 선정 -->
-	<insert id="insertBoard">
-		INSERT INTO 
-			VOTE_BOARD
+
+	<!-- 민원 /접수 -->
+	<insert id="complaintSumit">
+		INSERT INTO
+		    COMPLAINT
 		(
-		    VOTE_NO
+		    COMPLAINT_NO
 		    ,MANAGER_NO
+		    ,MEMBER_NO
 		    ,TITLE
 		    ,CONTENT
 		)
-		VALUES 
+		VALUES
 		(
-		    SEQ_VOTE_BOARD_NO.NEXTVAL
+		    SEQ_COMPLAINT_NO.NEXTVAL
 		    ,#{managerNo}
+		    ,#{memberNo}
 		    ,#{title}
 		    ,#{content}
-		)
+		)		
 	</insert>
 	
-	<insert id="insertItem" parameterType="java.util.List" > 
-	<!-- 항목 갯수(list나 배열 형태) vo로 받아 와서 itemList에 넣기 -->
-		<foreach item="item" index="index" collection="itemList" >
-        <!--
-			collection : 전달받을 인자의 자료형은 List
-			item : list안의 객체를 지명할 이름명 
-		-->			
-			INSERT INTO 
-				VOTE_ITEM
-			(
-			    ITEM_NO
-			    ,VOTE_NO
-			    ,ITEM_NAME
-			    ,VOTE_ORDER
-			    ,VOTE_TYPE
-			)
-			VALUES
-			(
-			    SEQ_VOTE_ITEM_NO.NEXTVAL
-			    ,#{item.voteNo}
-			    ,#{item.itemName}
-			    ,#{item.voteOrder}
-			    ,#{item.voteType}
-			)
-		</foreach>	
-	</insert>
-	
-	<!-- 게시글 수정 (글제목, 글내용) -->
-	<update id="edit">
-		UPDATE
-		    VOTE_BOARD 
-		<set>
-			<if test="title != null">
-		    	TITLE = #{title}				
-			</if>
-			
-			<if test="content != null">
-			    ,CONTENT = #{content}		
-			</if>
-		</set>
-		WHERE 
-    		VOTE_NO = #{voteNo}			
-	</update>
-	
-	<!-- 게시글 삭제 -->
-	<update id="delete">
-		UPDATE 
-		    VOTE_BOARD 
-		SET
-		    DEL_YN = 'Y'
-		WHERE 
-		    VOTE_NO = #{voteNo}
-	</update>
-
-	<!-- 게시글 검색 -->	
-	<select id="select" resultType="VoteVo">
-		SELECT 
-		    VOTE_NO
-		    ,V.MANAGER_NO
-		    ,TITLE
-		    ,CONTENT
-		    ,ID
-		FROM 
-		    VOTE_BOARD V
-		JOIN
-		    MANAGER M
-		ON 
-		    M.MANAGER_NO = V.MANAGER_NO
-		WHERE
-		    DEL_YN = 'N'
-		<if test="id != null">
-			AND
-			    ID = #{id}
-		</if>
-		<if test="title != null">
-			AND
-			    TITLE like '%${title}%'
-		</if>
-		<if test="content != null">
-			AND 
-			    CONTENT like '%${content}%'
-		</if>
-		ORDER BY 
-		    VOTE_NO DESC		
-	</select>
-	
-	<!-- 전체 투표 수 조회 (투표율) -->
-	<select id="voteCount" resultType="VoteVo">
-		SELECT 
-		    COUNT(*) 
-		FROM 
-		    VOTE_ITEM 
-		WHERE 
-		    VOTE_NO = #{voteNo}
-	</select>
-	
-	<!-- 투표종료 /마감 일자 삽입 -->
-	<update id="voteEndDayInsert">
-		UPDATE
-		    VOTE_BOARD
-		SET
-		    DEADLINE_DATE = SYSDATE
-		WHERE
-		    VOTE_NO = #{voteNo}
-	</update>
-	
-	<!-- 투표종료 / 투표 조회-->
-	<select id="voteEndCountSelect" resultType="VoteVo">
-		SELECT 
-		    ITEM_NAME
-		    ,COUNT(*)
-		    ,VOTE_ORDER
-		FROM 
-		    (SELECT 
-		        R.REPLY_NO, R.VOTE_NO, R.ITEM_NO, ITEM_NAME, VOTE_ORDER
-		    FROM 
-		        VOTE_REPLY R
-		    JOIN
-		        VOTE_ITEM I
-		    ON
-		        R.ITEM_NO = I.ITEM_NO)
-		WHERE 
-		    VOTE_NO = #{voteNo}
-		GROUP BY
-		    ITEM_NO, ITEM_NAME, VOTE_ORDER		
-	</select>
-	
-	<!-- 투표 종료 / 투표 모든 결과 테이블 삽입 -->
-	<insert id="voteEndFinishInsert">
-	<!-- 투표 결과 항목 갯수(list나 배열 형태) vo로 받아 와서 itemList에 넣기 -->
-		<foreach item="item" index="index" collection="itemList" >
+	<!-- 민원에 첨부된 사진 삽입/ 접수 -->
+	<insert id="imgInsertSumit">
+	<foreach item="item" index="index" collection="imgList" >
         <!--
 			collection : 전달받을 인자의 자료형은 List
 			item : list안의 객체를 지명할 이름명 
 		-->	
 		INSERT INTO
-		    VOTE_HISTORY
+		    COMPLAINT_IMG
 		(
-		    VOTE_HISTORY_NO
-		    ,VOTE_NO
-		    ,VOTE_NAME
-		    ,VOTE_COUNT
-		    ,VOTE_ORDER
+		    IMG_NO
+		    ,COMPLAINT_NO
+		    ,IMG_NAME
+		    ,PATH
+		    ,ORIGIN_NAME
 		)
 		VALUES
 		(
-		    SEQ_VOTE_HISTORY_NO.NEXTVAL
-		    ,#{item.voteNo}
-		    ,#{item.voteName}
-		    ,#{item.voteCount}
-		    ,#{item.voteOrder}
-		)
-		
-		</foreach>	
+		    SEQ_COMPLAINT_IMG_NO.NEXTVAL
+		    ,#{imgList.complaintNo}
+		    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
+		    ,'resources/uplode/'
+		    ,#{imgList.originName}
+		)	
+	</foreach>
 	</insert>
 	
-	<!-- 투표 조회 -->
-	<select id="voteCheck" resultType="VoteVo">
+	<!-- 내 민원 상세 조회 -->
+	<select id="mySumitDetail" resultType="ComplaintVo">
 		SELECT 
-		    ITEM_NAME
-		    ,COUNT(*)
-		    ,VOTE_ORDER
-		FROM 
-		    (SELECT 
-		        R.REPLY_NO, R.VOTE_NO, R.ITEM_NO, ITEM_NAME, VOTE_ORDER
-		    FROM 
-		        VOTE_REPLY R
-		    JOIN
-		        VOTE_ITEM I
-		    ON
-		        R.ITEM_NO = I.ITEM_NO)
-		WHERE 
-		    VOTE_NO = #{voteNo}
-		GROUP BY
-		    ITEM_NO, ITEM_NAME, VOTE_ORDER		
-	</select>
-	
-	<!-- 투표하기 -->
-	<insert id="voting">
-	INSERT INTO
-	    VOTE_REPLY
-	(
-	    REPLY_NO
-	    ,VOTE_NO
-	    ,ITEM_NO
-	    ,PRTC_NO
-	)
-	VALUES
-	(
-	    SEQ_VOTE_REPLY_NO.NEXTVAL
-	    ,#{voteNo}
-	    ,#{itemNo}
-	    ,#{ritcNo}
-	)
-	</insert>
-	
-	<!-- 관리자 전체 투표 게시글 조회 -->
-	<select id="adminList" resultType="VoteVo">
-		SELECT 
-		    VOTE_NO
-		    ,V.MANAGER_NO
+		    C.COMPLAINT_NO
+		    ,MEMBER_NO
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
-		    ,MODIFY_DATE
-		    ,DEADLINE_DATE
-		    ,DEL_YN
-		    ,ACCEPT_YN
-		    ,ID
-		FROM 
-		    VOTE_BOARD V
+		    ,STATUS
+		    ,REPLY
+		    ,REPLY_DATE 
+		    ,IMG_NO
+		    ,IMG_NAME
+		    ,PATH
+		FROM
+		    COMPLAINT C
 		JOIN
-		    MANAGER M
-		ON 
-		    M.MANAGER_NO = V.MANAGER_NO
-		ORDER BY 
-		    VOTE_NO DESC
-	</select>
-	
-	<!-- 관리자 게시글 상세 조회 /게시글 상세 조회 -->
-	<select id="adminDetailBoard" resultType="VoteVo">
-		SELECT 
-		    VOTE_NO
-		    ,V.MANAGER_NO
-		    ,TITLE
-		    ,CONTENT
-		    ,ENROLL_DATE
-		    ,MODIFY_DATE
-		    ,DEADLINE_DATE
-		    ,ACCEPT_YN
-		    ,ID
-		FROM 
-		    VOTE_BOARD V
-		JOIN
-		    MANAGER M
-		ON 
-		    M.MANAGER_NO = V.MANAGER_NO
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
 		WHERE
-			VOTE_NO = #{voteNo}
-		ORDER BY 
-		    VOTE_NO DESC
+		    DEL_YN = 'N'
+		AND
+		    C.MEMBER_NO = #{memberNo}
+		AND
+		    C.COMPLAINT_NO = #{complaintNo}
 	</select>
 	
-	<!-- 관리자 게시글 상세 조회 /게시글 항목 조회 -->
-	<select id="adminDetailItem" resultType="VoteVo">
-	SELECT 
-	    ITEM_NO
-	    ,VOTE_NO
-	    ,ITEM_NAME
-	    ,VOTE_ORDER
-	    ,VOTE_TYPE
-	FROM    
-	    VOTE_ITEM
-	WHERE 
-	    VOTE_NO = #{voteNo}
-	</select>
-	
-	<!-- 관리자 게시글 검색 -->
-	<select id="adminSelect" resultType="VoteVo">
+	<!-- 관리자 전체 게시글 조회 -->
+	<select id="list" resultType="ComplaintVo">
 		SELECT 
-		    VOTE_NO
-		    ,V.MANAGER_NO
+		    C.COMPLAINT_NO
+		    ,MANAGER_NO
+		    ,MEMBER_NO
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
-		    ,MODIFY_DATE
-		    ,DEADLINE_DATE
-		    ,ACCEPT_YN
-		    ,ID
-		FROM 
-		    VOTE_BOARD V
+		    ,DEL_YN
+		    ,STATUS
+		    ,REPLY
+		    ,REPLY_DATE 
+		    ,IMG_NO
+		    ,IMG_NAME
+		    ,PATH
+		    ,ORIGIN_NAME
+		FROM
+		    COMPLAINT C
 		JOIN
-		    MANAGER M
-		ON 
-		    M.MANAGER_NO = V.MANAGER_NO
-		<if test="id != null">
-			AND
-			    ID = #{id}
-		</if>
-		<if test="title != null">
-			AND
-			    TITLE like '%${title}%'
-		</if>
-		<if test="content != null">
-			AND 
-			    CONTENT like '%${content}%'
-		</if>
-		<if test="enrollDate != null"> <!-- 이부분 다시 수정 필요 -->
-			AND
-			    (ENROLL_DATE BETWEEN TO_DATE('20240103') AND TO_DATE('20240104'))		
-		</if>
-		<if test="deadlineDate == null">
-			AND
-			    DEADLINE_DATE IS NULL		
-		</if>
-		<if test="deadlineDate != null"> <!-- 이부분 다시 수정 필요 -->
-			AND
-			    (DEADLINE_DATE BETWEEN TO_DATE('20240103') AND TO_DATE('20240104'))
-		</if>
-		
-		AND
-		    DEL_YN = #{delYn}
-
-		AND
-		    ACCEPT_YN = #{acceptYn}
-		ORDER BY 
-		    VOTE_NO DESC	
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
+		ORDER BY
+		    COMPLAINT_NO DESC	
 	</select>
-	<!-- 여기부터 시작-------------------------------------------------------------- -->
-	<select id="history"></select>
+	
+	<!--관리자 게시글 상세 조회 -->
+	<select id="detail" resultType="ComplaintVo">
+		SELECT 
+		    C.COMPLAINT_NO
+		    ,MANAGER_NO
+		    ,MEMBER_NO
+		    ,TITLE
+		    ,CONTENT
+		    ,ENROLL_DATE
+		    ,DEL_YN
+		    ,STATUS
+		    ,REPLY
+		    ,REPLY_DATE 
+		    ,IMG_NO
+		    ,IMG_NAME
+		    ,PATH
+		    ,ORIGIN_NAME
+		FROM
+		    COMPLAINT C
+		JOIN
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
+		WHERE
+		    C.MEMBER_NO = #{memberNo}
+		AND
+		    C.COMPLAINT_NO = #{complaintNo}	
+	</select>
+	
+	<!-- 민원 해결 글 작성 -->
+	<update id="clear">
+		UPDATE 
+		    COMPLAINT
+		SET
+		    MANAGER_NO = #{managerNo}
+		    ,STATUS = 'Y'
+		    ,REPLY = #{reply}
+		    ,REPLY_DATE = SYSDATE
+		WHERE
+		    COMPLAINT_NO = #{complaintNo}
+	</update>
+	
+	<!-- 전체 민원 검색 -->
+	<select id="select" resultType="ComplaintVo">
+		SELECT 		 
+		    C.COMPLAINT_NO
+		    ,MANAGER_NO
+		    ,MEMBER_NO
+		    ,TITLE
+		    ,CONTENT
+		    ,ENROLL_DATE
+		    ,DEL_YN
+		    ,STATUS
+		    ,REPLY
+		    ,REPLY_DATE
+		    ,IMG_NO
+		    ,IMG_NAME
+		    ,PATH
+		    ,ORIGIN_NAME
+		FROM
+		    COMPLAINT C
+		JOIN
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
+		WHERE
+		    TITLE LIKE '%${title}%'
+		<if test="content!=null">
+		AND
+		    CONTENT LIKE '%%'		
+		</if>
+		<if test="delYn == 'N'">
+		AND
+		    DEL_YN = 'N'
+		</if>
+		<if test="delYn == 'Y'">
+		AND
+		    DEL_YN = 'Y'
+		</if>
+		<if test="reply == null"> <!-- 나중에 수정 -->
+		AND
+		    REPLY IS NULL
+		</if>
+		<if test="reply != null">
+		AND
+		    REPLY LIKE '%${reply}%'			
+		</if>
+		<if test="status == 'N'">
+		AND
+		    STATUS = 'N' 
+		</if>
+		<if test="status == 'Y'">
+		AND
+		    STATUS = 'Y' 
+		</if>
+		<if test="enrollDateStart != null && enrollDateEnd != null">
+		AND
+		    (ENROLL_DATE BETWEEN TO_DATE('20230101') AND TO_DATE('20241231'))
+		</if>
+		<if test="deadlineDateStart != null && deadlineDateEnd != null">
+		AND
+		    (ENROLL_DATE BETWEEN TO_DATE('20230101') AND TO_DATE('20241231'))
+		</if>
+		<if test="enrollDateStart != null && enrollDateEnd != null">
+		AND
+		    (REPLY_DATE BETWEEN TO_DATE('20230101') AND TO_DATE('20241231'))
+		</if>
+		ORDER BY
+		    C.COMPLAINT_NO DESC
+	</select>
+	
 </mapper>
