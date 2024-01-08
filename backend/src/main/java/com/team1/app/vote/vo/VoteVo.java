@@ -31,6 +31,8 @@ public class VoteVo {
 	                                                
 	private String replyNo;			//응답 번호        
 	private String prtcNo;			//응답자 번호       
-	private String retcDate;		//응답 일자        
+	private String retcDate;		//응답 일자      
+	
+	private String count;			//합산
 	                                                
 }                                                   
