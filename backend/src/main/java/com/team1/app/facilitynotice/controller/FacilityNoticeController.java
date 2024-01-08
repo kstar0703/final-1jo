@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("facility/notice")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class FacilityNoticeController {
 	private final FacilityNoticeService service;
 
@@ -67,7 +68,7 @@ public class FacilityNoticeController {
 	}
 	
 	//커뮤니티공지 수정
-	@PostMapping("edit")
+	@PutMapping("edit")
 	public Map<String, String> edit(@RequestBody FacilityNoticeVo vo){
 		int result = service.edit(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -79,7 +80,7 @@ public class FacilityNoticeController {
 	}
 	
 	//커뮤니티공지 삭제
-	@GetMapping("delete")
+	@DeleteMapping("delete")
 	public Map<String, String> delete(@RequestBody FacilityNoticeVo vo){
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();

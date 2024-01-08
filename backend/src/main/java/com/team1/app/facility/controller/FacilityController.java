@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("facility")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class FacilityController {
 	private final FacilityService service;
 	
@@ -58,7 +59,7 @@ public class FacilityController {
 	}
 	
 	//예약취소(신청번호)
-	@GetMapping("cancel")
+	@DeleteMapping("cancel")
 	public Map<String, String> cancel(@RequestBody FacilityHistoryVo vo){
 		int result = service.cancel(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -88,7 +89,7 @@ public class FacilityController {
 	}
 	
 	//커뮤니티시설 수정 (관리자)
-	@PostMapping("admin/edit")
+	@PutMapping("admin/edit")
 	public Map<String, String> edit(@RequestBody FacilityVo vo){
 		int result = service.edit(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -100,7 +101,7 @@ public class FacilityController {
 	}
 	
 	//커뮤니티시설 삭제 (관리자)
-	@GetMapping("delete")
+	@DeleteMapping("delete")
 	public Map<String, String> delete(@RequestBody FacilityVo vo){
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();
