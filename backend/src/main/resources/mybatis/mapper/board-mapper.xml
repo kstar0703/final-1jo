@@ -54,14 +54,14 @@
 	</select>
 
 	<!-- 댓글수 조회 -->
-	<select id="listReplyCount" resultType="BoardReplyVo">
+	<select id="listReplyCount" resultType="int">
 		SELECT COUNT(REPLY_NO)
 			FROM BOARD_REPLY
 			WHERE BOARD_NO = #{boardNo}
 	</select>
 		
 	<!-- 좋아요수 조회 -->
-	<select id="listLikeCount" resultType="BoardLikeVo">
+	<select id="listLikeCount" resultType="int">
 		SELECT COUNT(MEMBER_NO)
 			FROM BOARD_LIKE
 			WHERE BOARD_NO = #{boardNo}
@@ -123,17 +123,17 @@
 	</select>
 	
 	<!-- 게시글 상세 조회 (사용자) -->
-	<select id="detail" resultType="BoardVo">
+	<select id="detail2" resultType="BoardVo">
 		SELECT 
 		    C.CATEGORY_NO
-		    , CATEGORY_NAME
-		    , BOARD_NO
-		    , WRITER_NO
-		    , TITLE
-		    , CONTENT
-		    , ENROLL_DATE
-		    , MODIFY_DATE
-		    , DEL_YN
+		    , C.CATEGORY_NAME
+		    , B.BOARD_NO
+		    , B.WRITER_NO
+		    , B.TITLE
+		    , B.CONTENT
+		    , B.ENROLL_DATE
+		    , B.MODIFY_DATE
+		    , B.DEL_YN
 		    , HIT
 		    , M.UNIT_NO
 		    , NAME
@@ -148,9 +148,48 @@
 		JOIN MEMBER M ON B.WRITER_NO = M.MEMBER_NO
 		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
 		JOIN RESIDENT_BOARD_IMG I ON I.BOARD_NO = B.BOARD_NO
-		WHERE BOARD_NO = #{boardNo}
+		WHERE B.BOARD_NO = #{boardNo}
 		AND B.DEL_YN = 'N'
 	</select>
+	
+		<!-- 게시글 상세 조회 (사용자) 다시 -->
+	<select id="detail" resultType="BoardVo">
+		SELECT 
+		    C.CATEGORY_NO
+		    , C.CATEGORY_NAME
+		    , B.BOARD_NO
+		    , B.WRITER_NO
+		    , B.TITLE
+		    , B.CONTENT
+		    , B.ENROLL_DATE
+		    , B.MODIFY_DATE
+		    , B.DEL_YN
+		    , HIT
+		    , M.UNIT_NO
+		    , NAME
+		    , DONG
+		    , HO    
+		FROM CATEGORY C
+		JOIN RESIDENT_BOARD B ON C.CATEGORY_NO = B.CATEGORY_NO
+		JOIN MEMBER M ON B.WRITER_NO = M.MEMBER_NO
+		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
+		WHERE B.BOARD_NO = #{boardNo}
+		AND B.DEL_YN = 'N'
+	</select>
+	
+		<!-- 게시글 이미지 조회 (사용자) -->
+	<select id="selectImg" resultType="BoardImgVo">
+		SELECT 
+		    BOARD_NO
+		    , IMG_NO
+		    , IMG_NAME
+		    , PATH
+		    , ORIGIN_NAME
+		FROM RESIDENT_BOARD_IMG
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	
 
 	<!-- 카테고리 조회 -->
 	<select id="listCategory" resultType="CategoryVo">

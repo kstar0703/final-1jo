@@ -18,7 +18,6 @@ public class BoardVo {
 	
 	private String categoryName;
 	
-	private String memberNo;
 	private String unitNo;
 	private String name;
 	private String gender;
@@ -26,9 +25,16 @@ public class BoardVo {
 	private String dong;
 	private String ho;
 	
-	private List<BoardImgVo> imgs;
-	
 	private int replyCount;
 	private int likeCount;
+
+	private List<BoardImgVo> imgs;
+	
+	private String imgNo;
+	private String imgName;
+	private String path;
+	private String originName;
+	
+	private List<String> paths;
 	
 }

@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("management")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class ManagementFeeController {
 
 	private final ManagementFeeService service;
