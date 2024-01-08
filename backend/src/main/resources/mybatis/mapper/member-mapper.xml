@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberMapper">
+	
+	<!-- 회원 중복 체크  -->
+	<select id="validateId" resultType="int">
+		SELECT COUNT(*)
+    	FROM MEMBER 
+    	WHERE PHONE = #{phone}
+	</select>
+	
+	<!-- 회원가입  -->
+	<insert id="join">
+		INSERT INTO MEMBER 
+		(
+		MEMBER_NO
+		,UNIT_NO
+		,PHONE
+		,PWD
+		,NAME
+		,GENDER
+		,BIRTH
+		,OWNER_YN
+		) 
+		VALUES 
+		(SEQ_MEMBER_NO.NEXTVAL,
+		,#{unitNo}
+		,#{phone}
+		,#{pwd}
+		,#{name}
+		,#{gender}
+		,#{birth}
+		,#{ownerYn}
+		)
+		
+	</insert>
+	
+	<!-- 로그인  -->
+	<select id="login" resultType="MemberVo">
+	SELECT 
+	MEMBER_NO
+	,UNIT_NO
+	,PHONE,PWD
+	,OWNER_YN
+	,NAME
+	,GENDER
+	,BIRTH
+	,DEL_YN
+	,PERMISSION_YN
+    FROM MEMBER 
+    WHERE 
+    PHONE = #{phone} 
+    AND 
+    PWD = #{pwd}
+    AND 
+    DEL_YN ='N'
+	</select>
+	
+	
+	<!-- 정보 수정  -->
+	<update id ="changeInfo">
+	UPDATE 
+	MEMBER 
+	<trim prefix="SET" suffixOverrides=",">
+ 	<if test="pwd !=null">PWD = #{pwd}, </if>
+ 	<if test="name !=null">NAME = #{name}, </if>
+ 	<if test="gender !=null">GENDER = #{gender} </if>
+ 	
+	</trim>
+	WHERE MEMBER_NO = #{memberNo} AND DEL_YN ='N' 
+	
+	</update>
+	
+	<!-- 회원탈퇴  -->
+	<update id="delete">
+	UPDATE MEMBER 
+	SET 
+	DEL_YN = 'Y' 
+	,PHONE =#{phone}
+	WHERE 
+	MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 회원검색 -->
+	<select id="findMember" resultType="MemberVo">
+	SELECT * FROM MEMBER 
+	WHERE DEL_YN ='N' 
+	<trim prefixOverrides="AND |OR ">
+	 <if test="permissionYn != null">
+		AND PERMISSION_YN= #{permissionYn} 
+	 </if>
+	
+	<if test="name != null">
+	AND NAME LIKE  '%'|| #{name} || '%'
+	</if>
+	
+	<if test="phone != null"></if>
+	AND PHONE LIKE '%' || #{phone} || '%'
+	</trim>
+	ORDER BY MEMBER_NO DESC;
+	
+	</select>
+	
+	<!-- 회원 수락 -->
+	<update id="acceptMember">
+	UPDATE MEMBER SET PERMISSION_YN = 'Y'
+	WHERE MEMBER_NO =#{memberNo};
+	</update>
+	
+	
+
+
+</mapper>
