@@ -12,6 +12,10 @@ public class MemberDao {
 		
 		return sst.selectOne("MemberMapper.validateId",vo);
 	}
+
+	public int join(SqlSessionTemplate sst, MemberVo vo) {
+		return sst.insert("MemberMapper.join",vo);
+	}
 	
 	
 

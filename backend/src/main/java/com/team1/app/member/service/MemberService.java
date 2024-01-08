@@ -29,28 +29,57 @@ public class MemberService {
 		// 결과맵 
 		Map<String, String> resultMap = new HashMap();
 		resultMap.put("msg", "가입 불가능한 전화번호 입니다.");
+		resultMap.put("status","bad");
 		
-		if(util.checkLength(vo.getPhone())) {
+		if(util.checkPhoneLength(vo.getPhone())) {
 			resultMap.put("msg","길이가 너무 짧습니다.");
 			return resultMap;
 		}
 		
-		if(util.matchParttern(vo.getPhone())) {
+		if(!util.matchPhoneParttern(vo.getPhone())) {
 			resultMap.put("msg","전화번호 형식이 아닙니다.");
 			return resultMap;
 		}
 		
 		if(dao.validateId(vo,sst) !=1) {
 			resultMap.put("msg","가입 가능한 전화번호 입니다.");
+			resultMap.put("status","good");
 		}
+		
 		
 		return resultMap;
 		
 	}
-	//로그인 
-	public Map<String, Object> join(MemberVo vo) {
-	
+	//회원가입
+	public Map<String, String> join(MemberVo vo) {
+		//결과맵
+		Map<String,String> resultMap = new HashMap();
+		resultMap.put("msg", "가입실패");
+		resultMap.put("status","bad");
 		
+		
+		if(util.checkIdLength(vo.getPhone())) {
+			resultMap.put("msg","비밀번호는 9글자 이상 작성해야 합니다");
+			return resultMap;
+		}
+		
+		if(!util.matchIdParttern(vo.getPhone())) {
+			resultMap.put("msg","특수문자,대문자,소문자가 하나 이상씩 들어가야 합니다");
+			return resultMap;
+		}
+		
+		int result = dao.join(sst,vo);
+		
+		if(result ==1) {
+			resultMap.put("msg","회원 가입 성공");
+			resultMap.put("status","good");
+		}
+		
+		
+		return resultMap;
+	}
+	// 로그인
+	public Map<String, Object> login(MemberVo vo) {
 		
 		return null;
 	}
