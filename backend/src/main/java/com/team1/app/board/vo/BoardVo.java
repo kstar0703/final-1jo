@@ -1,5 +1,7 @@
 package com.team1.app.board.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -23,5 +25,10 @@ public class BoardVo {
 		
 	private String dong;
 	private String ho;
+	
+	private List<BoardImgVo> imgs;
+	
+	private int replyCount;
+	private int likeCount;
 	
 }
