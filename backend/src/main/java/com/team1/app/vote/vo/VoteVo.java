@@ -10,9 +10,13 @@ public class VoteVo {
 	private String managerId;		//작성자 아이디      
 	private String title;			//글 제목         
 	private String content;			//글 설명         
-	private String enrollDate;		//등록 일자        
+	private String enrollDate;		//등록 일자
+	private String enrollDateStart;	//등록 일자 검색 시작 일자 
+	private String enrollDateEnd;	//등록 일자 검색 종료 일자
 	private String modifyDate;		//수정 일자        
-	private String deadlineDate;	//마감 일자        
+	private String deadlineDate;	//마감 일자
+	private String deadlineDateStart;//마감 일자 검색 시작 일자
+	private String deadlineDateEnd;	//마감 일자 검색 종료 일자
 	private String delYn;			//삭제 여부        
 	private String acceptYn;		//허가 여부        
 	                                                
