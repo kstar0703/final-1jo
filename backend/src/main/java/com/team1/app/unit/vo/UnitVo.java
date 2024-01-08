@@ -1,4 +1,4 @@
-package com.team1.app.member.vo;
+package com.team1.app.unit.vo;
 
 import lombok.Data;
 
