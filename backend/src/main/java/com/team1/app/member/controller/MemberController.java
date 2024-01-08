@@ -24,7 +24,7 @@ import oracle.jdbc.proxy.annotation.Post;
 @ResponseBody
 @CrossOrigin("*")
 
-
+//status good bab 실패 
 public class MemberController {
 	
 	
@@ -32,7 +32,8 @@ public class MemberController {
 	
 	
 	//아이디 유효성 검사
-	//msg equal 성공 
+	//msg 성공 
+	
 		@PostMapping("/validateId")
 		public  Map< String, String> validateId( MemberVo vo ){
 			
@@ -41,26 +42,21 @@ public class MemberController {
 	
 	//회원가입 
 	@PostMapping("/join")
-	public Map<String, Object> join(MemberVo vo){
-		
+	public Map<String, String> join(MemberVo vo){
 		
 		return service.join(vo);
-		
-		
 	}
 	
 	//로그인 데이터
 	@PostMapping("/login")
 	public Map<String, Object> login(@RequestBody MemberVo vo) {
 		
-	
-		return null;
+		return service.login(vo); 
 	}
 	
 	// 정보수정
 	@PostMapping("/changInfo")
 	public  Map<String, Object> changeInfo(@RequestBody MemberVo vo,@RequestBody String currentPwd ){
-		
 		
 		return null;
 	}
