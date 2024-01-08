@@ -1,6 +1,7 @@
 package com.team1.app.member.controller;
 
 import java.lang.reflect.Member;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team1.app.member.service.MemberService;
+import com.team1.app.member.vo.MemberVo;
 
 import lombok.RequiredArgsConstructor;
 import oracle.jdbc.proxy.annotation.Post;
@@ -22,17 +24,51 @@ import oracle.jdbc.proxy.annotation.Post;
 @ResponseBody
 @CrossOrigin("*")
 
-//
+
 public class MemberController {
 	
 	
-	private final MemberService memberservice;
+	private final MemberService service;
 	
-	@PostMapping("/login")
-	public Map<String, Object> login(@RequestBody Member Vo) {
+	
+	//아이디 유효성 검사
+	//msg equal 성공 
+		@PostMapping("/validateId")
+		public  Map< String, String> validateId( MemberVo vo ){
+			
+			return service.validateId(vo);
+		}
+	
+	//회원가입 
+	@PostMapping("/join")
+	public Map<String, Object> join(MemberVo vo){
 		
-
-		return memberservice.login(Vo);
+		
+		return service.join(vo);
+		
+		
 	}
+	
+	//로그인 데이터
+	@PostMapping("/login")
+	public Map<String, Object> login(@RequestBody MemberVo vo) {
+		
+	
+		return null;
+	}
+	
+	// 정보수정
+	@PostMapping("/changInfo")
+	public  Map<String, Object> changeInfo(@RequestBody MemberVo vo,@RequestBody String currentPwd ){
+		
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+
 
 }
