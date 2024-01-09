@@ -87,15 +87,9 @@
 		)
 	</insert>
 	
-	<insert id="insertItem" parameterType="java.util.List" > 
-	<!-- 항목 갯수(list나 배열 형태) vo로 받아 와서 itemList에 넣기 -->
-		<foreach item="item" index="index" collection="voList" >
-        <!--
-			collection : 전달받을 인자의 자료형은 List
-			item : list안의 객체를 지명할 이름명 
-		-->			
-			INSERT INTO 
-				VOTE_ITEM
+	<insert id="insertItem" parameterType="list"> 
+		<foreach item="item" open="INSERT ALL" index="idx" collection="list" close="SELECT * FROM DUAL">
+			VOTE_ITEM
 			(
 			    ITEM_NO
 			    ,VOTE_NO
@@ -105,13 +99,14 @@
 			)
 			VALUES
 			(
-			    SEQ_VOTE_ITEM_NO.NEXTVAL
+			    (SELECT GET_ITEM_SEQ() FROM DUAL )
 			    ,#{item.voteNo}
 			    ,#{item.itemName}
 			    ,#{item.voteOrder}
 			    ,#{item.voteType}
 			)
-		</foreach>	
+		</foreach>
+		
 	</insert>
 	
 
@@ -194,7 +189,7 @@
 		    VOTE_NO = #{voteNo}
 	</update>
 
-	<!-- 투표종료 / 투표 조회-->
+	<!-- 투표종료 / 투표 결과 조회-->
 	<select id="voteEndCountSelect" resultType="VoteVo">
 		SELECT 
 		    ITEM_NAME

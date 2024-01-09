@@ -57,13 +57,16 @@ public class VoteService {
 	}
 
 	public VoteVo voteEnd(String no) {
+		//마감 일자 삽입
 		int result = dao.voteEndDayInsert(sst,no);
 		
 		List<VoteVo> voEnd = null;
 		if(result == 1) {
+			//투표 결과 조회
 			voEnd = dao.voteEndCountSelect(sst,no);
 			
 			if(voEnd != null) {
+				//투표 모든 결과 테이블 삽입
 				int endResult = dao.voteEndFinishInsert(sst,voEnd);
 				
 				if(endResult != voEnd.size()) {

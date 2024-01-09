@@ -52,29 +52,29 @@
 	
 	<!-- 민원에 첨부된 사진 삽입/ 접수 -->
 	<insert id="imgInsertSumit">
-	<foreach item="item" index="index" collection="imgList" >
-        <!--
-			collection : 전달받을 인자의 자료형은 List
-			item : list안의 객체를 지명할 이름명 
-		-->	
-		INSERT INTO
-		    COMPLAINT_IMG
-		(
-		    IMG_NO
-		    ,COMPLAINT_NO
-		    ,IMG_NAME
-		    ,PATH
-		    ,ORIGIN_NAME
-		)
-		VALUES
-		(
-		    SEQ_COMPLAINT_IMG_NO.NEXTVAL
-		    ,#{imgList.complaintNo}
-		    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
-		    ,'resources/uplode/'
-		    ,#{imgList.originName}
-		)	
-	</foreach>
+		<foreach item="item" index="index" collection="imgList" >
+	        <!--
+				collection : 전달받을 인자의 자료형은 List
+				item : list안의 객체를 지명할 이름명 
+			-->	
+			INSERT INTO
+			    COMPLAINT_IMG
+			(
+			    IMG_NO
+			    ,COMPLAINT_NO
+			    ,IMG_NAME
+			    ,PATH
+			    ,ORIGIN_NAME
+			)
+			VALUES
+			(
+			    SEQ_COMPLAINT_IMG_NO.NEXTVAL
+			    ,#{imgList.complaintNo}
+			    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
+			    ,'resources/uplode/'
+			    ,#{imgList.originName}
+			)	
+		</foreach>
 	</insert>
 	
 	<!-- 내 민원 상세 조회 -->
@@ -201,17 +201,13 @@
 		    TITLE LIKE '%${title}%'
 		<if test="content!=null">
 		AND
-		    CONTENT LIKE '%%'		
+		    CONTENT LIKE '%${content}%'		
 		</if>
-		<if test="delYn == 'N'">
+		<if test="delYn != delYn">
 		AND
-		    DEL_YN = 'N'
+		    DEL_YN = #{delYn}
 		</if>
-		<if test="delYn == 'Y'">
-		AND
-		    DEL_YN = 'Y'
-		</if>
-		<if test="reply == null"> <!-- 나중에 수정 -->
+		<if test="reply == null"> <!-- 답변 없는 것만 검색 -->
 		AND
 		    REPLY IS NULL
 		</if>
@@ -219,14 +215,11 @@
 		AND
 		    REPLY LIKE '%${reply}%'			
 		</if>
-		<if test="status == 'N'">
+		<if test="status != null">
 		AND
-		    STATUS = 'N' 
+		    STATUS = #{status} 
 		</if>
-		<if test="status == 'Y'">
-		AND
-		    STATUS = 'Y' 
-		</if>
+
 		<if test="enrollDateStart != null and enrollDateEnd != null">
 		AND
 		    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))
