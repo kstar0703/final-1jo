@@ -18,8 +18,8 @@ public class ManagementFeeService {
 	private final SqlSessionTemplate sst;
 	
 	//세대별 관리비 조회(세대정보, 기간)
-	public List<ManagementFeeVo> listByUnitAndPeriod() {
-		return dao.listByUnitAndPeriod(sst);
+	public List<ManagementFeeVo> listByUnitAndPeriod(ManagementFeeVo vo) {
+		return dao.listByUnitAndPeriod(sst, vo);
 	}
 
 	//전체 관리비 조회 (관리자)

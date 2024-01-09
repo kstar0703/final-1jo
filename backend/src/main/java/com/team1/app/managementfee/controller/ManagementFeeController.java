@@ -23,12 +23,12 @@ public class ManagementFeeController {
 	//세대별 관리비 조회(세대정보, 기간)
 	@GetMapping("list")
 	public List<ManagementFeeVo> listByUnitAndPeriod(@RequestBody ManagementFeeVo vo){
-		return service.listByUnitAndPeriod();
+		return service.listByUnitAndPeriod(vo);
 	}
 	
 	//전체 관리비 조회 (관리자)
 	@GetMapping("admin/list")
-	public List<ManagementFeeVo> list(@RequestBody ManagementFeeVo vo){
+	public List<ManagementFeeVo> list(){
 		return service.list();
 	}
 }
