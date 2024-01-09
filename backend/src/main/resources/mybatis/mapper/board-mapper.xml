@@ -156,7 +156,7 @@
 	<update id="increaseHit">
 		UPDATE
 			RESIDENT_BOARD
-			SET 
+		SET 
 			HIT = HIT + 1
 		WHERE BOARD_NO = #{boardNo}
 	</update>
@@ -271,6 +271,24 @@
 			WHERE BOARD_NO = #{boardNo}
 	</update>
 	
+		<!-- 게시글 이미지 수정 -->
+	<update id="editImg">
+		UPDATE RESIDENT_BOARD_IMG
+			<set>
+				<if test="imgName != null and imgName != ''">
+				    IMG_NAME = #{imgName}
+				</if>
+				<if test="path != null and path != ''">
+			    	PATH = #{path}
+				</if>
+				<if test="originName != null and originName != ''">
+			    	ORIGIN_NAME = #{originName}
+				</if>
+			    MODIFY_DATE = SYSDATE				
+			</set>
+			WHERE BOARD_NO = #{boardNo}
+	</update>
+	
 	<!-- 게시글 삭제 -->
 	<update id="delete">
 		UPDATE RESIDENT_BOARD
@@ -285,13 +303,13 @@
 		SELECT 
 		    C.CATEGORY_NO
 		    , CATEGORY_NAME
-		    , BOARD_NO
-		    , WRITER_NO
+		    , B.BOARD_NO
+		    , B.WRITER_NO
 		    , TITLE
 		    , CONTENT
-		    , ENROLL_DATE
-		    , MODIFY_DATE
-		    , DEL_YN
+		    , B.ENROLL_DATE
+		    , B.MODIFY_DATE
+		    , B.DEL_YN
 		    , HIT
 		    , M.UNIT_NO
 		    , NAME
@@ -303,21 +321,21 @@
 		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
 		<where>
 			<!-- TODO name으로 받는게 편한지 체크  -->
-			<if test="searchType == categoryNo and searchKeyword != null and searchKeyword != '' ">
+			<if test="searchType == 'categoryNo' and searchKeyword != null and searchKeyword != '' ">
 				AND CATEGORY_NO LIKE #{searchKeyword}
 			</if>
 			<!-- TODO writer로 받는 거 체크  -->
-			<if test="searchType == writer and searchKeyword != null and searchKeyword != '' ">
+			<if test="searchType == 'writer' and searchKeyword != null and searchKeyword != '' ">
 				AND (NAME LIKE '%' || #{searchKeyword} || '%' OR DONG LIKE '%' || #{searchKeyword} || '%')
 			</if>
-			<if test="searchType == title and searchKeyword != null and searchKeyword != '' ">
+			<if test="searchType == 'title' and searchKeyword != null and searchKeyword != '' ">
 				AND TITLE LIKE '%' || #{searchKeyword} || '%' 
 			</if>
-			<if test="searchType == content and searchKeyword != null and searchKeyword != '' ">
+			<if test="searchType == 'content' and searchKeyword != null and searchKeyword != '' ">
 				AND CONTENT LIKE '%' || #{searchKeyword} || '%' 
 			</if>
 		</where>
-		ORDER BY ENROLL_DATE DESC
+		ORDER BY B.ENROLL_DATE DESC
 	</select>
 
 	<!-- 댓글 조회 -->
@@ -378,7 +396,7 @@
 	<!-- 댓글 검색 (작성자, 내용으로 검색) -->
 	<select id="searchReply" resultType="BoardReplyVo">
 		SELECT 
-		    MEMBER_NO
+		    M.MEMBER_NO
 		    , CONTENT
 		    , M.UNIT_NO
 		    , NAME
@@ -388,15 +406,15 @@
 		JOIN MEMBER M ON M.MEMBER_NO = R.MEMBER_NO
 		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
 		<where>
-			<if test="searchType == writer and searchKeyword != null and searchKeyword != '' ">
+			<if test="searchType == 'writer' and searchKeyword != null and searchKeyword != '' ">
 				AND (NAME LIKE '%' || #{searchKeyword} || '%' OR DONG LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			<if test="searchType == content and searchKeyword != null and searchKeyword != '' ">
+			<if test="searchType == 'content' and searchKeyword != null and searchKeyword != '' ">
 				AND CONTENT LIKE '%' || #{searchKeyword} || '%' 
 			</if>
 		</where>
-			AND DEY_YN = 'N'
-		ORDER BY ENROLL_DATE ASC
+			AND R.DEY_YN = 'N'
+		ORDER BY R.ENROLL_DATE ASC
 	</select>
 	
 

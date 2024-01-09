@@ -1,17 +1,23 @@
 package com.team1.app.board.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.board.dao.BoardDao;
 import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
+import com.team1.app.util.vo.SearchVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,28 +53,74 @@ public class BoardService {
 	}
 
 	//게시글 작성
-	public int insert(BoardVo vo) {
-		return dao.insert(sst, vo);
-	}
-
-	//이미지 저장
-	public int insertImg(BoardImgVo img) {
-		int overallResult = 1;
-		List<String> paths = img.getPaths();
-		for (String path : paths) {
-			img.setPath(path);
-			int result = dao.insertImg(sst, img);
-			if(result != 1) {
-				overallResult = 0;
-				break;
+	public int insert(BoardVo vo, List<MultipartFile> files, HttpServletRequest req) throws Exception {
+		int overallResult = 0;
+		int boardResult = dao.insert(sst, vo);		
+		
+		String root = req.getServletContext().getRealPath("/");
+		
+		int fileResult = 1;
+		BoardImgVo imgVo = new BoardImgVo();
+		if(vo.getBoardNo() != null) {
+			imgVo.setBoardNo(vo.getBoardNo());
+			imgVo.setImgName(vo.getImgName());
+			imgVo.setOriginName(vo.getOriginName());
+			
+			for (MultipartFile file : files) {
+				String path = saveFile(file, root);
+				imgVo.setPath(path);
+				int result = dao.insertImg(sst, imgVo);
+				if(result != 1) {
+					fileResult = 0;
+					break;
+				}
 			}
+			
 		}
+		if(boardResult == 1 && fileResult == 1) {
+			overallResult = 1;
+		}		
 		return overallResult;
 	}
 
+	
 	//게시글 수정
-	public int edit(BoardVo vo) {
-		return dao.edit(sst, vo);
+	public int edit(BoardVo vo, List<MultipartFile> files, HttpServletRequest req) throws Exception {
+		int overallResult = 0;
+		int boardResult = dao.edit(sst, vo);		
+		
+		String root = req.getServletContext().getRealPath("/");
+		
+		BoardImgVo imgVo = new BoardImgVo();
+		imgVo.setBoardNo(vo.getBoardNo());
+		imgVo.setImgName(vo.getImgName());
+		imgVo.setOriginName(vo.getOriginName());
+				
+		int fileResult = 1;
+		for (MultipartFile file : files) {
+			String path = saveFile(file, root);
+			imgVo.setPath(path);
+			int result = dao.editImg(sst, imgVo);
+			if(result != 1) {
+				fileResult = 0;
+				break;
+			}
+		}
+		if(boardResult == 1 && fileResult == 1) {
+			overallResult = 1;
+		}		
+		return overallResult;
+	}
+	
+	//서버에 파일저장
+	private String saveFile(MultipartFile file, String root) throws Exception {
+		String path = "resources/upload/board/img/";
+		String originName = file.getOriginalFilename();
+		String extension = originName.substring(originName.lastIndexOf("."));
+		String imgName = UUID.randomUUID() + extension;
+		File target = new File(root + path + imgName);
+		file.transferTo(target);
+		return path + imgName;
 	}
 
 	// 게시글 삭제
@@ -77,8 +129,8 @@ public class BoardService {
 	}
 
 	//게시글 검색
-	public List<BoardVo> search(Map<String, Object> searchMap) {
-		return dao.search(sst, searchMap);
+	public List<BoardVo> search(SearchVo vo) {
+		return dao.search(sst, vo);
 	}
 
 	// 댓글 조회
@@ -107,8 +159,8 @@ public class BoardService {
 	}
 
 	// 댓글 검색
-	public List<BoardReplyVo> replySearch(Map<String, Object> searchMap) {
-		return dao.replySearch(sst, searchMap);
+	public List<BoardReplyVo> replySearch(SearchVo vo) {
+		return dao.replySearch(sst, vo);
 	}
 
 	//좋아요수 조회

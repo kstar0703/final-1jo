@@ -13,10 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +28,7 @@ import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
+import com.team1.app.util.vo.SearchVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,8 +49,8 @@ public class BoardController {
 	}
 
 	//게시글 상세 조회
-	@GetMapping("detail")
-	public Map<String, Object> detail(String boardNo){
+	@GetMapping("/{boardNo}")
+	public Map<String, Object> detail(@PathVariable String boardNo){
 		BoardVo boardVo = service.detail(boardNo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardVo", boardVo);
@@ -57,54 +60,28 @@ public class BoardController {
 
 	//게시글 작성
 	@PostMapping("write")
-	public Map<String, String> insert(BoardVo vo, List<MultipartFile> f, HttpServletRequest req) throws Exception{
+	public Map<String, String> insert(BoardVo vo, List<MultipartFile> files, HttpServletRequest req) throws Exception{
+		int result = service.insert(vo, files, req);
+		
 		Map<String, String> map = new HashMap<String, String>();
-		List<String> paths = new ArrayList<String>();
-		String root = req.getServletContext().getRealPath("/");
-		String path = "";
-		for (MultipartFile file : f) {
-			path = saveFile(file, root);
-			paths.add(path);
-		}
-		BoardImgVo imgVo = new BoardImgVo();
-		imgVo.setBoardNo(vo.getBoardNo());
-		imgVo.setImgName(vo.getImgName());
-		imgVo.setOriginName(vo.getOriginName());
-		imgVo.setPaths(paths);
-		int imageResult = service.insertImg(imgVo); 
-		int boardResult = service.insert(vo);
 		map.put("msg", "bad");
-		if(imageResult == 1 && boardResult == 1) {
+		if(result != 1) {
 			map.put("msg", "good");
 		}
 		return map;
 	}
 	
-	//서버에 파일저장
-	private String saveFile(MultipartFile file, String root) throws Exception {
-		String path = "resources/upload/board/img/";
-		String originName = file.getOriginalFilename();
-		String extension = originName.substring(originName.lastIndexOf("."));
-		String imgName = UUID.randomUUID() + extension;
-		File target = new File(root + path + imgName);
-		file.transferTo(target);
-		return path + imgName;
-	}
+
 
 	//게시글 수정
-	@PutMapping
-	public Map<String, String> edit(@RequestBody BoardVo vo){
-		int boardResult = service.edit(vo); 
-
-		int imgResult = 0;
-		List<BoardImgVo> imgs = vo.getImgs(); 
-		if(imgs != null) {
-//			imgResult = service.insertImg(imgs);
-		}
+	@PutMapping("/{boardNo}")
+	public Map<String, String> edit(BoardVo vo, List<MultipartFile> files, HttpServletRequest req) throws Exception{
+		System.out.println(vo);
+		int result = service.edit(vo, files, req);
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("msg", "bad");
-		if(boardResult == 1 && imgResult == 1) {
-			map.put("msg", "good");
+		map.put("msg", "good");
+		if(result != 1) {
+			map.put("msg", "bad");
 		}
 		return map;
 	}
@@ -123,8 +100,9 @@ public class BoardController {
 	
 	//게시글 검색
 	@GetMapping("search")
-	public List<BoardVo> search(@RequestBody Map<String, Object> searchMap){
-		return service.search(searchMap); 
+	public List<BoardVo> search(@RequestParam String searchType, String searchKeyword){
+		SearchVo vo = new SearchVo(searchType, searchKeyword);
+		return service.search(vo); 
 	}
 	
 	// 댓글 조회
@@ -171,8 +149,9 @@ public class BoardController {
 	
 	// 댓글 검색
 	@GetMapping("replySearch")
-	public Map<String, Object> replySearch(@RequestBody Map<String, Object> searchMap){
-		List<BoardReplyVo> boardReplyVo = service.replySearch(searchMap);
+	public Map<String, Object> replySearch(@RequestParam String searchType, @RequestParam String searchKeyword){
+		SearchVo vo = new SearchVo(searchType, searchKeyword);
+		List<BoardReplyVo> boardReplyVo = service.replySearch(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardReplyVo", boardReplyVo);
 		return map;

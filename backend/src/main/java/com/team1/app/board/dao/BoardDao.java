@@ -10,6 +10,7 @@ import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
+import com.team1.app.util.vo.SearchVo;
 
 @Repository
 public class BoardDao {
@@ -40,14 +41,19 @@ public class BoardDao {
 		return sst.insert("BoardMapper.insert", vo);
 	}
 	
+	//이미지 저장 
+	public int insertImg(SqlSessionTemplate sst, BoardImgVo vo) {
+		return sst.insert("BoardMapper.insertImg", vo);
+	}
+	
 	//게시글 수정
 	public int edit(SqlSessionTemplate sst, BoardVo vo) {
 		return sst.update("BoardMapper.edit", vo);
 	}
-
+	
 	//이미지 저장 
-	public int insertImg(SqlSessionTemplate sst, BoardImgVo vo) {
-		return sst.insert("BoardMapper.insertImg", vo);
+	public int editImg(SqlSessionTemplate sst, BoardImgVo vo) {
+		return sst.insert("BoardMapper.editImg", vo);
 	}
 
 	// 게시글 삭제
@@ -57,8 +63,8 @@ public class BoardDao {
 	}
 
 	//게시글 검색
-	public List<BoardVo> search(SqlSessionTemplate sst, Map<String, Object> searchMap) {
-		return sst.selectList("BoardMapper.search", searchMap);
+	public List<BoardVo> search(SqlSessionTemplate sst, SearchVo vo) {
+		return sst.selectList("BoardMapper.search", vo);
 	}
 	
 	//댓글수 조회
@@ -87,8 +93,8 @@ public class BoardDao {
 	}
 
 	// 댓글 검색
-	public List<BoardReplyVo> replySearch(SqlSessionTemplate sst, Map<String, Object> searchMap) {
-		return sst.selectList("BoardMapper.searchReply", searchMap);
+	public List<BoardReplyVo> replySearch(SqlSessionTemplate sst, SearchVo vo) {
+		return sst.selectList("BoardMapper.searchReply", vo);
 	}
 
 	//좋아요수 조회
