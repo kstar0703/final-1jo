@@ -2,3 +2,5 @@
 backend/.settings/
 backend/target/
 Servers/
+*.classpath
+*.project
