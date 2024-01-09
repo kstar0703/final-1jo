@@ -33,6 +33,11 @@
 	<!-- 관리비 -->
 	  <typeAlias type="com.team1.app.managementfee.vo.ManagementFeeVo" alias="ManagementFeeVo"/>
 	  
+	<!-- 회원  -->
+		 <typeAlias type="com.team1.app.member.vo.MemberVo" alias="MemberVo"/>
+	  	 
+	<!-- 관리자  -->  	 
+		 <typeAlias type="com.team1.app.manager.vo.MangerVo" alias="MangerVo"/>
   </typeAliases>
 
   

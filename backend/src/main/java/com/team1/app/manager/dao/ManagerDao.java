@@ -1,0 +1,35 @@
+package com.team1.app.manager.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.team1.app.manager.vo.MangerVo;
+import com.team1.app.member.vo.MemberVo;
+
+@Repository
+public class ManagerDao {
+	// 로그인
+	public MangerVo login(MangerVo vo, SqlSessionTemplate sst) {
+		return sst.selectOne("ManagerMapper");
+	}
+	
+	// 회원검색
+	public List<MemberVo> findMember(MemberVo vo, SqlSessionTemplate sst) {	
+		return sst.selectList("MemberMapper.findMember",vo);
+	}
+
+	// 회원수락
+	public int acceptMember(MemberVo vo, SqlSessionTemplate sst) {
+		return sst.update("MemberMapperacceptMember",vo);
+	}
+	
+	
+	
+	
+
+	
+
+}

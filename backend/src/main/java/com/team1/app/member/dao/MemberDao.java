@@ -17,7 +17,22 @@ public class MemberDao {
 
 	//회원가입
 	public int join(SqlSessionTemplate sst, MemberVo vo) {
-		return 0;
+		return sst.insert("MemberMapper.join",vo);
+	}
+
+	//로그인
+	public MemberVo login(SqlSessionTemplate sst, MemberVo vo) {
+		return sst.selectOne("MemberMapper.login",vo);
+	}
+
+	//정보 수정
+	public int changeInfo(SqlSessionTemplate sst, MemberVo vo) {
+		return sst.update("MemberMapper.changeInfo",vo);
+	}
+
+	//회원 탈퇴
+	public int delete(SqlSessionTemplate sst, MemberVo vo) {
+		return sst.update("MemberMapper.delete",vo);
 	}
 	
 	
