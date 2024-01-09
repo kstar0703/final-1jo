@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.team1.app.manager.Service.ManagerService;
-import com.team1.app.manager.vo.MangerVo;
+import com.team1.app.manager.vo.ManagerVo;
 import com.team1.app.member.vo.MemberVo;
 
 import lombok.RequiredArgsConstructor;
@@ -27,12 +27,12 @@ public class ManagerController {
 	 * @return 로그인정보
 	 */
 	@PostMapping("login")
-	public Map<String,Object> login(MangerVo vo){
+	public Map<String,Object> login(ManagerVo vo){
 		
 		Map<String,Object> resultMap = new HashMap();
 		resultMap.put("msg", "로그인실패");
 		
-		MangerVo loginManger = service.login(vo);
+		ManagerVo loginManger = service.login(vo);
 		
 		if(loginManger !=null) {
 		resultMap.put("loginManger",loginManger);

@@ -3,8 +3,119 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ParkingMapper">
-	
-	
+
+<!-- 차량 예약등록  -->
+<insert id="register" >
+INSERT INTO 
+parking 
+(
+PARKING_NO
+,UNIT_NO
+,PURPOSE
+,CAR_NO) 
+VALUES 
+(seq_parking_no.nextval
+,#{parkingNo}
+,#{purpose}
+,#{carNo}
+</insert>
+
+<!-- 입차 등록  -->
+<update id="arrival">
+UPDATE PARKING 
+SET 
+ARRIVAL_TIME = SYSDATE  
+WHERE 
+PARKING_NO =#{parkingNo} 
+AND 
+DEL_YN ='N'
+</update>
+
+<!-- 출차 등록  -->
+<update id="departuretime">
+UPDATE PARKING 
+SET DEPARTURE_TIME =SYSDATE 
+WHERE 
+PARKING_NO ={parkingNO} 
+AND 
+DEL_YN ='N'
+</update>
+<!-- 시간 빼기  -->
+<update id="subtractUnitTime">
+UPDATE UNIT SET VEH_TIME  = (
+SELECT VEH_TIME FROM UNIT
+WHERE 
+UNIT_NO = #{unitNO}
+) - (
+SELECT 
+ TO_NUMBER( EXTRACT(MINUTE FROM (DEPARTURE_TIME - ARRIVAL_TIME) DAY TO SECOND)) AS FEE 
+FROM 
+  PARKING
+WHERE 
+  PARKING_NO = #{parkingNo} AND DEL_YN = 'N'
+)
+</update>
+<!-- 예약 취소  -->
+<update id="cancel">
+UPDATE PARKING 
+SET 
+DEL_YN = 'Y' 
+,MODIFY_DATE = SYSDATE
+WHERE 
+PARKING_NO = #{parkingNo}
+</update>
+
+<!-- 예약 변경  -->
+<update id="change">
+UPDATE 
+PARKING 
+<trim prefix="SET" suffixOverrides=",">
+<if test="pwd !=null">PURPOSE= #{purpose}, </if> 
+<if test="pwd !=null"> CAR_NO =#{carNo},   </if> 
+MODIFY_DATE = SYSDATE
+</trim>
+WHERE PARKING_NO = #{parkingNo}
+</update>
+
+<!-- 예약 조회  -->
+<select id="list" resultType="ParkingVo">
+SELECT  
+PARKING_NO
+,UNIT_NO
+,PURPOSE
+,CAR_NO
+,ARRIVAL_TIME
+,DEPARTURE_TIME
+,MODIFY_DATE
+,DEL_YN
+FROM PARKING
+WHERE UNIT_NO =#{unitNo} AND DEL_YN ='N'
+ORDER BY PARKING_NO DESC
+</select>
+
+<!-- 예약 상세 조회  -->
+<select id="detail" resultType="ParkingVo">
+PARKING_NO
+,UNIT_NO
+,PURPOSE
+,CAR_NO
+,ARRIVAL_TIME
+,DEPARTURE_TIME
+,TO_NUMBER( EXTRACT(MINUTE FROM (DEPARTURE_TIME - ARRIVAL_TIME) DAY TO SECOND)) AS FEE 
+FROM PARKING
+WHERE 
+PARKING_NO = #{parkingNo}  
+AND 
+DEL_YN ='N'
+ORDER BY PARKING_NO DESC
+</select>
+
+
+
+
+
+
+
 
 
 </mapper>

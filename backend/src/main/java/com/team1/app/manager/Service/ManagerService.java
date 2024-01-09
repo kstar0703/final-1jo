@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
 import com.team1.app.manager.dao.ManagerDao;
-import com.team1.app.manager.vo.MangerVo;
+import com.team1.app.manager.vo.ManagerVo;
 import com.team1.app.member.service.MemberService;
 import com.team1.app.member.vo.MemberVo;
 
@@ -21,7 +21,7 @@ public class ManagerService {
 	private final ManagerDao dao;
 
 	// 로그인
-	public MangerVo login(MangerVo vo) {
+	public ManagerVo login(ManagerVo vo) {
 		return dao.login(vo,sst);
 	}
 
