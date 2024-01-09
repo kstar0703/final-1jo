@@ -29,6 +29,11 @@ public class BoardDao {
 	public List<BoardImgVo> selectImg(SqlSessionTemplate sst, String boardNo) {
 		return sst.selectList("BoardMapper.selectImg", boardNo);
 	}
+	
+	//조회수 증가
+	public int increaseHit(SqlSessionTemplate sst, String boardNo) {
+		return sst.update("BoardMapper.increaseHit", boardNo);
+	}
 
 	//게시글 작성
 	public int insert(SqlSessionTemplate sst, BoardVo vo) {
@@ -47,7 +52,8 @@ public class BoardDao {
 
 	// 게시글 삭제
 	public int delete(SqlSessionTemplate sst, BoardVo vo) {
-		return sst.update("BoardMapper.delete", vo);
+		 int result = sst.update("BoardMapper.delete", vo);
+		 return result;
 	}
 
 	//게시글 검색

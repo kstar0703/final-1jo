@@ -1,5 +1,7 @@
 package com.team1.app.board.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -9,4 +11,6 @@ public class BoardImgVo {
 	private String imgName;
 	private String path;
 	private String originName;
+	
+	private List<String> paths;
 }
