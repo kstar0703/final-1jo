@@ -174,9 +174,9 @@
 	UPDATE 
 	    FACILITIES_HISTORY
 	SET 
-	    APPLICATION_NO = #{applicationNo}
-	    , CANCEL_DATE = SYSDATE
+	    CANCEL_DATE = SYSDATE
 	WHERE MEMBER_NO = #{memberNo}
+		AND APPLICATION_NO = #{applicationNo}
 	</update>
 	
 </mapper>
