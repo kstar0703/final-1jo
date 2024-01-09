@@ -56,7 +56,7 @@ public class BoardController {
 	}
 
 	//게시글 작성
-	@PostMapping
+	@PostMapping("write")
 	public Map<String, String> insert(BoardVo vo, List<MultipartFile> f, HttpServletRequest req) throws Exception{
 		Map<String, String> map = new HashMap<String, String>();
 		List<String> paths = new ArrayList<String>();
@@ -66,12 +66,16 @@ public class BoardController {
 			path = saveFile(file, root);
 			paths.add(path);
 		}
-
-		vo.setPaths(paths);
-		int result = service.insert(vo); 
-		map.put("msg", "good");
-		if(result != 1) {
-			map.put("msg", "bad");
+		BoardImgVo imgVo = new BoardImgVo();
+		imgVo.setBoardNo(vo.getBoardNo());
+		imgVo.setImgName(vo.getImgName());
+		imgVo.setOriginName(vo.getOriginName());
+		imgVo.setPaths(paths);
+		int imageResult = service.insertImg(imgVo); 
+		int boardResult = service.insert(vo);
+		map.put("msg", "bad");
+		if(imageResult == 1 && boardResult == 1) {
+			map.put("msg", "good");
 		}
 		return map;
 	}
@@ -106,7 +110,7 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제
-	@DeleteMapping
+	@DeleteMapping("delete")
 	public Map<String, String> delete(@RequestBody BoardVo vo){
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();

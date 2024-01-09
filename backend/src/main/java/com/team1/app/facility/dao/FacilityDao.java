@@ -53,12 +53,12 @@ public class FacilityDao {
 
 	//커뮤니티시설 수정 (관리자)
 	public int edit(SqlSessionTemplate sst, FacilityVo vo) {
-		return sst.update("FacilityMapper", vo);
+		return sst.update("FacilityMapper.edit", vo);
 	}
 
 	//커뮤니티시설 삭제 (관리자)
 	public int delete(SqlSessionTemplate sst, FacilityVo vo) {
-		return sst.update("FacilityMapper", vo);
+		return sst.update("FacilityMapper.delete", vo);
 	}
 
 

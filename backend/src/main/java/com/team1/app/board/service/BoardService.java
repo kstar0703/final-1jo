@@ -36,23 +36,34 @@ public class BoardService {
 
 	//게시글 상세 조회 
 	public BoardVo detail(String boardNo) {
+		int result = dao.increaseHit(sst, boardNo);
+		if(result != 1) {
+			throw new IllegalStateException();
+		}
 		BoardVo boardVo = dao.detail(sst, boardNo);
 		List<BoardImgVo> imgs = dao.selectImg(sst, boardNo);
 		boardVo.setImgs(imgs);
 		return boardVo;
 	}
-	
-
 
 	//게시글 작성
 	public int insert(BoardVo vo) {
-		
 		return dao.insert(sst, vo);
 	}
 
 	//이미지 저장
 	public int insertImg(BoardImgVo img) {
-		return dao.insertImg(sst, img);
+		int overallResult = 1;
+		List<String> paths = img.getPaths();
+		for (String path : paths) {
+			img.setPath(path);
+			int result = dao.insertImg(sst, img);
+			if(result != 1) {
+				overallResult = 0;
+				break;
+			}
+		}
+		return overallResult;
 	}
 
 	//게시글 수정
@@ -108,6 +119,7 @@ public class BoardService {
 	//좋아요 클릭처리 
 	public int clickLike(BoardLikeVo vo) {
 		int result = dao.selectLike(sst, vo);
+		
 		if(result == 1) {
 			return dao.deleteLike(sst, vo);
 		}else {

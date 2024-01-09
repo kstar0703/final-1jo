@@ -59,7 +59,7 @@ public class FacilityController {
 	}
 	
 	//예약취소(신청번호)
-	@DeleteMapping("cancel")
+	@PutMapping("cancel")
 	public Map<String, String> cancel(@RequestBody FacilityHistoryVo vo){
 		int result = service.cancel(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -101,7 +101,7 @@ public class FacilityController {
 	}
 	
 	//커뮤니티시설 삭제 (관리자)
-	@DeleteMapping("delete")
+	@PutMapping("admin/delete")
 	public Map<String, String> delete(@RequestBody FacilityVo vo){
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();

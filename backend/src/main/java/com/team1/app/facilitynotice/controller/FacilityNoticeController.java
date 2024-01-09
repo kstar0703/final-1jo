@@ -56,7 +56,7 @@ public class FacilityNoticeController {
 	}
 
 	//커뮤니티공지 등록
-	@PostMapping("insert")
+	@PostMapping("admin/insert")
 	public Map<String, String> insert(@RequestBody FacilityNoticeVo vo){
 		int result = service.insert(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -68,7 +68,7 @@ public class FacilityNoticeController {
 	}
 	
 	//커뮤니티공지 수정
-	@PutMapping("edit")
+	@PutMapping("admin/edit")
 	public Map<String, String> edit(@RequestBody FacilityNoticeVo vo){
 		int result = service.edit(vo);
 		Map<String, String> map = new HashMap<String, String>();
@@ -80,7 +80,7 @@ public class FacilityNoticeController {
 	}
 	
 	//커뮤니티공지 삭제
-	@DeleteMapping("delete")
+	@PutMapping("admin/delete")
 	public Map<String, String> delete(@RequestBody FacilityNoticeVo vo){
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();
