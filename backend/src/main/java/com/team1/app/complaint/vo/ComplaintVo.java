@@ -1,5 +1,8 @@
 package com.team1.app.complaint.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -25,4 +28,7 @@ public class ComplaintVo {
 	private String imgName;			//이미지 이름                
 	private String path;			//이미지 경로
 	private String originName;		//이미지 원래 이름             
+	
+	List<ComplaintImgVo> imgVoList = new ArrayList<ComplaintImgVo>();
+
 }                                                           

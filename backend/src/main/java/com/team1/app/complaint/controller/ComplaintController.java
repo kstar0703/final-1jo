@@ -34,17 +34,18 @@ public class ComplaintController {
 	}
 	
 	//민원 접수 
-	// 여기 이미지 복수로 들어오게 설계해야 함
 	@PostMapping("complaintSumit")
-	public void complaintSumit(ComplaintVo vo, MultipartFile[] file) throws IllegalStateException, IOException {
-		boolean result = service.complaintSumit(vo,file);
+	public void complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
+		boolean result = service.complaintSumit(vo,fileArr);
 	}
 	
 	//내 민원 상세 조회
-	// 여기 이미지 복수로 들어오게 설계해야 함
 	@GetMapping("mySumitDetail")
 	public void mySumitDetail(ComplaintVo vo) {
-		Map<String,Object> map = service.mySumitDetail(vo);
+		System.out.println(vo);
+		ComplaintVo resultVo = service.mySumitDetail(vo);
+		System.out.println(resultVo);
+
 	}
 	
 	//관리자 전체 게시글 조회

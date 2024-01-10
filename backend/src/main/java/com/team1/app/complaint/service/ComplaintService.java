@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.complaint.dao.ComplaintDao;
+import com.team1.app.complaint.vo.ComplaintImgVo;
 import com.team1.app.complaint.vo.ComplaintVo;
 
 import lombok.RequiredArgsConstructor;
@@ -26,34 +27,77 @@ public class ComplaintService {
 	}
 
 
-	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] file) throws IllegalStateException, IOException {
+	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
 		boolean result = false;
-		int iisResult = 0;
+		
 		//민원 글 접수
 		int csResult = dao.complaintSumit(sst,vo);
 		if(csResult != 1) {
 			throw new IllegalStateException();
 		}
-		//민원에 첨부된 사진 여러개 접수 
-		String path = "";
-		if(file != null && file.length > 0 ) {
-			for (MultipartFile multipartFile : file) {
-				multipartFile.transferTo(new File(path));
+		//저장 경로 
+		String path = "http://127.0.0.1:8888/app/resources/upload/complaint/img/";
+		
+		if(fileArr != null && fileArr.length > 0 ) {
+			List<String> fileList = saveFile(fileArr);
+			if(fileList.size() <= 0) {
+				throw new IllegalStateException();
 			}
-			iisResult =dao.imgInsertSumit(sst,file);			
+			//DB에 넣을 사진 정보 
+			List<ComplaintImgVo> imgList = new ArrayList<ComplaintImgVo>();
+			for (String filename : fileList) {
+				int idx = 0;
+				imgList
+				.add(
+				new ComplaintImgVo(filename, path,fileArr[idx++].getOriginalFilename())
+				);
+			}
+
+			int imgResult = dao.imgInsertSumit(sst, imgList);
+			if(imgResult <= 0) {
+				throw new IllegalStateException();
+			}
 			
 		}
 		
+		if(csResult == 1 ) {			
+			result = true;
+		}
 		
 		return result;
 	}
-
-	public Map<String, Object> mySumitDetail(ComplaintVo vo) {
+	//파일저장
+	private List<String> saveFile(MultipartFile[] fileArr) throws IllegalStateException, IOException {
 		
+		String savePath = "D:\\final\\finalPrj\\backend\\src\\main\\webapp\\resources\\upload\\complaint\\img\\";
+		List<String> fileList = new ArrayList<String>();
+		
+		for (MultipartFile f : fileArr) {
+			//랜덤 파일 네임
+			String UUIDfileName = UUID.randomUUID().toString() + System.currentTimeMillis();
+			String extendName = f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
+			File target = new File(savePath+UUIDfileName+extendName);
+			f.transferTo(target);
+			fileList.add(UUIDfileName+extendName);
+		}
+		return fileList;
+	}
+
+
+	public ComplaintVo mySumitDetail(ComplaintVo vo) {
+		System.out.println("작동함");
 		List<ComplaintVo> voList = dao.mySumitDetail(sst,vo);
-		Map<String, Object> map = new HashMap<>();
-		map.put("voList", voList);
-		return map;
+		
+		if(voList.get(0).getImgNo().length() > 0) {
+			for (ComplaintVo complaintVo : voList) {
+				voList.get(0).getImgVoList().add(
+					new ComplaintImgVo(complaintVo.getImgNo() ,complaintVo.getImgName(), complaintVo.getPath(), complaintVo.getOriginName())
+				);
+				System.out.println(voList.get(0).getImgVoList());		
+			}
+		}				
+		System.out.println(voList.get(0));
+		return voList.get(0);
 	}
 
 

@@ -64,11 +64,11 @@
 		)
 		VALUES
 		(
-		    SEQ_COMPLAINT_IMG_NO.NEXTVAL
-		    ,#{complaintNo}
+		    (SELECT GET_COMPLAINT_IMG_SEQ() FROM DUAL )
+		    ,SEQ_COMPLAINT_NO.CURRVAL
 		    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
 		    ,'resources/uplode/'
-		    ,#{originName}
+		    ,#{item.originName}
 		)	
 		</foreach>
 	</insert>
@@ -89,7 +89,7 @@
 		    ,PATH
 		FROM
 		    COMPLAINT C
-		JOIN
+		LEFT JOIN
 		    COMPLAINT_IMG I
 		ON
 		    C.COMPLAINT_NO = I.COMPLAINT_NO

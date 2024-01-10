@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team1.app.complaint.vo.ComplaintImgVo;
 import com.team1.app.complaint.vo.ComplaintVo;
 
 @Repository
@@ -18,11 +19,12 @@ public class ComplaintDao {
 	}
 
 	public int complaintSumit(SqlSessionTemplate sst, ComplaintVo vo) {
+		System.out.println(vo);
 		return sst.insert("ComplaintMapper.complaintSumit",vo);
 	}
 	
-	public int imgInsertSumit(SqlSessionTemplate sst, MultipartFile[] file) {		
-		return sst.insert("ComplaintMapper.imgInsertSumit",file);
+	public int imgInsertSumit(SqlSessionTemplate sst, List<ComplaintImgVo> imgList) {		
+		return sst.insert("ComplaintMapper.imgInsertSumit",imgList);
 	}
 	//이미지 복수 처리시 같이 작업.
 	public List<ComplaintVo> mySumitDetail(SqlSessionTemplate sst, ComplaintVo vo) {
