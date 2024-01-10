@@ -11,4 +11,7 @@ public class ManagementFeeVo {
 	private String mainternanceFee;
 	private String facilitiesFee;
 	private String totalAmount;
+	
+	private String startDate;
+	private String endDate;
 }
