@@ -1,11 +1,13 @@
 package com.team1.app.complaint.controller;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.complaint.service.ComplaintService;
 import com.team1.app.complaint.vo.ComplaintVo;
@@ -23,14 +25,19 @@ public class ComplaintController {
 	//내 민원 글조회
 	@GetMapping("mySumitList")
 	public void mySumitList(String no) {
+		no = "1";
 		List<ComplaintVo> voList = service.mySumitList(no);
+		
+		for (ComplaintVo complaintVo : voList) {
+			System.out.println(complaintVo);
+		}
 	}
 	
 	//민원 접수 
 	// 여기 이미지 복수로 들어오게 설계해야 함
 	@PostMapping("complaintSumit")
-	public void complaintSumit(ComplaintVo vo) {
-		int result = service.complaintSumit(vo);
+	public void complaintSumit(ComplaintVo vo, MultipartFile[] file) throws IllegalStateException, IOException {
+		boolean result = service.complaintSumit(vo,file);
 	}
 	
 	//내 민원 상세 조회
@@ -41,14 +48,17 @@ public class ComplaintController {
 	}
 	
 	//관리자 전체 게시글 조회
-	@GetMapping("admin/list")
+	@GetMapping("adminList")
 	public void list() {
 		List<ComplaintVo> voList = service.list();
+		for (ComplaintVo complaintVo : voList) {
+			System.out.println(complaintVo);
+		}
 	}
 	
 	//관리자 게시글 상세 조회
 	// 여기 이미지 복수로 들어오게 설계해야 함
-	@GetMapping("admin/detail")
+	@GetMapping("adminDetail")
 	public void detail(ComplaintVo vo) {
 		Map<String,Object> map = service.detail(vo);
 	}
@@ -56,13 +66,32 @@ public class ComplaintController {
 	//민원 해결 글 작성
 	@PostMapping("clear")
 	public void clear(ComplaintVo vo) {
+		vo.setManagerNo("11");
+		vo.setReply("민원 해결 테스트 답변입니다.");
+		vo.setComplaintNo("5");
 		int result = service.clear(vo);
 	}
 	
 	//관리자 전체 민원 검색 (썸네일 사용 시)
-	@GetMapping("admin/select")
+	@GetMapping("adminSelect")
 	public void select(ComplaintVo vo) {
+
+		//test용 데이터
+		vo.setTitle("테스트");
+		vo.setContent("테스트");
+		vo.setDelYn("N");
+		vo.setReply("테스트");
+		vo.setStatus("Y");
+		vo.setEnrollDateStart("20230101");
+		vo.setEnrollDateEnd("20240110");
+		vo.setReplyDateStart("20230101");
+		vo.setReplyDateEnd("20240110");
+		vo.setDelYn("N");
 		List<ComplaintVo> voList = service.select(vo); 
+		
+		for (ComplaintVo complaintVo : voList) {
+			System.out.println(complaintVo);
+		}
 	}
 	
 }
