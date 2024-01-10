@@ -32,6 +32,7 @@ public class ManagerService {
 	}
 	//회원 수락
 	public int acceptMember(MemberVo vo) {
+		
 		return dao.acceptMember(vo,sst);
 	}
 	

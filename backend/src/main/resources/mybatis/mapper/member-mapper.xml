@@ -25,7 +25,8 @@
 		,OWNER_YN
 		) 
 		VALUES 
-		(SEQ_MEMBER_NO.NEXTVAL,
+		(
+		SEQ_MEMBER_NO.NEXTVAL
 		,#{unitNo}
 		,#{phone}
 		,#{pwd}
@@ -93,21 +94,23 @@
 	 </if>
 	
 	<if test="name != null">
-	AND NAME LIKE  '%'|| #{name} || '%'
+	OR NAME LIKE  '%'|| #{name} || '%'
 	</if>
 	
 	<if test="phone != null"></if>
-	AND PHONE LIKE '%' || #{phone} || '%'
+	OR PHONE LIKE '%' || #{phone} || '%'
 	</trim>
-	ORDER BY MEMBER_NO DESC;
+	ORDER BY MEMBER_NO DESC
 	
 	</select>
 	
 	<!-- 회원 수락 -->
 	<update id="acceptMember">
 	UPDATE MEMBER SET PERMISSION_YN = 'Y'
-	WHERE MEMBER_NO =#{memberNo};
+	WHERE MEMBER_NO =#{memberNo}
 	</update>
+	
+
 	
 	
 

@@ -13,7 +13,7 @@ import com.team1.app.member.vo.MemberVo;
 public class ManagerDao {
 	// 로그인
 	public ManagerVo login(ManagerVo vo, SqlSessionTemplate sst) {
-		return sst.selectOne("ManagerMapper");
+		return sst.selectOne("ManagerMapper.login",vo);
 	}
 	
 	// 회원검색
@@ -23,7 +23,9 @@ public class ManagerDao {
 
 	// 회원수락
 	public int acceptMember(MemberVo vo, SqlSessionTemplate sst) {
-		return sst.update("MemberMapperacceptMember",vo);
+		System.out.println(vo);
+		System.out.println("dao");
+		return sst.update("MemberMapper.acceptMember",vo);
 	}
 	
 	

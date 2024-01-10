@@ -23,7 +23,7 @@ public class ManagerController {
 	
 	/**
 	 * 
-	 * @param vo(로그인 정보)
+	 * @param vo(로그인 정보) id,pwd
 	 * @return 로그인정보
 	 */
 	@PostMapping("login")
@@ -43,7 +43,7 @@ public class ManagerController {
 	
 	/**
 	 * 가입 승인용 조회
-	 * @param vo (검색어,승인여부)
+	 * @param vo permissionYn,name,phone
 	 * @return 회원 리스트
 	 */
 	@GetMapping("findMember")
@@ -52,7 +52,7 @@ public class ManagerController {
 	}
 	/**
 	 * 
-	 * @param vo 회원번호
+	 * @param vo 회원번호 phone ,memberNo
 	 * @return 성공 결과 
 	 */
 	@PostMapping("acceptMember")
@@ -61,6 +61,8 @@ public class ManagerController {
 		Map<String,String> resultMap = new HashMap();
 		resultMap.put("msg","실패");
 		int result = service.acceptMember(vo); 
+		
+		
 			
 		if(result ==1) {
 			resultMap.put("msg","성공");
