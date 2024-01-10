@@ -11,7 +11,7 @@ import BoardReply from './BoardReply';
 const BoardMain = () => {
     return (
         <Routes>
-            <Route path='list' element={<BoardList /> }/>            
+            <Route path='list' element={<BoardList />}/>            
             <Route path='write' element={<BoardWrite />}/>
             <Route path='edit' element={<BoardEdit />}/>
             <Route path='detail' element={<BoardDetail />}/>
