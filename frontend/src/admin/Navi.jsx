@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledNaviDiv = styled.div`
@@ -28,13 +29,13 @@ const Navi = () => {
           <img src="resources/logo.svg" />
           <img src="resources/logo.svg" />
         </div>
-        <div>공지사항</div>
-        <div>설문투표</div>
-        <div>소통게시판</div>
-        <div>커뮤니티</div>
-        <div>방문예약</div>
-        <div>민원처리</div>
-        <div>관리비조회</div>
+        <div><Link to="announcement/admin/list">공지사항</Link></div>
+        <div><Link to="vote/admin/list">설문투표</Link></div>
+        <div><Link to="board/admin/list">소통게시판</Link></div>  
+        <div><Link to="facility/admin/list">커뮤니티</Link></div>
+        <div><Link to="parking/admin/list">방문예약</Link></div>
+        <div><Link to="complaint/admin/mySumitList">민원처리</Link></div>
+        <div><Link to="management/admin/list">관리비조회</Link></div>
       </StyledNaviDiv>
     );
 };
