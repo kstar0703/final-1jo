@@ -71,7 +71,7 @@ public class MemberService {
 			return resultMap;
 		}
 		
-		if(!util.matchIdParttern(vo.getPhone())) {
+		if(!util.matchIdParttern(vo.getPwd())) {
 			resultMap.put("msg","특수문자,대문자,소문자가 하나 이상씩 들어가야 합니다");
 			return resultMap;
 		}
@@ -126,13 +126,13 @@ public class MemberService {
 		// 패스워드 확인로직
 		if(vo.getPwd() !=null) {
 			
-			if(util.checkIdLength(vo.getPhone())) {
+			if(util.checkIdLength(vo.getPwd())) {
 				resultMap.put("msg","비밀번호는 9글자 이상 작성해야 합니다");
 				return resultMap;
 			}
 			
 			
-			if(!util.matchIdParttern(vo.getPhone())) {
+			if(!util.matchIdParttern(vo.getPwd())) {
 				resultMap.put("msg","특수문자,대문자,소문자가 하나 이상씩 들어가야 합니다");
 				return resultMap;
 			}

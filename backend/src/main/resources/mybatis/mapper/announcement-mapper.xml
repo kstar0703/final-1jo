@@ -4,6 +4,43 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Announcement">
 	
+	<insert id="write" parameterType="AnnouncementVo">
+	INSERT ALL
+    INTO ANNOUNCEMENT 
+    (
+    ANNOUNCEMENT_NO
+    ,MANAGER_NO
+    ,TITLE,CONTENT 
+    ) VALUES 
+    (
+    SEQ_ANNOUNCEMENT_NO.NEXTVAL
+    ,#{managerNo)
+    ,#{title}
+    ,#{content}
+    )  
+    <foreach collection="fileList" item="file">
+    INTO ANNOUNCEMENT_IMG 
+    (
+    IMG_NO
+    ,ANNOUNCEMENT_NO
+    ,IMG_NAME
+    ,PATH
+    ,ORIGIN_NAME
+    ) 
+    VALUES 
+    ((SELECT GET_ITEM_SEQ() FROM DUAL)
+    ,SEQ_ANNOUNCEMENT_NO.CURRVAL
+    ,#{file.imgName}
+    ,#{file.imgName}
+    ,#{file.originName}
+    )
+    </foreach>
+    SELECT * FROM DUAL;
+	</insert>
+	
+	
+
+	
 	
 
 

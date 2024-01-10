@@ -22,6 +22,6 @@ public class AnnouncementVo {
 	private String path;				//경로
 	private String originName;			//원본이름
 	
-	private List<AnnouncementImgVo> list = new ArrayList();  //파일 리스트
+	private List<AnnouncementImgVo> fileList = new ArrayList();  //파일 리스트
 	                                            
 }                  

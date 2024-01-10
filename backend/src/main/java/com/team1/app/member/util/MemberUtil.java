@@ -10,7 +10,7 @@ public class MemberUtil {
 
 	//전화 번호 형식 확인
 	public boolean matchPhoneParttern(String phoneNumber) {
-		  final String PHONE_NUMBER_REGEX = "^010-\\d{4}-\\d{3}$";
+		  final String PHONE_NUMBER_REGEX = "^010-\\d{4}-\\d{4}$";
 		 Pattern pattern = Pattern.compile(PHONE_NUMBER_REGEX);
 	        Matcher matcher = pattern.matcher(phoneNumber);
 	        return matcher.matches();

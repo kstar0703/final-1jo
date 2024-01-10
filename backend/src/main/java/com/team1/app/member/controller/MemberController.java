@@ -30,7 +30,7 @@ public class MemberController {
 	
 	/**
 	 * 
-	 * @param 아이디
+	 * @param 아이디 phone
 	 * @return
 	 */
 		@PostMapping("/validateId")
@@ -39,7 +39,11 @@ public class MemberController {
 			return service.validateId(vo);
 		}
 	
-	//회원가입 
+	/**
+	 * 
+	 * @param phone,pwd,gender,birth,ownerYn,unitNo,name
+	 * @return
+	 */
 	@PostMapping("/join")
 	public Map<String, String> join(MemberVo vo){
 		
@@ -48,7 +52,8 @@ public class MemberController {
 	
 	/**
 	 * 
-	 * @param 로그인 정보
+	 * @param phone,pwd
+	 *
 	 * @return 
 	 */
 	@PostMapping("/login")
@@ -59,8 +64,8 @@ public class MemberController {
 	
 	/**
 	 * 
-	 * @param 변경할 정보
-	 * @param 현재 비밀번호
+	 * @param 변경할 정보 pwd memberNo
+	 * @param 현재 비밀번호 
 	 * @return 
 	 */
 	@PostMapping("/changInfo")

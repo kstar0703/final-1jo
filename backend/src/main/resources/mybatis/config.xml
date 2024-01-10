@@ -39,8 +39,15 @@
 	<!-- 관리자  -->  	 
 		 <typeAlias type="com.team1.app.manager.vo.ManagerVo" alias="ManagerVo"/>
 		 
-	<!--  -->
-		 <typeAlias type="com.team1.app.parking.vo.ParkingVo" alias="ParkingVo"/>	 
+	<!-- 주차  -->
+		 <typeAlias type="com.team1.app.parking.vo.ParkingVo" alias="ParkingVo"/>
+	
+	<!-- 공지사항  -->
+		<typeAlias type="com.team1.app.announcement.vo.AnnouncementVo" alias="AnnouncementVo"/>
+
+	
+		 
+			 
   </typeAliases>
 
   
