@@ -31,16 +31,25 @@ public class VoteService {
 		return map;
 	}
 
-	public int insert(VoteVo vo, List<VoteVo> voList) {
+	public boolean insert(VoteVo vo, List<VoteVo> voList) {
+		
+		boolean result = false;
+		int voListCnt = voList.size();
 		
 		int boardResult = dao.insertBoard(sst,vo);
+		if(boardResult != 1) {
+			throw new IllegalStateException();
+		}
 		int itemResult = dao.insertItem(sst,voList);
+		if(voListCnt == itemResult) {
+			result = true;
+		}
 		
-		//리턴 값 생각 안 해봄
-		return boardResult + itemResult;
+		return result;
 	}
 
 	public int edit(VoteVo vo) {
+		System.out.println(vo);
 		return dao.edit(sst,vo);
 	}
 
@@ -56,26 +65,35 @@ public class VoteService {
 		return dao.voteCount(sst,no);
 	}
 
-	public VoteVo voteEnd(String no) {
-		//마감 일자 삽입
-		int result = dao.voteEndDayInsert(sst,no);
+	public boolean voteEnd(String no) {
 		
-		List<VoteVo> voEnd = null;
-		if(result == 1) {
-			//투표 결과 조회
-			voEnd = dao.voteEndCountSelect(sst,no);
-			
-			if(voEnd != null) {
-				//투표 모든 결과 테이블 삽입
-				int endResult = dao.voteEndFinishInsert(sst,voEnd);
-				
-				if(endResult != voEnd.size()) {
-					// 예외처리 다시 하기
-					throw new IllegalStateException();
-				};
-			}
+		boolean result = false;
+		
+		//마감 일자 삽입
+		int endDayResult = dao.voteEndDayInsert(sst,no);
+		
+		List<VoteVo> voEnd = new ArrayList<VoteVo>();
+		
+		if(endDayResult != 1) {
+			throw new IllegalStateException();			
 		}
-		return null;
+		//투표 결과 조회
+		voEnd = dao.voteEndCountSelect(sst,no);
+		
+		if(voEnd == null) {
+			throw new IllegalStateException();						
+		}
+		//투표 모든 결과 테이블 삽입
+		int endResult = dao.voteEndFinishInsert(sst,voEnd);
+		
+		if(endResult != voEnd.size()) {
+			throw new IllegalStateException();									
+		};
+		if(endDayResult+endResult > 0 && voEnd != null) {
+			result = true;			
+		}
+		
+		return result;
 	}
 
 	public List<VoteVo> voteCheck(String no) {
@@ -106,7 +124,7 @@ public class VoteService {
 		return dao.adminSelect(sst,vo);
 	}
 
-	public VoteVo history(String no) {
+	public List<VoteVo> history(String no) {
 		return dao.history(sst,no);
 	}
 

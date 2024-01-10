@@ -89,6 +89,8 @@
 	
 	<insert id="insertItem" parameterType="list"> 
 		<foreach item="item" open="INSERT ALL" index="idx" collection="list" close="SELECT * FROM DUAL">
+			INTO
+			
 			VOTE_ITEM
 			(
 			    ITEM_NO
@@ -153,9 +155,9 @@
 		    M.MANAGER_NO = V.MANAGER_NO
 		WHERE
 		    DEL_YN = 'N'
-		<if test="id != null">
+		<if test="managerId != null">
 			AND
-			    ID = #{id}
+			    ID = #{managerId}
 		</if>
 		<if test="title != null">
 			AND
@@ -192,7 +194,8 @@
 	<!-- 투표종료 / 투표 결과 조회-->
 	<select id="voteEndCountSelect" resultType="VoteVo">
 		SELECT 
-		    ITEM_NAME
+		    VOTE_NO
+		    ,ITEM_NAME
 		    ,COUNT(*)
 		    ,VOTE_ORDER
 		FROM 
@@ -207,19 +210,14 @@
 		WHERE 
 		    VOTE_NO = #{voteNo}
 		GROUP BY
-		    ITEM_NO, ITEM_NAME, VOTE_ORDER		
+    		VOTE_NO,ITEM_NO, ITEM_NAME, VOTE_ORDER
 	</select>
 
 	<!-- 투표 종료 / 투표 모든 결과 테이블 삽입 -->
 	<insert id="voteEndFinishInsert">
 	
-	<!-- 투표 결과 항목 갯수(list나 배열 형태) vo로 받아 와서 itemList에 넣기 -->
-		<foreach item="item" index="index" collection="voEnd" >
-        <!--
-			collection : 전달받을 인자의 자료형은 List
-			item : list안의 객체를 지명할 이름명 
-		-->	
-		INSERT INTO
+		<foreach item="item" collection="list" open="INSERT ALL" close="SELECT * FROM DUAL">
+		INTO
 		    VOTE_HISTORY
 		(
 		    VOTE_HISTORY_NO
@@ -230,13 +228,12 @@
 		)
 		VALUES
 		(
-		    SEQ_VOTE_HISTORY_NO.NEXTVAL
+		    (SELECT GET_HISTORY_SEQ() FROM DUAL )
 		    ,#{item.voteNo}
 		    ,#{item.voteName}
 		    ,#{item.voteCount}
 		    ,#{item.voteOrder}
 		)
-
 
 		</foreach>	
 	</insert>
@@ -244,7 +241,8 @@
 	<!-- 투표 조회 -->
 	<select id="voteCheck" resultType="VoteVo">
 		SELECT 
-		    ITEM_NAME
+			VOTE_NO
+		    ,ITEM_NAME
 		    ,COUNT(*)
 		    ,VOTE_ORDER
 		FROM 
@@ -259,7 +257,7 @@
 		WHERE 
 		    VOTE_NO = #{voteNo}
 		GROUP BY
-		    ITEM_NO, ITEM_NAME, VOTE_ORDER		
+		    VOTE_NO, ITEM_NO, ITEM_NAME, VOTE_ORDER		
 	</select>
 
 	<!-- 투표하기 -->
@@ -277,7 +275,7 @@
 	    SEQ_VOTE_REPLY_NO.NEXTVAL
 	    ,#{voteNo}
 	    ,#{itemNo}
-	    ,#{ritcNo}
+	    ,#{prtcNo}
 	)
 	</insert>
 
@@ -361,9 +359,9 @@
 		    MANAGER M
 		ON 
 		    M.MANAGER_NO = V.MANAGER_NO
-		<if test="id != null">
+		<if test="managerId != null">
 			AND
-			    ID = #{id}
+			    ID = #{managerId}
 		</if>
 		<if test="title != null">
 			AND
@@ -422,7 +420,7 @@
 	</select>
 	
 	<!-- 관리자 투표 전체 결과 이력 조회  -->
-	<select id="adminHistory">
+	<select id="adminHistory" resultType="VoteVo">
 		SELECT 
 		    VOTE_HISTORY_NO
 		    ,MANAGER_NO

@@ -1,9 +1,12 @@
 package com.team1.app.complaint.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.complaint.dao.ComplaintDao;
 import com.team1.app.complaint.vo.ComplaintVo;
@@ -23,16 +26,26 @@ public class ComplaintService {
 	}
 
 
-	public int complaintSumit(ComplaintVo vo) {
+	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] file) throws IllegalStateException, IOException {
+		boolean result = false;
+		int iisResult = 0;
 		//민원 글 접수
-		int imgResult = 0;
-		int result = dao.complaintSumit(sst,vo);
-		if(result == 1) {
-			//민원에 첨부된 사진 여러개 접수 
-			imgResult = dao.imgInsertSumit(sst,vo);
+		int csResult = dao.complaintSumit(sst,vo);
+		if(csResult != 1) {
+			throw new IllegalStateException();
+		}
+		//민원에 첨부된 사진 여러개 접수 
+		String path = "";
+		if(file != null && file.length > 0 ) {
+			for (MultipartFile multipartFile : file) {
+				multipartFile.transferTo(new File(path));
+			}
+			iisResult =dao.imgInsertSumit(sst,file);			
+			
 		}
 		
-		return imgResult;
+		
+		return result;
 	}
 
 	public Map<String, Object> mySumitDetail(ComplaintVo vo) {

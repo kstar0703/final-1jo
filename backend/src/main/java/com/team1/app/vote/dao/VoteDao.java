@@ -27,6 +27,9 @@ public class VoteDao {
 	}
 
 	public int insertItem(SqlSessionTemplate sst, List<VoteVo> voList) {
+		for (VoteVo voteVo : voList) {
+			System.out.println(voteVo);
+		}
 		return sst.insert("VoteMapper.insertItem",voList);
 	}
 
@@ -82,8 +85,8 @@ public class VoteDao {
 		return sst.selectList("VoteMapper.adminSelect",vo);
 	}
 
-	public VoteVo history(SqlSessionTemplate sst, String no) {
-		return sst.selectOne("VoteMapper.history",no);
+	public List<VoteVo> history(SqlSessionTemplate sst, String no) {
+		return sst.selectList("VoteMapper.history",no);
 	}
 
 	public List<VoteVo> adminHistory(SqlSessionTemplate sst) {

@@ -52,28 +52,24 @@
 	
 	<!-- 민원에 첨부된 사진 삽입/ 접수 -->
 	<insert id="imgInsertSumit">
-		<foreach item="item" index="index" collection="imgList" >
-	        <!--
-				collection : 전달받을 인자의 자료형은 List
-				item : list안의 객체를 지명할 이름명 
-			-->	
-			INSERT INTO
-			    COMPLAINT_IMG
-			(
-			    IMG_NO
-			    ,COMPLAINT_NO
-			    ,IMG_NAME
-			    ,PATH
-			    ,ORIGIN_NAME
-			)
-			VALUES
-			(
-			    SEQ_COMPLAINT_IMG_NO.NEXTVAL
-			    ,#{imgList.complaintNo}
-			    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
-			    ,'resources/uplode/'
-			    ,#{imgList.originName}
-			)	
+		<foreach item="item" collection="list" open="INSERT ALL" close="SELECT * FROM DUAL">
+		INTO
+		    COMPLAINT_IMG
+		(
+		    IMG_NO
+		    ,COMPLAINT_NO
+		    ,IMG_NAME
+		    ,PATH
+		    ,ORIGIN_NAME
+		)
+		VALUES
+		(
+		    SEQ_COMPLAINT_IMG_NO.NEXTVAL
+		    ,#{complaintNo}
+		    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
+		    ,'resources/uplode/'
+		    ,#{originName}
+		)	
 		</foreach>
 	</insert>
 	
@@ -106,7 +102,7 @@
 	</select>
 	
 	<!-- 관리자 전체 게시글 조회 -->
-	<select id="list" resultType="ComplaintVo">
+	<select id="adminList" resultType="ComplaintVo">
 		SELECT 
 		    C.COMPLAINT_NO
 		    ,MANAGER_NO
@@ -133,7 +129,7 @@
 	</select>
 	
 	<!--관리자 게시글 상세 조회 -->
-	<select id="detail" resultType="ComplaintVo">
+	<select id="adminDetail" resultType="ComplaintVo">
 		SELECT 
 		    C.COMPLAINT_NO
 		    ,MANAGER_NO
@@ -175,7 +171,7 @@
 	</update>
 	
 	<!-- 전체 민원 검색 -->
-	<select id="select" resultType="ComplaintVo">
+	<select id="adminSelect" resultType="ComplaintVo">
 		SELECT 		 
 		    C.COMPLAINT_NO
 		    ,MANAGER_NO
@@ -223,10 +219,6 @@
 		<if test="enrollDateStart != null and enrollDateEnd != null">
 		AND
 		    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))
-		</if>
-		<if test="deadlineDateStart != null and deadlineDateEnd != null">
-		AND
-		    (ENROLL_DATE BETWEEN TO_DATE(#{deadlineDateStart}) AND TO_DATE(#{deadlineDateEnd}))
 		</if>
 		<if test="replyDateStart != null and replyDateEnd != null">
 		AND
