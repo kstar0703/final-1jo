@@ -1,5 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import ComplaintMain from './complaint/ComplaintMain';
+import VoteMain from './vote/VoteMain';
+import BoardMain from './board/BoardMain';
+import FacilityMain from './facility/FacilityMain';
+import ParkingMain from './parking/ParkingMain';
+import ManagementMain from './management/ManagementMain';
+import ErrorPageNotFound from './error/ErrorPageNotFound';
+import { Route, Routes } from 'react-router-dom';
+import AnnouncementMain from './announcement/AnnoucementMain';
 
 const StyledMainDiv = styled.div`
     width: 100%;
@@ -18,51 +27,18 @@ const StyledMainDiv = styled.div`
 const Main = () => {
     return (
         <StyledMainDiv>
-            <div className='wrap'>
-                <div className="search_box"></div>
-                <div class="tbl_box data mt40">
-                    <table>
-                        <caption>OOOO 테이블</caption>
-                        <colgroup>
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" /> 
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th scope="col">번호</th>
-                                <th scope="col">제목</th>
-                                <th scope="col">작성자</th>
-                                <th scope="col">내용</th>
-                                <th scope="col">조회수</th>
-                                <th scope="col">작성일자</th>
-                                <th scope="col">수정일자</th>
-                                <th scope="col">고정여부</th>
-                                <th scope="col">공개여부</th>
-                            </tr>
-                        </thead>
-                        <tbody>         
-							<tr>
-								<td>1testtest</td>
-								<td>1testtest</td>
-								<td>1testtest</td>
- 								<td>1testtest</td> 
-								<td>1testtest</td>
-								<td>1testtest</td>
-								<td>1testtest</td>
-								<td>1testtest</td>
-								<td>1testtest</td>     
-							</tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <Routes>
+                <Route path='/' element={<h1>관리자 메인화면</h1>} />
+                <Route path='/announcement/*' element={<AnnouncementMain />}/>
+                <Route path='/vote/*' element={<VoteMain />}/>
+                <Route path='/board/*' element={<BoardMain />} />
+                <Route path='/facility/*' element={<FacilityMain/>}/>
+                <Route path='/parking/*' element={<ParkingMain/>}/>
+                <Route path='/complaint/*' element={<ComplaintMain/>}/>
+                <Route path='/management/*' element={<ManagementMain/>}/>
+                <Route path='*' element={<ErrorPageNotFound />}/> 
+            </Routes>
+
         </StyledMainDiv>
     );
 };
