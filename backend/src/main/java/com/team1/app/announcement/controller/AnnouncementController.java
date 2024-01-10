@@ -1,5 +1,6 @@
 package com.team1.app.announcement.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,29 @@ public class AnnouncementController {
 		
 		return resultMap;			
 	}
+	
+	/**
+	 * 공지사항 수정(관리자)
+	 * @param vo (announcementNo) ,동적(title,content) fileArr
+	 * @return 
+	 * not body
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
+	@PostMapping("change")
+	public Map<String,Object> change(AnnouncementVo vo,MultipartFile[] fileArr) throws IllegalStateException, IOException{
+		
+		Map<String,Object> resultMap = new HashMap();
+		
+		Boolean result = service.change(vo,fileArr);
+		
+		if(result) {
+			resultMap.put("status", "good");
+			resultMap.put("msg", "게시글 수정 성공");
+		}
+		
+		return resultMap;		
+	}
 
 	/**
 	 * 공지사항 리스트 조회
@@ -95,19 +119,26 @@ public class AnnouncementController {
 		return resultMap;		
 	}
 	
-	//공지사항 수정(관리자)
-	@PostMapping("change")
-	public Map<String,Object> change(@RequestBody AnnouncementVo vo){
-		
-		Map<String,Object> resultMap = new HashMap();
-		
-		return resultMap;		
-	}
-	//게시글삭제 (관리자)
+
+	/**
+	 * 
+	 * @param announcementNo
+	 * @return
+	 */
 	@PostMapping("delete")
-	public Map<String,Object> delete(@RequestBody AnnouncementVo vo){
+	public Map<String, String> delete(AnnouncementVo vo){
 		
-		Map<String,Object> resultMap = new HashMap();
+		Map<String,String> resultMap = new HashMap();
+		resultMap.put("status","bad");
+		resultMap.put("msg","삭제 실패");
+		
+		
+		boolean result = service.delete(vo); 
+		
+		if(result) {
+			resultMap.put("status","good");
+			resultMap.put("msg","삭제 성공");
+		}
 		
 		
 		return resultMap;		

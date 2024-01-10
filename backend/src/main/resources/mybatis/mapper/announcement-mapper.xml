@@ -109,6 +109,19 @@
 	, AI.IMG_NO 
 	</select>
 	
+	<update id="delete">
+	UPDATE ANNOUNCEMENT 
+	SET 
+	DEL_YN ='Y' 
+	,MODIFY_DATE =SYSDATE 
+	WHERE DEL_YN ='N' AND ANNOUNCEMENT_NO=#{announcementNo}
+	</update>
+	
+	<delete id="deleteFile">
+	DELETE ANNOUNCEMENT_IMG 
+	WHERE ANNOUNCEMENT_NO=#{announcementNo}
+	</delete>
+	
 	
 	
 	
