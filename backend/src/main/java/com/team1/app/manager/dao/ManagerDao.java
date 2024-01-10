@@ -18,13 +18,12 @@ public class ManagerDao {
 	
 	// 회원검색
 	public List<MemberVo> findMember(MemberVo vo, SqlSessionTemplate sst) {	
+		System.out.println(vo);
 		return sst.selectList("MemberMapper.findMember",vo);
 	}
 
 	// 회원수락
 	public int acceptMember(MemberVo vo, SqlSessionTemplate sst) {
-		System.out.println(vo);
-		System.out.println("dao");
 		return sst.update("MemberMapper.acceptMember",vo);
 	}
 	
