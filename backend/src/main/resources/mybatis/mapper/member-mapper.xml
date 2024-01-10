@@ -88,18 +88,18 @@
 	<select id="findMember" resultType="MemberVo">
 	SELECT * FROM MEMBER 
 	WHERE DEL_YN ='N' 
-	<trim prefixOverrides="AND |OR ">
+	
 	 <if test="permissionYn != null">
-		AND PERMISSION_YN= #{permissionYn} 
+		 AND PERMISSION_YN= #{permissionYn} 
 	 </if>
 	
 	<if test="name != null">
-	OR NAME LIKE  '%'|| #{name} || '%'
+	AND NAME LIKE  '%'|| #{name} || '%'
 	</if>
 	
-	<if test="phone != null"></if>
-	OR PHONE LIKE '%' || #{phone} || '%'
-	</trim>
+	<if test="phone != null">
+	AND PHONE LIKE '%' || #{phone} || '%'
+	</if>
 	ORDER BY MEMBER_NO DESC
 	
 	</select>
