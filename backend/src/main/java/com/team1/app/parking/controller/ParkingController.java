@@ -31,7 +31,7 @@ public class ParkingController {
 	 * @return 성공결과
 	 */
 	@PostMapping("register")
-	public Map<String, String> register(@RequestBody ParkingVo vo ){
+	public Map<String, String> register(ParkingVo vo ){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "예약 실패");
@@ -52,7 +52,7 @@ public class ParkingController {
 	 * @return 결과 
 	 */
 	@PostMapping("arrival")
-	public Map<String, String> arrival(@RequestBody String parkingNo){
+	public Map<String, String> arrival(String parkingNo){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -70,7 +70,7 @@ public class ParkingController {
 	 * @return 결과
 	 */
 	@PostMapping("departure")
-	public Map<String, String> departure(@RequestBody ParkingVo vo) {
+	public Map<String, String> departure(ParkingVo vo) {
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -86,11 +86,11 @@ public class ParkingController {
 	}
 	//예약 변경
 	/**
-	 * @param purpose ,carNo --> 동적으로
+	 * @param parkingNo,[ purpose ,carNo] --> 동적으로
 	 * @return 결과
 	 */
 	@PostMapping("change")
-	public Map<String, String> change(@RequestBody ParkingVo vo){
+	public Map<String, String> change(ParkingVo vo){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -112,7 +112,7 @@ public class ParkingController {
 	 * @return 
 	 */
 	@PostMapping("cancel")
-	public Map<String, String> cancel(@RequestBody ParkingVo vo){
+	public Map<String, String> cancel(ParkingVo vo){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -130,10 +130,10 @@ public class ParkingController {
 	@GetMapping("list")
 	/**
 	 * 예약 리스트
-	 * @param vo unitNo
+	 * @param vo unitNo 
 	 * @return
 	 */
-	public Map<String, Object> list(@RequestBody ParkingVo vo){
+	public Map<String, Object> list(ParkingVo vo){
 		Map<String, Object>  resultMap = new HashMap();
 	
 		
@@ -151,7 +151,7 @@ public class ParkingController {
 	 * @param parkingNo
 	 * @return
 	 */
-	public Map<String, Object> detail(@RequestBody ParkingVo vo){
+	public Map<String, Object> detail(ParkingVo vo){
 		Map<String, Object>  resultMap = new HashMap();
 		
 		ParkingVo parkingVo = service.detail(vo);

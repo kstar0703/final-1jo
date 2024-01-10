@@ -1,5 +1,6 @@
 package com.team1.app.announcement.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +29,16 @@ public class AnnouncementController {
 	/**
 	 * 공지사항
 	 * @param vo
-	 * @param fileList 파일리스트
+	 * @param fileArr 파일리스트 , managerNo, 
 	 * @return
 	 * @throws Exception 
 	 */
 	@PostMapping("write")
 	public Map<String,String> write(AnnouncementVo vo,MultipartFile[] fileArr ) throws Exception{
 		
+		
 		Map<String,String> resultMap = new HashMap();
-		
-		
+			
 		boolean success = service.write(vo,fileArr);
 		
 		if(success) {
@@ -48,27 +49,45 @@ public class AnnouncementController {
 		return resultMap;			
 	}
 
-	
 	/**
 	 * 공지사항 리스트 조회
-	 * @param vo title,content,like 검색어
+	 * @param vo title,content,id(관리자 아이디) 검색어 , 
 	 * @return
 	 * 페이징용 count 메소드 호출 
 	 * 
 	 */
-	//TODO count로 page vo 만들기
-	@GetMapping("list")
-	public Map<String,Object> list(@RequestBody AnnouncementVo vo){
+	//TODO count로 page vo 만들기 pageVo 추가 currentPage 파라미터추가
+	@GetMapping("list") //announcementNo , 
+	public Map<String,Object> list(AnnouncementVo vo){
+		
 		Map<String,Object> resultMap = new HashMap();
-	
-		return resultMap;	
+		
+		int totalCnt = service.count(vo);
+		System.out.println("게시판 내 총개수" +totalCnt);
+		List<AnnouncementVo> voList = service.list(vo);
+		
+		
+		resultMap.put("status", "good");
+		resultMap.put("msg", "게시글 작성 성공");
+		resultMap.put("voList", voList);
+		return null;
 	}
 	/**
+	 * @param vo announcement 
 	 * 
 	 */
 	@PostMapping("detail")
 	public Map<String,Object> detail(@RequestBody AnnouncementVo vo){
 		Map<String,Object> resultMap = new HashMap();
+		
+		
+		AnnouncementVo resultVo = service.detail(vo);
+		
+		
+		
+		if(resultVo ==null) {
+			
+		}
 		
 		return resultMap;		
 	}
@@ -85,10 +104,11 @@ public class AnnouncementController {
 	public Map<String,Object> delete(@RequestBody AnnouncementVo vo){
 		Map<String,Object> resultMap = new HashMap();
 		
+		
 		return resultMap;		
 	}
 	
-	//게시글 검색(제목,내용) 아마 위에 꺼랑 같이 쓰면 될꺼같은데 
+	
 	
 	
 }

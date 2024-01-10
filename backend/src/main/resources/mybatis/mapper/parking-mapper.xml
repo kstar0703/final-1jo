@@ -12,12 +12,15 @@ parking
 PARKING_NO
 ,UNIT_NO
 ,PURPOSE
-,CAR_NO) 
+,CAR_NO
+) 
 VALUES 
-(seq_parking_no.nextval
-,#{parkingNo}
+(
+seq_parking_no.nextval
+,#{unitNo}
 ,#{purpose}
 ,#{carNo}
+)
 </insert>
 
 <!-- 입차 등록  -->
@@ -32,11 +35,11 @@ DEL_YN ='N'
 </update>
 
 <!-- 출차 등록  -->
-<update id="departuretime">
+<update id="departure">
 UPDATE PARKING 
 SET DEPARTURE_TIME =SYSDATE 
 WHERE 
-PARKING_NO ={parkingNO} 
+PARKING_NO =#{parkingNo} 
 AND 
 DEL_YN ='N'
 </update>
@@ -45,7 +48,7 @@ DEL_YN ='N'
 UPDATE UNIT SET VEH_TIME  = (
 SELECT VEH_TIME FROM UNIT
 WHERE 
-UNIT_NO = #{unitNO}
+UNIT_NO = #{unitNo}
 ) - (
 SELECT 
  TO_NUMBER( EXTRACT(MINUTE FROM (DEPARTURE_TIME - ARRIVAL_TIME) DAY TO SECOND)) AS FEE 
@@ -84,9 +87,9 @@ PARKING_NO
 ,UNIT_NO
 ,PURPOSE
 ,CAR_NO
-,ARRIVAL_TIME
-,DEPARTURE_TIME
-,MODIFY_DATE
+,TO_CHAR(ARRIVAL_TIME, 'YYYY-MM-DD HH24:MI:SS') AS ARRIVAL_TIME
+,TO_CHAR(DEPARTURE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS DEPARTURE_TIME
+,TO_CHAR(MODIFY_DATE, 'YYYY-MM-DD HH24:MI:SS') AS MODIFY_DATE
 ,DEL_YN
 FROM PARKING
 WHERE UNIT_NO =#{unitNo} AND DEL_YN ='N'
@@ -95,6 +98,7 @@ ORDER BY PARKING_NO DESC
 
 <!-- 예약 상세 조회  -->
 <select id="detail" resultType="ParkingVo">
+SELECT
 PARKING_NO
 ,UNIT_NO
 ,PURPOSE

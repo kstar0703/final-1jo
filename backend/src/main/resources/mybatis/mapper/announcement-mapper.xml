@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Announcement">
-	
+	<!-- 게시글 작성  -->
 	<insert id="write" parameterType="AnnouncementVo">
 	INSERT ALL
     INTO ANNOUNCEMENT 
@@ -14,7 +14,7 @@
     ) VALUES 
     (
     SEQ_ANNOUNCEMENT_NO.NEXTVAL
-    ,#{managerNo)
+    ,#{managerNo}
     ,#{title}
     ,#{content}
     )  
@@ -28,15 +28,68 @@
     ,ORIGIN_NAME
     ) 
     VALUES 
-    ((SELECT GET_ITEM_SEQ() FROM DUAL)
+    (
+    (SELECT GET_ITEM_SEQ() FROM DUAL)
     ,SEQ_ANNOUNCEMENT_NO.CURRVAL
     ,#{file.imgName}
-    ,#{file.imgName}
+    ,#{file.path}
     ,#{file.originName}
     )
     </foreach>
-    SELECT * FROM DUAL;
+    SELECT * FROM DUAL
 	</insert>
+	
+	<select id="count" resultType="int">
+	SELECT COUNT(*) 
+	FROM ANNOUNCEMENT A 
+	JOIN MANAGER M ON A.MANAGER_NO = M.MANAGER_NO
+	WHERE DEL_YN ='N'
+	<if test = "title!= null" >	
+	AND A.TITLE LIKE '%' || #{title} || '%'
+	</if>
+	<if test = "title != null" >	
+	AND A.CONTENT LIKE '%' || #{content} || '%'
+	</if>
+	<if test = "id != null" >	
+	AND M.ID LIKE '%' || #{id} || '%'
+	</if>
+	</select>
+	
+	
+	<!-- 게시글 상세조회  -->
+	
+	
+	
+	<!-- 게시글 상세조회  -->
+	<select id="detail" resultType="AnnouncementVo">
+	SELECT  
+	A.ANNOUNCEMENT_NO
+	,A.MANAGER_NO
+	,A.TITLE
+	,A.CONTENT
+	,A.ENROLL_DATE
+	,A.MODIFY_DATE
+	,A.DEL_YN
+	,AI.IMG_NO
+	,AI.IMG_NAME
+	,AI.PATH
+	,AI.ORIGIN_NAME
+	,M.ID
+	,M.PWD
+	FROM ANNOUNCEMENT A 
+	LEFT JOIN ANNOUNCEMENT_IMG AI ON A.ANNOUNCEMENT_NO = AI.ANNOUNCEMENT_NO
+	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
+	WHERE A.DEL_YN ='N'
+	AND A.ANNOUNCEMENT_NO =12
+	ORDER BY 
+	A.ANNOUNCEMENT_NO DESC 
+	, AI.IMG_NO 
+	</select>
+	
+	
+	
+	
+
 	
 	
 

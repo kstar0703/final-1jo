@@ -1,5 +1,7 @@
 package com.team1.app.announcement.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,11 +14,20 @@ public class AnnouncementDao {
 	public int write(SqlSessionTemplate sst, AnnouncementVo vo) {
 		return sst.insert("Announcement.write",vo);
 	}
-	
-	
+	//공지사항 게시판 글개수 (페이징용)
+	public int count(SqlSessionTemplate sst, AnnouncementVo vo) {
+		return sst.selectOne("Announcement.count",vo);
+	}
 	//공지사항 목록 조회 
-	
+	public List<AnnouncementVo> list(SqlSessionTemplate sst, AnnouncementVo vo) {
+		return null;
+	}
 	//공지사항 상세조회
+	public List<AnnouncementVo> detail(SqlSessionTemplate sst, AnnouncementVo vo) {
+		
+		return sst.selectList("Announcement.detail",vo);
+	}
+	
 	
 	//공지사항 수정(관리자)
 		

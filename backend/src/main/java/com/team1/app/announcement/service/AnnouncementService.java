@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;import org.springframework.core.type.filter.AbstractClassTestingTypeFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +37,7 @@ public class AnnouncementService {
 		//결과 반환용
 		boolean retunrResult= false;
 		
-		// 가공 데이터 넘기기
-		Map<String, Object> dataMap = new HashMap(); 
+		
 		//디비 저장 경로
 		String path="http://127.0.0.1:8888/app/resources\\upload\\gallery\\img";
 		
@@ -45,15 +47,18 @@ public class AnnouncementService {
 			resultCheck += fileList.size(); 
 			//MultipartFile[]용 인덱스
 			int idx =0;
-			
+			int idx2 = 0;
 			for (String filename : fileList) {
-				System.out.println("반복문 호출?");
-			    vo.getFileList().add( new AnnouncementImgVo("filename","http://127.0.0.1:8888/app/resources/upload/gallery/img/",fileArr[idx++].getOriginalFilename()) ); 
+			    vo.getFileList()
+			    .add( 
+			    new AnnouncementImgVo(filename,path,fileArr[idx++].getOriginalFilename()) );
+			    
+			System.out.println(vo.getFileList().get(idx2++));    
 			}
 			
 		}
 		
-		dataMap.put("vo",vo);
+		
 		
 		int result = dao.write(sst,vo);
 		
@@ -78,25 +83,63 @@ public class AnnouncementService {
 		
 		//랜덤 파일네임
 		String UUIDfileName = UUID.randomUUID().toString() +  System.currentTimeMillis();
-			File target = new File(path + UUIDfileName);
+		String extendName = f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
+			File target = new File(path + UUIDfileName + extendName);
 			f.transferTo(target);
-			fileList.add(UUIDfileName);
+			fileList.add(UUIDfileName+extendName);
 		}
 		
 		return fileList;
 	}
-	
-	//파일삭제
-	
-	
-	
-	
-	
-	//공지사항 목록 조회
+	//공지사항 게시판 글개수 (페이징용)
+	public int count(AnnouncementVo vo) {
+		return dao.count(sst,vo);
+	}
+
+	//공지사항 게시판 리스트 (리스트)
+	public List<AnnouncementVo> list(AnnouncementVo vo) {
+		int page =0;
+		
+		int limit = 10;
+		int offset = 0;
+		
+		
+		
+		RowBounds rb = new RowBounds(offset,limit);
+		
+		return dao.list(sst,vo);
+	}
+
 	
 	//공지사항 상세조회
+	public AnnouncementVo detail(AnnouncementVo vo) {
+		
+		List<AnnouncementVo> list = dao.detail(sst, vo);
+		
+		
+		Map<String,AnnouncementVo> fileNameMap = new LinkedHashMap();
+		
+		for (AnnouncementVo announcementVo : list) {
+			
+		}
+		
+		
+		AnnouncementVo resultVo;
+		
+		
+		return null;
+	}
 	
+
 	//공지사항 수정(관리자)
+	
+	//공지사항 삭제
+	
+	
+	
+	
+	
+	
 		
 	//게시글삭제 (관리자)
 	
