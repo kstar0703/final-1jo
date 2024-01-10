@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.announcement.service.AnnouncementService;
 import com.team1.app.announcement.vo.AnnouncementVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +28,7 @@ public class AnnouncementController {
 	
 	
 	/**
-	 * 공지사항
+	 * 공지사항 작성
 	 * @param vo
 	 * @param fileArr 파일리스트 , managerNo, 
 	 * @return
@@ -51,50 +52,53 @@ public class AnnouncementController {
 
 	/**
 	 * 공지사항 리스트 조회
-	 * @param vo title,content,id(관리자 아이디) 검색어 , 
-	 * @return
+	 * @param vo title,content,id(관리자 아이디) 검색어 , currentPage,boardLimit (PageVo)
+	 * @return  
 	 * 페이징용 count 메소드 호출 
 	 * 
 	 */
-	//TODO count로 page vo 만들기 pageVo 추가 currentPage 파라미터추가
 	@GetMapping("list") //announcementNo , 
-	public Map<String,Object> list(AnnouncementVo vo){
+	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
+		
 		
 		Map<String,Object> resultMap = new HashMap();
 		
-		int totalCnt = service.count(vo);
-		System.out.println("게시판 내 총개수" +totalCnt);
-		List<AnnouncementVo> voList = service.list(vo);
+	
+		List<AnnouncementVo> voList = service.list(vo,pageVo);
 		
 		
 		resultMap.put("status", "good");
-		resultMap.put("msg", "게시글 작성 성공");
+		resultMap.put("msg", "조회 성공");
 		resultMap.put("voList", voList);
-		return null;
+		
+		return resultMap;
 	}
 	/**
 	 * @param vo announcement 
 	 * 
 	 */
-	@PostMapping("detail")
-	public Map<String,Object> detail(@RequestBody AnnouncementVo vo){
+	@GetMapping("detail")
+	public Map<String,Object> detail(AnnouncementVo vo){
 		Map<String,Object> resultMap = new HashMap();
-		
+		resultMap.put("status", "good");
+		resultMap.put("msg", "조회 성공");
 		
 		AnnouncementVo resultVo = service.detail(vo);
 		
 		
-		
 		if(resultVo ==null) {
-			
+			resultMap.put("status", "bad");
+			resultMap.put("msg", "조회 실패");	
 		}
-		
+		resultMap.put("rsultVo", resultVo);
+
 		return resultMap;		
 	}
 	
 	//공지사항 수정(관리자)
 	@PostMapping("change")
 	public Map<String,Object> change(@RequestBody AnnouncementVo vo){
+		
 		Map<String,Object> resultMap = new HashMap();
 		
 		return resultMap;		
@@ -102,6 +106,7 @@ public class AnnouncementController {
 	//게시글삭제 (관리자)
 	@PostMapping("delete")
 	public Map<String,Object> delete(@RequestBody AnnouncementVo vo){
+		
 		Map<String,Object> resultMap = new HashMap();
 		
 		

@@ -18,6 +18,12 @@ public class AnnouncementImgVo {
 		this.path = path;
 		this.originName = originName;
 	}
+
+
+	public AnnouncementImgVo(String imgNo, String imgName, String path, String originName) {
+	}
+	
+	
 	
 	
 }                                          
