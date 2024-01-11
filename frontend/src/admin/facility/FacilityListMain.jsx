@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FacilityList = () => {
+const FacilityListMain = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const FacilityList = () => {
     );
 };
 
-export default FacilityList;
+export default FacilityListMain;

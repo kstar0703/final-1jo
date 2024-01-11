@@ -27,8 +27,12 @@ public class FacilityController {
 	
 	//커뮤니티시설 목록조회
 	@GetMapping("list")
-	public List<FacilityVo> list(){
-		return service.list();
+	public Map<String, Object> list(){
+		List<FacilityVo> facilityVoList = service.list();
+		System.out.println(facilityVoList);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("facilityVoList", facilityVoList);
+		return map;
 	}
 	
 	//커뮤니티시설 상세정보조회

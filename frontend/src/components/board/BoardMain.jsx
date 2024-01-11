@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import BoardList from './BoardList';
 import BoardWrite from './BoardWrite';
 import BoardEdit from './BoardEdit';
-import BoardDetail from './BoardDetail';
 import BoardLike from './BoardLike';
-import BoardReply from './BoardReply';
+import BoardReply from './reply/BoardReplyList';
+import BoardDetailMain from './BoardDetailMain';
 
 
 const BoardMain = () => {
@@ -14,7 +14,7 @@ const BoardMain = () => {
             <Route path='list' element={<BoardList />}/>            
             <Route path='write' element={<BoardWrite />}/>
             <Route path='edit' element={<BoardEdit />}/>
-            <Route path='detail/:boardNo' element={<BoardDetail />}/>
+            <Route path='detail/:boardNo' element={<BoardDetailMain />}/>
             <Route path='like' element={<BoardLike />}/>
             <Route path='reply' element={<BoardReply />}/>
         </Routes>
