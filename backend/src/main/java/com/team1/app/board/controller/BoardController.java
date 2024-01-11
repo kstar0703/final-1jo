@@ -51,7 +51,6 @@ public class BoardController {
 	//게시글 상세 조회
 	@GetMapping("detail/{boardNo}")
 	public Map<String, Object> detail(@PathVariable String boardNo){
-		System.out.println(boardNo);
 		BoardVo boardVo = service.detail(boardNo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardVo", boardVo);
@@ -107,9 +106,14 @@ public class BoardController {
 	}
 	
 	// 댓글 조회
-	@GetMapping("replyList")
-	public List<BoardReplyVo> replyList(@RequestBody BoardReplyVo vo){
-		return service.replyList(vo);
+	@PostMapping("replyList")
+	public Map<String, Object> replyList(@RequestBody BoardReplyVo vo){
+		System.out.println(vo);
+		List<BoardReplyVo> replyVoList = service.replyList(vo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("replyVoList", replyVoList);
+		map.put("msg", "good");
+		return map;
 	}
 	
 	// 댓글 작성
