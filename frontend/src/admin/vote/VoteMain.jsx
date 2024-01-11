@@ -1,5 +1,50 @@
 import React from 'react';
 
+    // table{
+    //     /* 테이블 */
+    //     width: 100%;
+    //     & th {
+    //         padding: 15px 0;
+    //         background-color: #f0f0f0;
+    //         border-right: 1px solid #ddd;
+    //         border-bottom: 1px solid #ddd;
+    //         vertical-align: middle;
+    //         text-align: center;
+    //         font-size: 13px;
+    //         font-weight: 300;
+    //         color: #949494;
+    //         &:last-child {
+    //             border-right: none;
+    //         }
+    //     }
+    //     & tbody td {
+    //         padding: 15px 10px;
+    //         background-color: #fff;
+    //         border-right: 1px solid #ddd;
+    //         border-bottom: 1px solid #ddd;
+    //         vertical-align: middle;
+    //         word-break: break-all;
+    //         text-align: center;
+    //         font-size: 13px;
+    //         font-weight: 300;
+    //         color: var(--font-color);
+            
+    //         &:last-child {
+    //             border-right: none;
+    //         }
+    //         & a {
+    //             font-size: 13px;
+    //             font-weight: 300;
+    //             color: var(--font-color);
+    //             & :hover {
+    //                 color: #000;
+    //                 text-decoration: underline;
+    //             }
+    //         }
+    //     }
+        
+    // }
+
 const VoteMain = () => {
     return (
         <div>

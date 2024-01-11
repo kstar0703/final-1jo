@@ -42,7 +42,6 @@ public class ComplaintController {
 	//내 민원 상세 조회
 	@GetMapping("mySumitDetail")
 	public void mySumitDetail(ComplaintVo vo) {
-		System.out.println(vo);
 		ComplaintVo resultVo = service.mySumitDetail(vo);
 		System.out.println(resultVo);
 
@@ -58,10 +57,10 @@ public class ComplaintController {
 	}
 	
 	//관리자 게시글 상세 조회
-	// 여기 이미지 복수로 들어오게 설계해야 함
 	@GetMapping("adminDetail")
 	public void detail(ComplaintVo vo) {
-		Map<String,Object> map = service.detail(vo);
+		ComplaintVo resultVo = service.detail(vo);
+		System.out.println(resultVo);
 	}
 	
 	//민원 해결 글 작성

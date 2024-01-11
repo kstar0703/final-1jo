@@ -34,5 +34,6 @@ public class VoteVo {
 	private String retcDate;		//응답 일자      
 	
 	private String count;			//합산
+	private String hit;				//조회수
 	                                                
 }                                                   

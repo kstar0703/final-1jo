@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Navi from './Navi';
+import { useNavigate } from 'react-router-dom';
 
 const StyledHeaderDiv = styled.div`
     width: 100vw;
@@ -19,9 +20,10 @@ const StyledHeaderDiv = styled.div`
     }
 `;
 const Header = () => {
+    const navigator = useNavigate();
     return (
         <StyledHeaderDiv>
-            <div className='logo'>
+            <div className='logo' onClick={()=>{navigator("/");}}>
                 <img src='resources/logo.svg'/>
                 <img src='resources/logo.svg'/>
                 <img src='resources/logo.svg'/>

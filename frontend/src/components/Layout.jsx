@@ -14,7 +14,7 @@ const Layout = () => {
             <StyledLayoutDiv>
                 <Header />
                 <Main />
-                <Footer />
+                {/* <Footer /> */}
             </StyledLayoutDiv>
         </div>
     );

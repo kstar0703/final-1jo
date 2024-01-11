@@ -14,6 +14,11 @@ public class ComplaintImgVo {
 	};
 	
 	public ComplaintImgVo(String imgNo, String imgName, String path, String originName) {
+		this.imgNo = imgNo;
+		this.imgName= imgName;	            
+		this.path =path;               
+		this.originName =originName;
+		
 	};	
 	
 	public ComplaintImgVo(String imgName, String path,String originName) {

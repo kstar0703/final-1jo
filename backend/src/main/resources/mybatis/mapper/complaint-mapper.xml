@@ -152,8 +152,6 @@
 		ON
 		    C.COMPLAINT_NO = I.COMPLAINT_NO
 		WHERE
-		    C.MEMBER_NO = #{memberNo}
-		AND
 		    C.COMPLAINT_NO = #{complaintNo}	
 	</select>
 	

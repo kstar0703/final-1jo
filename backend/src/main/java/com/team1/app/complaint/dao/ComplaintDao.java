@@ -26,7 +26,7 @@ public class ComplaintDao {
 	public int imgInsertSumit(SqlSessionTemplate sst, List<ComplaintImgVo> imgList) {		
 		return sst.insert("ComplaintMapper.imgInsertSumit",imgList);
 	}
-	//이미지 복수 처리시 같이 작업.
+	
 	public List<ComplaintVo> mySumitDetail(SqlSessionTemplate sst, ComplaintVo vo) {
 		return sst.selectList("ComplaintMapper.mySumitDetail",vo);
 	}
@@ -34,7 +34,7 @@ public class ComplaintDao {
 	public List<ComplaintVo> list(SqlSessionTemplate sst) {
 		return sst.selectList("ComplaintMapper.adminList");
 	}
-	//이미지 복수 처리시 같이 작업.
+	
 	public List<ComplaintVo> detail(SqlSessionTemplate sst, ComplaintVo vo) {
 		return sst.selectList("ComplaintMapper.adminDetail",vo);
 	}
