@@ -26,16 +26,22 @@ public class ParkingService {
 		}
 
 		//입차 등록
-		public int arrival(String parkingNo) {
-			return dao.arrival(sst,parkingNo);
+		public int arrival(ParkingVo vo) {
+			return dao.arrival(sst,vo);
 		}
 		
 		//출차 등록 
 		public int departure(ParkingVo vo)  {
 			int result = dao.departure(sst,vo);
-
-			if(result ==1) {return dao.subtractUnitTime(sst,vo);}
-			else {throw new IllegalArgumentException("입차 등록 실패");}	
+			if(result !=1) {
+				throw new IllegalArgumentException("출차 등록 실패");
+			}
+			//출차시간 업데이트
+			int unitUpdateresult =dao.subtractUnitTime(sst,vo);
+			
+			if(unitUpdateresult !=1) { throw new IllegalArgumentException("출차 등록 실패");}
+			else {return unitUpdateresult;}
+			
 		}
 		
 		//예약 변경
