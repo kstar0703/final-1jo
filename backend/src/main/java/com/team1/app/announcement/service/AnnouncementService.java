@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.swing.DefaultRowSorter;
+
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;import org.springframework.core.type.filter.AbstractClassTestingTypeFilter;
 import org.springframework.stereotype.Service;
@@ -41,13 +43,13 @@ public class AnnouncementService {
 		//디비 저장 경로
 		String path="http://127.0.0.1:8888/app/resources\\upload\\gallery\\img\\";
 		
-		//파일 저장입니다
+		//파일 이름 저장
 		if(fileArr !=null && fileArr.length>0) {
 			List<String> fileList = saveFile(fileArr);
+			
 			resultCheck += fileList.size(); 
 			//MultipartFile[]용 인덱스
 			int idx =0;
-			int idx2 = 0;
 			for (String filename : fileList) {
 			    vo.getFileList()
 			    .add( 
@@ -68,6 +70,43 @@ public class AnnouncementService {
 		
 		return retunrResult;
 	}
+	
+		//공지사항 수정(관리자)
+		public Boolean change(AnnouncementVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
+			
+			//파일 삭제
+			dao.deleteFile(sst, vo);
+			
+			
+			//디비 저장 경로
+			String path="http://127.0.0.1:8888/app/resources\\upload\\gallery\\img\\";
+			
+			//파일 이름 저장
+			if(fileArr !=null && fileArr.length>0) {
+				List<String> fileList = saveFile(fileArr);
+				
+			
+				//MultipartFile[]용 인덱스
+				int idx =0;
+				for (String filename : fileList) {
+				    vo.getFileList()
+				    .add( 
+				    new AnnouncementImgVo(filename,path,fileArr[idx++].getOriginalFilename()) );
+				}
+			}
+			
+			int result = dao.change(vo,sst);
+			int imgUpdateresult = dao.changeImg(vo,sst); 
+			
+			if(result !=1 && imgUpdateresult <=0) {
+				throw new IllegalStateException();
+			}
+			
+			
+			
+			return null;
+		}
+	
 	
 	//파일저장
 	private List<String> saveFile(MultipartFile[] fileArr) throws IllegalStateException, IOException {
@@ -120,12 +159,26 @@ public class AnnouncementService {
 		
 		return null;
 	}
-	
-
-	//공지사항 수정(관리자)
-
-	
 	//공지사항 삭제 (관리자)
+	public boolean delete(AnnouncementVo vo) {
+		
+		int result = dao.delete(sst,vo);
+		
+		if(result !=1) {
+			throw new IllegalStateException();
+		}else {
+			dao.deleteFile(sst,vo);			
+		}
+		
+	
+		return true;
+	}
+	
+	
+
+	
+
+	
 	
 	
 	

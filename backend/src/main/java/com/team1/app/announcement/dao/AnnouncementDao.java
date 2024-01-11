@@ -32,13 +32,29 @@ public class AnnouncementDao {
 		
 		return sst.selectList("Announcement.detail",vo);
 	}
+	//공지 사항 삭제
+	public int delete(SqlSessionTemplate sst, AnnouncementVo vo) {
+		return sst.update("Announcement.delete",vo);
+	}
 	
-	
+	//공지 사항 파일삭제
+	public int deleteFile(SqlSessionTemplate sst, AnnouncementVo vo) {
+		return sst.update("Announcement.deleteFile",vo);
+	}
 	//공지사항 수정(관리자)
-		
-	//게시글삭제 (관리자)
+	public int change(AnnouncementVo vo, SqlSessionTemplate sst) {
+		return sst.update("Announcement.change",vo);
+	}
+	public int changeImg(AnnouncementVo vo, SqlSessionTemplate sst) {
+		return sst.insert("Announcement.changeImg",vo);
+		}
 	
-	//게시글 검색(제목,내용)
+
+
+	
+		
+	
+	
 	
 
 }
