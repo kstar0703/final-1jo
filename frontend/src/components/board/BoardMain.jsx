@@ -5,7 +5,7 @@ import BoardWrite from './BoardWrite';
 import BoardEdit from './BoardEdit';
 import BoardLike from './BoardLike';
 import BoardReply from './reply/BoardReplyList';
-import BoardDetailMain from './BoardDetailMain';
+import BoardDetail from './BoardDetail';
 
 
 const BoardMain = () => {
@@ -14,7 +14,7 @@ const BoardMain = () => {
             <Route path='list' element={<BoardList />}/>            
             <Route path='write' element={<BoardWrite />}/>
             <Route path='edit' element={<BoardEdit />}/>
-            <Route path='detail/:boardNo' element={<BoardDetailMain />}/>
+            <Route path='detail/:boardNo' element={<BoardDetail />}/>
             <Route path='like' element={<BoardLike />}/>
             <Route path='reply' element={<BoardReply />}/>
         </Routes>
