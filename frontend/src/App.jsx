@@ -1,6 +1,7 @@
 import './App.css';
 import Layout from './components/Layout';
 import Admin from './admin/Admin';
+import Login from './components/member/Login';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/*" element={<Layout />}></Route>
         <Route path="/admin/*" element={<Admin />}></Route>
+        <Route path="/member/*" element={<Login/>}></Route>
       </Routes>
     </BrowserRouter>
   );
