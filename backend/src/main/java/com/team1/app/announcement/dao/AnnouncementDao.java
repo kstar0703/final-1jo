@@ -39,15 +39,22 @@ public class AnnouncementDao {
 	
 	//공지 사항 파일삭제
 	public int deleteFile(SqlSessionTemplate sst, AnnouncementVo vo) {
+		System.out.println("호출");
 		return sst.update("Announcement.deleteFile",vo);
 	}
 	//공지사항 수정(관리자)
 	public int change(AnnouncementVo vo, SqlSessionTemplate sst) {
+		System.out.println("vo" +vo);
 		return sst.update("Announcement.change",vo);
 	}
 	public int changeImg(AnnouncementVo vo, SqlSessionTemplate sst) {
+		System.out.println("vo" +vo);
 		return sst.insert("Announcement.changeImg",vo);
 		}
+	//개수
+	public int count(SqlSessionTemplate sst, AnnouncementVo vo) {
+		return sst.selectOne("Announcement.count",vo);
+	}
 	
 
 

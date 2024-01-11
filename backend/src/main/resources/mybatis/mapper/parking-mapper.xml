@@ -25,13 +25,15 @@ seq_parking_no.nextval
 
 <!-- 입차 등록  -->
 <update id="arrival">
-UPDATE PARKING 
-SET 
-ARRIVAL_TIME = SYSDATE  
+UPDATE 
+PARKING 
+SET ARRIVAL_TIME = SYSDATE  
 WHERE 
-PARKING_NO =#{parkingNo} 
+PARKING_NO = #{parkingNo} 
 AND 
 DEL_YN ='N'
+AND 
+ARRIVAL_TIME IS NULL
 </update>
 
 <!-- 출차 등록  -->
@@ -42,6 +44,12 @@ WHERE
 PARKING_NO =#{parkingNo} 
 AND 
 DEL_YN ='N'
+AND 
+ARRIVAL_TIME IS NOT NULL
+AND 
+DEPARTURE_TIME IS NULL
+
+
 </update>
 <!-- 시간 빼기  -->
 <update id="subtractUnitTime">
@@ -73,11 +81,13 @@ PARKING_NO = #{parkingNo}
 UPDATE 
 PARKING 
 <trim prefix="SET" suffixOverrides=",">
-<if test="pwd !=null">PURPOSE= #{purpose}, </if> 
-<if test="pwd !=null"> CAR_NO =#{carNo},   </if> 
+<if test="purpose !=null">PURPOSE= #{purpose}, </if> 
+<if test="carNo !=null"> CAR_NO =#{carNo},   </if> 
 MODIFY_DATE = SYSDATE
 </trim>
-WHERE PARKING_NO = #{parkingNo}
+WHERE PARKING_NO = #{parkingNo} 
+AND ARRIVAL_TIME IS NULL  
+AND DEL_YN='N'
 </update>
 
 <!-- 예약 조회  -->

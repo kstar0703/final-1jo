@@ -17,8 +17,8 @@ public class ParkingDao {
 	}
 
 	//입차 등록
-	public int arrival(SqlSessionTemplate sst, String parkingNo) {
-		return sst.update("ParkingMapper.arrival",parkingNo);
+	public int arrival(SqlSessionTemplate sst, ParkingVo vo) {
+		return sst.update("ParkingMapper.arrival",vo);
 	}
 
 	//출차 등록 

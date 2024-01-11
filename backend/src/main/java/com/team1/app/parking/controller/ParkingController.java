@@ -52,11 +52,11 @@ public class ParkingController {
 	 * @return 결과 
 	 */
 	@PostMapping("arrival")
-	public Map<String, String> arrival(String parkingNo){
+	public Map<String, String> arrival(ParkingVo vo){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
-		int result = service.arrival(parkingNo);
+		int result = service.arrival(vo);
 		
 		if(result ==1) {
 			resultMap.put("status", "good");
