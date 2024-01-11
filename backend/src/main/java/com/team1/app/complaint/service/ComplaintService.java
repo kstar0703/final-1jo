@@ -85,7 +85,6 @@ public class ComplaintService {
 
 
 	public ComplaintVo mySumitDetail(ComplaintVo vo) {
-		System.out.println("작동함");
 		List<ComplaintVo> voList = dao.mySumitDetail(sst,vo);
 		
 		if(voList.get(0).getImgNo().length() > 0) {
@@ -93,10 +92,8 @@ public class ComplaintService {
 				voList.get(0).getImgVoList().add(
 					new ComplaintImgVo(complaintVo.getImgNo() ,complaintVo.getImgName(), complaintVo.getPath(), complaintVo.getOriginName())
 				);
-				System.out.println(voList.get(0).getImgVoList());		
 			}
 		}				
-		System.out.println(voList.get(0));
 		return voList.get(0);
 	}
 
@@ -106,11 +103,18 @@ public class ComplaintService {
 	}
 
 
-	public Map<String, Object> detail(ComplaintVo vo) {
+	public ComplaintVo detail(ComplaintVo vo) {
 		List<ComplaintVo> voList = dao.detail(sst,vo);
-		Map<String, Object> map = new HashMap<>();
-		map.put("voList", voList);
-		return map;
+		
+		if(voList.get(0).getImgNo().length() > 0) {
+			for (ComplaintVo complaintVo : voList) {
+				voList.get(0).getImgVoList().add(
+					new ComplaintImgVo(complaintVo.getImgNo() ,complaintVo.getImgName(), complaintVo.getPath(), complaintVo.getOriginName())
+				);
+			}
+		}
+
+		return voList.get(0);
 	}
 
 

@@ -24,9 +24,10 @@ public class VoteController {
 	
 	// 전체 투표 게시글 조회
 	@GetMapping("list")
-	public void list() {
+	public List<VoteVo> list() {
 		List<VoteVo> voList= service.list();
-		System.out.println(voList);
+//		System.out.println(voList);
+		return voList;
 	}
 	
 	//투표 게시글 상세 조회

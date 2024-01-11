@@ -12,7 +12,7 @@
 		    ,V.MANAGER_NO
 		    ,TITLE
 		    ,CONTENT
-		    ,ID
+		    ,ENROLL_DATE
 		FROM 
 		    VOTE_BOARD V
 		JOIN
