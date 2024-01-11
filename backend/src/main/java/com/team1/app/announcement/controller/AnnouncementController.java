@@ -63,7 +63,7 @@ public class AnnouncementController {
 	public Map<String,Object> change(AnnouncementVo vo,MultipartFile[] fileArr) throws IllegalStateException, IOException{
 		
 		Map<String,Object> resultMap = new HashMap();
-		
+
 		Boolean result = service.change(vo,fileArr);
 		
 		if(result) {
@@ -81,19 +81,30 @@ public class AnnouncementController {
 	 * 페이징용 count 메소드 호출 
 	 * 
 	 */
-	@GetMapping("list") //announcementNo , 
+	@GetMapping("list")
 	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
 		
 		
 		Map<String,Object> resultMap = new HashMap();
 		
+		int cnt = service.count(vo);
+		
+		//페이지 리밋
+		int pageLimit = 10;	
+		
+		
+		PageVo pvo = new PageVo(cnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
 	
-		List<AnnouncementVo> voList = service.list(vo,pageVo);
+		System.out.println("만들어진 페이지 Vo"+pvo);
+	
+		List<AnnouncementVo> voList = service.list(vo,pvo);
 		
 		
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");
 		resultMap.put("voList", voList);
+		
+		System.out.println(voList.size());
 		
 		return resultMap;
 	}
@@ -103,6 +114,7 @@ public class AnnouncementController {
 	 */
 	@GetMapping("detail")
 	public Map<String,Object> detail(AnnouncementVo vo){
+		
 		Map<String,Object> resultMap = new HashMap();
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");

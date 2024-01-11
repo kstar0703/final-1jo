@@ -83,7 +83,7 @@
 	ORDER BY A.ANNOUNCEMENT_NO DESC
 	</select>
 	
-	
+	<!-- 게시글 상세조회  -->
 	<select id="detail" resultType="AnnouncementVo">
 	SELECT  
 	A.ANNOUNCEMENT_NO
@@ -118,9 +118,52 @@
 	</update>
 	
 	<delete id="deleteFile">
-	DELETE ANNOUNCEMENT_IMG 
-	WHERE ANNOUNCEMENT_NO=#{announcementNo}
+	DELETE 
+	ANNOUNCEMENT_IMG 
+	WHERE 
+	ANNOUNCEMENT_NO=#{announcementNo}
 	</delete>
+	
+	
+	
+	<update id="change">
+	UPDATE 
+	ANNOUNCEMENT 
+	SET 
+	MODIFY_DATE = SYSDATE 
+	<if test="title != null">
+	,TITLE = #{title}
+	</if>
+	<if test="content!=null"> 
+	,CONTENT = #{content}
+	</if> 
+	WHERE  ANNOUNCEMENT_NO= #{announcementNo}
+	AND DEL_YN='N'
+	</update>
+	
+	
+	<insert id="changeImg" parameterType="AnnouncementVo" >
+	INSERT ALL
+    <foreach collection="fileList" item="file">
+    INTO ANNOUNCEMENT_IMG 
+    (
+    IMG_NO
+    ,ANNOUNCEMENT_NO
+    ,IMG_NAME
+    ,PATH
+    ,ORIGIN_NAME
+    ) 
+    VALUES 
+    (
+    (SELECT GET_ITEM_SEQ() FROM DUAL)
+    ,#{announcementNo}
+    ,#{file.imgName}
+    ,#{file.path}
+    ,#{file.originName}
+    )
+    </foreach>
+    SELECT * FROM DUAL
+	</insert>
 	
 	
 	

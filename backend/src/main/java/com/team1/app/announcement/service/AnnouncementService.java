@@ -75,8 +75,19 @@ public class AnnouncementService {
 		public Boolean change(AnnouncementVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
 			
 			//파일 삭제
-			dao.deleteFile(sst, vo);
+			int deleteCnt = dao.deleteFile(sst, vo);
+			int imgUpdateresult=0;
+			System.out.println(deleteCnt);
+			System.out.println("파일삭제 성공");
 			
+			//게시글 수정(수정내용이 없을 수도 있다)
+			
+			
+			//TODO 기존 게시글하고 같으면 실행안하는 로직 처리
+			
+			int result = dao.change(vo,sst);
+			System.out.println("게시글 내용 수정 완료");
+			System.out.println(result);
 			
 			//디비 저장 경로
 			String path="http://127.0.0.1:8888/app/resources\\upload\\gallery\\img\\";
@@ -85,26 +96,25 @@ public class AnnouncementService {
 			if(fileArr !=null && fileArr.length>0) {
 				List<String> fileList = saveFile(fileArr);
 				
-			
-				//MultipartFile[]용 인덱스
-				int idx =0;
-				for (String filename : fileList) {
-				    vo.getFileList()
-				    .add( 
-				    new AnnouncementImgVo(filename,path,fileArr[idx++].getOriginalFilename()) );
+				
+				for(int i=0; i<fileList.size(); i++) {
+					 vo
+					 .getFileList()
+					  .add( 
+					   new AnnouncementImgVo(fileList.get(i),path,fileArr[i].getOriginalFilename()) );
 				}
-			}
-			
-			int result = dao.change(vo,sst);
-			int imgUpdateresult = dao.changeImg(vo,sst); 
-			
-			if(result !=1 && imgUpdateresult <=0) {
-				throw new IllegalStateException();
+				
+				imgUpdateresult = dao.changeImg(vo,sst); 
 			}
 			
 			
+	
+			if(result ==0 && imgUpdateresult ==0) {
+				throw new IllegalStateException("수정 내용이 없습니다");
+			}
 			
-			return null;
+			
+			return true;
 		}
 	
 	
@@ -172,6 +182,11 @@ public class AnnouncementService {
 		
 	
 		return true;
+	}
+
+	//개수
+	public int count(AnnouncementVo vo) {	
+		return dao.count(sst,vo);
 	}
 	
 	
