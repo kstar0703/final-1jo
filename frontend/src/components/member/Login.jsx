@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const StyledLoginDiv = styled.div`
     width: 100%;
@@ -30,7 +31,11 @@ const StyledLoginDiv = styled.div`
 `
 const Login = () => {
 
+    // 
+   const navigate = useNavigate();
+    //로긴멤버
     let loginMemberVo = {};
+  
 
    //전화번호
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -46,20 +51,24 @@ const Login = () => {
           .replace(/(\-{1,2})$/, "");
         setPhoneNumber(target.value);
       }
+      
+      
+  
+        let patcherble = true;
 
-
-
- 
-
+    
         function clickLogin(){
-                
+            
+            
              loginMemberVo = { 
               phone : phone.current.value,
               pwd : pwd.current.value
-            } 
-
-            console.log(loginMemberVo)
-          
+            }
+            
+            if(!patcherble){
+                return;
+            }
+            patcherble =false;
 
             fetch("http://127.0.0.1:8080/app/member/login",{
                 method: "post",
@@ -70,32 +79,34 @@ const Login = () => {
             })
             .then( (resp) => {
                 return resp.json()})
-            .then( (data)=>{
-                if(data.staut==="good"){
-                    alert("로그인 성공!")
-                    sessionStorage.setItem("loginMemberVo", JSON.stringify(data.loginMemberVo));
+                .then( (data)=>{
+                if(data.status==="good"){
+                    alert(data.msg);
+                    sessionStorage.setItem("loginMemberVo", JSON.stringify(data));
+                    console.log(sessionStorage.getItem("loginMemberVo"))
+                    navigate('/home')
                 }else{
-                    alert("로그인 실패")
+                    alert(data.msg)
+                    
                     return;
                 }
             })
-
-            
-
-            
-
-
-
-
-
-
-
-         
-
-        
-
-       
+            .catch()
+            .finally( () => {patcherble = true}) 
      }
+
+     //엔터키시 로그인
+     const keydown = (e) => {
+        if(e.key ==='Enter'){
+            clickLogin()
+        }
+     }
+
+     //조인창 이동
+     const clickJoin = () => {
+        navigate('/join')
+     }
+    
  
 
 
@@ -111,9 +122,9 @@ const Login = () => {
 
             <div>
                 <form action="">
-                    <input type="text" name='phone' placeholder="예) 010-1234-5678" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
+                    <input type="text" name='phone' placeholder="전화번호 11자리('-'빼고입력)" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
                     <br />
-                    <input type="password" name='pwd' placeholder='패스워드' ref={pwd}/>
+                    <input type="password" name='pwd' placeholder='비밀번호' ref={pwd}  onKeyDown={keydown}/>
                     <div>
                     <input type="checkbox" name="" id="check" />
                     <label for="check">아이디 기억하기</label>
@@ -128,7 +139,7 @@ const Login = () => {
                 </div>
                 <div>
                     <span >비밀번호 찾기 </span>
-                    <span>회원가입</span>
+                    <span onClick={clickJoin}>회원가입</span>
                 </div>
 
             

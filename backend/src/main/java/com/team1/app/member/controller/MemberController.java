@@ -57,8 +57,9 @@ public class MemberController {
 	 * @return 
 	 */
 	@PostMapping("/login")
-	public Map<String, Object> login(MemberVo vo) {
+	public Map<String, Object> login(@RequestBody MemberVo vo) {
 		
+		System.out.println(vo);
 		return service.login(vo); 
 	}
 	
