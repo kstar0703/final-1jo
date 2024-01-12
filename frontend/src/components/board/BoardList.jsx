@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BoardList = () => {
     const formatDate = (dateString)=>{
@@ -25,6 +25,7 @@ const BoardList = () => {
     useEffect(()=>{
         loadBoardVoList();
     }, []);
+    const navigator = useNavigate();
 
     return (
         <div>
@@ -47,7 +48,7 @@ const BoardList = () => {
                             <tr key={vo.boardNo}>
                                 <td>{vo.boardNo}</td>
                                 <td>{vo.categoryName}</td>
-                                <td><Link to={`/board/detail/${vo.boardNo}`}>{vo.title}</Link></td>
+                                <td onClick={()=>{navigator(`/board/detail/${vo.boardNo}`)}}>{vo.title}</td>
                                 <td>{vo.dong}동 {vo.name}</td>
                                 <td>{formatDate(vo.enrollDate)}</td>
                                 <td>{vo.likeCount}</td>
@@ -57,6 +58,9 @@ const BoardList = () => {
                     }
                 </tbody>
             </table>
+            <div>
+            <button onClick={()=>{navigator("/board/write");}}>글쓰기</button>
+            </div>
         </div>
     );
 };

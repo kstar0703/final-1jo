@@ -1,5 +1,6 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+
 
 const BoardReply = () => {
     let {boardNo} = useParams();
@@ -25,7 +26,8 @@ const BoardReply = () => {
 
     return (
         <div>
-            댓글목록 
+            [ 댓글목록 ]<br/>
+            -------------------------------------------
             {
                             replyVoList.length === 0?
                             <div>댓글작성</div>
@@ -35,6 +37,7 @@ const BoardReply = () => {
                                     <div>{replyVo.dong}동 {replyVo.name}</div>
                                     <div>{replyVo.content}</div>
                                     <div>{replyVo.enrollDate}</div>
+                                    -------------------------------------------
                                 </div>
                                 )
                         }
