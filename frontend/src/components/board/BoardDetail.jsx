@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BoardLike from './BoardLike';
 import BoardReplyWrite from './reply/BoardReplyWrite';
 import BoardReplyList from './reply/BoardReplyList';
+import BoardSearch from './reply/BoardSearch';
 
 const BoardDetail = () => {
    let {boardNo} = useParams();
@@ -43,7 +44,7 @@ const BoardDetail = () => {
                     <div>
                         <BoardReplyList />
                         <BoardReplyWrite />
-                        댓글검색
+                        <BoardSearch />
                     </div>
 
                 </div>
@@ -51,7 +52,11 @@ const BoardDetail = () => {
                 :
                 (<h1>loading..</h1>)
             }
-            <button onClick={()=>{navigator("/board/list");}}>목록으로</button>
+            <div>
+                <button onClick={()=>{navigator("/board/list");}}>목록으로</button>
+                <button onClick={()=>{}}>수정</button>
+                <button onClick={()=>{}}>삭제</button>
+            </div>
         </div>
     );
 };

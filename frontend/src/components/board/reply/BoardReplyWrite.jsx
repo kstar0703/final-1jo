@@ -1,9 +1,17 @@
 import React from 'react';
 
 const BoardReplyWrite = () => {
+    const handleSubmit = ()=>{
+
+    }
     return (
         <div>
-            댓작성
+            <form>
+                <input type='textarea' name='content' placeholder='댓글을 입력하세요.'/>
+                <div>
+                    <button type='submit' onClick={handleSubmit}>작성</button>
+                </div>
+            </form>
         </div>
     );
 };
