@@ -35,8 +35,8 @@ const BoardReply = () => {
                             replyVoList.map(replyVo=>
                                 <div>
                                     <div>{replyVo.dong}동 {replyVo.name}</div>
-                                    <div>{replyVo.content}</div>
                                     <div>{replyVo.enrollDate}</div>
+                                    <div>{replyVo.content}</div>
                                     -------------------------------------------
                                 </div>
                                 )

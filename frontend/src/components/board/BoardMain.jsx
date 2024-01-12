@@ -9,6 +9,7 @@ import BoardDetail from './BoardDetail';
 
 
 const BoardMain = () => {
+
     return (
         <Routes>
             <Route path='list' element={<BoardList />}/>            
