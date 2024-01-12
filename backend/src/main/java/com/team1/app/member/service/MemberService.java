@@ -99,15 +99,21 @@ public class MemberService {
 
 		
 		MemberVo loginMember =  dao.login(sst,vo);
-	
-		if(loginMember.getPermissionYn().equals("N")) {
-			throw new IllegalArgumentException();
+		
+		if(loginMember ==null) {
+			return resultMap;
 		}
 		
-		resultMap.put("msg", "로그인 성공");
-		resultMap.put("status","good");
-		resultMap.put("loginMember",loginMember);
-
+	
+		if(loginMember.getPermissionYn().equals("N")) {
+			resultMap.put("msg", "허용받지 않은 계정입니다.");
+		}else {
+			resultMap.put("msg", "로그인 성공");
+			resultMap.put("status","good");
+			resultMap.put("loginMember",loginMember);
+		}
+		
+	
 		return resultMap;
 	}
 	/**
