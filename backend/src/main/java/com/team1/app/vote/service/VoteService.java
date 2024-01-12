@@ -21,14 +21,23 @@ public class VoteService {
 		return dao.list(sst);
 	}
 
-	public Map<String, Object> detail(String no) {
-		VoteVo detailBoard = dao.detailBoard(sst,no);
-		List<VoteVo> detailItem = dao.detailItem(sst,no);
-		Map<String, Object> map = new HashMap<>();
-		map.put("detailBoard", detailBoard);
-		map.put("detailItem", detailItem);
+	public VoteVo detail(VoteVo vo) {
+//		List<VoteVo> detailItem = dao.detailItem(sst,vo);
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("detailBoard", detailBoard);
+//		map.put("detailItem", detailItem);
 		
-		return map;
+		List<VoteVo> voList = dao.detailBoard(sst,vo);
+		if(voList.get(0).getItemNo().length() > 0) {
+			for (VoteVo vVo : voList) {
+				voList.get(0).getVoList().add(
+						new VoteVo(vVo.getVoteNo(),vVo.getVoteOrder(),vVo.getItemNo(),vVo.getItemName(),vVo.getVoteType()) 
+				);
+			}
+		}
+		
+		
+		return voList.get(0);
 	}
 
 	public boolean insert(VoteVo vo, List<VoteVo> voList) {

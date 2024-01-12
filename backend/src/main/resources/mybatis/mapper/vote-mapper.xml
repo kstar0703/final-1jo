@@ -28,8 +28,9 @@
 	
 	<!-- 유저 게시글 상세 조회 -->
 	<select id="detailBoard" resultType="VoteVo">
+
 		SELECT 
-		    VOTE_NO
+		    V.VOTE_NO
 		    ,V.MANAGER_NO
 		    ,TITLE
 		    ,CONTENT
@@ -38,18 +39,26 @@
 		    ,DEADLINE_DATE
 		    ,ACCEPT_YN
 		    ,ID
+		    ,ITEM_NO
+		    ,ITEM_NAME
+		    ,VOTE_ORDER
+		    ,VOTE_TYPE
 		FROM 
 		    VOTE_BOARD V
 		JOIN
 		    MANAGER M
 		ON 
 		    M.MANAGER_NO = V.MANAGER_NO
+		JOIN
+		    VOTE_ITEM I
+		ON
+		    V.VOTE_NO = I.VOTE_NO
 		WHERE 
-		    DEL_YN = 'N'
+		    DEL_YN = 'N' 
 		AND
-		    VOTE_NO = #{voteNo} 
+		    V.VOTE_NO = #{voteNo}
 		ORDER BY 
-		    VOTE_NO DESC
+		    V.VOTE_NO DESC
 	</select>
 	
 	<!-- 게시글의 투표 항목 조회 -->

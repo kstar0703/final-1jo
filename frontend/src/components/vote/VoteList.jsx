@@ -157,7 +157,7 @@ const VoteList = () => {
                                 <h1>loding</h1>
                                 :
                                 voteVoList.map( vo=>
-                                    (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} key={vo.no}>
+                                    (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} >{/*key={vo.no} */}
                                         <td>{vo.voteNo}</td>
                                         <td>{vo.title}</td>
                                         <td>{vo.content}</td>
