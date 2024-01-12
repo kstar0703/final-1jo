@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.team1.app.member.dao.MemberDao;
 import com.team1.app.member.util.MemberUtil;
@@ -91,14 +92,17 @@ public class MemberService {
 	 * @return loginMember ,status , msg
 	 */
 	public Map<String, Object> login(MemberVo vo) {
+		
 	
 		//결과맵
 		Map<String,Object> resultMap = new HashMap();
-		resultMap.put("msg", "로그인 실패");
+		resultMap.put("msg", "아이디 또는 패스워드가 잘못되었습니다");
 		resultMap.put("status","bad");
 
 		
 		MemberVo loginMember =  dao.login(sst,vo);
+		
+		System.out.println(loginMember);
 		
 		if(loginMember ==null) {
 			return resultMap;

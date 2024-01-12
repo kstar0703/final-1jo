@@ -16,16 +16,14 @@ const StyledMainDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    & h1 {
-        font-size:10em;
-    }
+  
 `;
 
 const Main = () => {
     return (
         <StyledMainDiv>
             <Routes>
-                <Route path='/' element={<h1>메인화면</h1>} />
+                <Route path='/home' element={<h1>메인화면</h1>} />
                 <Route path='/announcement/*' element={<AnnouncementMain />}/>
                 <Route path='/vote/*' element={<VoteMain />}/>
                 <Route path='/board/*' element={<BoardMain />} />

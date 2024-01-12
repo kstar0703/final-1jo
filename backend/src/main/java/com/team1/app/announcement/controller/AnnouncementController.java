@@ -85,6 +85,7 @@ public class AnnouncementController {
 	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
 		
 		
+		
 		Map<String,Object> resultMap = new HashMap();
 		
 		int cnt = service.count(vo);
