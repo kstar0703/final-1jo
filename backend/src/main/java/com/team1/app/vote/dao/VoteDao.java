@@ -14,13 +14,13 @@ public class VoteDao {
 		return sst.selectList("VoteMapper.list");
 	}
 
-	public VoteVo detailBoard(SqlSessionTemplate sst, String no) {
-		return sst.selectOne("VoteMapper.detailBoard",no);
+	public List<VoteVo> detailBoard(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.selectList("VoteMapper.detailBoard",vo);
 	}
 
-	public List<VoteVo> detailItem(SqlSessionTemplate sst, String no) {
-		return sst.selectList("VoteMapper.detailItem",no);
-	}
+//	public List<VoteVo> detailItem(SqlSessionTemplate sst, VoteVo vo) {
+//		return sst.selectList("VoteMapper.detailItem",vo);
+//	}
 
 	public int insertBoard(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.insert("VoteMapper.insertBoard",vo);

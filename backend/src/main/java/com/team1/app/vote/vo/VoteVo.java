@@ -1,5 +1,8 @@
 package com.team1.app.vote.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -35,5 +38,22 @@ public class VoteVo {
 	
 	private String count;			//합산
 	private String hit;				//조회수
+	
+	
+	private List<VoteVo> voList = new ArrayList<>();
+	
+	public VoteVo(String voteNo, String voteOrder, String itemNo, String itemName, String voteType) {
+		this.voteNo = voteNo;
+		this.voteOrder = voteOrder;
+		this.itemNo = itemNo;
+		this.itemName = itemName;
+		this.voteType = voteType;
+	}
+
+	public VoteVo() {
+	}
+
+
+
 	                                                
 }                                                   

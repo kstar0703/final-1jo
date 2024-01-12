@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,13 +32,13 @@ public class VoteController {
 	}
 	
 	//투표 게시글 상세 조회
-	@GetMapping("detail")
-	public void detail(String no) {
-		no = "1";
+	@PostMapping("detail")
+	public VoteVo detail(@RequestBody VoteVo vo) {
+		System.out.println(vo);
+		VoteVo voteVo = service.detail(vo);
 		
-		Map<String,Object> map = service.detail(no);
-		
-		System.out.println(map);
+		System.out.println(voteVo);
+		return voteVo;
 	}
 	
 	//투표 게시글, 투표 항목 작성하기
