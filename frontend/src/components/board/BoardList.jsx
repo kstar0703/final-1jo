@@ -29,6 +29,7 @@ const BoardList = () => {
 
     return (
         <div>
+            <div>소통게시판</div>
             <table>
                 <thead>
                         <th></th>

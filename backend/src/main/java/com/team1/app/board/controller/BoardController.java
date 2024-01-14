@@ -28,6 +28,7 @@ import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
+import com.team1.app.board.vo.CategoryVo;
 import com.team1.app.util.vo.SearchVo;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,16 @@ public class BoardController {
 		map.put("msg", "good");
 		return map; 
 	}
-
+	
+	//카테고리 조회
+	@GetMapping("category")
+	public Map<String, Object> listCategory(){
+		List<CategoryVo> categoryVoList = service.listCategory();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("categoryVoList", categoryVoList);
+		map.put("msg", "good");
+		return map;		
+	}
 	//게시글 작성
 	@PostMapping("write")
 	public Map<String, String> insert(BoardVo vo, List<MultipartFile> files, HttpServletRequest req) throws Exception{

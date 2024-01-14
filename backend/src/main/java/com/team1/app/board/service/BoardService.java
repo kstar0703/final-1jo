@@ -17,6 +17,7 @@ import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
+import com.team1.app.board.vo.CategoryVo;
 import com.team1.app.util.vo.SearchVo;
 
 import lombok.RequiredArgsConstructor;
@@ -187,6 +188,11 @@ public class BoardService {
 	// 게시글 상세 조회 (관리자)
 	public BoardVo detailByAdmin(BoardVo vo) {
 		return dao.detailByAdmin(sst, vo);
+	}
+
+	//카테고리 조회
+	public List<CategoryVo> listCategory() {
+		return dao.listCategory(sst);
 	}
 
 
