@@ -9,6 +9,7 @@ const BoardWrite = () => {
     const [title, setTitle] = useState();
     const [content, setContent] = useState();
     const [fileObj, setFileObj] = useState();
+    const handleChangeCategory = ()=>{}
     const handleChangeTitle = (e)=>{
         setTitle(e.target.value);
     }
@@ -21,7 +22,7 @@ const BoardWrite = () => {
     let isFetching = false;
     }
 
-    
+    const categoryVoList = categoryVoList
 
     return (
         <div>
