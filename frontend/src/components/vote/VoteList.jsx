@@ -123,8 +123,7 @@ const VoteList = () => {
                 
                 <div className='seach_box_bg'>
                     <form>
-                        <input type='text' name='title' placeholder='제목 검색'/>
-                        <input type='text' name='content' placeholder='내용 검색'/>
+                        <input type='text' name='title' placeholder='키워드 검색'/>
                         <input className='seach_btn' type='submit' value="검색"/>
                     </form>
                 </div>

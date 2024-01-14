@@ -17,6 +17,12 @@ public class VoteDao {
 	public List<VoteVo> detailBoard(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.selectList("VoteMapper.detailBoard",vo);
 	}
+	
+	public VoteVo votingYn(SqlSessionTemplate sst, VoteVo vo) {
+		
+		VoteVo vvv = sst.selectOne("VoteMapper.votingYn",vo);
+		return vvv;
+	}
 
 //	public List<VoteVo> detailItem(SqlSessionTemplate sst, VoteVo vo) {
 //		return sst.selectList("VoteMapper.detailItem",vo);
@@ -92,5 +98,6 @@ public class VoteDao {
 	public List<VoteVo> adminHistory(SqlSessionTemplate sst) {
 		return sst.selectList("VoteMapper.adminHistory");
 	}
+
 
 }

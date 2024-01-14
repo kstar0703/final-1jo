@@ -34,10 +34,7 @@ public class VoteController {
 	//투표 게시글 상세 조회
 	@PostMapping("detail")
 	public VoteVo detail(@RequestBody VoteVo vo) {
-		System.out.println(vo);
 		VoteVo voteVo = service.detail(vo);
-		
-		System.out.println(voteVo);
 		return voteVo;
 	}
 	
@@ -155,16 +152,16 @@ public class VoteController {
 	
 	// 투표하기
 	@PostMapping("voting")
-	public void voting(VoteVo vo) {
-		
+	public int voting( @RequestBody VoteVo vo) {
+//		System.out.println(vo);
 		//test용 데이터
-		vo.setVoteNo("1");
-		vo.setItemNo("3");
-		vo.setPrtcNo("11");
+//		vo.setVoteNo("1");
+//		vo.setItemNo("3");
+//		vo.setPrtcNo("11");
 		
 		int result = service.voting(vo);
-		
 		System.out.println(result);
+		return result;
 	}
 	
 	// 관리자 전체 투표 게시글 조회

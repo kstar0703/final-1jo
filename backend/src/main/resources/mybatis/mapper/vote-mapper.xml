@@ -61,19 +61,17 @@
 		    V.VOTE_NO DESC
 	</select>
 	
-	<!-- 게시글의 투표 항목 조회 -->
-	<select id="detailItem" resultType="VoteVo">
+	<!-- 로그인 회원 투표 여부 조회 -->
+	<select id="votingYn" resultType="VoteVo">
 		
-	SELECT 
-	    ITEM_NO
-	    ,VOTE_NO
-	    ,ITEM_NAME
-	    ,VOTE_ORDER
-	    ,VOTE_TYPE
-	FROM    
-	    VOTE_ITEM
-	WHERE 
-	    VOTE_NO = #{voteNo}
+		SELECT 
+		    COUNT(*) AS COUNT
+		FROM 
+		    VOTE_REPLY 
+		WHERE 
+		    PRTC_NO = #{prtcNo}
+		AND 
+		    VOTE_NO = #{voteNo}
 		
 	</select>
 	

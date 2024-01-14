@@ -35,9 +35,12 @@ public class VoteService {
 				);
 			}
 		}
+		//만약 이미 투표한 사람이라면 투표 했단 표시인 count 값
+		String cnt = dao.votingYn(sst,vo).getCount();
+		VoteVo resultVo = voList.get(0);
+		resultVo.setCount(cnt);
 		
-		
-		return voList.get(0);
+		return resultVo;
 	}
 
 	public boolean insert(VoteVo vo, List<VoteVo> voList) {
@@ -110,7 +113,11 @@ public class VoteService {
 	}
 
 	public int voting(VoteVo vo) {
-		return dao.voting(sst,vo);
+		int result = dao.voting(sst,vo);
+		if(result != 1) {
+			throw new IllegalStateException();
+		}
+		return result;
 	}
 
 	public List<VoteVo> adminList() {
