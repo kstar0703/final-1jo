@@ -10,6 +10,7 @@ import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
+import com.team1.app.board.vo.CategoryVo;
 import com.team1.app.util.vo.SearchVo;
 
 @Repository
@@ -125,6 +126,11 @@ public class BoardDao {
 	// 게시글 상세 조회 (관리자)
 	public BoardVo detailByAdmin(SqlSessionTemplate sst, BoardVo vo) {
 		return sst.selectOne("BoardMapper.detailByAdmin", vo);
+	}
+	
+	//카테고리 조회
+	public List<CategoryVo> listCategory(SqlSessionTemplate sst) {
+		return sst.selectList("BoardMapper.listCategory");
 	}
 
 
