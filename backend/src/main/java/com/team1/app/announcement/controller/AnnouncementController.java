@@ -81,13 +81,16 @@ public class AnnouncementController {
 	 * 페이징용 count 메소드 호출 
 	 * 
 	 */
-	@GetMapping("list")
-	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
+	@PostMapping("list")
+	public Map<String,Object> list(@RequestBody AnnouncementVo vo){
 		
+		PageVo pageVo = new PageVo();
 		
+		System.out.println("body 로들어온 값" +vo);
+		System.out.println("body 로들어온 값" + pageVo);
 		
 		Map<String,Object> resultMap = new HashMap();
-		
+		//현재페이지
 		int cnt = service.count(vo);
 		
 		//페이지 리밋
@@ -104,8 +107,8 @@ public class AnnouncementController {
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");
 		resultMap.put("voList", voList);
+		resultMap.put("pvo",pvo);
 		
-		System.out.println(voList.size());
 		
 		return resultMap;
 	}

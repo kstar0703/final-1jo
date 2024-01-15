@@ -174,11 +174,6 @@ const Join = () => {
     
       
 
-
-
-      
-
-
       let patcherbleJoin = true
       //제출
       const ClickJoin = (e) => {

@@ -35,6 +35,7 @@
 	  
 	<!-- 회원  -->
 		 <typeAlias type="com.team1.app.member.vo.MemberVo" alias="MemberVo"/>
+		 
 	  	 
 	<!-- 관리자  -->  	 
 		 <typeAlias type="com.team1.app.manager.vo.ManagerVo" alias="ManagerVo"/>

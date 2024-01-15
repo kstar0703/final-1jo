@@ -2,6 +2,7 @@ package com.team1.app.member.service;
 
 import java.lang.reflect.Member;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.team1.app.member.dao.MemberDao;
 import com.team1.app.member.util.MemberUtil;
 import com.team1.app.member.vo.MemberVo;
+import com.team1.app.unit.vo.UnitVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -177,6 +179,26 @@ public class MemberService {
 		}
 		
 		return resultMap;
+	}
+	
+	// 유닛 조회
+	public Map<String, Object> selectUnit(UnitVo vo) {
+		
+		// 결과맵 
+		Map<String, Object> resultMap = new HashMap();
+		resultMap.put("msg", "조회 데이터 없음");
+		resultMap.put("status","bad");
+		resultMap.put("UnitVo", "검색결과없음");
+		
+		List<UnitVo> unitVo = dao.selectUnit(sst,vo);
+		
+		if(unitVo != null) {	
+		resultMap.put("msg", "조회 성공");
+		resultMap.put("status","good");
+		resultMap.put("UnitVo", unitVo);
+		}
+		return resultMap;
+		
 	}
 	
 	

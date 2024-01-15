@@ -18,28 +18,19 @@ const StyledLoginDiv = styled.div`
         gap: 10px;
         margin-bottom: 50px;
     }
-
-
-
-
-
-    
-  
-   
- 
-  
 `
 const Login = () => {
 
-    // 
+    // 네비게이트
    const navigate = useNavigate();
     //로긴멤버
     let loginMemberVo = {};
   
+    
 
    //전화번호
     const [phoneNumber, setPhoneNumber] = useState('');
-    
+
     const phone = useRef();
     const pwd = useRef();
 
@@ -82,9 +73,10 @@ const Login = () => {
                 .then( (data)=>{
                 if(data.status==="good"){
                     alert(data.msg);
-                    sessionStorage.setItem("loginMemberVo", JSON.stringify(data));
-                    console.log(sessionStorage.getItem("loginMemberVo"))
-                    navigate('/home')
+                    console.log(data.loginMember)
+                    sessionStorage.setItem("loginMember", JSON.stringify(data.loginMember));
+                    console.log(JSON.parse(sessionStorage.getItem("loginMember")))
+                    navigate('/member')
                 }else{
                     alert(data.msg)
                     

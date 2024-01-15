@@ -42,7 +42,6 @@ public class PageVo {
 	public PageVo(int listCount , int currentPage, int pageLimit, int boardLimit) {
 		this.listCount = listCount;
 		
-		System.out.println("들어온 현재 페이지" +currentPage);
 		
 		if(currentPage<=0) {
 			this.currentPage = 1;
@@ -59,10 +58,7 @@ public class PageVo {
 			this.boardLimit = boardLimit;
 		}
 		
-		System.out.println("");
 		
-		System.out.println(boardLimit);
-		System.out.println((double)listCount/boardLimit ) ;
 		
 		this.maxPage = (int) Math.ceil((double)this.listCount/this.boardLimit);
 		this.startPage = (this.currentPage - 1) / this.pageLimit * this.pageLimit + 1;
