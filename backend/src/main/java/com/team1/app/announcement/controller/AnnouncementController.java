@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,16 +82,13 @@ public class AnnouncementController {
 	 * 페이징용 count 메소드 호출 
 	 * 
 	 */
-	@PostMapping("list")
-	public Map<String,Object> list(@RequestBody AnnouncementVo vo){
+	@GetMapping("list")
+	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
 		
-		PageVo pageVo = new PageVo();
 		
-		System.out.println("body 로들어온 값" +vo);
-		System.out.println("body 로들어온 값" + pageVo);
 		
 		Map<String,Object> resultMap = new HashMap();
-		//현재페이지
+		
 		int cnt = service.count(vo);
 		
 		//페이지 리밋
@@ -99,7 +97,7 @@ public class AnnouncementController {
 		
 		PageVo pvo = new PageVo(cnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
 	
-		System.out.println("만들어진 페이지 Vo"+pvo);
+		
 	
 		List<AnnouncementVo> voList = service.list(vo,pvo);
 		
@@ -107,7 +105,7 @@ public class AnnouncementController {
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");
 		resultMap.put("voList", voList);
-		resultMap.put("pvo",pvo);
+		resultMap.put("pageVo",pvo);
 		
 		
 		return resultMap;
@@ -116,13 +114,18 @@ public class AnnouncementController {
 	 * @param vo announcement 
 	 * 
 	 */
-	@GetMapping("detail")
-	public Map<String,Object> detail(AnnouncementVo vo){
+	
+	//TODO 뒤에 메소드 String 받도록 리펙토링
+	@GetMapping("detail/{announcementNo}")
+	public Map<String,Object> detail(@PathVariable String announcementNo){
 		
 		Map<String,Object> resultMap = new HashMap();
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");
 		
+		AnnouncementVo vo = new AnnouncementVo();
+		
+		vo.setAnnouncementNo(announcementNo);
 		AnnouncementVo resultVo = service.detail(vo);
 		
 		
@@ -130,7 +133,7 @@ public class AnnouncementController {
 			resultMap.put("status", "bad");
 			resultMap.put("msg", "조회 실패");	
 		}
-		resultMap.put("rsultVo", resultVo);
+		resultMap.put("resultVo", resultVo);
 
 		return resultMap;		
 	}
