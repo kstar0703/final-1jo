@@ -1,6 +1,7 @@
 package com.team1.app.board.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,18 +59,27 @@ public class BoardService {
 		int overallResult = 0;
 		int boardResult = dao.insert(sst, vo);		
 		
-		String root = req.getServletContext().getRealPath("/");
-		
+		String rootDir = req.getServletContext().getRealPath("/");
+		String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
+		String route = "src\\main\\webapp";
+		String path = "\\resources\\upload\\board\\img\\";
+		String savePath = commonRoot + route + path;
+				
 		int fileResult = 1;
 		BoardImgVo imgVo = new BoardImgVo();
 		if(vo.getBoardNo() != null) {
 			imgVo.setBoardNo(vo.getBoardNo());
-			imgVo.setImgName(vo.getImgName());
-			imgVo.setOriginName(vo.getOriginName());
 			
 			for (MultipartFile file : files) {
-				String path = saveFile(file, root);
-				imgVo.setPath(path);
+				imgVo.setOriginName(file.getOriginalFilename());
+				String imgName = saveFile(file, savePath);
+				String fullPath = "http://127.0.0.1:8888/app" + path + imgName;
+				imgVo.setPath(fullPath);
+				imgVo.setImgName(imgName);
+				
+				System.out.println(imgVo);			
+				
+
 				int result = dao.insertImg(sst, imgVo);
 				if(result != 1) {
 					fileResult = 0;
@@ -91,6 +101,7 @@ public class BoardService {
 		int boardResult = dao.edit(sst, vo);		
 		
 		String root = req.getServletContext().getRealPath("/");
+
 		
 		BoardImgVo imgVo = new BoardImgVo();
 		imgVo.setBoardNo(vo.getBoardNo());
@@ -114,14 +125,14 @@ public class BoardService {
 	}
 	
 	//서버에 파일저장
-	private String saveFile(MultipartFile file, String root) throws Exception {
-		String path = "resources/upload/board/img/";
+	private String saveFile(MultipartFile file, String savePath) throws IllegalStateException, Exception {
+
 		String originName = file.getOriginalFilename();
 		String extension = originName.substring(originName.lastIndexOf("."));
 		String imgName = UUID.randomUUID() + extension;
-		File target = new File(root + path + imgName);
+		File target = new File(savePath + imgName);
 		file.transferTo(target);
-		return path + imgName;
+		return imgName;
 	}
 
 	// 게시글 삭제
@@ -193,6 +204,11 @@ public class BoardService {
 	//카테고리 조회
 	public List<CategoryVo> listCategory() {
 		return dao.listCategory(sst);
+	}
+	
+	//작성자 번호로 최근 게시물 번호 1개 조회
+	public BoardVo findLatestPost(String writerNo) {
+		return dao.findLatestPost(sst, writerNo);
 	}
 
 
