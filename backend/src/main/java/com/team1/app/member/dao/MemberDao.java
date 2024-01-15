@@ -1,9 +1,12 @@
 package com.team1.app.member.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.team1.app.member.vo.MemberVo;
+import com.team1.app.unit.vo.UnitVo;
 
 @Repository
 public class MemberDao {
@@ -33,6 +36,11 @@ public class MemberDao {
 	//회원 탈퇴
 	public int delete(SqlSessionTemplate sst, MemberVo vo) {
 		return sst.update("MemberMapper.delete",vo);
+	}
+
+	//유닛 조회 
+	public List<UnitVo> selectUnit(SqlSessionTemplate sst, UnitVo vo) {
+		return sst.selectList("MemberMapper.selectUnit",vo);
 	}
 	
 	

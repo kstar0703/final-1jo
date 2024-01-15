@@ -115,6 +115,23 @@
 	WHERE MEMBER_NO =#{memberNo}
 	</update>
 	
+	<select id="selectUnit" resultType="com.team1.app.unit.vo.UnitVo">
+	select
+	UNIT_NO
+	,DONG
+	,HO
+	,SCALE
+	,VEH_TIME
+	from unit
+	
+	<trim prefix="WHERE" suffixOverrides="AND">
+ 	<if test="dong !=null">DONG= #{dong} AND </if>
+ 	<if test="ho !=null">HO = #{ho} </if>
+ 	</trim>
+ 	
+	
+	</select>
+	
 
 	
 	

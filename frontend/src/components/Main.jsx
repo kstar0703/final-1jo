@@ -9,6 +9,7 @@ import ManagementMain from './management/ManagementMain';
 import ErrorPageNotFound from './error/ErrorPageNotFound';
 import AnnouncementMain from './announcement/AnnoucementMain';
 import styled from 'styled-components';
+import MemberMain from './member/MemberMain';
 
 const StyledMainDiv = styled.div`
     width: 100%;
@@ -23,7 +24,7 @@ const Main = () => {
     return (
         <StyledMainDiv>
             <Routes>
-                <Route path='/home' element={<h1>메인화면</h1>} />
+                <Route path='/member/*' element={<MemberMain/>} />
                 <Route path='/announcement/*' element={<AnnouncementMain />}/>
                 <Route path='/vote/*' element={<VoteMain />}/>
                 <Route path='/board/*' element={<BoardMain />} />

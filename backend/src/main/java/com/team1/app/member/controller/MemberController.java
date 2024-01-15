@@ -39,9 +39,10 @@ public class MemberController {
      */
 	
 	@GetMapping("/selectUnit")
-	public Map<String,UnitVo> selectUnit (@RequestBody UnitVo vo){
-	
-		return null;
+	public Map<String,Object> selectUnit (UnitVo vo){
+		
+		
+		return service.selectUnit(vo);
 	}
 	
 	
@@ -75,7 +76,6 @@ public class MemberController {
 	 */
 	@PostMapping("/login")
 	public Map<String, Object> login(@RequestBody MemberVo vo) {
-		
 		
 		return service.login(vo); 
 	}
