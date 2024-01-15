@@ -114,6 +114,7 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제
+	@CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("delete")
 	public Map<String, String> delete(@RequestBody BoardVo vo){
 		int result = service.delete(vo);
@@ -156,8 +157,10 @@ public class BoardController {
 	}
 	
 	//댓글 수정
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("replyEdit")
 	public Map<String, String> replyEdit(@RequestBody BoardReplyVo vo) {
+		System.out.println(vo);
 		int result = service.replyEdit(vo);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "good");
@@ -168,6 +171,7 @@ public class BoardController {
 	}
 	
 	//댓글 삭제
+	@CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("replyDelete")
 	public Map<String, String> replyDelete(@RequestBody BoardReplyVo vo){
 		int result = service.replyDelete(vo);
