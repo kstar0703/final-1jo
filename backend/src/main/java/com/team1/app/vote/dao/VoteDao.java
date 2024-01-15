@@ -55,12 +55,12 @@ public class VoteDao {
 		return sst.selectOne("VoteMapper.voteCount",no);
 	}
 
-	public int voteEndDayInsert(SqlSessionTemplate sst, String no) {
-		return sst.update("VoteMapper.voteEndDayInsert",no);
+	public int voteEndDayInsert(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.update("VoteMapper.voteEndDayInsert",vo);
 	}
 
-	public List<VoteVo> voteEndCountSelect(SqlSessionTemplate sst, String no) {
-		return sst.selectList("VoteMapper.voteEndCountSelect",no);
+	public List<VoteVo> voteEndCountSelect(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.selectList("VoteMapper.voteEndCountSelect",vo);
 	}
 
 	public int voteEndFinishInsert(SqlSessionTemplate sst, List<VoteVo> voEnd) {
@@ -91,8 +91,8 @@ public class VoteDao {
 		return sst.selectList("VoteMapper.adminSelect",vo);
 	}
 
-	public List<VoteVo> history(SqlSessionTemplate sst, String no) {
-		return sst.selectList("VoteMapper.history",no);
+	public List<VoteVo> history(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.selectList("VoteMapper.history",vo);
 	}
 
 	public List<VoteVo> adminHistory(SqlSessionTemplate sst) {

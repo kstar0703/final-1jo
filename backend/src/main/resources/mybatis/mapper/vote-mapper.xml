@@ -13,6 +13,7 @@
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
+		    ,DEADLINE_DATE
 		FROM 
 		    VOTE_BOARD V
 		JOIN

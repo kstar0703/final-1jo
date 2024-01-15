@@ -116,6 +116,11 @@ const VoteList = () => {
     useEffect(()=>{
         loadVoteVoList();
     },[]);
+    
+    let [searcData, setSearcData] = useState([]);
+    const hendleSearcInput = (e) => {
+        setSearcData(e.target.value); //toLowerCase()
+    }
 
     return (
         <StyledVoteListDiv>
@@ -123,7 +128,7 @@ const VoteList = () => {
                 
                 <div className='seach_box_bg'>
                     <form>
-                        <input type='text' name='title' placeholder='키워드 검색'/>
+                        <input onChange={hendleSearcInput} type='text' name='title' placeholder='키워드 검색'/>
                         <input className='seach_btn' type='submit' value="검색"/>
                     </form>
                 </div>
@@ -144,8 +149,8 @@ const VoteList = () => {
                                 <th scope="col">번호</th>
                                 <th scope="col">제목</th>
                                 <th scope="col">내용</th>
-                                <th scope="col">작성일자</th>
-                                <th scope="col">수정일자</th>
+                                <th scope="col">시작일자</th>
+                                <th scope="col">마감일자</th>
                                 <th scope="col">조회수</th>
                             </tr>
                         </thead>
@@ -161,13 +166,7 @@ const VoteList = () => {
                                         <td>{vo.title}</td>
                                         <td>{vo.content}</td>
                                         <td>{vo.enrollDate}</td>
-                                        {
-                                            vo.modifyDate
-                                            ?
-                                            <td>{vo.modifyDate}</td>
-                                            :
-                                            <td>{vo.enrollDate}</td>
-                                        }
+                                        <td>{vo.deadlineDate}</td>
                                         <td>111</td>
                                     </tr>)
                                 )

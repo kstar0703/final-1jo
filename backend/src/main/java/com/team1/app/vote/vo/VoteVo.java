@@ -41,6 +41,8 @@ public class VoteVo {
 	
 	
 	private List<VoteVo> voList = new ArrayList<>();
+	private List<VoteVo> voHistory = new ArrayList<>();
+	
 	
 	public VoteVo(String voteNo, String voteOrder, String itemNo, String itemName, String voteType) {
 		this.voteNo = voteNo;
@@ -56,4 +58,5 @@ public class VoteVo {
 
 
 	                                                
-}                                                   
+}     
+

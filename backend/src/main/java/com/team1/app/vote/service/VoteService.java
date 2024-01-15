@@ -1,5 +1,7 @@
 package com.team1.app.vote.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -21,13 +23,12 @@ public class VoteService {
 		return dao.list(sst);
 	}
 
-	public VoteVo detail(VoteVo vo) {
-//		List<VoteVo> detailItem = dao.detailItem(sst,vo);
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("detailBoard", detailBoard);
-//		map.put("detailItem", detailItem);
+	public VoteVo detail(VoteVo vo) throws ParseException {
 		
+		//게시글 + 투표항목 같이 불러오기
 		List<VoteVo> voList = dao.detailBoard(sst,vo);
+		
+		//투표항목이 있다면 voList 0번째 List 객체안에 투표 정보 넣기
 		if(voList.get(0).getItemNo().length() > 0) {
 			for (VoteVo vVo : voList) {
 				voList.get(0).getVoList().add(
@@ -35,6 +36,16 @@ public class VoteService {
 				);
 			}
 		}
+		
+		//만약 종료된 투표이면 투표 결과 가져오기
+		//현재 날짜와 마감일자 date형
+		Date today = new Date();
+		Date deadLineDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(voList.get(0).getDeadlineDate());
+		//마감이 된 경우
+		if(today.after(deadLineDate)) {
+			voList.get(0).setVoHistory(dao.history(sst,vo));
+		}
+		
 		//만약 이미 투표한 사람이라면 투표 했단 표시인 count 값
 		String cnt = dao.votingYn(sst,vo).getCount();
 		VoteVo resultVo = voList.get(0);
@@ -77,12 +88,12 @@ public class VoteService {
 		return dao.voteCount(sst,no);
 	}
 
-	public boolean voteEnd(String no) {
+	public boolean voteEnd(VoteVo vo) {
 		
 		boolean result = false;
 		
 		//마감 일자 삽입
-		int endDayResult = dao.voteEndDayInsert(sst,no);
+		int endDayResult = dao.voteEndDayInsert(sst,vo);
 		
 		List<VoteVo> voEnd = new ArrayList<VoteVo>();
 		
@@ -90,7 +101,7 @@ public class VoteService {
 			throw new IllegalStateException();			
 		}
 		//투표 결과 조회
-		voEnd = dao.voteEndCountSelect(sst,no);
+		voEnd = dao.voteEndCountSelect(sst,vo);
 		
 		if(voEnd == null) {
 			throw new IllegalStateException();						
@@ -140,8 +151,8 @@ public class VoteService {
 		return dao.adminSelect(sst,vo);
 	}
 
-	public List<VoteVo> history(String no) {
-		return dao.history(sst,no);
+	public List<VoteVo> history(VoteVo vo) {
+		return dao.history(sst,vo);
 	}
 
 	public List<VoteVo> adminHistory() {
