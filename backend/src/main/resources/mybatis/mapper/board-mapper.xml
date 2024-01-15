@@ -417,6 +417,23 @@
 		ORDER BY R.ENROLL_DATE ASC
 	</select>
 	
+	<!-- 작성자 번호로 최근 게시물 번호 1개 조회 -->
+	<select id="findLatestPost" resultType="BoardVo">
+			SELECT 
+			    ROWNUM
+			    , BOARD_NO
+			    ,ENROLL_DATE
+			    FROM (
+			    SELECT 
+						BOARD_NO
+			            ,ENROLL_DATE
+					FROM RESIDENT_BOARD
+					WHERE WRITER_NO = #{writerNo}
+			        ORDER BY ENROLL_DATE DESC
+			    )
+			    WHERE ROWNUM = 1 
+	</select>
+	
 
 
 </mapper>

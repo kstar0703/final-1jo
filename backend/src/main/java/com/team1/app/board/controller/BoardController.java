@@ -70,17 +70,34 @@ public class BoardController {
 	}
 	//게시글 작성
 	@PostMapping("write")
-	public Map<String, String> insert(BoardVo vo, List<MultipartFile> files, HttpServletRequest req) throws Exception{
+	public Map<String, String> insert(BoardVo vo, @RequestParam(value="files", required=false) List<MultipartFile> files, HttpServletRequest req) throws Exception{
+		System.out.println("cno:" + vo.getCategoryNo());
+		System.out.println("wno:" + vo.getWriterNo());
+		System.out.println("title:" + vo.getTitle());
+		System.out.println("content:" + vo.getContent());
+		System.out.println(files);
+		
 		int result = service.insert(vo, files, req);
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("msg", "bad");
+		map.put("msg", "good");
 		if(result != 1) {
-			map.put("msg", "good");
+			map.put("msg", "bad");
 		}
 		return map;
 	}
 	
+	//작성자 번호로 최근 게시물 번호 1개 조회
+	@GetMapping("findLatestPost/{writerNo}")
+	public Map<String, String> findLatestPost(@PathVariable String writerNo){
+		System.out.println("writerNo:" + writerNo);
+		BoardVo boardVo = service.findLatestPost(writerNo);
+		String boardNo = boardVo.getBoardNo();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("boardNo", boardNo);
+		map.put("msg", "good");
+		return map;
+	}
 
 
 	//게시글 수정

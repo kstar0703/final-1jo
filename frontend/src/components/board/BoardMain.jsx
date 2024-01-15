@@ -6,6 +6,7 @@ import BoardEdit from './BoardEdit';
 import BoardLike from './BoardLike';
 import BoardReply from './reply/BoardReplyList';
 import BoardDetail from './BoardDetail';
+import BoardWriteComplete from './BoardWriteComplete';
 
 
 const BoardMain = () => {
@@ -18,6 +19,7 @@ const BoardMain = () => {
             <Route path='detail/:boardNo' element={<BoardDetail />}/>
             <Route path='like' element={<BoardLike />}/>
             <Route path='reply' element={<BoardReply />}/>
+            <Route path='write/complete' element={<BoardWriteComplete />}/>
         </Routes>
     );
 };

@@ -133,6 +133,11 @@ public class BoardDao {
 		return sst.selectList("BoardMapper.listCategory");
 	}
 
+	//작성자 번호로 최근 게시물 번호 1개 조회
+	public BoardVo findLatestPost(SqlSessionTemplate sst, String writerNo) {
+		return sst.selectOne("BoardMapper.findLatestPost", writerNo);
+	}
+
 
 
 
