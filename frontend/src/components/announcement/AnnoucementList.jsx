@@ -9,7 +9,7 @@ const ListDiv =styled.div`
     height: 100%;
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column; 
 
     &  div {
         width: 50%;
@@ -78,47 +78,110 @@ const ListDiv =styled.div`
 const AnnouncementList = () => {
         // 로그인 멤버 
         const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
-
-        //페이지 배열
-        let page =  useRef([]);
-         
-
         // 네비 게이트
         const navigate =  useNavigate();
-        // 검색어
-        const [search,setSearch] =useState({});
-        const [pvo,setPvo] = useState({});
+        //페이지 배열
+
+    // ------ 검색어 영역 
+        //select 안에 값 넣어주기 
+        let input = useRef();
+        const [selectedOption, setSelectedOption] = useState('title');
+        const onChangeType = (event) => {
+          const selectedOptionName = event.target.options[event.target.selectedIndex].getAttribute('name');
+          setSelectedOption(selectedOptionName);
+           
+           const name = selectedOptionName;
+           const value = input.current.value;
+
+           setVo({
+            [name] : value
+           }) 
+        }
+
+        //검색 
+       const [vo,setVo]  = useState();
+
+        const onChange = (e) =>{
+
+            
+            const {name, value} = e.target;            
+            setVo({
+                [name] :  value,    
+            })            
+        }
+
+        //검색시 의존성 배열 변경
+        const [searchQuery, setSearchQuery] = useState('');   
+        const onClickSearch = () => {
+            const queryParams = new URLSearchParams();  
+            setSearchQuery(prev => prev + 'a');
+        }
+
+    // ----------- 날짜 영역----------------------------------
+
+         const [dateVo,setDateVo] = useState({});  
+        const onChangeDate = (e) =>{
+            
+            const {name,value} = e.target;
+            setDateVo({...dateVo,
+                [name] :  value,    
+            })     
+        }
+    // --- 페이징 영역 ----------------------------------------
+       const [pvo,setPvo] = useState({});
+
+       console.log(pvo)
+
+        
+    
+
+
+
+
+     
         // 공지사항 리스트
         const [announcement,setAnnouncement] = useState([]);
 
         // 공지사항 리스트
         useEffect(
+
             ()=>{
-                fetch("http://127.0.0.1:8080/app/announcement/list",{
-                    method: "post",
-                    headers : {
-                        "Content-Type" : "application/json"
-                    },
-                    body : JSON.stringify(search),
+                
+                const queryParams = new URLSearchParams();  
+
+                for (const key in dateVo) {
+                    queryParams.append(key, dateVo[key]);
+                  }
+            
+                for (const key in vo) {
+                  queryParams.append(key, vo[key]);
                 }
-                    
-                )
-                .then( resp => resp.json())
-                .then( data => {    
-                    console.log('하이')
-                    setAnnouncement(data.voList); 
-                    setPvo(data.pvo)
 
-                    
-                    
-                    
-                })
+
+
+
+              
+                const queryString = queryParams.toString();
+                const url = `http://127.0.0.1:8888/app/announcement/list?${queryString}`;
+
+                console.log(url);
+              
+                
+
+                 fetch(url)
+                 .then( resp => resp.json())
+                 .then( data => {    
+                setAnnouncement(data.voList); 
+                setPvo(data.pageVo)
+
+                            
+                 })
             }
-        ,[]);
+        ,[searchQuery]);
 
-        const  announcementMove = () =>{
-            navigate("/announcement/list")
-        }
+        
+
+       
 
 
 
@@ -136,18 +199,18 @@ const AnnouncementList = () => {
             </div>
             {/* 2 */}
             <div>
-                <input type="date"/>
-                <input type="date" />
+                <input type="date" name="startDate" onChange={onChangeDate}/>
+                <input type="date" name="endDate"  onChange={onChangeDate} />
                 <button>초기화</button> 
-                <select>
-                <option value="option1">제목</option>
-                <option value="option2">내용</option>
-                <option value="option3">작성자</option>
+                <select onChange={onChangeType}>
+                <option name="title" >제목</option>
+                <option name="content">내용</option>
+                <option name="id">작성자</option>
                 </select>
 
-                <input type='text' placeholder='검색어'></input>
+                <input ref={input} type='text' placeholder='검색어' name={selectedOption} onChange={onChange} ></input>
 
-                <button>검색</button>
+                <button onClick={onClickSearch}>검색</button>
             </div>
             {/* 3 */}
             <div>
@@ -155,7 +218,7 @@ const AnnouncementList = () => {
                         announcement.length === 0 ? 
                         <h1>로딩중</h1>
                         :
-                        <div key={vo.announcementNo} onClick={()=>{navigate(`/announcement/datail/${vo.announcementNo}`)}}>
+                        <div key={vo.announcementNo} onClick={()=>{navigate(`/announcement/detail/${vo.announcementNo}`)}}>
                             <span>[공지사항]{vo.title}</span>
                             <span>{ vo.enrollDate.substring(0,10)}</span>
                         </div>          

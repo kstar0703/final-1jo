@@ -53,7 +53,7 @@ public class PageVo {
 		
 		
 		if(boardLimit<=0) {
-			this.boardLimit =10;
+			this.boardLimit =5;
 		}else {
 			this.boardLimit = boardLimit;
 		}

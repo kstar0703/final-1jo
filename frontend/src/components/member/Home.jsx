@@ -106,7 +106,7 @@ const Home = () => {
     // 공지사항 리스트
     useEffect(
         ()=>{
-            fetch("http://127.0.0.1:8080/app/announcement/list")
+            fetch("http://127.0.0.1:8888/app/announcement/list")
             .then( resp => resp.json())
             .then( data => {    
                 setAnnouncement(data.voList); 
@@ -186,7 +186,7 @@ const Home = () => {
                         announcement.length === 0 ? 
                         <h1>로딩중</h1>
                         :
-                        <div key={vo.announcementNo} onClick={()=>{navigate(`/announcement/datail/${vo.announcementNo}`)}}>
+                        <div key={vo.announcementNo} onClick={()=>{navigate(`/announcement/detail/${vo.announcementNo}`)}}>
                             <span>[공지사항]{vo.title}</span>
                             <span>{ vo.enrollDate.substring(0,10)}</span>
                         </div>          
