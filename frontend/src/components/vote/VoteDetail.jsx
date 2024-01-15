@@ -68,15 +68,16 @@ const VoteDetail = () => {
   const managerNo = '6';    //11
   // Params로 받아온 글 번호
   const {voteNo} = useParams();
-
+  
   const [pageInfo, setpageInfo] = useState({
     voteNo,
     prtcNo: managerNo,
   });
 
-  //fetch ::: 글 정보 불러오기 + 회원 투표 여부 조회하기
+  //fetch ::: 글 정보 불러오기 + 회원 투표 여부 조회하기 +종료 되었는지 확인후 정보 가져오기
   let [voteVo, setVoteVo] = useState([]);
   let [voteVoList, setVoteVoList] = useState([]);
+  let [voteVoHistory, setVoteVoHistory] = useState([]);
   const loadVoteVo = () => {
     fetch("http://127.0.0.1:8888/app/vote/detail", {
       method: "POST",
@@ -89,9 +90,18 @@ const VoteDetail = () => {
       .then((data) => {
         setVoteVo(data);
         setVoteVoList(data.voList);
-        if(data.count !== '0'){
-            alert("이미 투표한 게시글입니다.");
+        setVoteVoHistory(data.voHistory)
+        console.log(data.voHistroy);
+        const deadLine = new Date(data.deadlineDate);
+        const today = new Date();
+        // 마감일자 + 현재 시간 비교문
+        if(deadLine < today){
+          alert("마감된 투표입니다.");
+        // 이미 투표한 게시글 확인
+        }else if(data.count !== '0'){
+          alert("이미 투표한 게시글입니다.");
         }
+        
       });
   };
   // 1번만 렌더링
@@ -177,7 +187,10 @@ const VoteDetail = () => {
                     <div className="cont">
                       <h1>{voteVo.content}</h1>
                     </div>
-                    {voteVoList.map((vo) => (
+                    {
+                      voteVoHistory.length === 0
+                      ?
+                      voteVoList.map((vo) => (
                       <span>
                         <ul>
                           <li>
@@ -194,9 +207,24 @@ const VoteDetail = () => {
                           </li>
                         </ul>
                       </span>
-                    ))}
+                    ))
+                    :
+                    voteVoHistory.map((vo) => (
+                      <div className='history'>
+                        <h3>투표 결과</h3>
+                        <div>{vo.voteOrder}번 {vo.voteName}</div>
+                        <div>총 투표 수 : {vo.voteCount}표</div>
+                      </div>
+                    ))
+                    }
                     {/*투표 안하고 누르면 막고 팝업창 띄우기*/}
-                    <button onClick={HandleSubmit}>투표하기</button>
+                    {
+                      voteVo.count === '0'
+                      ?
+                      <button onClick={HandleSubmit}>투표하기</button>
+                      :
+                      <></>
+                    }
                   </div>
                 </th>
               </tr>

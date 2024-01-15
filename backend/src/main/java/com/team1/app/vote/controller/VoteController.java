@@ -1,7 +1,11 @@
 package com.team1.app.vote.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +37,7 @@ public class VoteController {
 	
 	//투표 게시글 상세 조회
 	@PostMapping("detail")
-	public VoteVo detail(@RequestBody VoteVo vo) {
+	public VoteVo detail(@RequestBody VoteVo vo) throws ParseException {
 		VoteVo voteVo = service.detail(vo);
 		return voteVo;
 	}
@@ -126,12 +130,12 @@ public class VoteController {
 	
 	//투표 종료
 	@PutMapping("voteEnd")
-	public void voteEnd(String no) {
+	public void voteEnd(VoteVo vo) {
 		
 		//test용 데이터 마이바티스 FORRECH
-		no = "3";
+		vo.setVoteNo("3");
 		
-		boolean result = service.voteEnd(no);
+		boolean result = service.voteEnd(vo);
 		
 		System.out.println(result);
 	}
@@ -207,11 +211,11 @@ public class VoteController {
 	
 	// 투표 결과 상세 조회
 	@GetMapping("history")
-	public void history(String no) {
+	public void history(VoteVo vo) {
 		
-		no = "3";
+		vo.setVoteNo("3");
 		
-		List<VoteVo> voList = service.history(no);
+		List<VoteVo> voList = service.history(vo);
 		
 		for (VoteVo voteVo : voList) {
 			System.out.println(voteVo);
