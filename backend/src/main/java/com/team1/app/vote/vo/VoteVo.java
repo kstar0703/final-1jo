@@ -25,7 +25,7 @@ public class VoteVo {
 	                                                
 	private String voteHistoryNo;	//결과 이력 번호     
 	private String voteName;		//투표 결과 항목 명   
-	private String voteCount;		//투표 수         
+	private String voteCount;		//투표 수 
 	private String voteOrder;		//표기 순서        
 	                                                
 	private String itemNo;			//투표 항목 번호     
