@@ -26,14 +26,20 @@ public class FacilityNoticeController {
 	private final FacilityNoticeService service;
 
 	//커뮤니티공지 목록조회
-	@GetMapping("list")
-	public List<FacilityNoticeVo> list(){
-		return service.list();
+	@PostMapping("list")
+	public Map<String, Object> list(@RequestBody FacilityNoticeVo vo){
+		System.out.println(vo);
+		List<FacilityNoticeVo> facilityNoticeVoList = service.list(vo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("facilityNoticeVoList", facilityNoticeVoList);
+		map.put("msg", "good");
+		return map;
 	}
 
 	//커뮤니티공지 상세조회
-	@GetMapping("detail")
+	@PostMapping("detail")
 	public Map<String, Object> detail(@RequestBody FacilityNoticeVo vo){
+		System.out.println(vo);
 		FacilityNoticeVo facilityNoticeVo = service.detail(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("FacilityNoticeVo", facilityNoticeVo);

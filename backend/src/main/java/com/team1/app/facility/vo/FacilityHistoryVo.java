@@ -11,4 +11,11 @@ public class FacilityHistoryVo {
 	private String useDate;
 	private String price;
 	private String cancelDate;
+	
+	private String facilitiesName;
+	private String name;
+	
+	private String startDate;
+	private String endDate;
+	
 }

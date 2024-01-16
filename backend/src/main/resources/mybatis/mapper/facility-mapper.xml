@@ -131,6 +131,8 @@
 		JOIN FACILITIES_HISTORY H ON F.FACILITIES_NO = H.FACILITIES_NO
 		JOIN MEMBER M ON M.MEMBER_NO = H.MEMBER_NO
 		WHERE M.MEMBER_NO = #{memberNo}
+		ORDER BY USE_DATE DESC
+		
 	</select>
 	
 	<!-- 기간으로 예약내역조회 (사용자) -->
@@ -150,6 +152,7 @@
 		JOIN MEMBER M ON M.MEMBER_NO = H.MEMBER_NO
 		WHERE M.MEMBER_NO = #{memberNo}
 		AND USE_DATE BETWEEN #{startDate} AND #{endDate}
+		ORDER BY USE_DATE DESC
 	</select>
 	
 	<!-- 예약추가(회원번호, 이용일) -->
