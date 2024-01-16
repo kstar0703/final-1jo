@@ -39,10 +39,10 @@ public class FacilityNoticeController {
 	//커뮤니티공지 상세조회
 	@PostMapping("detail")
 	public Map<String, Object> detail(@RequestBody FacilityNoticeVo vo){
-		System.out.println(vo);
 		FacilityNoticeVo facilityNoticeVo = service.detail(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("FacilityNoticeVo", facilityNoticeVo);
+		map.put("facilityNoticeVo", facilityNoticeVo);
+		System.out.println(facilityNoticeVo);
 		return map;
 	}
 

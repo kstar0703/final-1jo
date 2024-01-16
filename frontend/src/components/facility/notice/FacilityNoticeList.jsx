@@ -43,10 +43,10 @@ const FacilityNoticeList = ({facilitiesNo}) => {
                         <div>loading..</div>
                         :
                         facilityNoticeVoList.map(vo=>
-                            <tr onClick={()=>{navigator(`/facility/notice/${facilitiesNo}`)}}>
+                            <tr onClick={()=>{navigator(`/facility/notice/${vo.facilitiesNoticeNo}`)}}>
                                 <td></td>
                                 <td>{vo.title}</td>
-                                <td>{formatDate(vo.enrollDate)}2023-09-26 17:38</td>
+                                <td>{formatDate(vo.enrollDate)}</td>
                             </tr>
                             )
                     }

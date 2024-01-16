@@ -56,6 +56,7 @@ public class FacilityController {
 	//예약추가(회원번호, 이용일)
 	@PostMapping("apply")
 	public Map<String, String> apply(@RequestBody FacilityHistoryVo vo){
+		System.out.println(vo);
 		int result = service.apply(vo);
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("msg", "good");
