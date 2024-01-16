@@ -46,7 +46,7 @@
 		SELECT 
 		    FACILITIES_NOTICE_NO
 		    , N.FACILITIES_NO
-		    , N.MANAGER_NO
+		    , M.MANAGER_NO
 		    , TITLE
 		    , N.ENROLL_DATE
 		    , N.MODIFY_DATE
@@ -57,6 +57,7 @@
 		JOIN FACILITIES F ON F.FACILITIES_NO = N.FACILITIES_NO
 		LEFT JOIN MANAGER M ON M.MANAGER_NO = N.MANAGER_NO
 		WHERE N.DEL_YN = 'N'
+		AND F.FACILITIES_NO = #{facilitiesNo}
 	</select>
 	
 	<!-- 커뮤니티공지 상세조회 (사용자) -->

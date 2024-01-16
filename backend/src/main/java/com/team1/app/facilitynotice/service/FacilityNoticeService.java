@@ -18,8 +18,8 @@ public class FacilityNoticeService {
 	private final SqlSessionTemplate sst;
 	
 	//커뮤니티공지 목록조회
-	public List<FacilityNoticeVo> list() {
-		return dao.list(sst);
+	public List<FacilityNoticeVo> list(FacilityNoticeVo vo) {
+		return dao.list(sst, vo);
 	}
 
 	//커뮤니티공지 상세조회
