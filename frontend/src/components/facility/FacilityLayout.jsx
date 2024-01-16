@@ -10,7 +10,7 @@ const FacilityLayout = () => {
             <div>
                 <div onClick={()=>navigator("/facility/history")}>My 예약 내역</div>
             </div>
-            <FacilityList />
+                <FacilityList />
         </div>
     );
 };
