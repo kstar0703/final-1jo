@@ -125,7 +125,7 @@ const AnnoucementDetail = () => {
                 <th>
                   <div>{announcementVo.id}</div>
                   <div>
-                    <div>{announcementVo.enrollDate.substring(0,10)}</div>
+                    <div>{ announcementVo.enrollDate ? announcementVo.enrollDate.substring(0,10) :''}</div>
                     
                   </div>
                 </th>
