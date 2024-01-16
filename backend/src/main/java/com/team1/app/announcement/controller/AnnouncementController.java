@@ -90,18 +90,19 @@ public class AnnouncementController {
 		Map<String,Object> resultMap = new HashMap();
 		
 		int cnt = service.count(vo);
-		
+		System.out.println(cnt);
 		//페이지 리밋
 		int pageLimit = 10;	
 		
-		
 		PageVo pvo = new PageVo(cnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
+		
+		System.out.println(pvo);
 	
 		
 	
 		List<AnnouncementVo> voList = service.list(vo,pvo);
 		
-		
+				
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");
 		resultMap.put("voList", voList);

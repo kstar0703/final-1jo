@@ -40,8 +40,12 @@
 	
 	<!-- 로그인  -->
 	<select id="login" resultType="MemberVo">
-	SELECT 
-	MEMBER_NO
+	SELECT
+    (SELECT COUNT(*) FROM MEMBER 
+ 	WHERE UNIT_NO =(SELECT UNIT_NO FROM MEMBER 
+  	WHERE PHONE = #{phone} AND PWD =#{pwd} AND DEL_YN ='N')
+  	) AS UNITCOUNT 
+	,MEMBER_NO
 	,U.UNIT_NO
 	,PHONE,PWD
 	,OWNER_YN
@@ -79,6 +83,15 @@
 	
 	</update>
 	
+	<!-- 패스워드 수정  -->
+	<update id ="changePwd">
+	UPDATE 
+	MEMBER 
+	<trim prefix="SET" suffixOverrides=",">
+ 	<if test="pwd !=null">PWD = #{pwd}, </if>
+	</trim>
+	WHERE MEMBER_NO = #{memberNo} AND DEL_YN ='N' 
+	</update>
 	<!-- 회원탈퇴  -->
 	<update id="delete">
 	UPDATE MEMBER 
@@ -115,8 +128,9 @@
 	WHERE MEMBER_NO =#{memberNo}
 	</update>
 	
+	<!-- 유닛정보  -->
 	<select id="selectUnit" resultType="com.team1.app.unit.vo.UnitVo">
-	select
+	SELECT
 	UNIT_NO
 	,DONG
 	,HO
@@ -128,13 +142,55 @@
  	<if test="dong !=null">DONG= #{dong} AND </if>
  	<if test="ho !=null">HO = #{ho} </if>
  	</trim>
- 	
-	
 	</select>
 	
+	
+	<!-- 유닛정보 -->
+	<select id="unitInfo" resultType="com.team1.app.unit.vo.UnitVo">
+	SELECT 
+	UNIT_NO
+	,DONG
+	,HO
+	,SCALE
+	,VEH_TIME
+	FROM UNIT
+	WHERE UNIT_NO  = #{unitNo}
+	</select>
+	
+	
+	
+	<!-- 정보 최신화  -->
+	<select id="localStoargeMember" resultType="MemberVo">
+		SELECT
+   (SELECT COUNT(*) FROM MEMBER 
+ 	WHERE UNIT_NO =(SELECT UNIT_NO FROM MEMBER 
+  	WHERE PHONE = #{phone} AND DEL_YN ='N')
+  	) AS UNITCOUNT
+	,MEMBER_NO
+	,U.UNIT_NO
+	,PHONE,PWD
+	,OWNER_YN
+	,NAME
+	,GENDER
+	,BIRTH
+	,DEL_YN
+	,PERMISSION_YN
+    ,DONG
+    ,HO
+    ,SCALE
+    ,VEH_TIME
+    FROM MEMBER M
+    JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
+    WHERE
+    PHONE = #{phone}
+    AND 
+    DEL_YN ='N'
+	</select>
+	
+	
+	
 
 	
 	
-
 
 </mapper>

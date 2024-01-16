@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState  } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -13,15 +13,26 @@ import styled from 'styled-components';
     gap : 20px;
 
     & > div:first-of-type{
+        display: flex;
         margin: 10px;
+        justify-content: space-between;
+        align-items: center;
 
-        & > :first-child{
+       & > :first-child {
+           display: flex;
+           flex-direction: column;
+
+           & >span:nth-of-type(1){
             font-size: 24px;
-        }
+           }
+       }
 
-        & > :nth-child(2){
-
-        }
+       & > :nth-child(2){
+            
+            & > span{
+                border: 1px solid black;
+            }
+       }
     }
 
      & > div:nth-of-type(2){
@@ -103,17 +114,34 @@ const Home = () => {
     // 공지사항
     const [announcement,setAnnouncement] = useState([]);
 
+    const [unitInfo,setUnifInfo] = useState({});
+
+    console.log(unitInfo)
+
     // 공지사항 리스트
     useEffect(
         ()=>{
-            fetch("http://127.0.0.1:8888/app/announcement/list")
+             fetch("http://127.0.0.1:8888/app/announcement/list")
             .then( resp => resp.json())
             .then( data => {    
                 setAnnouncement(data.voList); 
-                console.log(announcement) 
+                
                 
             })
+            
+            fetch("http://127.0.0.1:8888/app/unit/info",{
+                method: "post",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(loginMember),
+            })
+            .then( resp => resp.json())
+            .then( data => {   
+                setUnifInfo(data.unitVo)
+            })
         }
+        
     ,[]);
 
     const  announcementMove = () =>{
@@ -128,6 +156,14 @@ const Home = () => {
         }
     )
 
+    //마이페이지 이동
+    
+    const onClickMyPage = () =>{
+        navigate('mypage')
+    }
+    
+    
+
 
 
     
@@ -139,9 +175,14 @@ const Home = () => {
         <StyledDiv>
             {/* 1 동 호수 */}
             <div>
-               <span>{loginMember.name}님</span>
-               <br />
+               <div> 
+               <span>{loginMember.name}님</span>               
                 <span>덕편한세상 {' ' + loginMember.dong}동{loginMember.ho}호</span>
+               </div>
+
+                <div>
+                  <span onClick={onClickMyPage}>마이페이지</span>    
+                </div>            
             </div>
 
             {/* 2 내현황  */}
@@ -160,13 +201,13 @@ const Home = () => {
                     <div>
                         <button>세대원수</button>
                         
-                        <span>명</span>
+                        <span>{loginMember.unitCount} 명</span>
                     </div>
 
                     <div>
                         <button>방문예약</button>
                         <span>잔여시간</span>
-                        <h3>{Math.floor(loginMember.vehTime  / 60)  } 시간{loginMember.vehTime%60}분</h3>
+                        {unitInfo ? <h3>{Math.floor(unitInfo.vehTime  / 60)  } 시간{unitInfo.vehTime%60}분</h3> : ''}
                     </div>        
                 </div>
 

@@ -20,7 +20,18 @@ const StyledHeaderDiv = styled.div`
     }
 `;
 const Header = () => {
+    // 로그인 멤버 
+    const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
     const navigator = useNavigate();
+
+    const clickLogin = () => {
+        navigator("/")
+    }
+
+    const clickMyPage = () =>{
+        navigator("member/home")
+    }
+    
     return (
         <StyledHeaderDiv>
             <div className='logo' onClick={()=>{navigator("/");}}>
@@ -31,7 +42,7 @@ const Header = () => {
             <Navi />
             <div className='info'>
                 <img src='resources/ico_info.svg' />
-                <span>유저 님</span>
+                {loginMember ? <span onClick={clickMyPage}>{loginMember.name}님 </span> : <button onClick={clickLogin}>로그인</button> }
             </div>
         </StyledHeaderDiv>
     );

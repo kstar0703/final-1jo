@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Home from './Home';
 import Edit from './Edit';
+import MyPage from './MyPage';
+import ChangePwd from './ChangePwd';
 
 
 
@@ -13,6 +15,11 @@ const StyledMainDiv = styled.div`
     display: flex;
     justify-content: center;
     background-color:  #F5F5F5;
+
+    & button:hover {
+        cursor: pointer;
+        background-color: cornflowerblue ;
+    }
     
 `;
 
@@ -21,8 +28,12 @@ const MemberMain = () => {
         <StyledMainDiv>
 
              <Routes>
+
                 <Route path='*' element={<Home/>} />
                 <Route path='edit' element={<Edit/>} />             
+                <Route path='mypage' element={<MyPage/>} />             
+                <Route path='changePwd' element={<ChangePwd/>} />
+                <Route path='quit'></Route>             
             </Routes>      
         </StyledMainDiv>
     );

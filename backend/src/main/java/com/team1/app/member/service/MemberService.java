@@ -127,7 +127,7 @@ public class MemberService {
 	 * @param 
 	 * @return loginMember ,status , msg
 	 */
-	public Map<String, Object> changeInfo(MemberVo vo, String currentPwd) {
+	public Map<String, Object> changeInfo(MemberVo vo) {
 
 		// 결과맵 
 		Map<String, Object> resultMap = new HashMap();
@@ -199,6 +199,27 @@ public class MemberService {
 		}
 		return resultMap;
 		
+	}
+	// 비번 변경
+	public Map<String, Object> changePwd(MemberVo vo) {
+		
+		// 결과맵 
+		Map<String, Object> resultMap = new HashMap();
+		resultMap.put("msg", "조회 데이터 없음");
+		resultMap.put("status","bad");
+
+		
+		
+	
+		return resultMap;
+	}
+	
+	// 로그인 정보 최신화용
+	public MemberVo localStoargeMember(MemberVo vo) {
+		
+		MemberVo loginMember = dao.localStoargeMember(sst,vo);
+		
+		return loginMember;
 	}
 	
 	
