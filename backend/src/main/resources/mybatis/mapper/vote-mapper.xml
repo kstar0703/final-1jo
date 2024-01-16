@@ -45,6 +45,7 @@
 		    ,ITEM_NAME
 		    ,VOTE_ORDER
 		    ,VOTE_TYPE
+		    ,HIT
 		FROM 
 		    VOTE_BOARD V
 		JOIN
@@ -449,7 +450,7 @@
 		    H.VOTE_NO = B.VOTE_NO		
 	</select>
 	
-	<!-- 조회수 증가 --> <!-- 에러남 -->
+	<!-- 조회수 증가 -->
 	<update id="increaseHit">
 		UPDATE
 			VOTE_BOARD

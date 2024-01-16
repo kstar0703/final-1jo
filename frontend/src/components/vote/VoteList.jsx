@@ -3,62 +3,59 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledVoteListDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    .seach_box_bg{
-        height: 300px;
-        background-color: #dadada;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        & form input{
-            width: 300px;
-            height: 40px;
-            border-radius: 10px;
-            margin: 10px;
-            text-align: center;
-        }
-         .seach_btn{
-            width: 100px;
-            &:hover{
-               background-color: aqua;
-               color: #fff;
-            }
-         }
+  width: 100%;
+  height: 100%;
+  .seach_box_bg {
+    height: 300px;
+    background-color: #dadada;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & form input {
+      width: 300px;
+      height: 40px;
+      border-radius: 10px;
+      margin: 10px;
+      text-align: center;
     }
-    .tbl_box{
-        display: flex;
-        justify-content: center;
-        align-items: center;        
+    & form input[type="submit"] {
+      width: 100px;
+      &:hover {
+        background-color: lightcoral;
+        color: #fff;
+      }
     }
-    table{
-        /* 테이블 */
-        width: 80%;
-        & th {
-            padding: 15px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            vertical-align: middle;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 300;
-            &:last-child {
-                border-right: none;
-            }
+  }
+  .tbl_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & table {
+      /* 테이블 */
+      width: 80%;
+      & th {
+        padding: 15px 0;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 300;
+        &:last-child {
+          border-right: none;
         }
-        & tbody td {
-            padding: 15px 10px;
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-            vertical-align: middle;
-            word-break: break-all;
-            text-align: center;
-            font-size: 13px;
-            
-
-        }
-        
+      }
+      & tbody td {
+        padding: 15px 10px;
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+        word-break: break-all;
+        text-align: center;
+        font-size: 13px;
+      }
     }
+  }
 `;
 
 
@@ -101,11 +98,10 @@ const VoteList = () => {
     return (
         <StyledVoteListDiv>
             <div className='wrap'>
-                
                 <div className='seach_box_bg'>
                     <form onSubmit={handleSubmit}>
                         <input onBlur={SearcInput} type='text' name='title' placeholder='키워드 검색'/>
-                        <input className='seach_btn' type='submit' value="검색"/>
+                        <input type='submit' value="검색"/>
                     </form>
                 </div>
 

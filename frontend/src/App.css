@@ -1,0 +1,256 @@
+/* 둘다 공용 사용 가능*/
+
+/*회색버튼*/
+.sty01_btn{
+    width: 100px;
+    height: 38px !important ;
+    border-radius: 10px;
+    background-color: #ccc;
+    &:hover{
+        background-color: lightcoral;
+        color: #fff;
+    }
+}
+/*검정색 버튼*/
+.sty02_btn{
+    width: 100px;
+    height: 38px !important ;
+    border-radius: 10px;
+    background-color: #292929;
+    color:#fff;
+    &:hover{
+        background-color: lightcoral;
+        color: #fff;        
+    }
+}
+/****************************************************유저 페이지 CSS 스타일*/
+/*
+    list 페이지 styled div 안에 넣기, 잘 모르겠으면 vote[설문투표] list 페이지 보고 따라하기
+    width: 100%;
+    height: 100%;
+*/
+.seach_box_bg{
+    height: 300px;
+    background-color: #dadada;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & form input{
+        width: 300px;
+        height: 40px;
+        border-radius: 10px;
+        margin: 10px;
+        text-align: center;
+    }
+    & form input[type=submit]{
+        width: 100px;
+        &:hover{
+            background-color: lightcoral;
+            color: #fff;
+        }
+    }
+}
+.tbl_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;        
+    & table{
+        border-top: 2px solid #000 !important;
+        /* 테이블 */
+        width: 80%;
+        & th {
+            padding: 15px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 300;
+            &:last-child {
+                border-right: none;
+            }
+        }
+        & tbody td {
+            padding: 15px 10px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+            word-break: break-all;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+    }
+    }
+/****************************************************/
+/*
+    detail 페이지 styled div 안에 넣기, 잘 모르겠으면 vote[설문투표] detail 페이지 보고 따라하기
+    width: 100%;
+    height: 100%;
+*/
+.detail_heard_box {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+.tbl_detail_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & table {
+      width: 80%;
+      font-size: 13px;
+      font-weight: 300;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #ddd;
+      & tbody tr th {
+        padding: 15px 0;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 100px;
+        & div {
+          display: flex;
+          gap: 30px;
+        }
+      }
+      & tbody tr:last-child th {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        & span {
+          padding-bottom: 3em;
+        }
+
+        & div {
+          width: 100%;
+          flex-direction: column;
+          & .cont {
+            margin: 3em 0 2.5em;
+          }
+          & button {
+            border-radius: 20px;
+            height: 70px;
+          }
+        }
+      }
+
+    }
+  }
+/****************************************************관리자 페이지 CSS 스타일*/
+
+/*
+    관리자 list 페이지 styled div 안에 넣기, 잘 모르겠으면 vote[설문투표] list 페이지 보고 따라하기
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction : column;
+*/
+
+/*******관리자 검색 박스+버튼 포함 전체**************/
+.ad_wrap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ad_search_box_bg{
+    width: 100%;
+    height: 400px;
+    background-color: #f0f0f0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/*제목글*/
+.ad_tit {
+    width: 65%;
+    margin: 0.5em;
+}
+/*관리자 검색 박스*/
+.ad_search_box{
+    width: 60vw;
+    /* height: 200px; */
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap : 30px 55px;
+    margin: 15px 0;
+    /* box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, .06); */
+}
+.search_item{
+    align-items: center;
+    & label{
+        min-width: 100px;
+    }
+    & .form_box{
+        height : 35px;
+        & input, select{
+            width: 11vw;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            &:hover{
+                background-color: aliceblue;
+            }
+        }
+    }
+}
+.btn_div{
+    width: 65%;
+    display: flex;
+    justify-content: end;
+    gap: 20px 55px;
+    & button {
+        width: 100px;
+        height: 28px;
+    }
+}
+/*********************************************/      
+
+/*********관리자 페이지 전제 리스트 테이블 ******/
+.ad_tbl_box{
+    display: flex;
+    justify-content: center;
+
+    table, tr, th, td{
+        border : 1px solid #ccc !important;
+    }
+    & table{
+        border-top: 2px solid #000 !important;
+        & thead th{
+            background-color: #f0f0f0 !important;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+            font-size: 13px;
+            font-weight: 300;
+            color: #949494;
+            padding: 15px 15px;
+            &:last-child {
+                border-right: none;
+            }
+        }
+        & tbody td{
+            padding: 15px 15px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+            font-size: 13px;
+            font-weight: 300;
+            text-align: center;
+            &:last-child {
+                border-right: none;
+            }
+        }
+    }
+}          
+/*********************************************/     
