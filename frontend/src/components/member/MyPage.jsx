@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import ModalTest from './ModalTest';
+
+
+
 
 const MyPageDiv = styled.div`
     width: 60%;
@@ -47,6 +51,21 @@ const MyPageDiv = styled.div`
 `
 
 const MyPage = () => {
+    //모달
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    
+    let testModal = true;
+
+    const openModal = () => {
+        
+        setIsModalOpen(true)};
+    
+    const closeModal = () => {
+            console.log(testModal)
+        setIsModalOpen(false)}
+
+
+
     // 로그인정보
     const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
 
@@ -129,7 +148,10 @@ const MyPage = () => {
                 <button>회원탈퇴</button>
             </div>
 
+            
 
+            <button onClick={openModal}>모달 열기</button>
+            <ModalTest isOpen={isModalOpen} closeModal={closeModal} title={'정말 탈퇴하시겠습니까?'}  />
 
                 
 

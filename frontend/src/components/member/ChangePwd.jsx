@@ -60,16 +60,16 @@ const ChangePwdDiv = styled.div`
 
 const ChangePwd = () => {
 
-    let currentPwd = useRef();
-    let newPwd = useRef();
-    let newPwdCheck = useRef();
+    let currentPwd = useRef('');
+    let newPwd = useRef('');
+    let newPwdCheck = useRef('');
+
+   
 
     const[changeVo,setChangeVo] = useState(
         {   
-            "no" : JSON.parse(sessionStorage.getItem("loginMember")).memberNo,
+            "memberNo" : JSON.parse(sessionStorage.getItem("loginMember")).memberNo,
             "phone" : JSON.parse(sessionStorage.getItem("loginMember")).phone,
-            "pwd" : newPwd,
-         "currentPwd" : newPwd
         }
     )
 
@@ -92,10 +92,10 @@ const ChangePwd = () => {
 
     const checkMessage = ['비밀번호는 10자리 이상입니다','조건에 부합합니다','대소문자 특수문자중 하나가 들어가야 합니다']
     
-    let pwdCheck =useRef();
+    let pwdCheck =useRef(false);
     const onBlurNewPwd = (e) =>{
-        console.log(pwdCheck)
-        pwdCheck=false
+       
+        pwdCheck.current=false
         if(e.target.value.length ==0){
             newPwdSpan.current.textContent =''
             newPwdSpan.current.style.color ='black'
@@ -109,17 +109,18 @@ const ChangePwd = () => {
         }else if(regex.test(e.target.value)){
             newPwdSpan.current.textContent =checkMessage[1]
             newPwdSpan.current.style.color ='blue'
-            pwdCheck=true
+            pwdCheck.current=true
         }
             setUpdateState(updateState+'a')
     }
 
     let pwdCheckCheck =useRef(false);
+
+    
     // 패스워드 체크
     let newPwdSpanCheck = useRef();
     const onBlurNewPwdCheck = (e) =>{
-            console.log('호출')
-            pwdCheckCheck=false;
+            pwdCheckCheck.current=false;
         if(e.target.value.length ==0){
             newPwdSpan.current.textContent =''
             newPwdSpan.current.style.color ='black'
@@ -140,17 +141,16 @@ const ChangePwd = () => {
             }else{
                 newPwdSpanCheck.current.textContent ='비밀번호가 일치합니다'
                 newPwdSpanCheck.current.style.color ='blue'
-                pwdCheckCheck=true;
+                pwdCheckCheck.current=true;
                 
             }
         }
 
         setUpdateState(updateState+'a')
     }
-
+    let patcherble = true;
     const clickChange = ()=>{
-        console.log(pwdCheck)
-        console.log(pwdCheckCheck)
+     
         if(currentPwd.current.value.length<=0){
             alert('비밀번호는 필수 입력값 입니다.')
             currentPwd.current.focus()
@@ -177,19 +177,59 @@ const ChangePwd = () => {
             return;
         }
        
-        if(pwdCheck){
+        if(!pwdCheck.current){
             alert('비밀번호가 조건에 부합하지 않습니다.')
             newPwd.current.focus()
             return;
         }
         
-        if(pwdCheckCheck){
+        if(!pwdCheckCheck.current){
             alert('비밀번호가 일치하지 않습니다.')
             newPwdCheck.current.focus()
             return
         }
 
-        console.log('하이')
+        setChangeVo({
+            ...changeVo
+           ,      
+           "pwd" : newPwd.current.value,
+           "currentPwd" : currentPwd.current.value
+        })
+
+        if(!patcherble){
+            return;
+        }
+        patcherble =false;
+
+       
+        fetch("http://127.0.0.1:8888/app/member/changePwd",{
+            method: "post",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(changeVo),
+        })
+        .then( (resp) => {
+            return resp.json()})
+            .then( (data)=>{
+                if(data.status==='good'){
+                    sessionStorage.setItem("loginMember", JSON.stringify(data.loginMember));
+                    alert(data.msg)
+                    navigate("/member/mypage")
+                }else{
+                    alert('비밀번호 변경 실패')
+                  
+                }
+            }
+        )
+        .catch()
+        .finally( () => {patcherble = true}) 
+
+        
+
+       
+
+        
     } 
 
    
