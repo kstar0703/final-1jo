@@ -12,7 +12,7 @@ const ListDiv =styled.div`
     flex-direction: column; 
 
     &  div {
-        width: 50%;
+        width: 80%;
         padding:10px ;
     }
 

@@ -15,6 +15,7 @@ public class MemberVo {
 	private String delYn;
 	private String permissionYn;
 	private String currentPwd;
+	private String unitCount;
 	
 	private String dong;
 	private String ho;

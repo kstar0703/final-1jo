@@ -42,6 +42,12 @@ public class MemberDao {
 	public List<UnitVo> selectUnit(SqlSessionTemplate sst, UnitVo vo) {
 		return sst.selectList("MemberMapper.selectUnit",vo);
 	}
+
+	// 정보 변경후 업데이트
+	public MemberVo localStoargeMember(SqlSessionTemplate sst, MemberVo vo) {
+		// TODO Auto-generated method stub
+		return sst.selectOne("MemberMapper.localStoargeMember",vo);
+	}
 	
 	
 

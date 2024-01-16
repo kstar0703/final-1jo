@@ -37,7 +37,6 @@ public class MemberController {
     /**
      *	유닛정보조회 
      */
-	
 	@GetMapping("/selectUnit")
 	public Map<String,Object> selectUnit (UnitVo vo){
 		
@@ -86,10 +85,10 @@ public class MemberController {
 	 * @param 현재 비밀번호 
 	 * @return 
 	 */
-	@PostMapping("/changInfo")
-	public  Map<String, Object> changeInfo(MemberVo vo, String currentPwd ){
+	@PostMapping("/changeInfo")
+	public  Map<String, Object> changeInfo(MemberVo vo){
 		
-		return service.changeInfo(vo,currentPwd);
+		return service.changeInfo(vo);
 	}
 	/**
 	 * 
@@ -103,6 +102,16 @@ public class MemberController {
 		return service.delete(vo,currentPwd);
 	}
 	
+	/**
+	 * @param currentPwd , pwd
+	 * @return
+	 */
+	
+	@PostMapping("/changePwd")
+	public  Map<String, Object> changePwd(MemberVo vo ){
+		
+		return service.changePwd(vo);
+	}
 	
 	
 	
