@@ -23,7 +23,6 @@ const FacilityDetail = () => {
         })
     }
     useEffect(()=>{
-        console.log(facilitiesNo);
         loadFaciilityVoList();
     }, [facilitiesNo]);
     const formatContact = (dataString)=>{
@@ -88,7 +87,7 @@ const FacilityDetail = () => {
                 </div>
                 <div>
                     <div>[ 예약신청 ]</div>
-                    <FacilityHistoryWrite />
+                    <FacilityHistoryWrite facilityVo={facilityVo}/>
                     선택2
                     <FacilityHistoryWriteWithClick />
                     --------------------------------------

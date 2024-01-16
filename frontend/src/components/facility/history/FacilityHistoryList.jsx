@@ -15,7 +15,6 @@ const FacilityHistoryList = () => {
             ...historyVo,
             applicationNo: null    
         });
-
      const loadFacilityHistory = ()=>{
          fetch("http://127.0.0.1:8888/app/facility/history", {
              method: "POST",
@@ -28,8 +27,7 @@ const FacilityHistoryList = () => {
          .then(data=>{
             setHistoryVoList(data.historyVoList);
         })
-    }
-    
+    }    
     useEffect(()=>{
         loadFacilityHistory();
     }, []);
@@ -63,13 +61,14 @@ const FacilityHistoryList = () => {
             })
 
         }
-    }
-    
+    }    
     useEffect(()=>{
         console.log(cancelVo.applicationNo);
         updateHistory();
     }, [cancelVo]);
-
+    const price = (dataString)=>{
+        return parseInt(dataString).toLocaleString();
+    }
     
     return (
         <div>
@@ -98,7 +97,7 @@ const FacilityHistoryList = () => {
                                         </tr>
                                         <tr>
                                             <th>가격</th>
-                                            <td>{vo.price}원</td>
+                                            <td>{price(vo.price)}원</td>
                                         </tr>
                                         <tr>
                                             <th>사용일시</th>

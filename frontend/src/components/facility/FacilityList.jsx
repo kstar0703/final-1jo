@@ -16,16 +16,16 @@ const FacilityList = () => {
     const navigator = useNavigate();
     return (
         <div>
-                    {
-                        facilityVoList.length === 0?
-                        <div>loading..</div>
-                        :
-                        facilityVoList.map(vo=>
-                            <div key={vo.facilitiesNo} onClick={()=>{navigator(`/facility/detail/${vo.facilitiesNo}`)}}>
-                                <FacilityDetailItem img={vo.image} fName={vo.facilitiesName}/>
-                            </div>
-                        )
-                    }
+                {
+                    facilityVoList.length === 0?
+                    <div>loading..</div>
+                    :
+                    facilityVoList.map(vo=>
+                        <div key={vo.facilitiesNo} onClick={()=>{navigator(`/facility/detail/${vo.facilitiesNo}`)}}>
+                            <FacilityDetailItem img={vo.image} fName={vo.facilitiesName}/>
+                        </div>
+                    )
+                }
 
             </div>
     );
