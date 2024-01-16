@@ -15,7 +15,7 @@ const BoardMain = () => {
         <Routes>
             <Route path='list' element={<BoardList />}/>            
             <Route path='write' element={<BoardWrite />}/>
-            <Route path='edit' element={<BoardEdit />}/>
+            <Route path='edit/:boardNo' element={<BoardEdit />}/>
             <Route path='detail/:boardNo' element={<BoardDetail />}/>
             <Route path='like' element={<BoardLike />}/>
             <Route path='reply' element={<BoardReply />}/>

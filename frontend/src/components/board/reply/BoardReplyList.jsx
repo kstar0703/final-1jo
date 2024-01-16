@@ -1,46 +1,83 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import BoardReplyEdit from './BoardReplyEdit';
 
 
 const BoardReply = () => {
     let {boardNo} = useParams();
-    console.log(boardNo);
     const boardVo = {boardNo};
-    console.log(boardVo);
     const [replyVoList, setReplyVoList] = useState([]);
+    const [editingReply, setEditingReply] = useState(null);
+
+    const loadReplyList = ()=>{
+        fetch("http://127.0.0.1:8888/app/board/replyList", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(boardVo)
+        }
+        )
+        .then(resp=>resp.json())
+        .then(data=>{setReplyVoList(data.replyVoList);})
+    }
 
     useEffect(()=>{
-        const loadReplyList = ()=>{
-            fetch("http://127.0.0.1:8888/app/board/replyList", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(boardVo)
-            }
-            )
-            .then(resp=>resp.json())
-            .then(data=>{setReplyVoList(data.replyVoList);})
-        }
-
         loadReplyList();
     }, [boardNo]);
+    
+    const handleDelete = (replyVo)=>{
+        const answerDel = window.confirm("정말 삭제 하시겠습니까?");
+        if(answerDel){
+            fetch("http://127.0.0.1:8888/app/board/replyDelete", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify(replyVo)
+            })
+            .then(resp=>resp.json())
+            .then(data=>{
+                if(data.msg === "good"){
+                    alert("삭제 완료");
+                    loadReplyList();
+                }else{
+                    alert("삭제 실패");
+                }
+            })
+        }        
+    }
+    const handleEdit = (replyVo) =>{
+        console.log("클릭됨");
+        setEditingReply(replyVo);
+    }
+    const handleChangeEditCancel = () => {
+        setEditingReply(null);
+        loadReplyList();
+    }
 
     return (
         <div>
             [ 댓글목록 ]<br/>
             -------------------------------------------
             {
-                            replyVoList.length === 0?
-                            <div>댓글작성</div>
-                            :
-                            replyVoList.map(replyVo=>
-                                <div>
-                                    <div>{replyVo.dong}동 {replyVo.name}</div>
-                                    <div>{replyVo.enrollDate}</div>
-                                    <div>{replyVo.content}</div>
-                                    -------------------------------------------
-                                </div>
-                                )
-                        }
+                replyVoList.length === 0?
+                <div>댓글작성</div>
+                :
+                replyVoList.map(replyVo=>
+                    <div>
+                        <div>{replyVo.dong}동 {replyVo.name}</div>
+                        <div>{replyVo.enrollDate}</div>
+                        <div>{replyVo.content}</div>
+                        {editingReply === replyVo && (
+                            <div>
+                                <BoardReplyEdit replyVo={replyVo} cancelState={handleChangeEditCancel}/>
+                            </div>
+                        )}
+                        <div><button onClick={()=>{handleEdit(replyVo)}}>수정</button></div>
+                        <div><button onClick={()=>{handleDelete(replyVo)}}>삭제</button></div>
+                        -------------------------------------------
+                    </div>
+                    )
+            }
         </div>
     );
 };
