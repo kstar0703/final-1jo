@@ -99,5 +99,9 @@ public class VoteDao {
 		return sst.selectList("VoteMapper.adminHistory");
 	}
 
+	public int increaseHit(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.update("VoteVoMapper.increaseHit",vo);
+	}
+
 
 }

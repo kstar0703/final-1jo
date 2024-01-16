@@ -1,37 +1,38 @@
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
-const StyledVoteDetailDiv = styled.div`
-     .detail_box {
-        padding: 20px;
-        border-radius: 10px;
-        background-color: #fff;
-    }
-    .detail_box .tbl_box {
-        border-top: 1px solid #333;
-    }
-    .detail_box .tbl_box tr:first-child th {
-        border-top: 0;
-    }
-    .detail_box .tbl_box td {
-        padding: 5px 10px;
-        text-align: left;
-    }
+// const StyledVoteDetailDiv = styled.div`
+//      .detail_box {
+//         padding: 20px;
+//         border-radius: 10px;
+//         background-color: #fff;
+//     }
+//     .detail_box .tbl_box {
+//         border-top: 1px solid #333;
+//     }
+//     .detail_box .tbl_box tr:first-child th {
+//         border-top: 0;
+//     }
+//     .detail_box .tbl_box td {
+//         padding: 5px 10px;
+//         text-align: left;
+//     }
 
-    .tbl_box.data {
-        border-top: 1px solid #333;
-    }
-    .tbl_box.data table th {
-        padding: 10px;
-    }
-    .tbl_box.data table td {
-        padding: 7px 0;
-    }
+//     .tbl_box.data {
+//         border-top: 1px solid #333;
+//     }
+//     .tbl_box.data table th {
+//         padding: 10px;
+//     }
+//     .tbl_box.data table td {
+//         padding: 7px 0;
+//     }
 
-`;
+// `;
 
 const VoteDetail = () => {
     return (
+        <></>
         // <StyledVoteDetailDiv>
         //      <div class="container">
         //         <div class="tit_box">

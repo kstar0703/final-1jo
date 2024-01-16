@@ -51,6 +51,16 @@ public class VoteService {
 		VoteVo resultVo = voList.get(0);
 		resultVo.setCount(cnt);
 		
+		//마감 안 되고 이미 투표 안 했으면 조회수 올리기
+		
+		if(voList.get(0).getVoHistory().size() == 0 && Integer.parseInt(cnt) == 0) {
+			System.out.println("둘다 안했다 조회수 올려");
+			int hitResunt = dao.increaseHit(sst,vo);
+			if(hitResunt != 1) {
+				throw new IllegalStateException();
+			}
+		}
+
 		return resultVo;
 	}
 
