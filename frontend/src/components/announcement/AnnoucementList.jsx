@@ -228,7 +228,7 @@ const AnnouncementList = () => {
             </div>
             {/* 4 관리자라면 보이게 유저면 안보이게 변경 */}
             <div>
-                <button>공지사항 작성</button>    
+                
             </div>
 
             {/*5 버튼영역 */}

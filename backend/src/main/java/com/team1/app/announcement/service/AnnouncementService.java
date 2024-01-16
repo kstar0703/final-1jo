@@ -41,7 +41,7 @@ public class AnnouncementService {
 		boolean retunrResult= false;
 		
 		//디비 저장 경로
-		String path="http://127.0.0.1:8888/app/resources\\upload\\gallery\\img\\";
+		String path="http://127.0.0.1:8888/app/resources\\upload\\announcement\\img\\";
 		
 		//파일 이름 저장
 		if(fileArr !=null && fileArr.length>0) {
@@ -90,7 +90,7 @@ public class AnnouncementService {
 			System.out.println(result);
 			
 			//디비 저장 경로
-			String path="http://127.0.0.1:8888/app/resources\\upload\\gallery\\img\\";
+			String path="http://127.0.0.1:8888/app/resources\\upload\\announcement\\img\\";
 			
 			//파일 이름 저장
 			if(fileArr !=null && fileArr.length>0) {
@@ -131,6 +131,7 @@ public class AnnouncementService {
 		String extendName = f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
 			File target = new File(path + UUIDfileName + extendName);
 			f.transferTo(target);
+			System.out.println("파일업로드 몇번?");
 			fileList.add(UUIDfileName+extendName);
 		}
 		

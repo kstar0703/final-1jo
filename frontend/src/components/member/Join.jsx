@@ -304,7 +304,7 @@ const Join = () => {
             </div>
 
             <div>
-              <input type="submit" name="join" onClick={ClickJoin} />
+              <input type="submit" name="join" onClick={ClickJoin} value='가입' />
             </div>
 
         </div>
