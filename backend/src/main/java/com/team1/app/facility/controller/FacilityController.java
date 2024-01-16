@@ -36,7 +36,7 @@ public class FacilityController {
 	}
 	
 	//커뮤니티시설 상세정보조회
-	@GetMapping("detail")
+	@PostMapping("detail")
 	public Map<String, Object> detail(@RequestBody FacilityVo vo){
 		FacilityVo facilityVo = service.detail(vo);
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -45,9 +45,12 @@ public class FacilityController {
 	}
 	
 	//예약내역조회 (사용자) + 기간으로 조회 
-	@GetMapping("history")
-	public List<FacilityHistoryVo> listByHistory(@RequestBody FacilityHistoryVo vo){
-		return service.listByHistory(vo);
+	@PostMapping("history")
+	public Map<String, Object> listByHistory(@RequestBody FacilityHistoryVo vo){
+		List<FacilityHistoryVo> historyVoList = service.listByHistory(vo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("historyVoList", historyVoList);
+		return map;
 	}
 	
 	//예약추가(회원번호, 이용일)
@@ -64,7 +67,9 @@ public class FacilityController {
 	
 	//예약취소(신청번호)
 	@PutMapping("cancel")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public Map<String, String> cancel(@RequestBody FacilityHistoryVo vo){
+		System.out.println(vo);
 		int result = service.cancel(vo);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "good");

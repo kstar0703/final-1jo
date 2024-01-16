@@ -11,8 +11,8 @@ import com.team1.app.facilitynotice.vo.FacilityNoticeVo;
 public class FacilityNoticeDao {
 
 	//커뮤니티공지 목록조회
-	public List<FacilityNoticeVo> list(SqlSessionTemplate sst) {
-		return sst.selectList("FacilityNoticeMapper.list");
+	public List<FacilityNoticeVo> list(SqlSessionTemplate sst, FacilityNoticeVo vo) {
+		return sst.selectList("FacilityNoticeMapper.list", vo);
 	}
 
 	//커뮤니티공지 상세조회
