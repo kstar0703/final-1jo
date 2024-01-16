@@ -1,7 +1,7 @@
 import React ,{useEffect,useState} from 'react';
 import { useHref, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-/*조회 했을 때 사용자에 따른 정보 가져오기*/ 
+
 const StyledVoteDetailDiv = styled.div`
   width: 100%;
   height: 100%;
@@ -64,14 +64,15 @@ const VoteDetail = () => {
 
   const navigator = useNavigate();
 
-  //회원정보 임시용
-  const managerNo = '6';    //11
+  // 로그인 멤버 
+  const memberNo = JSON.parse(sessionStorage.getItem("loginMember")).memberNo;
+
   // Params로 받아온 글 번호
   const {voteNo} = useParams();
   
   const [pageInfo, setpageInfo] = useState({
     voteNo,
-    prtcNo: managerNo,
+    prtcNo: memberNo,
   });
 
   //fetch ::: 글 정보 불러오기 + 회원 투표 여부 조회하기 +종료 되었는지 확인후 정보 가져오기
@@ -91,7 +92,6 @@ const VoteDetail = () => {
         setVoteVo(data);
         setVoteVoList(data.voList);
         setVoteVoHistory(data.voHistory)
-        console.log(data.voHistroy);
         const deadLine = new Date(data.deadlineDate);
         const today = new Date();
         // 마감일자 + 현재 시간 비교문
@@ -117,9 +117,8 @@ const VoteDetail = () => {
     const name = e.target.name;
     const value = e.target.value;
 
-    // 테스트용 고정 회원 id
-    const vo = { no: '6' }; //11
-    const writerNo = vo.no;
+    // 회원 id
+    const writerNo = JSON.parse(sessionStorage.getItem("loginMember")).memberNo;
     
     setRadio({
       [name]: value,
@@ -199,7 +198,7 @@ const VoteDetail = () => {
                                 type="radio"
                                 value={vo.itemNo}
                                 name="itemNo"
-                                checked = { voteVo.count === '0' ? true : false}
+                                checked = { voteVo.count === '0' ? null : false}
                                 onChange={handleClickRadio}
                               />{" "}
                               {vo.voteOrder}번 {vo.itemName}
@@ -218,9 +217,9 @@ const VoteDetail = () => {
                     ))
                     }
                     {/*투표 안하고 누르면 막고 팝업창 띄우기*/}
-                    {
-                      voteVo.count === '0'
-                      ?
+                    { 
+                      voteVo.count === '0' && voteVoHistory.length === 0
+                    ?
                       <button onClick={HandleSubmit}>투표하기</button>
                       :
                       <></>

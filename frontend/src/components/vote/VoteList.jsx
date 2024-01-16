@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState,useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -36,14 +36,12 @@ const StyledVoteListDiv = styled.div`
         width: 80%;
         & th {
             padding: 15px 0;
-            /* background-color: #f0f0f0; */
             border-top: 1px solid #ddd;
             border-bottom: 1px solid #ddd;
             vertical-align: middle;
             text-align: center;
             font-size: 13px;
             font-weight: 300;
-            /* color: #949494; */
             &:last-child {
                 border-right: none;
             }
@@ -51,53 +49,16 @@ const StyledVoteListDiv = styled.div`
         & tbody td {
             padding: 15px 10px;
             background-color: #fff;
-            /* border-right: 1px solid #ddd; */
             border-bottom: 1px solid #ddd;
             vertical-align: middle;
             word-break: break-all;
             text-align: center;
             font-size: 13px;
             
-            /* &:last-child {
-                border-right: none;
-            } */
-            /* & a {
-                font-size: 13px;
-                font-weight: 300;
-                color: var(--font-color);
-                & :hover {
-                    color: #000;
-                    text-decoration: underline;
-                }
-            } */
+
         }
         
     }
-/* .detail_box {
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #fff;
-}
-.detail_box .tbl_box {
-    border-top: 1px solid #333;
-}
-.detail_box .tbl_box tr:first-child th {
-    border-top: 0;
-}
-.detail_box .tbl_box td {
-    padding: 5px 10px;
-    text-align: left;
-}
-
-.tbl_box.data {
-    border-top: 1px solid #333;
-}
-.tbl_box.data table th {
-    padding: 10px;
-}
-.tbl_box.data table td {
-    padding: 7px 0;
-} */
 `;
 
 
@@ -117,18 +78,33 @@ const VoteList = () => {
         loadVoteVoList();
     },[]);
     
-    let [searcData, setSearcData] = useState([]);
-    const hendleSearcInput = (e) => {
-        setSearcData(e.target.value); //toLowerCase()
+    
+    let keyword = useRef();
+    const SearcInput = (e) => {
+        //키워드 값 넣기
+        keyword = {
+            title : e.target.value
+        }
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        //fetch 갔다가 값 가져오기
+        fetch(`http://127.0.0.1:8888/app/vote/select?title=${keyword.title}`)
+        .then(resp => (resp.json()))
+        .then((data)=>{setVoteVoList(data);})
+        ;
     }
 
+    
+    
     return (
         <StyledVoteListDiv>
             <div className='wrap'>
                 
                 <div className='seach_box_bg'>
-                    <form>
-                        <input onChange={hendleSearcInput} type='text' name='title' placeholder='키워드 검색'/>
+                    <form onSubmit={handleSubmit}>
+                        <input onBlur={SearcInput} type='text' name='title' placeholder='키워드 검색'/>
                         <input className='seach_btn' type='submit' value="검색"/>
                     </form>
                 </div>
@@ -167,7 +143,7 @@ const VoteList = () => {
                                         <td>{vo.content}</td>
                                         <td>{vo.enrollDate}</td>
                                         <td>{vo.deadlineDate}</td>
-                                        <td>111</td>
+                                        <td>{vo.hit}</td>
                                     </tr>)
                                 )
                             }

@@ -98,22 +98,21 @@ public class VoteController {
 		System.out.println(result);
 	}
 	
-	//투표 게시글 검색
+	//투표 게시글 
 	@GetMapping("select")
-	public void select(VoteVo vo) {
+	public List<VoteVo> select(VoteVo vo) {
 		
 		//test용 데이터
-		vo.setDelYn("N");
-		vo.setManagerId("admin");
-		vo.setTitle("투표");
-		vo.setContent("투표");
+//		vo.setTitle("투표");
+//		vo.setContent("투표");
 		
 		List<VoteVo> voList = service.select(vo); 
 		
-		for (VoteVo voteVo : voList) {
-			
-			System.out.println(voteVo);
-		}
+//		for (VoteVo voteVo : voList) {
+//			
+//			System.out.println(voteVo);
+//		}
+		return voList;
 	}
 	
 	// 전체 투표 수 조회 (투표율)
@@ -170,12 +169,13 @@ public class VoteController {
 	
 	// 관리자 전체 투표 게시글 조회
 	@GetMapping("adminList")
-	public void adminList() {
+	public List<VoteVo> adminList() {
 		List<VoteVo> voList = service.adminList();
 		
-		for (VoteVo voteVo : voList) {
-			System.out.println(voteVo);
-		}
+//		for (VoteVo voteVo : voList) {
+//			System.out.println(voteVo);
+//		}
+		return voList;
 	}
 	
 	// 관리자 게시글 상세 조회

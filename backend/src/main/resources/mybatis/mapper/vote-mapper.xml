@@ -14,6 +14,7 @@
 		    ,CONTENT
 		    ,ENROLL_DATE
 		    ,DEADLINE_DATE
+		    ,HIT
 		FROM 
 		    VOTE_BOARD V
 		JOIN
@@ -154,7 +155,9 @@
 		    ,V.MANAGER_NO
 		    ,TITLE
 		    ,CONTENT
-		    ,ID
+		    ,ENROLL_DATE
+		    ,DEADLINE_DATE
+		    ,HIT
 		FROM 
 		    VOTE_BOARD V
 		JOIN
@@ -163,17 +166,13 @@
 		    M.MANAGER_NO = V.MANAGER_NO
 		WHERE
 		    DEL_YN = 'N'
-		<if test="managerId != null">
-			AND
-			    ID = #{managerId}
-		</if>
 		<if test="title != null">
 			AND
 			    TITLE like '%${title}%'
 		</if>
-		<if test="content != null">
-			AND 
-			    CONTENT like '%${content}%'
+		<if test="title != null">
+			OR 
+			    CONTENT like '%${title}%'
 		</if>
 		ORDER BY 
 		    VOTE_NO DESC		
@@ -291,7 +290,7 @@
 	<select id="adminList" resultType="VoteVo">
 		SELECT 
 		    VOTE_NO
-		    ,V.MANAGER_NO
+		    ,V.MANAGER_NO AS managerId
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
@@ -300,6 +299,7 @@
 		    ,DEL_YN
 		    ,ACCEPT_YN
 		    ,ID
+		    ,HIT
 		FROM 
 		    VOTE_BOARD V
 		JOIN
@@ -448,4 +448,13 @@
 		ON
 		    H.VOTE_NO = B.VOTE_NO		
 	</select>
+	
+	<!-- 조회수 증가 --> <!-- 에러남 -->
+	<update id="increaseHit">
+		UPDATE
+			VOTE_BOARD
+		SET 
+			HIT = HIT + 1
+		WHERE VOTE_NO = #{voteNo}
+	</update>
 </mapper>
