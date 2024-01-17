@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,16 +106,14 @@ public class VoteController {
 	}
 	
 	//투표 게시글 수정 (글제목, 글내용)
-	@PutMapping("edit")
-	public void edit(VoteVo vo) {
-		//test용 데이터
-		vo.setTitle("변경, 게시글 수정 테스트 투표 제목");
-		vo.setContent("변경, 게시글 수정 테스트 투표 설명글");
-		vo.setVoteNo("6");
+	@PostMapping("edit")
+	public int edit( @RequestBody VoteVo vo) {
+		System.out.println(vo);
 		
 		int result = service.edit(vo);
-		
 		System.out.println(result);
+		
+		return result;
 	}
 	
 	//투표 게시글 삭제

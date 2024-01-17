@@ -126,17 +126,17 @@
 	<update id="edit">
 		UPDATE
 		    VOTE_BOARD 
-		<set>
-			<if test="title != null">
-		    	TITLE = #{title}				
-			</if>
-
-			<if test="content != null">
-			    ,CONTENT = #{content}		
-			</if>
-		</set>
+		SET
+			DEL_YN = #{delYn}
+			,ACCEPT_YN = #{acceptYn}
+		<if test="title != null">
+	    	,TITLE = #{title}				
+		</if>
+		<if test="content != null">
+		    ,CONTENT = #{content}		
+		</if>
 		WHERE 
-    		VOTE_NO = #{voteNo}			
+    		VOTE_NO = #{voteNo}
 	</update>
 
 	<!-- 게시글 삭제 -->
