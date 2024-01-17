@@ -29,7 +29,7 @@ const Navi = () => {
           <img src="resources/logo.svg" />
           <img src="resources/logo.svg" />
         </div>
-        <div><Link to="announcement/member">회원검색</Link></div>
+        <div><Link to="member/search">회원검색</Link></div>
         <div><Link to="announcement/list">공지사항</Link></div>
         <div><Link to="vote/list">설문투표</Link></div>
         <div><Link to="board/list">소통게시판</Link></div>  

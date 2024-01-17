@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ModalTest from './ModalTest';
+import Modal from '../modal/Modal';
 
 
 
@@ -38,6 +38,12 @@ const MyPageDiv = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
+
+            &  button{
+                width: 200px;
+                height: 50px;
+            }
         }
         
     }
@@ -51,18 +57,61 @@ const MyPageDiv = styled.div`
 `
 
 const MyPage = () => {
-    //모달
+    //모달 (탈퇴))
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    let testModal = true;
-
     const openModal = () => {
         
         setIsModalOpen(true)};
+    //모달 (로그아웃)
+    const closeModal = () => {setIsModalOpen(false)}
+        const [isModalOpenLogout, setIsModalOpenLogout] = useState(false);
+        const openModalLogout = () => {
+            
+            setIsModalOpenLogout(true)};
+        
+        const closeModalLogout = () => {
+                
+            setIsModalOpenLogout(false)}
     
-    const closeModal = () => {
-            console.log(testModal)
-        setIsModalOpen(false)}
+
+    
+    let patcherble = true;
+    const fecthJava = () =>{
+
+        if(!patcherble){
+            return
+        }
+
+        patcherble = false;
+
+        console.log('하이')
+
+        fetch("http://127.0.0.1:8888/app/member/delete",{
+            method: "post",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(loginMember),
+        })
+        .then( (resp) => {return resp.json()} )
+        .then( (data) => {
+           if(data.status==='good'){
+                sessionStorage.removeItem(loginMember)
+                alert(data.msg)
+                navigate("/")
+           }else{
+                alert('탈퇴실패')
+           }
+           
+        })
+        .finally( () =>{
+            patcherble=true;
+        })
+       
+ }
+
+       
+    
 
 
 
@@ -88,7 +137,6 @@ const MyPage = () => {
     const onClickLogout = () =>{
         sessionStorage.removeItem("loginMember")
         navigate('/')
-  
     }
 
     // 회원탈퇴 
@@ -100,6 +148,8 @@ const MyPage = () => {
     const onClickHome = ()=>{
         navigate('/member/home')
     } 
+
+    
 
     return (
        <>
@@ -119,7 +169,7 @@ const MyPage = () => {
 
                 <div>
                     <button onClick={changePwd}>비밀번호 변경</button>
-                    <button onClick={changePwdInfo}>정보 수정</button>
+                    <button onClick={changePwdInfo}>내 정보 확인</button>
                 </div>
             </div>
             {/* 3 */}
@@ -144,15 +194,19 @@ const MyPage = () => {
 
             {/*3  */}
             <div>
-                <button onClick={onClickLogout}>로그아웃</button>
-                <button>회원탈퇴</button>
+                <button onClick={openModalLogout}>로그아웃</button>
+                
+                <button onClick={openModal}>회원탈퇴</button>     
             </div>
 
             
-
-            <button onClick={openModal}>모달 열기</button>
-            <ModalTest isOpen={isModalOpen} closeModal={closeModal} title={'정말 탈퇴하시겠습니까?'}  />
-
+           
+           {/* 로그아웃 */}
+            <Modal fecthJava={onClickLogout}  isOpen={isModalOpenLogout} closeModal={closeModalLogout} title={'로그아웃 하시겠습니까?'}></Modal>
+            
+            {/* 탈퇴 */}
+            <Modal fecthJava={fecthJava}  isOpen={isModalOpen} closeModal={closeModal} title={'정말 탈퇴 하시겠습니까?'}></Modal>
+            
                 
 
            

@@ -15,6 +15,7 @@ const ListDiv =styled.div`
         width: 80%;
         padding:10px ;
     }
+    
 
     /* 1 */
     & > div:nth-of-type(1){

@@ -40,6 +40,10 @@ const AdminLogin = () => {
             pwd : pwd.current.value
           }
 
+       
+
+          
+
           if(id.current.value.length<=0){
             alert("아이디를 입력하세요")
             id.current.focus()
@@ -57,30 +61,34 @@ const AdminLogin = () => {
           }
           patcherble =false;
 
-          fetch("http://127.0.0.1:8080/app/admin/login",{
-              method: "GET",
-              headers : {
-                  "Content-Type" : "application/json"
-              },
-              body : JSON.stringify(loginMemberVo),
-          })
-          .then( (resp) => {
-              return resp.json()})
-              .then( (data)=>{
-              if(data.status==="good"){
-                  alert(data.msg);
-                  sessionStorage.setItem("loginMemberVo", JSON.stringify(data));
-                  console.log(sessionStorage.getItem("loginMemberVo"))
-                  navigate('/admin')
-              }else{
-                  alert(data.msg)
-                  
-                  return;
-              }
-          })
-          .catch()
-          .finally( () => {patcherble = true}) 
-   }  
+          fetch("http://127.0.0.1:8888/app/admin/login",{
+                method: "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(loginMemberVo),
+            })
+            .then( (resp) => {
+                return resp.json()})
+                .then( (data)=>{
+                if(data.status==="good"){
+                    console.log(data)
+                    alert(data.msg);
+                    sessionStorage.setItem("loginMember", JSON.stringify(data.loginMember));
+                    navigate("/admin/")
+                    
+                    
+                }else{
+                    alert(data.msg)
+                    console.log(data)
+                    
+                    return;
+                }
+            })
+            .catch()
+            .finally( () => {patcherble = true}) 
+     }
+
     return (
         <StyledLoginDiv>
             <div>
@@ -100,7 +108,7 @@ const AdminLogin = () => {
                 </form>
             </div>
 
-
+	
 
             <div>
                 [카피라이트 어쩌구 이미지 추가]

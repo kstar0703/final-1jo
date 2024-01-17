@@ -5,8 +5,7 @@ import AnnouncementList from './AnnoucementList';
 const AnnouncementMain = () => {
     return (
         <Routes>
-            <Route path='admin/list' element={<AnnouncementList />}/>
-            admin
+            <Route path='/list' element={<AnnouncementList />}/>
         </Routes>
     );
 };

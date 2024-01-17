@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.team1.app.manager.Service.ManagerService;
@@ -11,6 +12,7 @@ import com.team1.app.manager.vo.ManagerVo;
 import com.team1.app.member.vo.MemberVo;
 
 import lombok.RequiredArgsConstructor;
+import oracle.net.aso.l;
 
 @RequestMapping("/admin")
 @RestController
@@ -27,15 +29,22 @@ public class ManagerController {
 	 * @return 로그인정보
 	 */
 	@PostMapping("login")
-	public Map<String,Object> login(ManagerVo vo){
-		
+	public Map<String,Object> login(@RequestBody ManagerVo vo){
+
+	
 		Map<String,Object> resultMap = new HashMap();
 		resultMap.put("msg", "로그인실패");
+		resultMap.put("status", "bad");
 		
 		ManagerVo loginManger = service.login(vo);
 		
+		
+	
+		
 		if(loginManger !=null) {
 		resultMap.put("loginManger",loginManger);
+		resultMap.put("msg", "로그인 성공");
+		resultMap.put("status", "good");
 		}
 		
 		return resultMap;
@@ -46,8 +55,9 @@ public class ManagerController {
 	 * @param vo permissionYn,name,phone
 	 * @return 회원 리스트
 	 */
-	@GetMapping("findMember")
-	public List<MemberVo> findMember(MemberVo vo){
+	@PostMapping("findMember")
+	public List<MemberVo> findMember(@RequestBody MemberVo vo){
+		System.out.println(  "받아온 vo"+vo);
 		 return service.findMember(vo);
 	}
 	/**
