@@ -3,35 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledVoteMainDiv = styled.div`
-// 공용 css 옮기기 btn css 
-.sty01_btn{
-    width: 100px;
-    height: 38px !important ;
-    border-radius: 10px;
-    background-color: #ccc;
-    &:hover{
-        background-color: lightcoral;
-        color: #fff;
-    }
-}
-.sty02_btn{
-    width: 100px;
-    height: 38px !important ;
-    border-radius: 10px;
-    background-color: #292929;
-    color:#fff;
-    &:hover{
-        background-color: lightcoral;
-        color: #fff;        
-    }
-}
-/////////////////////////////////////////////////////////
 
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction : column;
-    .wrap{
+    .ad_wrap{
         width: 100%;
         height: 100%;
         display: flex;
@@ -44,13 +21,12 @@ const StyledVoteMainDiv = styled.div`
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            & .tit {
+            & .ad_tit {
                 width: 65%;
                 margin: 0.5em;
             }
             & .ad_search_box{
                 width: 60vw;
-                /* height: 200px; */
                 padding: 25px;
                 background-color: #fff;
                 border-radius: 10px;
@@ -59,7 +35,7 @@ const StyledVoteMainDiv = styled.div`
                 flex-wrap: wrap;
                 gap : 30px 55px;
                 margin: 15px 0;
-                /* box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, .06); */
+                
                 
                 & .search_item{
                     align-items: center;
@@ -97,7 +73,7 @@ const StyledVoteMainDiv = styled.div`
         & .ad_tbl_box{
             display: flex;
             justify-content: center;
-            //테두리 지워버리기
+            
             & table, tr, th, td{
                 border : 1px solid #ccc ;
             }
@@ -154,120 +130,121 @@ const VoteList = () => {
     },[])
     
     return (
-        <StyledVoteMainDiv>
-            <div className='wrap'>
-                <div className='ad_search_box_bg'>
-
-                    <div className='tit'>
-                        <h2>설문투표 조회</h2>
-                    </div>
-
-                    <div className="ad_search_box">
-                        <div className='search_item'>
-                            <label form='sel01'>제목</label>
-                            <div className='form_box'>
-                                <input type='text' name='title'/>    
-                            </div>
-                        </div>
-                        <div className='search_item'>
-                            <label form='sel01'>제목제목</label>
-                            <div className='form_box'>
-                                <input type='text' name='title'/>    
-                            </div>
-                        </div>
-                        <div className='search_item'>
-                            <label form='sel01'>제목제목제목</label>
-                            <div className='form_box'>
-                                <input type='text' name='title'/>    
-                            </div>
-                        </div>
-                        <div className='search_item'>
-                            <label form='sel01'>제목</label>
-                            <div className='form_box'>
-                                <input type='text' name='title'/>    
-                            </div>
-                        </div>
-                        <div className='search_item'>
-                            <label form='sel01'>제목제목</label>
-                            <div className='form_box'>
-                                <input type='text' name='title'/>    
-                            </div>
-                        </div>
-                        <div className='search_item'>
-                            <label form='sel01'>제목제목</label>
-                            <div className='form_box'>
-                                <select class="sel_box">
-                                    <option value="">일반문의</option>
-                                    <option value="">기능문의</option>
-                                    <option value="">신고문의</option>
-                                </select> 
-                            </div>
-                        </div>
-                        {/*필요 시 추가 가능*/}
-                    </div>
-
-                    <div className='btn_div'>
-                        <div>
-                            <button className='sty01_btn'>초기화</button>
-                        </div>
-                        <div>
-                            <button className='sty02_btn'>검색</button>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="ad_tbl_box data mt40">
-                    <table>
-                        <caption>관리자 투표 테이블</caption>
-                        <colgroup>
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" /> 
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th scope="col">번호</th>
-                                <th scope="col">작성자ID</th>
-                                <th scope="col">제 목</th>
-                                <th scope="col">내 용</th>
-                                <th scope="col">조회수</th>
-                                <th scope="col">작성일자</th>
-                                <th scope="col">마감일자</th>
-                                <th scope="col">공개여부</th>
-                                <th scope="col">허가여부</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                            voteVoList.length ===0
-                            ?
-                            <h1>loding</h1>
-                            :
-                            voteVoList.map( vo=>
-                                <tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}}>{/*key={vo.no} */}
-                                    <td>{vo.voteNo}</td>
-                                    <td>{vo.managerId}</td>
-                                    <td>{vo.title}</td>
-                                    <td>{vo.content}</td>
-                                    <td>{vo.hit}</td> 
-                                    <td>{vo.enrollDate}</td>
-                                    <td>{vo.deadlineDate}</td>
-                                    <td>{vo.delYn}</td>
-                                    <td>{vo.acceptYn}</td>     
-                                </tr>
-                                )
-                            }    
-                        </tbody>
-                    </table>
-                </div>
+      <StyledVoteMainDiv>
+        <div className="ad_wrap">
+          <div className="ad_search_box_bg">
+            <div className="ad_tit">
+              <h2>설문투표 조회</h2>
             </div>
-        </StyledVoteMainDiv>
+
+            <div className="ad_search_box">
+              <div className="search_item">
+                <label form="sel01">제목</label>
+                <div className="form_box">
+                  <input type="text" name="title" />
+                </div>
+              </div>
+              <div className="search_item">
+                <label form="sel01">제목제목</label>
+                <div className="form_box">
+                  <input type="text" name="title" />
+                </div>
+              </div>
+              <div className="search_item">
+                <label form="sel01">제목제목제목</label>
+                <div className="form_box">
+                  <input type="text" name="title" />
+                </div>
+              </div>
+              <div className="search_item">
+                <label form="sel01">제목</label>
+                <div className="form_box">
+                  <input type="text" name="title" />
+                </div>
+              </div>
+              <div className="search_item">
+                <label form="sel01">제목제목</label>
+                <div className="form_box">
+                  <input type="text" name="title" />
+                </div>
+              </div>
+              <div className="search_item">
+                <label form="sel01">제목제목</label>
+                <div className="form_box">
+                  <select class="sel_box">
+                    <option value="">일반문의</option>
+                    <option value="">기능문의</option>
+                    <option value="">신고문의</option>
+                  </select>
+                </div>
+              </div>
+              {/*필요 시 추가 가능*/}
+            </div>
+
+            <div className="btn_div">
+              <div>
+                <button className="sty01_btn">초기화</button>
+              </div>
+              <div>
+                <button className="sty02_btn">검색</button>
+              </div>
+            </div>
+          </div>
+          <div class="ad_tbl_box data mt40">
+            <table>
+              <caption>관리자 투표 테이블</caption>
+              <colgroup>
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">번호</th>
+                  <th scope="col">작성자ID</th>
+                  <th scope="col">제 목</th>
+                  <th scope="col">내 용</th>
+                  <th scope="col">조회수</th>
+                  <th scope="col">작성일자</th>
+                  <th scope="col">마감일자</th>
+                  <th scope="col">공개여부</th>
+                  <th scope="col">허가여부</th>
+                </tr>
+              </thead>
+              <tbody>
+                {voteVoList.length === 0 ? (
+                  <h1>loding</h1>
+                ) : (
+                  voteVoList.map((vo) => (
+                    <tr
+                      onClick={() => {
+                        navigator(`/vote/detail/${vo.voteNo}`);
+                      }}
+                    >
+                      {/*key={vo.no} */}
+                      <td>{vo.voteNo}</td>
+                      <td>{vo.managerId}</td>
+                      <td>{vo.title}</td>
+                      <td>{vo.content}</td>
+                      <td>{vo.hit}</td>
+                      <td>{vo.enrollDate}</td>
+                      <td>{vo.deadlineDate}</td>
+                      <td>{vo.delYn}</td>
+                      <td>{vo.acceptYn}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </StyledVoteMainDiv>
     );
 };
 

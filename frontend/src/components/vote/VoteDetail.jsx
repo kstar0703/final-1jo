@@ -15,7 +15,7 @@ const StyledVoteDetailDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    table {
+    & table {
       width: 80%;
       font-size: 13px;
       font-weight: 300;
@@ -168,7 +168,7 @@ const VoteDetail = () => {
               <tr>
                 <th scope="col">
                   <div>{voteVo.title}</div>
-                  <div>{"111"}</div>
+                  <div>{voteVo.hit}</div>
                 </th>
               </tr>
               <tr>

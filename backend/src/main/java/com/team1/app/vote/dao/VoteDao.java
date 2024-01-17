@@ -100,7 +100,7 @@ public class VoteDao {
 	}
 
 	public int increaseHit(SqlSessionTemplate sst, VoteVo vo) {
-		return sst.update("VoteVoMapper.increaseHit",vo);
+		return sst.update("VoteMapper.increaseHit",vo);
 	}
 
 
