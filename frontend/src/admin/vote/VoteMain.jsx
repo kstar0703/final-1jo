@@ -10,7 +10,7 @@ const VoteMain = () => {
     return (
         <Routes>
             <Route path='/list' element={<VoteList/>}></Route>
-            <Route path='/detail/:voteNo*' element={<VoteDetail/>}></Route>
+            <Route path='/detail/:voteNo*' element={<VoteDetail/>}></Route>{/*/detail/:voteNo**/}
             <Route path='/edit/*'element={<VoteEdit />}></Route>
         </Routes>
         

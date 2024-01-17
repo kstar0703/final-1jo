@@ -61,7 +61,7 @@
 		AND
 		    V.VOTE_NO = #{voteNo}
 		ORDER BY 
-		    V.VOTE_NO DESC
+		    I.ITEM_NO
 	</select>
 	
 	<!-- 로그인 회원 투표 여부 조회 -->
@@ -311,10 +311,10 @@
 		    VOTE_NO DESC
 	</select>
 
-	<!-- 관리자 게시글 상세 조회 /게시글 상세 조회 -->
-	<select id="adminDetailBoard" resultType="VoteVo">
+	<!-- 관리자 게시글 상세 조회 -->
+	<select id="adminDetail" resultType="VoteVo">
 		SELECT 
-		    VOTE_NO
+		    V.VOTE_NO
 		    ,V.MANAGER_NO
 		    ,TITLE
 		    ,CONTENT
@@ -323,32 +323,43 @@
 		    ,DEADLINE_DATE
 		    ,ACCEPT_YN
 		    ,ID
+		    ,ITEM_NO
+		    ,ITEM_NAME
+		    ,VOTE_ORDER
+		    ,VOTE_TYPE
+		    ,HIT
 		FROM 
 		    VOTE_BOARD V
 		JOIN
 		    MANAGER M
 		ON 
 		    M.MANAGER_NO = V.MANAGER_NO
-		WHERE
-			VOTE_NO = #{voteNo}
+		JOIN
+		    VOTE_ITEM I
+		ON
+		    V.VOTE_NO = I.VOTE_NO
+		WHERE 
+		    V.VOTE_NO = #{voteNo}
+		ORDER BY 
+		    I.ITEM_NO
 		
 	</select>
 
 	<!-- 관리자 게시글 상세 조회 /게시글 항목 조회 -->
-	<select id="adminDetailItem" resultType="VoteVo">
-	SELECT 
-	    ITEM_NO
-	    ,VOTE_NO
-	    ,ITEM_NAME
-	    ,VOTE_ORDER
-	    ,VOTE_TYPE
-	FROM    
-	    VOTE_ITEM
-	WHERE 
-	    VOTE_NO = #{voteNo}
-	ORDER BY 
-		    VOTE_NO DESC
-	</select>
+<!-- 	<select id="adminDetailItem" resultType="VoteVo"> -->
+<!-- 	SELECT  -->
+<!-- 	    ITEM_NO -->
+<!-- 	    ,VOTE_NO -->
+<!-- 	    ,ITEM_NAME -->
+<!-- 	    ,VOTE_ORDER -->
+<!-- 	    ,VOTE_TYPE -->
+<!-- 	FROM     -->
+<!-- 	    VOTE_ITEM -->
+<!-- 	WHERE  -->
+<!-- 	    VOTE_NO = #{voteNo} -->
+<!-- 	ORDER BY  -->
+<!-- 		    VOTE_NO DESC -->
+<!-- 	</select> -->
 
 	<!-- 관리자 게시글 검색 -->
 	<select id="adminSelect" resultType="VoteVo">

@@ -42,6 +42,36 @@ public class VoteController {
 		return voteVo;
 	}
 	
+	// 투표하기
+	@PostMapping("voting")
+	public int voting( @RequestBody VoteVo vo) {
+//		System.out.println(vo);
+		//test용 데이터
+//		vo.setVoteNo("1");
+//		vo.setItemNo("3");
+//		vo.setPrtcNo("11");
+		
+		int result = service.voting(vo);
+		System.out.println(result);
+		return result;
+	}	
+	
+	//투표 게시글 
+	@GetMapping("select")
+	public List<VoteVo> select(VoteVo vo) {
+		
+		//test용 데이터
+//		vo.setTitle("투표");
+//		vo.setContent("투표");
+		
+		List<VoteVo> voList = service.select(vo); 
+		
+//		for (VoteVo voteVo : voList) {
+//			
+//			System.out.println(voteVo);
+//		}
+		return voList;
+	}	
 	//투표 게시글, 투표 항목 작성하기
 	@PostMapping("insert")
 	public void insert( VoteVo vo ) {
@@ -98,22 +128,6 @@ public class VoteController {
 		System.out.println(result);
 	}
 	
-	//투표 게시글 
-	@GetMapping("select")
-	public List<VoteVo> select(VoteVo vo) {
-		
-		//test용 데이터
-//		vo.setTitle("투표");
-//		vo.setContent("투표");
-		
-		List<VoteVo> voList = service.select(vo); 
-		
-//		for (VoteVo voteVo : voList) {
-//			
-//			System.out.println(voteVo);
-//		}
-		return voList;
-	}
 	
 	// 전체 투표 수 조회 (투표율)
 	@GetMapping("voteCount")
@@ -153,20 +167,8 @@ public class VoteController {
 		}
 	}
 	
-	// 투표하기
-	@PostMapping("voting")
-	public int voting( @RequestBody VoteVo vo) {
-//		System.out.println(vo);
-		//test용 데이터
-//		vo.setVoteNo("1");
-//		vo.setItemNo("3");
-//		vo.setPrtcNo("11");
-		
-		int result = service.voting(vo);
-		System.out.println(result);
-		return result;
-	}
-	
+
+	/*관리자 페이지**********************************************/
 	// 관리자 전체 투표 게시글 조회
 	@GetMapping("adminList")
 	public List<VoteVo> adminList() {
@@ -180,13 +182,10 @@ public class VoteController {
 	
 	// 관리자 게시글 상세 조회
 	@GetMapping("adminDetail")
-	public void adminDetail(String no) {
-		
-		no = "1";
-		
-		Map<String,Object> map = service.adminDetail(no);
-		
-		System.out.println(map);
+	public VoteVo adminDetail(VoteVo vo) {
+//		no = "1";		
+		VoteVo voteVo = service.adminDetail(vo);
+		return voteVo;
 	}
 	
 	// 관리자 게시글 검색
