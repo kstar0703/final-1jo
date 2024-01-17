@@ -104,22 +104,43 @@ const VoteDetail = () => {
 
 /********************************************************************************** */
     //작성하기 버튼 기능 onChange를 이용해서 select 값 받아서 묶어서 넘기기
+    const acceptYn = useRef();
+    const delYn = useRef();
+    // const [formData, setFormData] = useState([]);
     const handleSubmit = () => {
-        const [value, setvalue] = useState({
-            titleValue,
-            contentValue,
-            
-        });
-        fetch("http://127.0.0.1:8888/app/vote/edit",{
-            method : "PUT",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : JSON.stringify(),
+        // setFormData({
+        //   title: titleValue,
+        //   content: contentValue,
+        //   delYn: delYn.current.value,
+        //   acceptYn: acceptYn.current.value,
+        //   voteNo,
+        // });
+        // console.log(formData);
+        console.log(delYn.current.value);
+        console.log(acceptYn.current.value);
+        fetch("http://127.0.0.1:8888/app/vote/edit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: titleValue,
+            content: contentValue,
+            delYn: delYn.current.value,
+            acceptYn: acceptYn.current.value,
+            voteNo,
+          }),
         })
-        .then()
-        .then()
-        ;
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log(data);
+            if (data === 1) {
+              alert("수정이 완료되었습니다.");
+              navigator("/admin/vote/list");
+            }
+          });
+
+
     }
 
 
@@ -157,7 +178,7 @@ const VoteDetail = () => {
                                     <th scope="row"><label form=''>공개여부</label></th>
                                     <td>
                                         <div class="form_box">
-                                            <select class="sel_box">
+                                            <select ref={delYn} class="sel_box" >
                                                 <option value="N">공개</option>
                                                 <option value="Y">비공개</option>
                                             </select>
@@ -166,7 +187,7 @@ const VoteDetail = () => {
                                     <th scope="row"><label form=''>투표 진행</label></th>
                                     <td>
                                         <div class="form_box">
-                                            <select class="sel_box">
+                                            <select ref={acceptYn} class="sel_box">
                                                 <option value="Y">진행</option>
                                                 <option value="N">대기</option>
                                             </select>
@@ -226,7 +247,7 @@ const VoteDetail = () => {
                             <button className='sty01_btn' onClick={()=>{navigator('/admin/vote/list')}}>목록가기</button>
                         </div>
                         <div>
-                            <button className='sty02_btn'>수정하기</button>
+                            <button className='sty02_btn' onClick={handleSubmit}>수정하기</button>
                         </div>
                     </div>
 

@@ -81,8 +81,11 @@ public class VoteService {
 	}
 
 	public int edit(VoteVo vo) {
-		System.out.println(vo);
-		return dao.edit(sst,vo);
+		int result = dao.edit(sst,vo);
+		if(result != 1) {
+			throw new IllegalStateException();
+		}
+		return result;
 	}
 
 	public int delete(String no) {
