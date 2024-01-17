@@ -63,10 +63,6 @@ const StyledVoteMainDiv = styled.div`
                 display: flex;
                 justify-content: end;
                 gap: 20px 55px;
-                & button {
-                    width: 100px;
-                    height: 28px;
-                }
             }
     
         }
@@ -102,7 +98,7 @@ const StyledVoteMainDiv = styled.div`
                     vertical-align: middle;
                     font-size: 13px;
                     font-weight: 300;
-                    text-align: center;
+                    text-align: center !important;
                     &:last-child {
                         border-right: none;
                     }
@@ -221,13 +217,8 @@ const VoteList = () => {
                 {voteVoList.length === 0 ? (
                   <h1>loding</h1>
                 ) : (
-                  voteVoList.map((vo) => (
-                    <tr
-                      onClick={() => {
-                        navigator(`/vote/detail/${vo.voteNo}`);
-                      }}
-                    >
-                      {/*key={vo.no} */}
+                  voteVoList.map((vo) => 
+                  (<tr onClick={()=>{navigator(`/admin/vote/detail/${vo.voteNo}`)}}>{/*key={vo.no} */}
                       <td>{vo.voteNo}</td>
                       <td>{vo.managerId}</td>
                       <td>{vo.title}</td>

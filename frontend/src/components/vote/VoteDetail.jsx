@@ -127,7 +127,7 @@ const VoteDetail = () => {
     });
   };
   //fetch ::: 투표 완료 시 정보 보내기
-  const HandleSubmit = (e) => {
+  const handleSubmit = (e) => {
     if (radio.length < 1) {
       return alert("투표 후 다시 진행해주세요");
     }
@@ -220,7 +220,7 @@ const VoteDetail = () => {
                     { 
                       voteVo.count === '0' && voteVoHistory.length === 0
                     ?
-                      <button onClick={HandleSubmit}>투표하기</button>
+                      <button onClick={handleSubmit}>투표하기</button>
                       :
                       <></>
                     }

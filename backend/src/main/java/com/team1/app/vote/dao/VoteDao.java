@@ -79,13 +79,13 @@ public class VoteDao {
 		return sst.selectList("VoteMapper.adminList");
 	}
 
-	public VoteVo adminDetailBoard(SqlSessionTemplate sst, String no) {
-		return sst.selectOne("VoteMapper.adminDetailBoard",no);
+	public List<VoteVo> adminDetailBoard(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.selectList("VoteMapper.adminDetail",vo);
 	}
 
-	public List<VoteVo> adminDetailItem(SqlSessionTemplate sst, String no) {
-		return sst.selectList("VoteMapper.adminDetailItem",no);
-	}
+//	public List<VoteVo> adminDetailItem(SqlSessionTemplate sst, String no) {
+//		return sst.selectList("VoteMapper.adminDetailItem",no);
+//	}
 
 	public List<VoteVo> adminSelect(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.selectList("VoteMapper.adminSelect",vo);

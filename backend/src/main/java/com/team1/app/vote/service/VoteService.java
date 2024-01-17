@@ -144,16 +144,20 @@ public class VoteService {
 		return dao.adminList(sst);
 	}
 
-	public Map<String, Object> adminDetail(String no) {
+	public VoteVo adminDetail(VoteVo vo) {
 		
-		VoteVo adminDetailBoard = dao.adminDetailBoard(sst,no);
-		List<VoteVo> adminDetailItem = dao.adminDetailItem(sst,no);
+		List<VoteVo> voList = dao.adminDetailBoard(sst,vo);
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("adminDetailBoard", adminDetailBoard);
-		map.put("adminDetailItem", adminDetailItem);
+		//투표항목이 있다면 voList 0번째 List 객체안에 투표 정보 넣기
+		if(voList.get(0).getItemNo().length() >0) {
+			for (VoteVo vVo : voList) {
+				voList.get(0).getVoList().add(
+					new VoteVo(vVo.getVoteNo(),vVo.getVoteOrder(),vVo.getItemNo(),vVo.getItemName(),vVo.getVoteType())
+				);
+			}
+		}
 		
-		return map;
+		return voList.get(0);
 	}
 
 	public List<VoteVo> adminSelect(VoteVo vo) {
