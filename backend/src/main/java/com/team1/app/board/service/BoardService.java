@@ -62,7 +62,7 @@ public class BoardService {
 		String rootDir = req.getServletContext().getRealPath("/");
 		String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
 		String route = "src\\main\\webapp";
-		String path = "\\resources\\upload\\board\\img\\";
+		String path = "\\resources\\upload\\board\\";
 		String savePath = commonRoot + route + path;
 				
 		int fileResult = 1;

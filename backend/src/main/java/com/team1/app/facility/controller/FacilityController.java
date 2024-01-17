@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.facility.service.FacilityService;
 import com.team1.app.facility.vo.FacilityHistoryVo;
@@ -82,14 +86,19 @@ public class FacilityController {
 	
 	//커뮤니티시설 목록조회(+상세조회) (관리자)
 	@GetMapping("admin/list")
-	public List<FacilityVo> listForAdmin(){
-		return service.listForAdmin();
+	public Map<String, Object> listForAdmin(){
+		List<FacilityVo> facilityVoList = service.listForAdmin();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("facilityVoList", facilityVoList);
+		return map;
 	}
 	
 	//커뮤니티시설 등록 (관리자)
 	@PostMapping("admin/insert")
-	public Map<String, String> insert(@RequestBody FacilityVo vo){
-		int result = service.insert(vo);
+	public Map<String, String> insert(FacilityVo vo, @RequestParam(value="image", required = false ) MultipartFile image, HttpServletRequest req) throws Exception{
+		System.out.println("시설등록:" + vo);
+		System.out.println("시설이미지:" + image);
+		int result = service.insert(vo, image, req);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "good");
 		if(result != 1) {

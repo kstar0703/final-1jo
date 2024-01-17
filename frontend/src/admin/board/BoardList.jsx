@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BoardList = () => {
     
@@ -47,10 +47,10 @@ const BoardList = () => {
                         ?
                         <h1>loading..</h1>
                         :
-                        boardVoList.map(vo => <tr key={vo.boardNo}>
+                        boardVoList.map(vo => <tr key={vo.boardNo} onClick={()=>{navigator(`/admin/board/detail/${vo.boardNo}`)}}>
                                 <td>{vo.boardNo}</td>
                                 <td>{vo.categoryName}</td>
-                                <td onClick={navigator(`/board/detail/${vo.boardNo}`)}>{vo.title}</td>
+                                <td>{vo.title}</td>
                                 <td>{vo.dong}동 {vo.name}</td>
                                 <td>{vo.enrollDate}</td>
                                 <td>{vo.likeCount}</td>

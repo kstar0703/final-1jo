@@ -5,8 +5,8 @@ import Footer from './Footer';
 import styled from 'styled-components';
 
 const StyledLayoutDiv = styled.div`
-    width: 100vw;
-    height: 100vh;
+     width: 100vw;
+    /* height: 100vh;  */
 `;
 const Layout = () => {
     return (
