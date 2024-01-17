@@ -1,5 +1,7 @@
 package com.team1.app.facility.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data

@@ -60,6 +60,11 @@ public class FacilityDao {
 	public int delete(SqlSessionTemplate sst, FacilityVo vo) {
 		return sst.update("FacilityMapper.delete", vo);
 	}
+	
+	//커뮤니티 상세조회 (관리자)
+	public FacilityVo detailForAdmin(SqlSessionTemplate sst, FacilityVo vo) {
+		return sst.selectOne("FacilityMapper.detailForAdmin", vo);
+	}
 
 
 

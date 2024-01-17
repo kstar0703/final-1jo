@@ -56,33 +56,44 @@ public class FacilityService {
 	}
 
 	//커뮤니티시설 등록 (관리자)
-	public int insert(FacilityVo vo, MultipartFile image, HttpServletRequest req) throws Exception {
-		if(image != null) {
-			String rootDir = req.getServletContext().getRealPath("/");
-			String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
-			String route = "src\\main\\webapp";
-			String path = "\\resources\\upload\\facility\\";
-			String savePath = commonRoot + route + path;
-			String imageName = saveFile(image, savePath);
-			String fullPath = "http://127.0.0.1:8888/app" + path + imageName;
-			vo.setImage(fullPath);
+//	public int insert(FacilityVo vo, MultipartFile image) throws Exception {		
+//		if(image != null) {
+//			String imageUrl = saveFile(image);
+//			String path = imageUrl.replace("C:\\dev\\download\\", "http://127.0.0.1:8888/app");		
+//			vo.setImage(path);
+//		}
+//		int result = dao.insert(sst, vo);
+//		 return result;
+//	}
+	
+	public int insert(FacilityVo vo) {
+		if(vo.getImage() != null) {
+		String str = vo.getImage().replace("C:\\dev\\khTeamPrj\\team1Repo\\backend\\src\\main\\webapp", "http://127.0.0.1:8888/app");
+		vo.setImage(str);
 		}
-		int result = dao.insert(sst, vo);
-		 return result;
+		return dao.insert(sst, vo);
 	}
 	
+	
 	//파일저장
-	public String saveFile(MultipartFile image, String savePath) throws Exception, Exception {
-		String originName = image.getOriginalFilename();
-		String extension = originName.substring(originName.lastIndexOf("."));
-		String imgName = UUID.randomUUID() + extension;
-		File target = new File(savePath + imgName);
-		image.transferTo(target);
-		return imgName;
-	}
+//	public String saveFile(MultipartFile image) throws Exception, Exception {
+//		String path ="C:\\dev\\download\\";
+//		
+//		String originName = image.getOriginalFilename();
+//		String extension = originName.substring(originName.lastIndexOf("."));
+//		String imgName = UUID.randomUUID() + extension;
+//		File target = new File(path + imgName);
+//		image.transferTo(target);
+//		
+//		return path + imgName;
+//	}
 
 	//커뮤니티시설 수정 (관리자)
 	public int edit(FacilityVo vo) {
+		if(vo.getImage() != null) {
+		String str = vo.getImage().replace("C:\\dev\\khTeamPrj\\team1Repo\\backend\\src\\main\\webapp", "http://127.0.0.1:8888/app");
+		vo.setImage(str);
+		}
 		return dao.edit(sst, vo);
 	}
 
@@ -90,6 +101,13 @@ public class FacilityService {
 	public int delete(FacilityVo vo) {
 		return dao.delete(sst, vo);
 	}
+
+	//커뮤니티 상세조회 (관리자)
+	public FacilityVo detailForAdmin(FacilityVo vo) {
+		return dao.detailForAdmin(sst, vo);
+	}
+
+
 
 
 
