@@ -20,6 +20,25 @@
 		    , DEL_YN
 		FROM FACILITIES
 	</select>
+	
+	  	<!-- 커뮤니티시설 상세조회 (관리자) -->
+	<select id="detailForAdmin" resultType="FacilityVo">
+		SELECT 
+		    FACILITIES_NO
+		    , FACILITIES_NAME
+		    , UNIT_PRICE
+		    , LOCATION
+		    , OPERATION_TIME
+		    , DAY_OFF
+		    , CONTACT
+		    , AMENITY
+		    , IMAGE
+		    , ENROLL_DATE
+		    , MODIFY_DATE
+		    , DEL_YN
+		FROM FACILITIES
+		WHERE FACILITIES_NO = #{facilitiesNo}
+	</select>
 		
 	<!-- 커뮤니티시설 등록 -->
 	<insert id="insert">
@@ -83,7 +102,7 @@
 	<update id="delete">
 		UPDATE FACILITIES
 			SET
-			    DEL_YN = 'Y'
+			    DEL_YN = #{delYn}
 			    , MODIFY_DATE = SYSDATE
 			WHERE FACILITIES_NO = #{facilitiesNo}
 	</update>

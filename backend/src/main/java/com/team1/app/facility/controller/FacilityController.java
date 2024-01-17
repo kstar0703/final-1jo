@@ -1,4 +1,5 @@
 package com.team1.app.facility.controller;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +45,15 @@ public class FacilityController {
 	@PostMapping("detail")
 	public Map<String, Object> detail(@RequestBody FacilityVo vo){
 		FacilityVo facilityVo = service.detail(vo);
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("facilityVo", facilityVo);
+		return map;
+	}
+	
+	//커뮤니티시설 상세정보조회 (관리자용)
+	@PostMapping("admin/detail")
+	public Map<String, Object> detailForAdmin(@RequestBody FacilityVo vo){
+		FacilityVo facilityVo = service.detailForAdmin(vo);
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("facilityVo", facilityVo);
 		return map;
@@ -95,21 +106,52 @@ public class FacilityController {
 	
 	//커뮤니티시설 등록 (관리자)
 	@PostMapping("admin/insert")
-	public Map<String, String> insert(FacilityVo vo, @RequestParam(value="image", required = false ) MultipartFile image, HttpServletRequest req) throws Exception{
+	public Map<String, String> insert(FacilityVo vo, @RequestParam(required = false) MultipartFile file) throws Exception{
 		System.out.println("시설등록:" + vo);
-		System.out.println("시설이미지:" + image);
-		int result = service.insert(vo, image, req);
+		System.out.println("시설이미지:" + file);
+		
+		if(file != null) {
+		String fullPath = saveFile(file);
+		vo.setImage(fullPath);
+		}
+		int result = service.insert(vo);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "good");
 		if(result != 1) {
 			map.put("msg", "bad");
 		}
 		return map;
+		
+		
+//		int result = service.insert(vo, image);
+//		Map<String, String> map = new HashMap<String, String>();
+//		map.put("msg", "good");
+//		if(result != 1) {
+//			map.put("msg", "bad");
+//		}
+//		return map;
 	}
 	
+	private String saveFile(MultipartFile f) throws Exception{
+		String path = "C:\\dev\\khTeamPrj\\team1Repo\\backend\\src\\main\\webapp\\resources\\upload\\facility\\";
+		String orginName = f.getOriginalFilename();
+		//원래는 "changeName(랜덤값) + 확장자"로 해야함 
+		File target = new File(path + orginName); 
+		f.transferTo(target); 
+		return path + orginName; 
+	}	
+	
+	
 	//커뮤니티시설 수정 (관리자)
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("admin/edit")
-	public Map<String, String> edit(@RequestBody FacilityVo vo){
+	public Map<String, String> edit(@ModelAttribute FacilityVo vo, @RequestParam(required = false) MultipartFile file) throws Exception{
+		System.out.println("vo" + vo);
+		System.out.println("file" + file);
+		if(file != null) {
+			String fullPath = saveFile(file);
+			vo.setImage(fullPath);
+		}
 		int result = service.edit(vo);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "good");
@@ -120,6 +162,7 @@ public class FacilityController {
 	}
 	
 	//커뮤니티시설 삭제 (관리자)
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("admin/delete")
 	public Map<String, String> delete(@RequestBody FacilityVo vo){
 		int result = service.delete(vo);
