@@ -9,6 +9,7 @@ import ManagementMain from './management/ManagementMain';
 import ErrorPageNotFound from './error/ErrorPageNotFound';
 import { Route, Routes } from 'react-router-dom';
 import AnnouncementMain from './announcement/AnnoucementMain';
+import MemberMain from './member/MemberMain';
 
 const StyledMainDiv = styled.div`
     width: 100%;
@@ -29,7 +30,8 @@ const Main = () => {
         <StyledMainDiv>
             <Routes>
                 <Route path='/' element={<h1>관리자 메인화면</h1>} />
-                <Route path='/announcement/*' element={<AnnouncementMain />}/>
+                <Route path='/member/*' element={<MemberMain/>}/>
+                <Route path='/announcement/*' element={<AnnouncementMain/>}/>
                 <Route path='/vote/*' element={<VoteMain />}/>
                 <Route path='/board/*' element={<BoardMain />} />
                 <Route path='/facility/*' element={<FacilityMain/>}/>

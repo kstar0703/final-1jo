@@ -160,7 +160,7 @@ public class MemberService {
 			
 		return resultMap;
 	}
-	public Map<String, Object> delete(MemberVo vo, String currentPwd) {
+	public Map<String, Object> delete(MemberVo vo) {
 		
 		// 결과맵 
 		Map<String, Object> resultMap = new HashMap();

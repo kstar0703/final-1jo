@@ -97,9 +97,9 @@ public class MemberController {
 	 * @return 
 	 */
 	@PostMapping("/delete")
-	public Map<String, Object> delete(MemberVo vo, String currentPwd) {
+	public Map<String, Object> delete(@RequestBody MemberVo vo) {
 		
-		return service.delete(vo,currentPwd);
+		return service.delete(vo);
 	}
 	
 	/**
