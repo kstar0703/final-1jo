@@ -9,14 +9,14 @@ const FacilityHistoryWrite = ({facilityVo}) => {
     const [historyVo, setHistoryVo] = useState({
         facilitiesNo: facilityVo.facilitiesNo,
         // memberNo:JSON.parse(sessionStorage.getItem("loginMemberVo")).memberNo
+        price: facilityVo.unitPrice,
         memberNo: 1
     });
     
-    //정보받는지 테스트
-    console.log(facilityVo);
-    //데이터 포맷팅
+    //데이터 포맷팅, vo준비 
     const handleSelectedDate = (event)=>{
-        const selectedDate = new Date(event.target.value);
+        const date = event.target.value;
+        const selectedDate = new Date(date);
         setSelectedDate(selectedDate);
         const formatDate = selectedDate.toLocaleDateString('ko-KR', {
             year:'numeric',
@@ -24,10 +24,20 @@ const FacilityHistoryWrite = ({facilityVo}) => {
             day: 'numeric'
         });
         setReservationDate(formatDate);
+        setHistoryVo({
+            ...historyVo,
+            useDate: date 
+        });
     }
     const price = (dataString)=>{
         return parseInt(dataString).toLocaleString();
     }
+    useEffect(()=>{
+        setHistoryVo({
+            ...historyVo,
+            price: facilityVo.unitPrice
+        });
+    }, [facilityVo.unitPrice]);
 
     //동의 & 모달
     const handleShowModal = ()=>{
@@ -47,18 +57,16 @@ const FacilityHistoryWrite = ({facilityVo}) => {
     }
 
     //신청제출
-    const handleInputChange = (e)=>{
-        const {name, value} = e.target;
-        setHistoryVo({
-            ...historyVo,
-            [name] : value
-        });
-    }
+   
     useEffect(()=>{
         sendHistoryVo();
+        console.log(historyVo);
     }, [historyVo, isAgreed]);
+
     const sendHistoryVo = ()=>{
-        console.log("신청:" + historyVo.price);
+        if(isAgreed){
+        console.log("예약일:" + historyVo.useDate);
+        console.log("신청금액:" + historyVo.price);
         fetch("http://127.0.0.1:8888/app/facility/apply", {
             method: "POST",
             headers: {
@@ -73,7 +81,7 @@ const FacilityHistoryWrite = ({facilityVo}) => {
             }else{
                 alert("신청실패");
             }
-        })
+        })}
     }
 
     const handleSubmit = (event)=>{
@@ -99,7 +107,6 @@ const FacilityHistoryWrite = ({facilityVo}) => {
                                 type='text'
                                 name='useDate'
                                 value={reservationDate || '예약일을 선택하세요.'}
-                                onChange={handleInputChange}
                                 readOnly
                             />
                         </td>
@@ -115,7 +122,6 @@ const FacilityHistoryWrite = ({facilityVo}) => {
                                 type='text'
                                 name='price'
                                 value={price(facilityVo.unitPrice) + "원"}
-                                onChange={handleInputChange}
                                 readOnly
                             />
                         </td>
