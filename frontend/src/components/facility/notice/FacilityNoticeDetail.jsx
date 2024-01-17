@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const FacilityNoticeDetail = () => {
-    const {facilitiesNo} = useParams();
+    const {facilitiesNoticeNo} = useParams();
     const [facilityNoticeVo, setFacilityNoticeVo] = useState({
-        facilitiesNo: facilitiesNo
+        facilitiesNoticeNo: facilitiesNoticeNo
     });
     const loadFacilityNoticeVo = ()=>{
         fetch("http://127.0.0.1:8888/app/facility/notice/detail", {
@@ -12,19 +12,21 @@ const FacilityNoticeDetail = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(facilityNoticeVo)
+            body: JSON.stringify({facilitiesNoticeNo: facilitiesNoticeNo})
         })
         .then(resp=>resp.json())
         .then(data=>{
             setFacilityNoticeVo(data.facilityNoticeVo);
+            console.log(data);
         })
     }
     useEffect(()=>{
         loadFacilityNoticeVo();
     }, [facilityNoticeVo]);
+    const navigator = useNavigate();
     return (
         <div>
-            공지상세
+            <div>공지상세</div>
             {
                 facilityNoticeVo?
                 (
@@ -36,6 +38,7 @@ const FacilityNoticeDetail = () => {
                     <div>loading..</div>
                 )
             }
+            <div><button onClick={()=>{navigator(`/facility/detail/${facilityNoticeVo.facilitiesNo}`)}}>목록</button></div>
         </div>
     );
 };
