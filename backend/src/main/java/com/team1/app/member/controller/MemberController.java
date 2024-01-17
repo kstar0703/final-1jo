@@ -108,7 +108,7 @@ public class MemberController {
 	 */
 	
 	@PostMapping("/changePwd")
-	public  Map<String, Object> changePwd(MemberVo vo ){
+	public  Map<String, Object> changePwd(@RequestBody MemberVo vo ){
 		
 		return service.changePwd(vo);
 	}

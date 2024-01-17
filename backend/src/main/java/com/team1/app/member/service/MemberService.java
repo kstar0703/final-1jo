@@ -207,6 +207,19 @@ public class MemberService {
 		Map<String, Object> resultMap = new HashMap();
 		resultMap.put("msg", "조회 데이터 없음");
 		resultMap.put("status","bad");
+		System.out.println(vo);
+		
+		
+		MemberVo loginMember =null;
+		if(dao.changeInfo(sst,vo)!=0) {
+		 loginMember = localStoargeMember(vo);
+		 resultMap.put("msg", "비밀번호 변경 성공!");
+		resultMap.put("status","good");
+		 
+		}
+		resultMap.put("loginMember",loginMember);
+		
+		System.out.println(resultMap);
 
 		
 		
