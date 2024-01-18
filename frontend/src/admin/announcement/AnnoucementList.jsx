@@ -21,21 +21,9 @@ const AnnouncementList = () => {
 
             <div className="ad_search_box">
               <div className="search_item">
-                <label form="sel01">제목</label>
+                <label form="sel01">작성자</label>
                 <div className="form_box">
-                  <input type="text" name="title" />
-                </div>
-              </div>
-              <div className="search_item">
-                <label form="sel01">제목제목</label>
-                <div className="form_box">
-                  <input type="text" name="title" />
-                </div>
-              </div>
-              <div className="search_item">
-                <label form="sel01">제목제목제목</label>
-                <div className="form_box">
-                  <input type="text" name="title" />
+                  <input type="text" name="id" />
                 </div>
               </div>
               <div className="search_item">
@@ -45,21 +33,36 @@ const AnnouncementList = () => {
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목제목</label>
+                <label form="sel01">내용</label>
                 <div className="form_box">
-                  <input type="text" name="title" />
+                  <input type="text" name="name" />
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목제목</label>
+                <label form="sel01">등록시작일</label>
                 <div className="form_box">
-                  <select class="sel_box">
-                    <option value="">일반문의</option>
-                    <option value="">기능문의</option>
-                    <option value="">신고문의</option>
+                  <input type="date" name=''  />
+                </div>
+              </div>
+
+              <div className="search_item">
+                <label form="sel01">등록종료일</label>
+                <div className="form_box">
+                  <input type="date"  />
+                </div>
+              </div>
+
+              <div className="search_item">
+                <label form="sel01">숨김여부</label>
+                <div className="form_box">
+                  <select name='delYn' class="sel_box" >
+                    <option value='all'></option>
+                    <option value='Y'>숨김</option>
+                    <option value="N">공개</option>
                   </select>
                 </div>
               </div>
+             
               {/*필요 시 추가 가능*/}
             </div>
 

@@ -16,9 +16,14 @@ public class MemberVo {
 	private String permissionYn;
 	private String currentPwd;
 	private String unitCount;
+	private String email;
+	private String joinDate;
 	
 	private String dong;
 	private String ho;
 	private String scale;
 	private String vehTime;
+	
+	private String startDate; 	// 기간 검색 시작 데이트
+	private String endDate;     // 기간 검색 검색 데이트
 }

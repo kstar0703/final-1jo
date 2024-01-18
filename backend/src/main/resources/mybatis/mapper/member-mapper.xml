@@ -11,7 +11,7 @@
     	WHERE PHONE = #{phone}
 	</select>
 	
-	<!-- 회원가입  -->
+	<!-- 회원가입 emial 추가 -->
 	<insert id="join">
 		INSERT INTO MEMBER 
 		(
@@ -23,6 +23,7 @@
 		,GENDER
 		,BIRTH
 		,OWNER_YN
+		,EMAIL
 		) 
 		VALUES 
 		(
@@ -34,6 +35,7 @@
 		,#{gender}
 		,#{birth}
 		,#{ownerYn}
+		,#{EMAIL}
 		)
 		
 	</insert>
@@ -58,6 +60,8 @@
     ,HO
     ,SCALE
     ,VEH_TIME
+    ,EMAIL
+    ,JOIN_DATE
     FROM MEMBER M
     JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
     WHERE
@@ -107,7 +111,8 @@
 	SELECT
 	MEMBER_NO
 	,U.UNIT_NO
-	,PHONE,PWD
+	,PHONE
+	,PWD
 	,OWNER_YN
 	,NAME
 	,GENDER
@@ -118,6 +123,8 @@
     ,HO
     ,SCALE
     ,VEH_TIME
+    ,EMAIL
+    ,JOIN_DATE
     FROM MEMBER M
     JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO   
 	WHERE DEL_YN ='N' 
@@ -126,8 +133,26 @@
 		 AND PERMISSION_YN= #{permissionYn} 
 	 </if>
 	
-	AND (NAME LIKE  '%'|| #{name} || '%'
-	OR PHONE LIKE '%' || #{phone} || '%')
+	
+	  <choose>
+        <!-- Check if name and phone are not null and have a length greater than 0 -->
+        <when test="name != null and name.length() > 0 and phone != null and phone.length() > 0">
+            AND (NAME LIKE '%' || #{name} || '%' OR PHONE LIKE '%' || #{phone} || '%')
+        </when>
+        <!-- Check if only name is not null and has a length greater than 0 -->
+        <when test="name != null and name.length() > 0">
+            AND NAME LIKE '%' || #{name} || '%'
+        </when>
+        <!-- Check if only phone is not null and has a length greater than 0 -->
+        <when test="phone != null and phone.length() > 0">
+            AND PHONE LIKE '%' || #{phone} || '%'
+        </when>
+        <!-- If none of the above conditions are met -->
+        <otherwise>
+            <!-- You can add default behavior here if needed -->
+        </otherwise>
+    </choose>
+	
 	ORDER BY MEMBER_NO DESC
 	
 	
@@ -194,6 +219,8 @@
     ,HO
     ,SCALE
     ,VEH_TIME
+    ,EMAIL
+    ,JOIN_DATE
     FROM MEMBER M
     JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
     WHERE

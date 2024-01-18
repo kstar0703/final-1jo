@@ -85,7 +85,7 @@ const MyPage = () => {
 
         patcherble = false;
 
-        console.log('하이')
+       
 
         fetch("http://127.0.0.1:8888/app/member/delete",{
             method: "post",
