@@ -59,10 +59,10 @@ const StyledVoteMainDiv = styled.div`
                 }
             }
             & .btn_div{
-                width: 65%;
+                width: 68%;
                 display: flex;
                 justify-content: end;
-                gap: 20px 55px;
+                gap: 10px 20px;
             }
     
         }
@@ -184,6 +184,9 @@ const VoteList = () => {
               <div>
                 <button className="sty02_btn">검색</button>
               </div>
+              <div>
+                <button className="sty01_btn" onClick={()=>{navigator('/admin/vote/write')}}>작성</button>
+              </div>
             </div>
           </div>
           <div class="ad_tbl_box data mt40">
@@ -198,19 +201,17 @@ const VoteList = () => {
                 <col width="" />
                 <col width="" />
                 <col width="" />
-                <col width="" />
               </colgroup>
               <thead>
                 <tr>
                   <th scope="col">번호</th>
                   <th scope="col">작성자ID</th>
                   <th scope="col">제 목</th>
-                  <th scope="col">내 용</th>
                   <th scope="col">조회수</th>
                   <th scope="col">작성일자</th>
                   <th scope="col">마감일자</th>
                   <th scope="col">공개여부</th>
-                  <th scope="col">허가여부</th>
+                  <th scope="col">투표진행</th>
                 </tr>
               </thead>
               <tbody>
@@ -222,7 +223,6 @@ const VoteList = () => {
                       <td>{vo.voteNo}</td>
                       <td>{vo.managerId}</td>
                       <td>{vo.title}</td>
-                      <td>{vo.content}</td>
                       <td>{vo.hit}</td>
                       <td>{vo.enrollDate}</td>
                       <td>{vo.deadlineDate}</td>

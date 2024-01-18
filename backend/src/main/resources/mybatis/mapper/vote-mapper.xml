@@ -87,6 +87,8 @@
 		    ,MANAGER_NO
 		    ,TITLE
 		    ,CONTENT
+		    ,DEADLINE_DATE
+		    ,ACCEPT_YN
 		)
 		VALUES 
 		(
@@ -94,6 +96,8 @@
 		    ,#{managerNo}
 		    ,#{title}
 		    ,#{content}
+		    ,#{deadlineDate}
+		    ,#{acceptYn}
 		)
 	</insert>
 	

@@ -102,34 +102,40 @@ const VoteDetail = () => {
         textRef.current.style.height = textRef.current.scrollHeight + "px";
     },[]);
 
-/********************************************************************************** */
-    //작성하기 버튼 기능 onChange를 이용해서 select 값 받아서 묶어서 넘기기
+
+    //수정하기 버튼 기능 onChange를 이용해서 select 값 받아서 묶어서 넘기기
     const acceptYn = useRef();
     const delYn = useRef();
+    
     // const [formData, setFormData] = useState([]);
     const handleSubmit = () => {
-        // setFormData({
+
+        //  setFormData({
         //   title: titleValue,
         //   content: contentValue,
         //   delYn: delYn.current.value,
         //   acceptYn: acceptYn.current.value,
         //   voteNo,
         // });
+
         // console.log(formData);
         console.log(delYn.current.value);
         console.log(acceptYn.current.value);
-        fetch("http://127.0.0.1:8888/app/vote/edit", {
+         fetch("http://127.0.0.1:8888/app/vote/edit", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
+        //   body: JSON.stringify(formData),
+          body: JSON.stringify(
+            {
             title: titleValue,
             content: contentValue,
             delYn: delYn.current.value,
             acceptYn: acceptYn.current.value,
             voteNo,
-          }),
+          }
+          ),
         })
           .then((resp) => resp.json())
           .then((data) => {
@@ -154,7 +160,7 @@ const VoteDetail = () => {
 
                     <div className='ad_tbl_box'>  
                         <table>
-                        <caption>공지사항 상세 테이블</caption>
+                        <caption>설문투표 상세 테이블</caption>
                                 <colgroup>
                                     <col width="15%"/>
                                     <col width="35%"/>
@@ -189,7 +195,7 @@ const VoteDetail = () => {
                                         <div class="form_box">
                                             <select ref={acceptYn} class="sel_box">
                                                 <option value="Y">진행</option>
-                                                <option value="N">대기</option>
+                                                <option value="N">마감</option>
                                             </select>
                                         </div>
                                     </td>
