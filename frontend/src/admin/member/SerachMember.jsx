@@ -14,48 +14,42 @@ const SerachMember = () => {
     // 초기화용
     const [state,setState] = useState('');
 
+    // 검색패치 다시 보내기용
     const [stateSearch,setStateSearch] = useState('');
     let searchName = useRef();
     let searchPhone = useRef();
     let searchPermissionYn = useRef();
     
+    // 서치vo 
     const [memberVo, setMemberVo] = useState(
       {'name' :   ''  ,
       'phone' :  '' ,
       'permissionYn' : ''
     }
     );
+
+    // 배열 부분
+    const [memberArr, setMemberArr] = useState([])       
    
 
     let patcherble =true;
   
     const onClickSerarch = () =>{
-      
-
       if(!patcherble){
-        return;
-    }
+          return
+      }
 
-
-     
-
-      setStateSearch(stateSearch+"a");
-      
-    }
-
-  
-
-    useEffect( () =>{
-
-      
-      
       setMemberVo({
         'name' :   searchName.current.value  ,
         'phone' :  searchPhone.current.value ,
         'permissionYn' : searchPermissionYn.current.value 
       })
-   
+    
+      setStateSearch(stateSearch+"a");
+    }
 
+    useEffect( () =>{
+      
     fetch("http://127.0.0.1:8888/app/admin/findMember",{
         method: "post",
         headers : {
@@ -63,19 +57,19 @@ const SerachMember = () => {
         },
         body : JSON.stringify(memberVo),
     })
-    .then( (resp) => {return resp.json()})
+    .then( (resp) => {
+     
+      return resp.json()})
     .then( (data)=>{
-      console.log(data)
+      
+      setMemberArr(data)
     })
     .catch()
     .finally( () => {patcherble = true})}
     
     ,[stateSearch])
 
-  
-
-  
-
+    //초기화
     const onClickReset = () =>{
         searchName.current.value=''
        
@@ -83,17 +77,56 @@ const SerachMember = () => {
         searchPermissionYn.current.value ='all'
         setState(state+'a')
     }
+
+    //허가 
+    let patcherble2 = true;
+    const onClickPermission = (memberNo) =>{
+
+     console.log(memberNo)
+
+      if(!patcherble2){return}
+
+
+      fetch("http://127.0.0.1:8888/app/admin/acceptMember",{
+        method: "post",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          memberNo: memberNo,
+        }),
+    })
+    .then( (resp) => {
+     
+      return resp.json()})
+    .then( (data)=>{
+        console.log(data)
+      if(data.msg==='성공'){
+          alert('승인 성공')
+          setStateSearch(stateSearch+"a");
+      }else{
+        alert('승인 실패')
+      }
+      
+    })
+    .catch()
+    .finally( () => {patcherble2 = true
+      
+    })
+
+    }
+
     return (
         <StyledMemberDiv>
         <div className="ad_wrap">
           <div className="ad_search_box_bg">
             <div className="ad_tit">
-              <h2>설문투표 조회</h2>
+              <h2>회원 관리</h2>
             </div>
 
             <div className="ad_search_box">
               <div className="search_item">
-                <label form="sel01">성함</label>
+                <label form="sel01">이름</label>
                 <div className="form_box">
                   <input type="text" name="name" ref={searchName} />
                 </div>
@@ -156,18 +189,24 @@ const SerachMember = () => {
               </thead>
               <tbody>
                  
-                    <tr>
-                    <td>1</td>
-                    <td>010-5382-4910</td>
-                    <td>김희성</td>
-                    <td>960703</td>
-                    <td>남</td>
-                    <td>세대주</td>
-                    <td>100동1704호</td>
-                    <td>100시간 0분</td>
-                    <td><button>허가</button></td>
-                    </tr>
                 
+                    {memberArr.map( (vo)=>(
+                      <tr key={vo.no}>
+                      <td>{vo.memberNo ? vo.memberNo : ''}</td>
+                      <td>{vo.phone ? vo.phone : ''}</td>
+                      <td>{vo.name ? vo.name : ''}</td>
+                      <td>{vo.birth ? vo.birth : ''}</td>
+                      <td>{vo.gender==='F' ? '여성' : '남성'}</td>
+                      <td>{vo.ownerYn != null ? (vo.ownerYn ==='Y' ? "세대주" : "세대원") : ''}</td>
+                      <td>{`${vo.dong ? vo.dong : ''}동${vo.ho ? vo.ho : ''}호`}</td>
+                      <td>{`${Math.floor(vo.vehTime / 60)}시간 ${vo.vehTime % 60}분`}</td>
+                        <td>{vo.permissionYn==='Y' ?  ('승인'): <button className='sty02_btn' onClick={ () => {
+                          
+                          onClickPermission(vo.memberNo)
+                      }}>미승인</button>  } </td>
+                    </tr>
+                    ))}
+                    
               </tbody>
             </table>
           </div>
