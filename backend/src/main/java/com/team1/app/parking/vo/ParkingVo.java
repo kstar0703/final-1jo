@@ -13,5 +13,10 @@ public class ParkingVo {
 	 private String modifyDate;    //변경일
 	 private String delYn;         //삭제여부
 	 private String fee; 		//요금
+	 private String enrollDate;  // 등록일
+	 
+	 
+	private String startDate; 	// 기간 검색 시작 데이트
+	private String endDate;     // 기간 검색 검색 데이트
 	         
 }

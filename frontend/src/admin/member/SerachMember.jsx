@@ -3,7 +3,7 @@ import styled from 'styled-components';
 // 관리자 수락 및 조회 
  const StyledMemberDiv = styled.div`
      width: 100%;
-    height: 100%;
+   
     display: flex;
     flex-direction : column;
  `
@@ -178,6 +178,8 @@ const SerachMember = () => {
                 <tr>
                   <th scope="col">번호</th>
                   <th scope="col">전화번호</th>
+                  <th scope='col'>이메일</th>
+                  <th scope='col'>가입일</th>
                   <th scope="col">성 함</th>
                   <th scope="col">생년월일</th>
                   <th scope="col">성별</th>
@@ -193,8 +195,10 @@ const SerachMember = () => {
                     {memberArr.map( (vo)=>(
                       <tr key={vo.no}>
                       <td>{vo.memberNo ? vo.memberNo : ''}</td>
-                      <td>{vo.phone ? vo.phone : ''}</td>
                       <td>{vo.name ? vo.name : ''}</td>
+                      <td>{vo.phone ? vo.phone : ''}</td>
+                      <td>{vo.email ? vo.email : ''}</td>
+                      <td>{vo.joinDate ? vo.joinDate : ''}</td>
                       <td>{vo.birth ? vo.birth : ''}</td>
                       <td>{vo.gender==='F' ? '여성' : '남성'}</td>
                       <td>{vo.ownerYn != null ? (vo.ownerYn ==='Y' ? "세대주" : "세대원") : ''}</td>

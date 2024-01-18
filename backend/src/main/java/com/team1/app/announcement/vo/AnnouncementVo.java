@@ -23,5 +23,8 @@ public class AnnouncementVo {
 	private String originName;			//원본이름
 	
 	private List<AnnouncementImgVo> fileList = new ArrayList();  //파일 리스트
+	
+	private String startDate; 	// 기간 검색 시작 데이트
+	private String endDate;     // 기간 검색 검색 데이트
 	                                            
 }                  
