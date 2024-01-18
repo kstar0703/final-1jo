@@ -18,7 +18,11 @@ public class ManagerDao {
 	
 	// 회원검색
 	public List<MemberVo> findMember(MemberVo vo, SqlSessionTemplate sst) {	
-		System.out.println(vo);
+	
+		if(vo.getPhone().equals("")) {
+			System.out.println("dao" +vo);
+		}
+		
 		return sst.selectList("MemberMapper.findMember",vo);
 	}
 

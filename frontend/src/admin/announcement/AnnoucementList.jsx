@@ -16,7 +16,7 @@ const AnnouncementList = () => {
         <div className="ad_wrap">
           <div className="ad_search_box_bg">
             <div className="ad_tit">
-              <h2>설문투표 조회</h2>
+              <h2>공지사항 관리</h2>
             </div>
 
             <div className="ad_search_box">

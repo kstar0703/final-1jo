@@ -122,18 +122,18 @@
     JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO   
 	WHERE DEL_YN ='N' 
 	
-	 <if test="permissionYn != null and permissionYn != 'all'">
+	 <if test="permissionYn != null and permissionYn != 'all' and permissionYn.length()!=0  ">
 		 AND PERMISSION_YN= #{permissionYn} 
 	 </if>
 	
-	<if test="name != null ">
-	AND NAME LIKE  '%'|| #{name} || '%'
-	</if>
-	
-	<if test="phone != null">
-	AND PHONE LIKE '%' || #{phone} || '%'
-	</if>
+	AND (NAME LIKE  '%'|| #{name} || '%'
+	OR PHONE LIKE '%' || #{phone} || '%')
 	ORDER BY MEMBER_NO DESC
+	
+	
+	
+	
+
 	
 	</select>
 	

@@ -72,6 +72,7 @@ const MyPage = () => {
         const closeModalLogout = () => {
                 
             setIsModalOpenLogout(false)}
+            
     
 
     

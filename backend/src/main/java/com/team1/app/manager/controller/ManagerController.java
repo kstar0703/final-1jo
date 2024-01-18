@@ -57,17 +57,21 @@ public class ManagerController {
 	 */
 	@PostMapping("findMember")
 	public List<MemberVo> findMember(@RequestBody MemberVo vo){
-		System.out.println(  "받아온 vo"+vo);
-		 return service.findMember(vo);
-	}
+		
+		List<MemberVo> list = service.findMember(vo);
+		System.out.println(list);
+			
+		 return list;
+				 } 
 	/**
 	 * 
 	 * @param vo 회원번호 phone ,memberNo
 	 * @return 성공 결과 
 	 */
 	@PostMapping("acceptMember")
-	public Map<String,String> acceptMember(MemberVo vo){
+	public Map<String,String> acceptMember(@RequestBody MemberVo vo){
 		
+		System.out.println(vo.getMemberNo());
 		Map<String,String> resultMap = new HashMap();
 		resultMap.put("msg","실패");
 		int result = service.acceptMember(vo); 
