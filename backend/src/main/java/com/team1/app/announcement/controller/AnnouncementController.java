@@ -102,6 +102,7 @@ public class AnnouncementController {
 	
 		List<AnnouncementVo> voList = service.list(vo,pvo);
 		
+		
 				
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");

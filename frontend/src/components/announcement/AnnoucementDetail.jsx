@@ -80,9 +80,7 @@ const AnnoucementDetail = () => {
 
     let {announcementNo} = useParams();
 
-    const [announcementVo, setBoardVo] = useState({
-        announcementNo : announcementNo
-    });  
+    const [announcementVo, setBoardVo] = useState();  
 
     useEffect(
         ()=>{
@@ -117,15 +115,15 @@ const AnnoucementDetail = () => {
             <tbody>
               <tr>
                 <th scope="col">
-                  <div>[공지] : {announcementVo.title}</div>
+                  <div>[공지] : {announcementVo?.title}</div>
                   <div></div>
                 </th>
               </tr>
               <tr>
                 <th>
-                  <div>{announcementVo.id}</div>
+                  <div>{announcementVo?.id}</div>
                   <div>
-                    <div>{ announcementVo.enrollDate ? announcementVo.enrollDate.substring(0,10) :''}</div>
+                    <div>{ announcementVo?.enrollDate ? announcementVo.enrollDate.substring(0,10) :''}</div>
                     
                   </div>
                 </th>
@@ -134,9 +132,9 @@ const AnnoucementDetail = () => {
                 <th>
                   <div>
                     <div className="cont">
-                      <h1>{announcementVo.content}</h1>
+                      <h1>{announcementVo?.content}</h1>
 
-                      {announcementVo.fileList
+                      {announcementVo?.fileList
                         ? announcementVo.fileList.map((file, index) => (
                      <img key={index} src={file.path + file.imgName} alt={`File ${index}`} />
                               ))

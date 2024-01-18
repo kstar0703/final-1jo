@@ -28,7 +28,7 @@ const SerachMember = () => {
     }
 
 
-    
+
     );
 
     // 배열 부분
@@ -56,7 +56,6 @@ const SerachMember = () => {
 
 
 
-      console.log(`memberVo = `, memberVo);
       
     fetch("http://127.0.0.1:8888/app/admin/findMember",{
         method: "post",
@@ -193,6 +192,8 @@ const SerachMember = () => {
             <table>
               <caption>회원 검색</caption>
               <colgroup>
+                <col width="" />
+                <col width="" />
                 <col width="" />
                 <col width="" />
                 <col width="" />
