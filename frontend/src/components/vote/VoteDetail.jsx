@@ -46,17 +46,30 @@ const StyledVoteDetailDiv = styled.div`
         & div {
           width: 100%;
           flex-direction: column;
+          align-items: center;
           & .cont {
             margin: 3em 0 2.5em;
           }
           & button {
+            width: 50%;
             border-radius: 20px;
-            height: 70px;
+            height: 50px;
+            &:hover{
+              background-color: lightcoral;
+              color: #fff;
+            }
           }
         }
       }
 
     }
+  }
+  .d_btn_div{
+    width: 90%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 40px 0;
   }
 `;
 
@@ -229,6 +242,11 @@ const VoteDetail = () => {
               </tr>
             </tbody>
           </table>
+        </div>
+        <div className="d_btn_div">
+          <div>
+              <button className="sty01_btn" onClick={()=>{navigator('/vote/list')}}>목록가기</button>
+            </div>
         </div>
       </div>
     </StyledVoteDetailDiv>

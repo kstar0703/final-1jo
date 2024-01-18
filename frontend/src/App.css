@@ -23,6 +23,27 @@
         color: #fff;        
     }
 }
+/*핑크색 버튼*/
+.sty03_btn{
+    width: 100px;
+    height: 38px !important ;
+    border-radius: 10px;
+    background-color:  lightcoral;
+    color:#fff;
+    &:hover{
+        background-color:#292929;
+        color: #fff;        
+    }
+}
+
+/* 오른쪽 하단 목록가기 버튼 */
+.d_btn_div{
+    width: 90%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 40px 0;
+  }
 /****************************************************유저 페이지 CSS 스타일*/
 /*
     list 페이지 styled div 안에 넣기, 잘 모르겠으면 vote[설문투표] list 페이지 보고 따라하기
@@ -204,10 +225,10 @@
     }
 }
 .btn_div{
-    width: 65%;
+    width: 68%;
     display: flex;
     justify-content: end;
-    gap: 20px 55px;
+    gap: 10px 20px;
 }
 /*********************************************/      
 

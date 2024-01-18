@@ -75,34 +75,41 @@ public class VoteController {
 	}	
 	//투표 게시글, 투표 항목 작성하기
 	@PostMapping("insert")
-	public void insert( VoteVo vo ) {
+	public void insert( @RequestBody VoteVo vo ) {
+		System.out.println(vo);
 		//test 용 데이터 마이바티스 FORRECH
-		vo.setManagerNo("11");
-		vo.setTitle("11번 테스트 전자 투표");
-		vo.setContent("테스트용 투표 진행합니다.");
-		VoteVo vvo1 = new VoteVo();
-		VoteVo vvo2 = new VoteVo();
-		VoteVo vvo3 = new VoteVo();
-		vvo1.setVoteNo("6");
-		vvo2.setVoteNo("6");
-		vvo3.setVoteNo("6");
-		vvo1.setItemName("TEST1");
-		vvo2.setItemName("TEST2");
-		vvo3.setItemName("TEST3");
-		vvo1.setVoteOrder("1");
-		vvo2.setVoteOrder("2");
-		vvo3.setVoteOrder("3");
-		vvo1.setVoteType("일반투표");
-		vvo2.setVoteType("일반투표");
-		vvo3.setVoteType("일반투표");
+//		vo.setManagerNo("11");
+//		vo.setTitle("11번 테스트 전자 투표");
+//		vo.setContent("테스트용 투표 진행합니다.");
+//		VoteVo vvo1 = new VoteVo();
+//		VoteVo vvo2 = new VoteVo();
+//		VoteVo vvo3 = new VoteVo();
+//		vvo1.setVoteNo("6");
+//		vvo2.setVoteNo("6");
+//		vvo3.setVoteNo("6");
+//		vvo1.setItemName("TEST1");
+//		vvo2.setItemName("TEST2");
+//		vvo3.setItemName("TEST3");
+//		vvo1.setVoteOrder("1");
+//		vvo2.setVoteOrder("2");
+//		vvo3.setVoteOrder("3");
+//		vvo1.setVoteType("일반투표");
+//		vvo2.setVoteType("일반투표");
+//		vvo3.setVoteType("일반투표");
 		List<VoteVo> voList = new ArrayList<VoteVo>();
-		voList.add(vvo1);
-		voList.add(vvo2);
-		voList.add(vvo3);
-		
+//		voList.add(vvo1);
+//		voList.add(vvo2);
+//		voList.add(vvo3);
+//		
 		boolean result = service.insert(vo,voList);
-		
+//		
 		System.out.println(result);
+	}
+	
+	@PostMapping("itemInsert")
+	public void itemInsert(@RequestBody List<VoteVo> voList) {
+		System.out.println(voList);
+		
 	}
 	
 	//투표 게시글 수정 (글제목, 글내용)
