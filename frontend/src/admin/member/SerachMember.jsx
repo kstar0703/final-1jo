@@ -26,6 +26,9 @@ const SerachMember = () => {
       'phone' :  '' ,
       'permissionYn' : ''
     }
+
+
+    
     );
 
     // 배열 부분
@@ -44,11 +47,16 @@ const SerachMember = () => {
         'phone' :  searchPhone.current.value ,
         'permissionYn' : searchPermissionYn.current.value 
       })
+
     
       setStateSearch(stateSearch+"a");
     }
 
     useEffect( () =>{
+
+
+
+      console.log(`memberVo = `, memberVo);
       
     fetch("http://127.0.0.1:8888/app/admin/findMember",{
         method: "post",
@@ -72,7 +80,6 @@ const SerachMember = () => {
     //초기화
     const onClickReset = () =>{
         searchName.current.value=''
-       
         searchPhone.current.value=''
         searchPermissionYn.current.value ='all'
         setState(state+'a')
@@ -148,6 +155,28 @@ const SerachMember = () => {
                   </select>
                 </div>
               </div>
+
+              {/* 세대주 여부 추가 +동 호수 추가 */}
+              <div className="search_item">
+                <label form="sel01">세대주</label>
+                <div className="form_box">
+                  <select name='permissionYn' class="sel_box" ref={searchPermissionYn}>
+                    <option value='all'>모든회원</option>
+                    <option value='Y'>세대주</option>
+                    <option value="N">세대원</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="search_item">
+                <label form="sel01">동호수</label>
+                <div className="form_box">
+                <input type="text" name="dong"/>동   <input type="text" name="phone" /> 호
+                </div>
+              </div>
+
+
+
               {/*필요 시 추가 가능*/}
             </div>
 
@@ -177,10 +206,10 @@ const SerachMember = () => {
               <thead>
                 <tr>
                   <th scope="col">번호</th>
+                  <th scope="col">성 함</th>
                   <th scope="col">전화번호</th>
                   <th scope='col'>이메일</th>
                   <th scope='col'>가입일</th>
-                  <th scope="col">성 함</th>
                   <th scope="col">생년월일</th>
                   <th scope="col">성별</th>
                   <th scope="col">세대주/세대원</th>
