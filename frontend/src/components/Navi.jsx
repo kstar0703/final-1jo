@@ -30,7 +30,7 @@ const Navi = () => {
             <div><Link to="/board/list">소통게시판</Link></div>
             <div><Link to="/facility/list">커뮤니티</Link></div>
             <div><Link to="/parking/list">방문예약</Link></div>
-            <div><Link to="/complaint/mySumitList">민원처리</Link></div>
+            <div><Link to="/complaint/list">민원처리</Link></div>
             <div><Link to="/management/list">관리비조회</Link></div>
 
         </StyledNaviDiv>

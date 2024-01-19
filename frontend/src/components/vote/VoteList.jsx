@@ -6,13 +6,13 @@ const StyledVoteListDiv = styled.div`
   width: 100%;
   height: 100%;
   .seach_box_bg {
-    height: 300px;
-    background-color: #dadada;
+    height: 200px;
+    background-color: #eee;
     display: flex;
     justify-content: center;
     align-items: center;
     & form input {
-      width: 300px;
+      width: 200px;
       height: 40px;
       border-radius: 10px;
       margin: 10px;
@@ -99,6 +99,7 @@ const VoteList = () => {
         <StyledVoteListDiv>
             <div className='wrap'>
                 <div className='seach_box_bg'>
+                  <div className='mb30'><h1>설문투표</h1></div> 
                     <form onSubmit={handleSubmit}>
                         <input onBlur={SearcInput} type='text' name='title' placeholder='키워드 검색'/>
                         <input type='submit' value="검색"/>
@@ -133,7 +134,7 @@ const VoteList = () => {
                                 <h1>loding</h1>
                                 :
                                 voteVoList.map( vo=>
-                                    (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} >{/*key={vo.no} */}
+                                    (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} key={vo.no} >{/*key={vo.no} */}
                                         <td>{vo.voteNo}</td>
                                         <td>{vo.title}</td>
                                         <td>{vo.content}</td>
