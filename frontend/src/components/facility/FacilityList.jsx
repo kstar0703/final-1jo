@@ -2,8 +2,14 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import FacilityDetailItem from './FacilityDetailItem';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledFacilityListDiv = styled.div`
+
+`; 
 
 const FacilityList = () => {
+
     const [facilityVoList, setFacilityVoList] = useState([]);
     const loadFacilityVoList = ()=>{
         fetch("http://127.0.0.1:8888/app/facility/list")
@@ -15,7 +21,11 @@ const FacilityList = () => {
     }, []);
     const navigator = useNavigate();
     return (
-        <div>
+        <StyledFacilityListDiv>
+            
+            
+
+
                 {
                     facilityVoList.length === 0?
                     <div>loading..</div>
@@ -27,7 +37,7 @@ const FacilityList = () => {
                     )
                 }
 
-            </div>
+            </StyledFacilityListDiv>
     );
 };
 
