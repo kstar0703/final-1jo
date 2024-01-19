@@ -70,16 +70,35 @@
 	,M.ID
 	FROM ANNOUNCEMENT A 
 	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
-	WHERE A.DEL_YN ='N'
+	<trim prefix="WHERE" suffixOverrides="AND">
 	<if test = "title!= null" >	
-	AND A.TITLE LIKE '%' || #{title} || '%'
+	 A.TITLE LIKE '%' || #{title} || '%' AND
 	</if>
 	<if test = "content != null" >	
-	AND A.CONTENT LIKE '%' || #{content} || '%'
+	 A.CONTENT LIKE '%' || #{content} || '%' AND
 	</if>
 	<if test = "id != null" >	
-	AND M.ID LIKE '%' || #{id} || '%'
+	<!--  M.ID LIKE '%' || #{id} || '%' -->
+		M.ID = #{id}
 	</if>
+	
+	<if test="delYn !=null">
+		A.DEL_YN =#{delYn}	AND
+	</if>
+	
+	<if test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
+  	A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+	</if>
+    
+    <if test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
+       A.ENROLL_DATE > TO_DATE(#{startDate}, 'YYYY-MM-DD')
+    </if>
+    
+     <if test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
+       A.ENROLL_DATE &lt;  TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+    </if>
+    	
+	</trim>
 	ORDER BY A.ANNOUNCEMENT_NO DESC
 	</select>
 	
@@ -109,12 +128,22 @@
 	, AI.IMG_NO 
 	</select>
 	
+	<!-- 게시글 삭제  -->
 	<update id="delete">
 	UPDATE ANNOUNCEMENT 
 	SET 
 	DEL_YN ='Y' 
 	,MODIFY_DATE =SYSDATE 
 	WHERE DEL_YN ='N' AND ANNOUNCEMENT_NO=#{announcementNo}
+	</update>
+	
+	<!-- 삭제 취소  -->
+	<update id="cancelDelete">
+	UPDATE ANNOUNCEMENT 
+	SET 
+	DEL_YN ='N' 
+	,MODIFY_DATE =SYSDATE 
+	WHERE DEL_YN ='Y' AND ANNOUNCEMENT_NO=#{announcementNo}
 	</update>
 	
 	<delete id="deleteFile">

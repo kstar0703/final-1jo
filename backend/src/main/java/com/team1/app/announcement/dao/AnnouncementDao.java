@@ -55,6 +55,10 @@ public class AnnouncementDao {
 	public int count(SqlSessionTemplate sst, AnnouncementVo vo) {
 		return sst.selectOne("Announcement.count",vo);
 	}
+	//공지사항 삭제 (취소)
+	public int cancelDelete(SqlSessionTemplate sst, AnnouncementVo vo) {
+		return sst.update("Announcement.cancelDelete",vo);
+	}
 	
 
 

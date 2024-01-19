@@ -177,9 +177,10 @@ public class AnnouncementService {
 		
 		if(result !=1) {
 			throw new IllegalStateException();
-		}else {
-			dao.deleteFile(sst,vo);			
 		}
+		/*지금이러면 공개 처리 삭제 처리 의미가 없어서 일단 보류 ;
+		 * else { dao.deleteFile(sst,vo); }
+		 */
 		
 	
 		return true;
@@ -188,6 +189,19 @@ public class AnnouncementService {
 	//개수
 	public int count(AnnouncementVo vo) {	
 		return dao.count(sst,vo);
+	}
+
+	
+
+	public boolean cancelDelete(AnnouncementVo vo) {
+		int result = dao.cancelDelete(sst,vo);
+		
+		if(result !=1) {
+			throw new IllegalStateException();
+		}else {
+			dao.deleteFile(sst,vo);			
+		}
+		return true;
 	}
 	
 	

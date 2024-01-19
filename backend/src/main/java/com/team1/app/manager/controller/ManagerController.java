@@ -58,8 +58,8 @@ public class ManagerController {
 	@PostMapping("findMember")
 	public List<MemberVo> findMember(@RequestBody MemberVo vo){
 		
+		
 		List<MemberVo> list = service.findMember(vo);
-		System.out.println(list);
 			
 		 return list;
 				 } 
@@ -84,6 +84,25 @@ public class ManagerController {
 		
 		return resultMap;
 	}
+	
+	@PostMapping("cancelacceptMember")
+	public Map<String,String> cancelacceptMember (@RequestBody MemberVo vo){
+		
+		System.out.println(vo.getMemberNo());
+		Map<String,String> resultMap = new HashMap();
+		resultMap.put("msg","실패");
+		int result = service.cancelacceptMember(vo); 
+		
+		
+			
+		if(result ==1) {
+			resultMap.put("msg","성공");
+		}
+		
+		return resultMap;
+	}
+	
+	
 	
 	
 	

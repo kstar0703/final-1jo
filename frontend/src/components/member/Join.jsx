@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const StyledJoinDiv = styled.div`
@@ -70,6 +71,9 @@ const StyledJoinDiv = styled.div`
 
 
 const Join = () => {
+
+    // 
+    const navigate = useNavigate();
 
     //조인인 정보
     const [JoinMemberInfo,setInfo] = useState({unitNo : 1});
@@ -177,8 +181,8 @@ const Join = () => {
       let patcherbleJoin = true
       //제출
       const ClickJoin = (e) => {
-      
-          console.log('제출')
+        
+        console.lo
 
         if(!patcherbleJoin){
           return;
@@ -186,7 +190,7 @@ const Join = () => {
 
       patcherbleJoin =false;
 
-      fetch("http://127.0.0.1:8080/app/member/join",{
+      fetch("http://127.0.0.1:8888/app/member/join",{
           method: "post",
           headers : {
               "Content-Type" : "application/json"
@@ -198,6 +202,7 @@ const Join = () => {
           .then( (data)=>{
           if(data.status==="good"){
               alert('회원가입성공!')
+              navigate('/')
           }else{    
              
             return;
@@ -253,7 +258,7 @@ const Join = () => {
             {/* 5*/}
             <div>
                 <img src="\resources\person.svg" alt="" />
-                <input type="email" name="email"  placeholder='email'/>
+                <input type="email" name="email"  placeholder='email' onChange={onChange}/>
                 <button> 이메일인증 </button>
             </div>
             
@@ -299,8 +304,8 @@ const Join = () => {
             {/* 13 */}
             <div>
             <span>성별 : </span>
-            <label> <input type="radio" name="gender" value="Y" onChange={onChange} />남자  </label>
-            <label> <input type="radio" name="gender" value="N" onChange={onChange} /> 여자 </label>
+            <label> <input type="radio" name="gender" value="M" onChange={onChange} />남자  </label>
+            <label> <input type="radio" name="gender" value="F" onChange={onChange} /> 여자 </label>
             </div>
 
             <div>

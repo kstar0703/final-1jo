@@ -63,7 +63,8 @@ public class MemberController {
 	 */
 	@PostMapping("/join")
 	public Map<String, String> join(@RequestBody MemberVo vo){
-
+		
+		System.out.println(vo);
 		return service.join(vo);
 	}
 	

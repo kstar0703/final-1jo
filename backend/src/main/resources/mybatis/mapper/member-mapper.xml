@@ -35,7 +35,7 @@
 		,#{gender}
 		,#{birth}
 		,#{ownerYn}
-		,#{EMAIL}
+		,#{email}
 		)
 		
 	</insert>
@@ -132,34 +132,30 @@
 	 <if test="permissionYn != null and permissionYn != 'all' and permissionYn.length()!=0  ">
 		 AND PERMISSION_YN= #{permissionYn} 
 	 </if>
-	
-	
-	  <choose>
-        <!-- Check if name and phone are not null and have a length greater than 0 -->
-        <when test="name != null and name.length() > 0 and phone != null and phone.length() > 0">
-            AND (NAME LIKE '%' || #{name} || '%' OR PHONE LIKE '%' || #{phone} || '%')
-        </when>
-        <!-- Check if only name is not null and has a length greater than 0 -->
-        <when test="name != null and name.length() > 0">
-            AND NAME LIKE '%' || #{name} || '%'
-        </when>
-        <!-- Check if only phone is not null and has a length greater than 0 -->
-        <when test="phone != null and phone.length() > 0">
-            AND PHONE LIKE '%' || #{phone} || '%'
-        </when>
-        <!-- If none of the above conditions are met -->
-        <otherwise>
-            <!-- You can add default behavior here if needed -->
-        </otherwise>
-    </choose>
+	 
+	 <if test="ownerYn !=null  and ownerYn != 'all' and ownerYn.length()!=0 " >
+	 	AND OWNER_YN = #{ownerYn}
+	 </if>
+	 
+	<if test="name != null and name.length() > 0">
+    AND NAME LIKE '%' || #{name} || '%' 
+	</if>
+	 
+	 <if test="phone != null and phone.length() > 0">
+    AND PHONE LIKE '%' || #{phone} || '%'
+	</if>
+	 <if test="dong != null and dong.length() > 0">
+    AND U.DONG = #{dong}
+	</if>
+	 
+	<if test="ho != null and ho.length() > 0">
+    AND U.HO = #{ho}
+	</if>
+	 
+		  
 	
 	ORDER BY MEMBER_NO DESC
-	
-	
-	
-	
 
-	
 	</select>
 	
 	<!-- 회원 수락 -->
@@ -167,6 +163,12 @@
 	UPDATE MEMBER SET PERMISSION_YN = 'Y'
 	WHERE MEMBER_NO =#{memberNo}
 	</update>
+	
+	<update id="cancelacceptMember">
+	UPDATE MEMBER SET PERMISSION_YN = 'N'
+	WHERE MEMBER_NO =#{memberNo}
+	</update>
+	
 	
 	<!-- 유닛정보  -->
 	<select id="selectUnit" resultType="com.team1.app.unit.vo.UnitVo">
