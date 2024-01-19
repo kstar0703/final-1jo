@@ -21,7 +21,7 @@ const StyledMainDiv = styled.div`
   tr,
   th,
   td {
-    border: 1px solid #000;
+   
   }
 `;
 

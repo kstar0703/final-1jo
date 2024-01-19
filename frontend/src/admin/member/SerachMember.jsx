@@ -16,20 +16,33 @@ const SerachMember = () => {
 
     // 검색패치 다시 보내기용
     const [stateSearch,setStateSearch] = useState('');
+    
+    // 돔접근용
     let searchName = useRef();
     let searchPhone = useRef();
     let searchPermissionYn = useRef();
+    let searchOwnerYn = useRef();
+    let searchHo = useRef();
+    let searchDong = useRef();
+
+
     
     // 서치vo 
-    const [memberVo, setMemberVo] = useState(
-      {'name' :   ''  ,
-      'phone' :  '' ,
-      'permissionYn' : ''
+    const [memberVo, setMemberVo] = useState({
+      'permissionYn' : 'N'
+    })
+
+    const onChange = (event) =>{
+      const {name , value} = event.target;
+      setMemberVo({
+          ...memberVo,
+        [name] : value,
+      }); 
     }
 
 
-    
-    );
+
+  
 
     // 배열 부분
     const [memberArr, setMemberArr] = useState([])       
@@ -37,16 +50,17 @@ const SerachMember = () => {
 
     let patcherble =true;
   
+    // 검색
     const onClickSerarch = () =>{
+
+      
+      
+   
+
       if(!patcherble){
           return
       }
 
-      setMemberVo({
-        'name' :   searchName.current.value  ,
-        'phone' :  searchPhone.current.value ,
-        'permissionYn' : searchPermissionYn.current.value 
-      })
 
     
       setStateSearch(stateSearch+"a");
@@ -55,21 +69,20 @@ const SerachMember = () => {
     useEffect( () =>{
 
 
-
-      console.log(`memberVo = `, memberVo);
+    
       
     fetch("http://127.0.0.1:8888/app/admin/findMember",{
         method: "post",
         headers : {
             "Content-Type" : "application/json"
         },
-        body : JSON.stringify(memberVo),
+        body :   JSON.stringify(memberVo)
     })
     .then( (resp) => {
      
       return resp.json()})
     .then( (data)=>{
-      
+     
       setMemberArr(data)
     })
     .catch()
@@ -81,7 +94,13 @@ const SerachMember = () => {
     const onClickReset = () =>{
         searchName.current.value=''
         searchPhone.current.value=''
-        searchPermissionYn.current.value ='all'
+        searchPermissionYn.current.value ='N'
+        searchOwnerYn.current.value ='all'
+        searchHo.current.value = ''
+        searchDong.current.value = ''
+        setMemberVo({
+          'permissionYn' : 'N'
+        })
         setState(state+'a')
     }
 
@@ -89,7 +108,6 @@ const SerachMember = () => {
     let patcherble2 = true;
     const onClickPermission = (memberNo) =>{
 
-     console.log(memberNo)
 
       if(!patcherble2){return}
 
@@ -107,7 +125,7 @@ const SerachMember = () => {
      
       return resp.json()})
     .then( (data)=>{
-        console.log(data)
+        
       if(data.msg==='성공'){
           alert('승인 성공')
           setStateSearch(stateSearch+"a");
@@ -118,6 +136,42 @@ const SerachMember = () => {
     })
     .catch()
     .finally( () => {patcherble2 = true
+      
+    })
+
+    }
+
+    // 허가 취소
+    let patcherble3 = true;
+    const onClickCancelPermission = (memberNo) =>{
+
+      if(!patcherble3){return}
+
+
+      fetch("http://127.0.0.1:8888/app/admin/cancelacceptMember",{
+        method: "post",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          memberNo: memberNo,
+        }),
+    })
+    .then( (resp) => {
+     
+      return resp.json()})
+    .then( (data)=>{
+        
+      if(data.msg==='성공'){
+          alert('승인취소 성공')
+          setStateSearch(stateSearch+"a");
+      }else{
+        alert('승인 실패')
+      }
+      
+    })
+    .catch()
+    .finally( () => {patcherble3 = true
       
     })
 
@@ -135,23 +189,23 @@ const SerachMember = () => {
               <div className="search_item">
                 <label form="sel01">이름</label>
                 <div className="form_box">
-                  <input type="text" name="name" ref={searchName} />
+                  <input type="text" name="name" ref={searchName} onChange={onChange} />
                 </div>
               </div>
               <div className="search_item">
                 <label form="sel01" >전화번호</label>
                 <div className="form_box">
-                  <input type="text" name="phone" ref={searchPhone} />
+                  <input type="text" name="phone" ref={searchPhone} onChange={onChange} />
                 </div>
               </div>
           
               <div className="search_item">
                 <label form="sel01">승인여부</label>
                 <div className="form_box">
-                  <select name='permissionYn' class="sel_box" ref={searchPermissionYn}>
-                    <option value='all'>모든회원</option>
-                    <option value='Y'>승인</option>
-                    <option value="N">미승인</option>
+                  <select name='permissionYn' class="sel_box" ref={searchPermissionYn} onChange={onChange}>
+                  <option value="N">미승인</option>
+                  <option value='Y'>승인</option>
+                  <option value='all'>모든회원</option>
                   </select>
                 </div>
               </div>
@@ -160,7 +214,7 @@ const SerachMember = () => {
               <div className="search_item">
                 <label form="sel01">세대주</label>
                 <div className="form_box">
-                  <select name='permissionYn' class="sel_box" ref={searchPermissionYn}>
+                  <select name='ownerYn' class="sel_box" ref={searchOwnerYn} onChange={onChange}>
                     <option value='all'>모든회원</option>
                     <option value='Y'>세대주</option>
                     <option value="N">세대원</option>
@@ -171,7 +225,7 @@ const SerachMember = () => {
               <div className="search_item">
                 <label form="sel01">동호수</label>
                 <div className="form_box">
-                <input type="text" name="dong"/>동   <input type="text" name="phone" /> 호
+                <input type="text" name="dong" onChange={onChange} ref={searchDong} />동   <input type="text" name="ho" onChange={onChange} ref={searchHo} /> 호
                 </div>
               </div>
 
@@ -202,6 +256,8 @@ const SerachMember = () => {
                 <col width="" />
                 <col width="" />
                 <col width="" />
+                <col width="" />
+                <col width="" />
               </colgroup>
               <thead>
                 <tr>
@@ -215,7 +271,8 @@ const SerachMember = () => {
                   <th scope="col">세대주/세대원</th>
                   <th scope="col">세대정보</th>
                   <th scope="col">잔여주차시간</th>
-                  <th scope="col">허가여부</th>
+                  <th scope="col">승인여부</th>
+                  <th>회원수락</th>
                 </tr>
               </thead>
               <tbody>
@@ -233,7 +290,14 @@ const SerachMember = () => {
                       <td>{vo.ownerYn != null ? (vo.ownerYn ==='Y' ? "세대주" : "세대원") : ''}</td>
                       <td>{`${vo.dong ? vo.dong : ''}동${vo.ho ? vo.ho : ''}호`}</td>
                       <td>{`${Math.floor(vo.vehTime / 60)}시간 ${vo.vehTime % 60}분`}</td>
-                        <td>{vo.permissionYn==='Y' ?  ('승인'): <button className='sty02_btn' onClick={ () => {
+                      <td>{vo.permissionYn ? vo.permissionYn ==='Y' ? <span>승인</span> : <span>미승인</span> : '' }</td>
+                        <td>{vo.permissionYn==='Y' ?  
+                        <button className='sty01_btn' onClick={ () => {
+                          
+                          onClickCancelPermission(vo.memberNo)
+                      }}>승인취소</button>
+                        
+                        : <button className='sty02_btn' onClick={ () => {
                           
                           onClickPermission(vo.memberNo)
                       }}>미승인</button>  } </td>

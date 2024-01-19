@@ -35,6 +35,12 @@ public class ManagerService {
 		
 		return dao.acceptMember(vo,sst);
 	}
+
+	//회원수락 취소
+	public int cancelacceptMember(MemberVo vo) {
+		
+		return dao.cancelacceptMember(vo,sst);
+	}
 	
 	
 

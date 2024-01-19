@@ -19,11 +19,14 @@ import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 //공지사항
 @RequestMapping("announcement")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AnnouncementController {
 	
 	private final AnnouncementService service;
@@ -38,6 +41,8 @@ public class AnnouncementController {
 	 */
 	@PostMapping("write")
 	public Map<String,String> write(AnnouncementVo vo,MultipartFile[] fileArr ) throws Exception{
+		
+		
 		
 		
 		Map<String,String> resultMap = new HashMap();
@@ -85,22 +90,23 @@ public class AnnouncementController {
 	@GetMapping("list")
 	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
 		
-		
+		log.info("전달받은 vo값 {}",vo);
 		
 		Map<String,Object> resultMap = new HashMap();
 		
 		int cnt = service.count(vo);
-		System.out.println(cnt);
+	
 		//페이지 리밋
 		int pageLimit = 10;	
 		
 		PageVo pvo = new PageVo(cnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
 		
-		System.out.println(pvo);
+	
 	
 		
 	
 		List<AnnouncementVo> voList = service.list(vo,pvo);
+		
 		
 				
 		resultMap.put("status", "good");
@@ -146,7 +152,9 @@ public class AnnouncementController {
 	 * @return
 	 */
 	@PostMapping("delete")
-	public Map<String, String> delete(AnnouncementVo vo){
+	public Map<String, String> delete(@RequestBody AnnouncementVo vo){
+		
+		log.info("delete method 통해서 들어온 정보{}" + vo );
 		
 		Map<String,String> resultMap = new HashMap();
 		resultMap.put("status","bad");
@@ -163,6 +171,36 @@ public class AnnouncementController {
 		
 		return resultMap;		
 	}
+	
+	
+	/**
+	 * 
+	 * @param announcementNo
+	 * @return
+	 */
+	@PostMapping("cancelDelete")
+	public Map<String, String> cancelDelete(@RequestBody AnnouncementVo vo){
+		
+		log.info("삭제 취소에서 들어온 값{}",vo);
+		
+		Map<String,String> resultMap = new HashMap();
+		resultMap.put("status","bad");
+		resultMap.put("msg","삭제 실패");
+		
+		
+		boolean result = service.cancelDelete(vo); 
+		
+		if(result) {
+			resultMap.put("status","good");
+			resultMap.put("msg","삭제 성공");
+		}
+		
+		
+		return resultMap;		
+	}
+	
+	
+	
 	
 	
 	

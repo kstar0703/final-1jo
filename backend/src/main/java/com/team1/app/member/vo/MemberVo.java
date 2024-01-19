@@ -18,6 +18,7 @@ public class MemberVo {
 	private String unitCount;
 	private String email;
 	private String joinDate;
+
 	
 	private String dong;
 	private String ho;

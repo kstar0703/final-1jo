@@ -19,9 +19,7 @@ public class ManagerDao {
 	// 회원검색
 	public List<MemberVo> findMember(MemberVo vo, SqlSessionTemplate sst) {	
 	
-		if(vo.getPhone().equals("")) {
-			System.out.println("dao" +vo);
-		}
+		
 		
 		return sst.selectList("MemberMapper.findMember",vo);
 	}
@@ -29,6 +27,11 @@ public class ManagerDao {
 	// 회원수락
 	public int acceptMember(MemberVo vo, SqlSessionTemplate sst) {
 		return sst.update("MemberMapper.acceptMember",vo);
+	}
+
+	public int cancelacceptMember(MemberVo vo, SqlSessionTemplate sst) {
+		// TODO Auto-generated method stub
+		return sst.update("MemberMapper.cancelacceptMember",vo);
 	}
 	
 	

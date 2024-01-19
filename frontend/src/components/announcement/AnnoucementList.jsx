@@ -114,7 +114,6 @@ const AnnouncementList = () => {
         //검색시 의존성 배열 변경
         const [searchQuery, setSearchQuery] = useState('');   
         const onClickSearch = () => {
-            const queryParams = new URLSearchParams();  
             setSearchQuery(prev => prev + 'a');
         }
 
@@ -144,41 +143,94 @@ const AnnouncementList = () => {
         const [announcement,setAnnouncement] = useState([]);
 
         // 공지사항 리스트
+        // useEffect(
+        //     async () => {
+        //       try {
+        //         const queryParams = new URLSearchParams();
+          
+        //         for (const key in dateVo) {
+        //           queryParams.append(key, dateVo[key]);
+        //         }
+          
+        //         for (const key in vo) {
+        //           queryParams.append(key, vo[key]);
+        //         }
+          
+        //         const queryString = queryParams.toString();
+        //         const url = `http://127.0.0.1:8888/app/announcement/list?${queryString}`;
+          
+        //         const resp = await fetch(url);
+        //         const data = await resp.json();
+          
+        //         setAnnouncement(data.voList);
+        //         setPvo(data.pageVo);
+        //       } catch (error) {
+        //         console.error("Error fetching data:", error);
+        //       } finally {
+              
+        //       }
+        //     },
+        //     [searchQuery]
+        //   );
+
+        // useEffect(
+        //         ( ) =>{
+        //             const queryParams = new URLSearchParams();
+          
+        //             for (const key in dateVo) {
+        //               queryParams.append(key, dateVo[key]);
+        //             }
+              
+        //             for (const key in vo) {
+        //               queryParams.append(key, vo[key]);
+        //             }
+              
+        //             const queryString = queryParams.toString();
+        //             const url = `http://127.0.0.1:8888/app/announcement/list?${queryString}`;
+
+        //             fetch( (url) =>{ })
+        //             .then( (resp) =>{
+        //                 return resp.json()
+        //             })
+        //             .then((data)=>{
+        //                     setAnnouncement(data)
+        //             } )
+        //         }
+               
+          
+             
+        
+        //     ,[searchQuery]
+        //   );
+
         useEffect(
-
-            ()=>{
-                
-                const queryParams = new URLSearchParams();  
-
+            () => {
+                const queryParams = new URLSearchParams();
+          
                 for (const key in dateVo) {
-                    queryParams.append(key, dateVo[key]);
-                  }
-            
+                  queryParams.append(key, dateVo[key]);
+                }
+          
                 for (const key in vo) {
                   queryParams.append(key, vo[key]);
                 }
-
-
-
-
-              
+          
                 const queryString = queryParams.toString();
-                const url = `http://127.0.0.1:8888/app/announcement/list?${queryString}`;
-
-                console.log(url);
-              
                 
-
-                 fetch(url)
-                 .then( resp => resp.json())
-                 .then( data => {    
-                setAnnouncement(data.voList); 
-                setPvo(data.pageVo)
-
-                            
-                 })
-            }
-        ,[searchQuery]);
+                fetch(`http://127.0.0.1:8888/app/announcement/list?${queryString}`)
+                .then(resp => resp.json())
+                .then( data => {
+                    setAnnouncement(data.voList);
+                    setPvo(data.pageVo);
+                } )
+                .catch( e => {
+                    console.error("Error fetching data:", error);
+                } )
+                ;
+                
+            },
+            [searchQuery]
+          );
 
         
 
@@ -226,7 +278,7 @@ const AnnouncementList = () => {
                   )
                 }
                
-            </div>
+            </div>f
             {/* 4 관리자라면 보이게 유저면 안보이게 변경 */}
             <div>
                 
