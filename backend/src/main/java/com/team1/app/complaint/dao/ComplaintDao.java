@@ -14,8 +14,8 @@ import com.team1.app.complaint.vo.ComplaintVo;
 @Repository
 public class ComplaintDao {
 
-	public List<ComplaintVo> mySumitList(SqlSessionTemplate sst,String no) {
-		return sst.selectList("ComplaintMapper.mySumitList",no);
+	public List<ComplaintVo> mySumitList(SqlSessionTemplate sst,ComplaintVo vo) {
+		return sst.selectList("ComplaintMapper.mySumitList",vo);
 	}
 
 	public int complaintSumit(SqlSessionTemplate sst, ComplaintVo vo) {

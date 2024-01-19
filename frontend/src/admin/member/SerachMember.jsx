@@ -42,7 +42,9 @@ const SerachMember = () => {
 
 
 
+
   
+
 
     // 배열 부분
     const [memberArr, setMemberArr] = useState([])       
@@ -69,7 +71,7 @@ const SerachMember = () => {
     useEffect( () =>{
 
 
-    
+
       
     fetch("http://127.0.0.1:8888/app/admin/findMember",{
         method: "post",

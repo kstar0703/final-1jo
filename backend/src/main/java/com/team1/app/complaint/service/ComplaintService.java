@@ -22,8 +22,8 @@ public class ComplaintService {
 	private final SqlSessionTemplate sst;
 	
 	
-	public List<ComplaintVo> mySumitList(String no) {
-		return dao.mySumitList(sst,no);
+	public List<ComplaintVo> mySumitList(ComplaintVo vo) {
+		return dao.mySumitList(sst,vo);
 	}
 
 

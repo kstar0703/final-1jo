@@ -1,7 +1,29 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import BoardReplyEdit from './BoardReplyEdit';
+import styled from 'styled-components';
 
+const StyledBoardReplyListDiv = styled.div`
+    .reply_info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    & :first-child{
+        margin-right: 10px;
+    }
+    & div {
+        display: flex;
+        flex-direction: row;
+    }
+    }
+    button{
+        background-color: #ccc;
+    }
+    .reply_list_box{
+        padding: 15px 0px;
+    }
+`;
 
 const BoardReply = () => {
     let {boardNo} = useParams();
@@ -55,30 +77,38 @@ const BoardReply = () => {
     }
 
     return (
-        <div>
-            [ 댓글목록 ]<br/>
-            -------------------------------------------
+        <StyledBoardReplyListDiv>
+
             {
                 replyVoList.length === 0?
                 <div>댓글작성</div>
                 :
                 replyVoList.map(replyVo=>
-                    <div>
-                        <div>{replyVo.dong}동 {replyVo.name}</div>
-                        <div>{replyVo.enrollDate}</div>
-                        <div>{replyVo.content}</div>
-                        {editingReply === replyVo && (
+                    <div className='reply_list_box'>
+                        <div className='reply_info'>
                             <div>
-                                <BoardReplyEdit replyVo={replyVo} cancelState={handleChangeEditCancel}/>
+                                <div>{replyVo.dong}동 {replyVo.name}</div>
+                                <div>{replyVo.enrollDate}</div>
                             </div>
-                        )}
-                        <div><button onClick={()=>{handleEdit(replyVo)}}>수정</button></div>
-                        <div><button onClick={()=>{handleDelete(replyVo)}}>삭제</button></div>
-                        -------------------------------------------
+                            <div>
+                                <div><button onClick={()=>{handleEdit(replyVo)}}>수정</button></div>
+                                <div><button onClick={()=>{handleDelete(replyVo)}}>삭제</button></div>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div>{replyVo.content}
+                                {editingReply === replyVo && (
+                                    <div>
+                                        <BoardReplyEdit replyVo={replyVo} cancelState={handleChangeEditCancel}/>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
                     )
             }
-        </div>
+        </StyledBoardReplyListDiv>
     );
 };
 

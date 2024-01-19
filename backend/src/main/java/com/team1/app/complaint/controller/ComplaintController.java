@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +25,9 @@ public class ComplaintController {
 	
 	//내 민원 글조회
 	@GetMapping("mySumitList")
-	public void mySumitList(String no) {
-		no = "1";
-		List<ComplaintVo> voList = service.mySumitList(no);
-		
-		for (ComplaintVo complaintVo : voList) {
-			System.out.println(complaintVo);
-		}
+	public List<ComplaintVo> mySumitList( ComplaintVo vo) {
+
+		return service.mySumitList(vo);
 	}
 	
 	//민원 접수 

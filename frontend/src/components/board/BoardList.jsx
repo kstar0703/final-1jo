@@ -1,5 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledBoardListDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    .wrap{
+        display: flex;
+        flex-direction: column;
+    }
+    .left{
+        text-align: left;
+        padding: 0 30px;
+    }
+    .btn_bottom {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        padding-top: 20px;
+    }
+    .btn_under{
+        flex-direction: column;
+    }
+
+`;
 
 const BoardList = () => {
     const formatDate = (dateString)=>{
@@ -28,41 +52,63 @@ const BoardList = () => {
     const navigator = useNavigate();
 
     return (
-        <div>
-            <div>소통게시판</div>
-            <table>
-                <thead>
-                        <th></th>
-                        <th>카테고리</th>
-                        <th>제목</th>
-                        <th>글쓴이</th>
-                        <th>작성일</th>
-                        <th>공감</th>  
-                        <th>조회</th>
-                </thead>
-                <tbody>
-                    {
-                        boardVoList.length === 0?
-                        <h1>loading..</h1>
-                        :
-                        boardVoList.map(vo=>
-                            <tr key={vo.boardNo}>
-                                <td>{vo.boardNo}</td>
-                                <td>{vo.categoryName}</td>
-                                <td onClick={()=>{navigator(`/board/detail/${vo.boardNo}`)}}>{vo.title}</td>
-                                <td>{vo.dong}동 {vo.name}</td>
-                                <td>{formatDate(vo.enrollDate)}</td>
-                                <td>{vo.likeCount}</td>
-                                <td>{vo.hit}</td>
-                            </tr>
-                        )
-                    }
-                </tbody>
-            </table>
-            <div>
-            <button onClick={()=>{navigator("/board/write");}}>글쓰기</button>
+        <StyledBoardListDiv>
+            <div className='wrap'>
+                {/* 검색창 */}
+                    <div className='seach_box_bg'>
+                        <form >
+                            <input  type='text' name='title' placeholder='키워드 검색'/>
+                            <input type='submit' value="검색"/>
+                        </form>
+                    </div>
+
+                {/* 본문 */}
+                <div className="tbl_box mt40 btn_under">
+                    <table>
+                        <colgroup>
+                                    <col width="10" />
+                                    <col width="46" />
+                                    <col width="160" />
+                                    <col width="50" />
+                                    <col width="50" /> 
+                                    <col width="1" />
+                                    <col width="1" />
+                        </colgroup>
+                        <thead>
+                                <th></th>
+                                <th>카테고리</th>
+                                <th >제목</th>
+                                <th>글쓴이</th>
+                                <th>작성일</th>
+                                <th>공감</th>  
+                                <th>조회</th>
+                        </thead>
+                        <tbody>
+                            {
+                                boardVoList.length === 0?
+                                <h1>loading..</h1>
+                                :
+                                boardVoList.map(vo=>
+                                    <tr key={vo.boardNo}>
+                                        <td>{vo.boardNo}</td>
+                                        <td>{vo.categoryName}</td>
+                                        <td className='left' onClick={()=>{navigator(`/board/detail/${vo.boardNo}`)}}>{vo.title}</td>
+                                        <td>{vo.dong}동 {vo.name}</td>
+                                        <td>{formatDate(vo.enrollDate)}</td>
+                                        <td>{vo.likeCount}</td>
+                                        <td>{vo.hit}</td>
+                                    </tr>
+                                )
+                            }
+                        </tbody>
+                    </table>
+                <div className='btn_bottom'>
+                    <button onClick={()=>{navigator("/board/write");}} className='sty02_btn'>글쓰기</button>
+                </div>
+                </div>
             </div>
-        </div>
+            
+        </StyledBoardListDiv>
     );
 };
 

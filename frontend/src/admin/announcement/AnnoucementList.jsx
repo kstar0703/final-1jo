@@ -1,5 +1,7 @@
 import { React,useRef, useState ,useEffect } from 'react';
+
 import { useNavigate, useParams } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 
@@ -12,14 +14,17 @@ import styled from 'styled-components';
 
 const AnnoucementList = () => {
   // 업데이트용 effect 재랜더링요
+
   const [updateEffect,setUpdateEffect] = useState('');
   // 검색어 전달용
   const [dataVo,setDataVo] = useState({});
+
 
  //공지사항 map 
   const [announcement,setAnnouncement] = useState([]);
   //페이징용 
   const [pvo,setPvo] = useState();
+
 
   //네이게이터
   const navigate = useNavigate();
@@ -139,6 +144,8 @@ const AnnoucementList = () => {
   
 
 
+
+
   let patcherble = true;
 
   useEffect(
@@ -146,12 +153,14 @@ const AnnoucementList = () => {
                 const queryParams = new URLSearchParams();
           
                 if(dataVo){
+
                 for (const key in dataVo) {
                   queryParams.append(key, dataVo[key]);
                 }
           
                 for (const key in pvo) {
                   queryParams.append(key, pvo[key]);
+
                 }
               }
           
@@ -161,23 +170,26 @@ const AnnoucementList = () => {
                 .then(resp => resp.json())
                 .then( data => {
                     setAnnouncement(data.voList);
+
                     setPvo(data.pageVo);
                    
+
 
                 } )
                 .catch( e => {
                     console.error("Error fetching data:", e);
                 } )
+
                 .finally ( () =>{
                   patcherble = true;
                 })
+
                 ;
                 
             },
             [updateEffect]
           );
 
-     
 
 
     return (
@@ -185,7 +197,9 @@ const AnnoucementList = () => {
         <div className="ad_wrap">
           <div className="ad_search_box_bg">
             <div className="ad_tit">
+
               <h2>공지사항</h2>
+
             </div>
 
             <div className="ad_search_box">
@@ -199,14 +213,18 @@ const AnnoucementList = () => {
               <div className="search_item">
                 <label form="sel01" >제목</label>
                 <div className="form_box">
+
                   <input type="text" name="title" onChange={onChange} ref={searchTitle}  />
+
                 </div>
               </div>
           
                <div className="search_item">
                 <label form="sel01" >내용</label>
                 <div className="form_box">
+
                   <input type="text" name="content" onChange={onChange} ref={searchContent}  />
+
                 </div>
               </div>
 
@@ -239,24 +257,30 @@ const AnnoucementList = () => {
 
             <div className="btn_div">
               <div>
+
                 <button className="sty01_btn" onClick={onClickReset} >초기화</button>
               </div>
               <div>
                 <button className="sty02_btn" onClick={onClickSearch} >검색</button>
+
               </div>
 
               <div>
+
                 <button className="sty02_btn">공지사항 작성</button>
               </div>
             </div>
 
              
+
   
           </div>
 
           <div class="ad_tbl_box data mt40">
             <table>
+
               <caption>공지사항 검색</caption>
+
               <colgroup>
                 <col width="100px" />
                 <col width="" />
@@ -271,8 +295,11 @@ const AnnoucementList = () => {
                   <th scope="col">제목</th>
                   <th scope="col">작성자</th>
                   <th scope='col'>등록일</th>
+
                   <th scope='col'>상태</th>
                   <th scope='col'>상태처리</th>
+
+
                   <th scope='col'>게시글 상세조회 </th>
                  
                 </tr>
@@ -284,6 +311,7 @@ const AnnoucementList = () => {
                        <td>{vo.announcementNo}</td> 
                        <td>{vo.content}</td> 
                        <td>{vo.id}</td> 
+
                        <td>{vo.enrollDate}</td>
                        <td>{vo.delYn ==='Y' ? '비공개' : '공개'    }</td> 
                        <td>{vo.delYn ==='Y' ?  (<button className="sty02_btn" onClick={()=>{
@@ -291,6 +319,7 @@ const AnnoucementList = () => {
                        }}>공개 처리</button>) : <button className="sty02_btn" onClick={ () =>{onClickHidden(vo.announcementNo) }}>비공개 처리</button>   }</td>
                        <td><button className="sty01_btn" onClick={ () =>{
                             navigate(`/admin/announcement/detail/${vo.announcementNo}`)
+
                        }}>게시글 상세 조회</button> </td>              
                     </tr>
                     ))}
