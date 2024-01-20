@@ -17,7 +17,9 @@ const AnnoucementList = () => {
 
   const [updateEffect,setUpdateEffect] = useState('');
   // 검색어 전달용
-  const [dataVo,setDataVo] = useState({});
+  const [dataVo,setDataVo] = useState({
+    'delYn' : 'all' 
+  });
 
 
  //공지사항 map 
@@ -66,9 +68,11 @@ const AnnoucementList = () => {
      searchContent.current.value=''
      searchstartDate.current.value='' 
      searchEndDate.current.value='' 
-     searchdelYn .current.value='' 
+     searchdelYn.current.value='all' 
 
-     setDataVo()
+     setDataVo({
+      'delyn' : 'all' 
+     })
   }
 
   let patcherble2 = true
@@ -151,7 +155,7 @@ const AnnoucementList = () => {
   useEffect(
    () => {
                 const queryParams = new URLSearchParams();
-          
+                console.log(dataVo)
                 if(dataVo){
 
                 for (const key in dataVo) {
@@ -247,7 +251,7 @@ const AnnoucementList = () => {
                 <label form="sel01">숨김여부</label>
                 <div className="form_box">
                   <select name='delYn' class="sel_box" onChange={onChange} ref={searchdelYn} >
-                    <option value='all'></option>
+                    <option value='all'>모두보기</option>
                     <option value='Y'>숨김</option>
                     <option value="N">공개</option>
                   </select>
