@@ -39,9 +39,7 @@ const ParkingList = () => {
   
   //페이징
   const[pvo,setPvo] = useState({});
-
   //주차내역
-
   const[parkingVoList,setParkingVoList] = useState();
   
   // 화면 랜더링용
@@ -78,6 +76,8 @@ const ParkingList = () => {
   let patcherble = true;
   const onClickSearch = () =>{
     console.log(dataVo)
+
+    setPvo({});
 
     setUpdateEffect(updateEffect +'a');
   }

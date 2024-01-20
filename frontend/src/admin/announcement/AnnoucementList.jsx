@@ -30,9 +30,11 @@ const AnnoucementList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   
+  //페이징
   const handlePageChange = (page) =>{
-
-    setCurrentPage(page);
+    
+   
+    setCurrentPage(page); 
     setUpdateEffect(updateEffect+'a')
   };
 
@@ -60,11 +62,12 @@ const AnnoucementList = () => {
 
   // 검색
   const onClickSearch = () =>{
-    console.log(pvo)
+    console.log(`들어온 pageVo ${pvo}`)
     
     if(!patcherble){
       return
     }
+    setPvo({});
 
     setUpdateEffect(updateEffect+'a')
   }
@@ -104,6 +107,8 @@ const AnnoucementList = () => {
      
       return resp.json()})
     .then( (data)=>{
+
+    
         
       if(data.status==='good'){
           alert('공개 처리 성공')
@@ -181,6 +186,8 @@ const AnnoucementList = () => {
                 fetch(`http://127.0.0.1:8888/app/announcement/list?${queryString}`)
                 .then(resp => resp.json())
                 .then( data => {
+
+                  console.log(`들어온 데이터 ${data}`)
                     setAnnouncement(data.voList);
 
                     setPvo(data.pageVo);
@@ -350,7 +357,7 @@ const AnnoucementList = () => {
           
           
           <div>
-          <Pagination totalPages={pvo} currentPage={currentPage} onPageChange={handlePageChange} />
+          <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange} />
           </div>
         </div>
       </StyledMemberDiv>
