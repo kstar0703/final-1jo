@@ -1,4 +1,33 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
+
+const StyledBoardReplyEditDiv = styled.div`
+    form{
+        padding: 25px 0 0 25px;
+        & textarea {
+            width: 100%;
+            resize: none;
+            border: 0.1px solid #ccc;
+        }
+        
+    }
+    .btn_space{
+        justify-content: space-between;
+        width: 100%;
+    }
+    .btn_bottom {
+        width: 100%;
+        display: flex;
+        padding-top: 5px;
+    }
+    .btn_color{
+        background-color: #ccc;
+        &:hover{
+        background-color: lightcoral;
+        color: #fff;
+    }
+    }
+`;
 
 const BoardReplyEdit = ({replyVo, cancelState}) => {
     const [editedContent, setEditedContent] = useState(replyVo.content);
@@ -34,13 +63,15 @@ const BoardReplyEdit = ({replyVo, cancelState}) => {
     }
     
     return (
-        <div>
+        <StyledBoardReplyEditDiv>
             <form onSubmit={submitReplyEdit}>
-                <div><input type='textarea' name='content'value={editedContent} onChange={handleReplyChange}/></div>
-                <div><input type='submit' value='등록'></input></div>
-                <div><button onClick={()=>{editCancel()}}>취소</button></div>
+                <textarea name='content'rows='6' cols='50' value={editedContent} onChange={handleReplyChange}/>
+                <div className='btn_bottom btn_space'>
+                    <div><button className='sty01_btn btn_color' onClick={()=>{editCancel()}}>취소</button></div>
+                    <div><input type='submit' className='sty02_btn' value='등록'></input></div>
+                </div>
             </form>
-        </div>
+        </StyledBoardReplyEditDiv>
     );
 };
 

@@ -5,7 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFacilityListDiv = styled.div`
-
+    .item_list{
+        
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        padding-top: 50px;
+        gap: 50px;
+    }
 `; 
 
 const FacilityList = () => {
@@ -22,10 +29,7 @@ const FacilityList = () => {
     const navigator = useNavigate();
     return (
         <StyledFacilityListDiv>
-            
-            
-
-
+                <div  className='item_list'>
                 {
                     facilityVoList.length === 0?
                     <div>loading..</div>
@@ -36,6 +40,7 @@ const FacilityList = () => {
                         </div>
                     )
                 }
+                </div>
 
             </StyledFacilityListDiv>
     );
