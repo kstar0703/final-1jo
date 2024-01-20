@@ -1,5 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import FacilityNoticeList from './notice/FacilityNoticeList';
+
+const StyledFacilityEditDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction : column;
+    img {
+        margin-right: 20px;
+    }
+    .select_box{
+        display: flex;
+        flex-direction: row;
+        float: left;
+        & label {
+            display: flex;
+            align-items: center;
+            & span {
+                width: 100px;
+            }
+        }
+    }
+    
+`;
 
 const FacilityEdit = () => {
     let {facilitiesNo} = useParams();
@@ -28,7 +53,9 @@ const FacilityEdit = () => {
                 setLocation(data.facilityVo.location);
                 setDayOff(data.facilityVo.dayOff);
                 setAmenity(data.facilityVo.amenity);
-                // setFile(data.facilityVo.file);
+                setEnrollDate(data.facilityVo.enrollDate);
+                setModifyDate(data.facilityVo.modifyDate);
+                setFile(data.facilityVo.image);
         });
     }
     loadFacilityVo();
@@ -50,6 +77,8 @@ const FacilityEdit = () => {
     const [location, setLocation] = useState();
     const [dayOff, setDayOff] = useState();
     const [amenity, setAmenity] = useState();
+    const [enrollDate, setEnrollDate] = useState();
+    const [modifyDate, setModifyDate] = useState();
     const [file, setFile] = useState(null);
 
     const handleChangeFacilitiesName = (e)=>{
@@ -112,10 +141,104 @@ const FacilityEdit = () => {
     }
 
     return (
-        <div>
-            <div>커뮤니티 시설등록</div>
-            <div>
-                <form onSubmit={handleSubmit}>
+        <StyledFacilityEditDiv>
+            <div className='ad_wrap'>
+                <div class="ad_detail_box">
+                    <div className="ad_tit">
+                        <h2>커뮤니티 시설정보/수정</h2>  
+                    </div>
+
+                    <div className='ad_tbl_box'>  
+                        <table>
+                        <caption>커뮤니티시설 상세 테이블</caption>
+                                <colgroup>
+                                    <col width="15%"/>
+                                    <col width="35%"/>
+                                    <col width="15%"/>
+                                    <col width="35%"/>
+                                </colgroup>                        
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><label form=''>시설번호</label></th>
+                                    <td><input type='text' name='facilitiesNo' value={facilitiesNo}></input></td>
+                                    <th scope="row"><label form=''>사용여부</label></th>
+                                    <td>
+                                        <div class="select_box">
+                                            <label><input type='radio' name='delYn' value='N' onChange={handleChangeDelYn} checked='checked'/><span>가능</span></label>
+                                            <label><input type='radio' name='delYn' value='Y' onChange={handleChangeDelYn}/><span>불가능</span></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label form=''>시설명</label></th>
+                                    <td><input type='text' name='facilitiesName' onChange={handleChangeFacilitiesName} value={facilitiesName}></input></td>
+                                    <th scope="row"><label form=''>문의</label></th>
+                                    <td><input type='text' name='contact' onInput={onInputContact} value={contact}></input></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label form="">이미지</label></th>
+                                    <td>
+                                        <div class="form_box">
+                                            <img src={file} width='100px'/>
+                                            <input type='file' name='file' onChange={handleChangeImage}></input>
+                                        </div>
+                                    </td>
+
+                                    <th scope="row"><label form="">위치</label></th>
+                                    <td><input type='text' name='location' onChange={handleChangeLocation} value={location}></input></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label form="">단가</label></th>
+                                    <td><input type='text' name='unitPrice' onChange={handleChangeUnitPrice} value={unitPrice}></input></td>
+                                    <th scope="row"><label form="">운영시간</label></th>
+                                    <td><input type='text' name='operationTime' onChange={handleChangeOperationTime} value={operationTime}></input></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label form="">편의시설</label></th>
+                                    <td><input type='text' name='amenity' onChange={handleChangeAmenity} value={amenity}></input></td>
+                                    <th scope="row"><label form="">휴일</label></th>
+                                    <td><input type='text' name='dayOff' onChange={handleChangeDayOff} value={dayOff}></input></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label form="">등록일</label></th>
+                                    <td>{enrollDate}</td>
+                                    <th scope="row"><label form="">최근 수정일</label></th>
+                                    <td>{modifyDate == null? "-":modifyDate}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <th colspan="4" scope="row"><label form=''>안내사항</label></th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="form_box">
+                                            <textarea type="text-area" placeholder="값을 입력해주세요" ></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ad_btn_div mt20">
+                        <div>
+                            <button className='sty01_btn' onClick={()=>{navigator("/admin/facility/list");}}>취소</button>
+                        </div>
+                        <div>
+                            <button className='sty02_btn' onClick={handleSubmit} >수정완료</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <FacilityNoticeList />
+                </div>
+
+
+
+
+            </div>
+                {/* <form onSubmit={handleSubmit}>
                     <table>
                         <tbody>
                         <tr>
@@ -157,9 +280,8 @@ const FacilityEdit = () => {
                         <input type='submit'value='등록'></input>
                         <button onClick={()=>{navigator("/admin/facility/list");}}>취소</button>
                     </div>
-                </form>
-            </div>
-        </div>
+                </form> */}
+        </StyledFacilityEditDiv>
     );
 };
 

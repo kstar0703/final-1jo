@@ -5,6 +5,15 @@ import styled from 'styled-components';
 const StyledBoardWriteDiv = styled.div`
     width: 100%;
     height: 100%;
+    /* background-color: aqua; */
+    form{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
     .wrap{
         display: flex;
         flex-direction: column;
@@ -19,10 +28,23 @@ const StyledBoardWriteDiv = styled.div`
         flex-direction: column;
         gap: 10px;
         align-items: baseline;
-        min-height: 300px;
+        min-height: 370px;
+        & textarea {
+            border: none;
+                width: 100%;
+                margin-right: 20px;
+                resize: none;
+                border: 0.1px solid #ccc;
+            }
     }
     .btn_space{
         justify-content: space-between;
+    }
+    .btn_bottom {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        padding-top: 20px;
     }
 `;
 
@@ -141,25 +163,29 @@ const BoardWrite = () => {
                                     </div>
                                 </th>
                                 <th className='content_box'>
-                                        <textarea name='content' placeholder='내용을 입력하세요.' onChange={handleChangeContent}/>
+                                        <textarea name='content' rows="6" cols="50" placeholder='내용을 입력하세요.' onChange={handleChangeContent}/>
                                 </th>
                                 <th>
                                     <div>
                                         <input type='file' name='files' multiple='multiple' onChange={handleChangeFile}/>
                                     </div>    
                                 </th>
-                                <th>
-                                </th>
                             </tr>
                         </tbody>
                     </table>       
-                    <div className='btn_space'>
-                        <input type='submit' value='등록' className='sty01_btn'/> 
+                    <div className='btn_bottom btn_space'>
+                        <div>
                         <button className='sty01_btn' onClick={()=>{navigator("/board/list");}}>취소</button>
+
+                        </div>
+                        <div>
+                        <input type='submit' value='등록' className='sty02_btn'/> 
+                            
+                        </div>
                     </div>
                     </form>
-            </div>           
-        </div>
+                </div>           
+            </div>
         </StyledBoardWriteDiv>
     );
 };
