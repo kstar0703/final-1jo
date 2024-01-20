@@ -48,6 +48,11 @@ public class ParkingDao {
 	public ParkingVo detail(SqlSessionTemplate sst, ParkingVo vo) {
 		return sst.selectOne("ParkingMapper.detail",vo);
 	}
+
+	//예약 복구
+	public int recovery(SqlSessionTemplate sst,ParkingVo vo) {
+		return sst.update("ParkingMapper.recovery",vo);
+	}
 	
 
 }

@@ -63,6 +63,12 @@ public class ParkingService {
 		public ParkingVo detail(ParkingVo vo) {
 			return dao.detail(sst, vo);
 		}
+
+		//예약 복구
+		public int recovery(ParkingVo vo) {
+			
+			return dao.recovery(sst,vo);
+		}
 }
 	
 		

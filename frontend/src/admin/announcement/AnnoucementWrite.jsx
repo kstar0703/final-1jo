@@ -40,6 +40,8 @@ flex-direction: row;
 
 const AnnoucementWrite = () => {
 
+    const navigate =useNavigate()
+
     const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
 
     const navigator = useNavigate();
@@ -71,11 +73,17 @@ const AnnoucementWrite = () => {
         
     }
 
+    let patcherble = true;
     const handleSubmit = (e) =>{
            
         e.preventDefault();
 
-        console.log(fileArr)
+        
+        if(!patcherble){
+            return
+        }
+
+        patcherble= false;
 
         const fd = new FormData();
         fd.append("title" , dataVo.title);
@@ -93,13 +101,20 @@ const AnnoucementWrite = () => {
         })
         .then( resp => resp.json() )
         .then( data => {
-            if(data.msg === "good"){
-                alert("공지사항 작성 !");
-                navigate("/gallery/list");
+            if(data.status === "good"){
+                alert("공지사항 작성성공 !");
+                
+                navigate(`/admin/announcement/detail/${data.announcementNo}`)
+
+
             }else{
-                alert("공지사항 작성 ...");
+                console.log(data)
             }
         } )
+        .catch( (e)=>{
+            
+        })
+        .finally( ()=>{patcherble =true; })
         ;
     };
 

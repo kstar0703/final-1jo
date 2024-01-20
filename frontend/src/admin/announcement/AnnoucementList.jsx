@@ -3,6 +3,7 @@ import { React,useRef, useState ,useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
+import Pagination from '../../components/page/Pagination';
 
 
 // 관리자 수락 및 조회 
@@ -17,7 +18,9 @@ const AnnoucementList = () => {
 
   const [updateEffect,setUpdateEffect] = useState('');
   // 검색어 전달용
-  const [dataVo,setDataVo] = useState({});
+  const [dataVo,setDataVo] = useState({
+    'delYn' : 'all' 
+  });
 
 
  //공지사항 map 
@@ -25,6 +28,15 @@ const AnnoucementList = () => {
   //페이징용 
   const [pvo,setPvo] = useState();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  //페이징
+  const handlePageChange = (page) =>{
+    
+   
+    setCurrentPage(page); 
+    setUpdateEffect(updateEffect+'a')
+  };
 
   //네이게이터
   const navigate = useNavigate();
@@ -50,11 +62,12 @@ const AnnoucementList = () => {
 
   // 검색
   const onClickSearch = () =>{
-    console.log(dataVo)
-
+    console.log(`들어온 pageVo ${pvo}`)
+    
     if(!patcherble){
       return
     }
+    setPvo({});
 
     setUpdateEffect(updateEffect+'a')
   }
@@ -66,9 +79,11 @@ const AnnoucementList = () => {
      searchContent.current.value=''
      searchstartDate.current.value='' 
      searchEndDate.current.value='' 
-     searchdelYn .current.value='' 
+     searchdelYn.current.value='all' 
 
-     setDataVo()
+     setDataVo({
+      'delyn' : 'all' 
+     })
   }
 
   let patcherble2 = true
@@ -92,6 +107,8 @@ const AnnoucementList = () => {
      
       return resp.json()})
     .then( (data)=>{
+
+    
         
       if(data.status==='good'){
           alert('공개 처리 성공')
@@ -151,17 +168,17 @@ const AnnoucementList = () => {
   useEffect(
    () => {
                 const queryParams = new URLSearchParams();
-          
                 if(dataVo){
 
                 for (const key in dataVo) {
                   queryParams.append(key, dataVo[key]);
                 }
           
-                for (const key in pvo) {
-                  queryParams.append(key, pvo[key]);
+                queryParams.append('currentPage',currentPage)
 
-                }
+                // for (const key in currentPage) {
+                //   queryParams.append(key, pvo[key]);
+                // }
               }
           
                 const queryString = queryParams.toString();
@@ -169,9 +186,13 @@ const AnnoucementList = () => {
                 fetch(`http://127.0.0.1:8888/app/announcement/list?${queryString}`)
                 .then(resp => resp.json())
                 .then( data => {
+
+                  console.log(`들어온 데이터 ${data}`)
                     setAnnouncement(data.voList);
 
                     setPvo(data.pageVo);
+
+                   
                    
 
 
@@ -191,7 +212,8 @@ const AnnoucementList = () => {
           );
 
 
-
+    const iterableArray = Array.from({ length: 5 }, (_, index) => index + 1);
+    
     return (
         <StyledMemberDiv>
         <div className="ad_wrap">
@@ -247,7 +269,7 @@ const AnnoucementList = () => {
                 <label form="sel01">숨김여부</label>
                 <div className="form_box">
                   <select name='delYn' class="sel_box" onChange={onChange} ref={searchdelYn} >
-                    <option value='all'></option>
+                    <option value='all'>모두보기</option>
                     <option value='Y'>숨김</option>
                     <option value="N">공개</option>
                   </select>
@@ -326,11 +348,16 @@ const AnnoucementList = () => {
                     </tr>
                     ))}
 
-                
-                  
-                    
               </tbody>
             </table>
+
+                  
+            
+          </div>
+          
+          
+          <div>
+          <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange} />
           </div>
         </div>
       </StyledMemberDiv>

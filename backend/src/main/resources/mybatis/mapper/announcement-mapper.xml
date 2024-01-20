@@ -29,7 +29,7 @@
     ) 
     VALUES 
     (
-    (SELECT GET_ITEM_SEQ() FROM DUAL)
+    (SELECT GET_ITEM_SEQ_ANNOUNCEMENT_IMG() FROM DUAL)
     ,SEQ_ANNOUNCEMENT_NO.CURRVAL
     ,#{file.imgName}
     ,#{file.path}
@@ -41,19 +41,49 @@
 	
 	<!-- 게시글 총개수  -->
 	<select id="count" resultType="int">
-	SELECT COUNT(*) 
+	SELECT  
+	count(*)
 	FROM ANNOUNCEMENT A 
-	JOIN MANAGER M ON A.MANAGER_NO = M.MANAGER_NO
-	WHERE DEL_YN ='N'
+	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
+	<trim prefix="WHERE" suffixOverrides="AND">
 	<if test = "title!= null" >	
-	AND A.TITLE LIKE '%' || #{title} || '%'
+	 A.TITLE LIKE '%' || #{title} || '%' AND
 	</if>
-	<if test = "title != null" >	
-	AND A.CONTENT LIKE '%' || #{content} || '%'
+	<if test = "content != null" >	
+	 A.CONTENT LIKE '%' || #{content} || '%' AND
 	</if>
 	<if test = "id != null" >	
-	AND M.ID LIKE '%' || #{id} || '%'
+	  M.ID LIKE '%' || #{id} || '%' 
+		
 	</if>
+	
+	<choose>
+    <when test="delYn == null or delYn.length() == 0">
+        A.DEL_YN = 'N' AND
+    </when>
+    <when test="delYn == 'all'">
+    <!-- 아무 동작도 수행하지 않음 -->
+	</when>
+    
+    <otherwise>
+        A.DEL_YN = #{delYn} AND
+    </otherwise>
+	</choose>
+	
+	<if test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
+  	A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+	</if>
+    
+    <if test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
+       A.ENROLL_DATE > TO_DATE(#{startDate}, 'YYYY-MM-DD')
+    </if>
+    
+     <if test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
+       A.ENROLL_DATE &lt;  TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+    </if>
+    	
+	</trim>
+	ORDER BY A.ANNOUNCEMENT_NO DESC
 	</select>
 	
 	
@@ -78,13 +108,22 @@
 	 A.CONTENT LIKE '%' || #{content} || '%' AND
 	</if>
 	<if test = "id != null" >	
-	<!--  M.ID LIKE '%' || #{id} || '%' -->
-		M.ID = #{id}
+	  M.ID LIKE '%' || #{id} || '%' 
+		
 	</if>
 	
-	<if test="delYn !=null">
-		A.DEL_YN =#{delYn}	AND
-	</if>
+	<choose>
+    <when test="delYn == null or delYn.length() == 0">
+        A.DEL_YN = 'N' AND
+    </when>
+    <when test="delYn == 'all'">
+    <!-- 아무 동작도 수행하지 않음 -->
+	</when>
+    
+    <otherwise>
+        A.DEL_YN = #{delYn} AND
+    </otherwise>
+	</choose>
 	
 	<if test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
   	A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
@@ -121,7 +160,6 @@
 	FROM ANNOUNCEMENT A 
 	LEFT JOIN ANNOUNCEMENT_IMG AI ON A.ANNOUNCEMENT_NO = AI.ANNOUNCEMENT_NO
 	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
-	WHERE A.DEL_YN ='N'
 	AND A.ANNOUNCEMENT_NO =#{announcementNo}
 	ORDER BY 
 	A.ANNOUNCEMENT_NO DESC 
