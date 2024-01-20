@@ -66,16 +66,16 @@ public class VoteService {
 	public boolean insert(VoteVo vo, List<VoteVo> voList) {
 		
 		boolean result = false;
-//		int voListCnt = voList.size();
+		int voListCnt = voList.size();
 		
 		int boardResult = dao.insertBoard(sst,vo);
-//		if(boardResult != 1) {
-//			throw new IllegalStateException();
-//		}
-//		int itemResult = dao.insertItem(sst,voList);
-//		if(voListCnt == itemResult) {
-//			result = true;
-//		}
+		if(boardResult != 1) {
+			throw new IllegalStateException();
+		}
+		int itemResult = dao.insertItem(sst,voList);
+		if(voListCnt == itemResult) {
+			result = true;
+		}
 		
 		if(boardResult == 1) {
 			result = true;

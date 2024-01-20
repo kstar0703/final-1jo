@@ -45,20 +45,38 @@ const VoteWrite = () => {
     const [itemVo, setItemVo] = useState({});
     
     const handleSubmit = () => {
+        if (deadDate.current.value === ''){
+            alert("마감일자를 입력해주세요");
+            return;
+        }
+        const today = new Date();
+        const deadLine = new Date(deadDate.current.value);
+        // 마감일자 + 현재 시간 비교문
+        if(deadLine < today){
+            alert("마감일자가 현재 시간보다 작습니다. ");
+            return;
+        }
+        if(itemArr.length === 0){
+            alert("투표 항목을 최소 1개 이상은 넣어주세요");
+            return;
+        }
+        
         /* 모달 만들기 */
         // setFormData({
-        //   title: titleValue,
-        //   content: contentValue,
-        //   delYn: delYn.current.value,
-        //   acceptYn: acceptYn.current.value,
-        //   voteNo,
-        // });
-        // console.log(formData);
-        console.log(delYn.current.value);
-        console.log(acceptYn.current.value);
-        console.log(deadDate.current.value);
-        console.log(titleValue);
-        console.log(contentValue);
+            //   title: titleValue,
+            //   content: contentValue,
+            //   delYn: delYn.current.value,
+            //   acceptYn: acceptYn.current.value,
+            //   voteNo,
+            // });
+            // console.log(formData);
+         /* 데이터 확인용 출력문 */    
+            // console.log(delYn.current.value);
+            // console.log(acceptYn.current.value);
+            // console.log(deadDate.current.value);
+            // console.log(titleValue);
+            // console.log(contentValue);
+            // console.log(itemArr);
         // fetch("http://127.0.0.1:8888/app/vote/insert", {
         //   method: "POST",
         //   headers: {
@@ -70,26 +88,27 @@ const VoteWrite = () => {
         //     delYn: delYn.current.value,
         //     acceptYn: acceptYn.current.value,
         //     deadlineDate: deadDate.current.value,
-        //     managerNo : '9'
+        //     managerNo: "9",
+        //     voList: itemArr,
         //   }),
         // })
         //   .then((resp) => resp.json())
         //   .then((data) => {
         //     console.log(data);
-        //     if (data === 1) {
+        //     if (data) {
         //       alert("작성이 완료되었습니다.");
         //       navigator("/admin/vote/list");
         //     }
         //   });
-/****************************************여기부터 수정 */
-          fetch("http://127.0.0.1:8888/app/vote/itemInsert", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },body: JSON.stringify(itemArr)})
-            .then((resp) => resp.json())
-            .then((data) => {console.log(data);})
-            ;
+
+        //   fetch("http://127.0.0.1:8888/app/vote/itemInsert", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },body: JSON.stringify(itemArr)})
+        //     .then((resp) => resp.json())
+        //     .then((data) => {console.log(data);})
+        //     ;
 
     }
     const handleAdd = (e) => {

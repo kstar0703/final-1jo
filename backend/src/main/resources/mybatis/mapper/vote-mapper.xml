@@ -116,7 +116,7 @@
 			VALUES
 			(
 			    (SELECT GET_ITEM_SEQ() FROM DUAL )
-			    ,#{item.voteNo}
+			    ,SEQ_VOTE_BOARD_NO.CURRVAL
 			    ,#{item.itemName}
 			    ,#{item.voteOrder}
 			    ,#{item.voteType}
@@ -369,54 +369,51 @@
 	<select id="adminSelect" resultType="VoteVo">
 		SELECT 
 		    VOTE_NO
-		    ,V.MANAGER_NO
+		    ,V.MANAGER_NO AS managerId
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
 		    ,MODIFY_DATE
 		    ,DEADLINE_DATE
+		    ,DEL_YN
 		    ,ACCEPT_YN
 		    ,ID
+		    ,HIT
 		FROM 
 		    VOTE_BOARD V
 		JOIN
 		    MANAGER M
 		ON 
 		    M.MANAGER_NO = V.MANAGER_NO
-		<if test="managerId != null">
+		WHERE
+			DEL_YN = #{delYn}
+		<if test="managerNo != null">
 			AND
-			    ID = #{managerId}
+			    V.MANAGER_NO = #{managerNo}
 		</if>
 		<if test="title != null">
 			AND
 			    TITLE like '%${title}%'
 		</if>
-		<if test="content != null">
-			AND 
-			    CONTENT like '%${content}%'
-		</if>
-		<if test="enrollDateStart != null and enrollDateEnd != null"> 
+		<if test="enrollDateStart == null and enrollDateEnd == null">
 			AND
-			    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
+			    ENROLL_DATE IS NULL
 		</if>
+<!-- 		<if test="enrollDateStart != null and enrollDateEnd != null">  -->
+<!-- 			AND -->
+<!-- 			    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		 -->
+<!-- 		</if> -->
 		<if test="deadlineDateStart == null and deadlineDateEnd == null">
 			AND
 			    DEADLINE_DATE IS NULL		
 		</if>
-		<if test="deadlineDateStart != null and deadlineDateEnd != null"> 
-			AND
-			    (DEADLINE_DATE BETWEEN TO_DATE(#{deadlineDateStart}) AND TO_DATE(#{deadlineDateEnd}))
-		</if>
+<!-- 		<if test="deadlineDateStart != null and deadlineDateEnd != null">  -->
+<!-- 			AND -->
+<!-- 			    (DEADLINE_DATE BETWEEN TO_DATE(#{deadlineDateStart}) AND TO_DATE(#{deadlineDateEnd})) -->
+<!-- 		</if> -->
+		AND
+		    ACCEPT_YN = #{acceptYn}
 
-		<if test="delYn != null">
-			AND
-			    DEL_YN = #{delYn}
-		
-		</if>
-		<if test="acceptYn != null">
-			AND
-			    ACCEPT_YN = #{acceptYn}
-		</if>
 		ORDER BY 
 		    VOTE_NO DESC	
 	</select>

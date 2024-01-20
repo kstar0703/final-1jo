@@ -1,4 +1,4 @@
-import React ,{useEffect,useState} from 'react';
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -109,9 +109,7 @@ const StyledVoteMainDiv = styled.div`
 `;
 
 const VoteList = () => {
-
     const navigator = useNavigate();
-
     //fetch
     let [voteVoList,setVoteVoList] = useState([]);
 
@@ -125,6 +123,62 @@ const VoteList = () => {
         loadVoteVoList();
     },[])
     
+    const titleRef = useRef();
+    const managerRef = useRef();
+    const enrollsRef = useRef();
+    const enrolleRef = useRef();
+    const deadsRes = useRef();
+    const deadeRes = useRef();
+    const delRes = useRef();
+    const acceptRes = useRef();
+    const [submit,setSubmit] = useState();
+
+    const handleSearch = () => {
+      console.log(titleRef.current.value);
+      console.log(managerRef.current.value);
+      console.log(enrollsRef.current.value);
+      console.log(enrolleRef.current.value);
+      console.log(deadsRes.current.value);
+      console.log(deadeRes.current.value);
+      console.log(delRes.current.value);
+      console.log(acceptRes.current.value);
+
+      // setSubmit({
+      //   title: titleRef.current.value,
+      //   managerNo: managerRef.current.value,
+      //   enrollDateStart: enrollsRef.current.value,
+      //   enrollDateEnd: enrolleRef.current.value,
+      //   deadlineDateStart: deadsRes.current.value,
+      //   deadlineDateEnd: deadeRes.current.value,
+      //   delYn: delRes.current.value,
+      //   acceptYn: acceptRes.current.value,
+      // });
+
+      console.log(submit);
+
+      fetch("http://127.0.0.1:8888/app/vote/adminSelect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: titleRef.current.value,
+          managerNo: 1,//managerRef.current.value,
+          enrollDateStart: enrollsRef.current.value,
+          enrollDateEnd: enrolleRef.current.value,
+          deadlineDateStart: deadsRes.current.value,
+          deadlineDateEnd: deadeRes.current.value,
+          delYn: delRes.current.value,
+          acceptYn: acceptRes.current.value,
+        }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          console.log(data);
+          setVoteVoList(data);
+        });
+    }
+
     return (
       <StyledVoteMainDiv>
         <div className="ad_wrap">
@@ -137,44 +191,57 @@ const VoteList = () => {
               <div className="search_item">
                 <label form="sel01">제목</label>
                 <div className="form_box">
-                  <input type="text" name="title" />
+                  <input ref={titleRef} type="text" name="title" />
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목제목</label>
+                <label form="sel01">담당자</label>
                 <div className="form_box">
-                  <input type="text" name="title" />
+                  <input ref={managerRef} type="text" name="title" />
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목제목제목</label>
+                <label form="sel01">작성::시작</label>
                 <div className="form_box">
-                  <input type="text" name="title" />
+                  <input ref={enrollsRef} type="date" name="enrollDateStart" />
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목</label>
+                <label form="sel01"> 작성::종료 </label>
                 <div className="form_box">
-                  <input type="text" name="title" />
+                  <input ref={enrolleRef} type="date" name="enrollDateEnd" />
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목제목</label>
+                <label form="sel01">마감::시작</label>
                 <div className="form_box">
-                  <input type="text" name="title" />
+                  <input ref={deadsRes} type="date" name="deadlineDateStart" />
                 </div>
               </div>
               <div className="search_item">
-                <label form="sel01">제목제목</label>
+                <label form="sel01">마감::종료 </label>
                 <div className="form_box">
-                  <select class="sel_box">
-                    <option value="">일반문의</option>
-                    <option value="">기능문의</option>
-                    <option value="">신고문의</option>
+                  <input ref={deadeRes} type="date" name="deadlineDateEnd" />
+                </div>
+              </div>
+              <div className="search_item">
+                <label form="sel01">투표진행</label>
+                <div className="form_box">
+                  <select ref={acceptRes} class="sel_box">
+                    <option value="Y">진행</option>
+                    <option value="N">마감</option>
                   </select>
                 </div>
               </div>
-              {/*필요 시 추가 가능*/}
+              <div className="search_item">
+                <label form="sel01">공개여부</label>
+                <div className="form_box">
+                  <select ref={delRes} class="sel_box">
+                    <option value="N">공개</option>
+                    <option value="Y">비공개</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div className="btn_div">
@@ -182,10 +249,19 @@ const VoteList = () => {
                 <button className="sty01_btn">초기화</button>
               </div>
               <div>
-                <button className="sty02_btn">검색</button>
+                <button onClick={handleSearch} className="sty02_btn">
+                  검색
+                </button>
               </div>
               <div>
-                <button className="sty01_btn" onClick={()=>{navigator('/admin/vote/write')}}>작성</button>
+                <button
+                  className="sty01_btn"
+                  onClick={() => {
+                    navigator("/admin/vote/write");
+                  }}
+                >
+                  작성
+                </button>
               </div>
             </div>
           </div>
@@ -205,7 +281,7 @@ const VoteList = () => {
               <thead>
                 <tr>
                   <th scope="col">번호</th>
-                  <th scope="col">작성자ID</th>
+                  <th scope="col">담당자</th>
                   <th scope="col">제 목</th>
                   <th scope="col">조회수</th>
                   <th scope="col">작성일자</th>
@@ -218,16 +294,21 @@ const VoteList = () => {
                 {voteVoList.length === 0 ? (
                   <h1>loding</h1>
                 ) : (
-                  voteVoList.map((vo) => 
-                  (<tr onClick={()=>{navigator(`/admin/vote/detail/${vo.voteNo}`)}}>{/*key={vo.no} */}
+                  voteVoList.map((vo) => (
+                    <tr
+                      onClick={() => {
+                        navigator(`/admin/vote/detail/${vo.voteNo}`);
+                      }}
+                    >
+                      {/*key={vo.no} */}
                       <td>{vo.voteNo}</td>
                       <td>{vo.managerId}</td>
                       <td>{vo.title}</td>
                       <td>{vo.hit}</td>
                       <td>{vo.enrollDate}</td>
                       <td>{vo.deadlineDate}</td>
-                      <td>{vo.delYn}</td>
-                      <td>{vo.acceptYn}</td>
+                      <td>{vo.delYn === "N" ? "공개" : "비공개"}</td>
+                      <td>{vo.acceptYn === "N" ? "마감" : "진행"}</td>
                     </tr>
                   ))
                 )}

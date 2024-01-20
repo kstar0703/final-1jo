@@ -75,8 +75,8 @@ public class VoteController {
 	}	
 	//투표 게시글, 투표 항목 작성하기
 	@PostMapping("insert")
-	public void insert( @RequestBody VoteVo vo ) {
-		System.out.println(vo);
+	public boolean insert( @RequestBody VoteVo vo ) {
+//		System.out.println(vo);
 		//test 용 데이터 마이바티스 FORRECH
 //		vo.setManagerNo("11");
 //		vo.setTitle("11번 테스트 전자 투표");
@@ -96,20 +96,15 @@ public class VoteController {
 //		vvo1.setVoteType("일반투표");
 //		vvo2.setVoteType("일반투표");
 //		vvo3.setVoteType("일반투표");
-		List<VoteVo> voList = new ArrayList<VoteVo>();
+//		List<VoteVo> voList = new ArrayList<VoteVo>();
 //		voList.add(vvo1);
 //		voList.add(vvo2);
 //		voList.add(vvo3);
-//		
-		boolean result = service.insert(vo,voList);
-//		
-		System.out.println(result);
-	}
-	
-	@PostMapping("itemInsert")
-	public void itemInsert(@RequestBody List<VoteVo> voList) {
-		System.out.println(voList);
 		
+		boolean result = service.insert(vo,vo.getVoList());
+		
+		System.out.println(result);
+		return result;
 	}
 	
 	//투표 게시글 수정 (글제목, 글내용)
@@ -123,16 +118,17 @@ public class VoteController {
 		return result;
 	}
 	
-	//투표 게시글 삭제
-	@DeleteMapping("delete")
-	public void delete(String no) {
-		
-		no = "6";
-		
-		int result = service.delete(no);
-		
-		System.out.println(result);
-	}
+	/*
+	 * //투표 게시글 삭제
+	 * 
+	 * @DeleteMapping("delete") public void delete(String no) {
+	 * 
+	 * no = "6";
+	 * 
+	 * int result = service.delete(no);
+	 * 
+	 * System.out.println(result); }
+	 */
 	
 	
 	// 전체 투표 수 조회 (투표율)
@@ -195,23 +191,25 @@ public class VoteController {
 	}
 	
 	// 관리자 게시글 검색
-	@GetMapping("adminSelect")
-	public void adminSelect(VoteVo vo) {
-		
+	@PostMapping("adminSelect")
+	public List<VoteVo> adminSelect(@RequestBody VoteVo vo) {
+		System.out.println(vo);
 		//test용 데이터
-		vo.setDelYn("N");
-		vo.setManagerId("admin");
-		vo.setTitle("투표");
-		vo.setContent("투표");
-		vo.setEnrollDateStart("20240101");
-		vo.setEnrollDateEnd("20240110");
-		vo.setDelYn("N");
-		vo.setAcceptYn("N");
-		
+//		vo.setDelYn("N");
+//		vo.setManagerId("admin");
+//		vo.setTitle("투표");
+//		vo.setContent("투표");
+//		vo.setEnrollDateStart("20240101");
+//		vo.setEnrollDateEnd("20240110");
+//		vo.setDelYn("N");
+//		vo.setAcceptYn("N");
+//		
 		List<VoteVo> voList = service.adminSelect(vo);
 		for (VoteVo voteVo : voList) {
+			System.out.println("값");
 			System.out.println(voteVo);
 		}
+		return voList;
 	}
 	
 	// 투표 결과 상세 조회
