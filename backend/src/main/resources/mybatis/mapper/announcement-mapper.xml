@@ -78,8 +78,8 @@
 	 A.CONTENT LIKE '%' || #{content} || '%' AND
 	</if>
 	<if test = "id != null" >	
-	<!--  M.ID LIKE '%' || #{id} || '%' -->
-		M.ID = #{id}
+	  M.ID LIKE '%' || #{id} || '%' 
+		
 	</if>
 	
 	<choose>

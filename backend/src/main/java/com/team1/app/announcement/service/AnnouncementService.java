@@ -68,6 +68,9 @@ public class AnnouncementService {
 		
 		int result = dao.write(sst,vo);
 		
+		log.info("업로드 개수 : {}" , result );
+		log.info("업로드 resultCheck 개수 : {}" , resultCheck );
+		
 		if(resultCheck == result) {
 				
 			//현재 번호 가져오기 

@@ -3,6 +3,7 @@ import { React,useRef, useState ,useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
+import Pagination from '../../components/page/Pagination';
 
 
 // 관리자 수락 및 조회 
@@ -27,6 +28,13 @@ const AnnoucementList = () => {
   //페이징용 
   const [pvo,setPvo] = useState();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const handlePageChange = (page) =>{
+
+    setCurrentPage(page);
+    setUpdateEffect(updateEffect+'a')
+  };
 
   //네이게이터
   const navigate = useNavigate();
@@ -52,8 +60,8 @@ const AnnoucementList = () => {
 
   // 검색
   const onClickSearch = () =>{
-    console.log(dataVo)
-
+    console.log(pvo)
+    
     if(!patcherble){
       return
     }
@@ -155,17 +163,17 @@ const AnnoucementList = () => {
   useEffect(
    () => {
                 const queryParams = new URLSearchParams();
-                console.log(dataVo)
                 if(dataVo){
 
                 for (const key in dataVo) {
                   queryParams.append(key, dataVo[key]);
                 }
           
-                for (const key in pvo) {
-                  queryParams.append(key, pvo[key]);
+                queryParams.append('currentPage',currentPage)
 
-                }
+                // for (const key in currentPage) {
+                //   queryParams.append(key, pvo[key]);
+                // }
               }
           
                 const queryString = queryParams.toString();
@@ -176,6 +184,8 @@ const AnnoucementList = () => {
                     setAnnouncement(data.voList);
 
                     setPvo(data.pageVo);
+
+                   
                    
 
 
@@ -195,7 +205,8 @@ const AnnoucementList = () => {
           );
 
 
-
+    const iterableArray = Array.from({ length: 5 }, (_, index) => index + 1);
+    
     return (
         <StyledMemberDiv>
         <div className="ad_wrap">
@@ -330,11 +341,16 @@ const AnnoucementList = () => {
                     </tr>
                     ))}
 
-                
-                  
-                    
               </tbody>
             </table>
+
+                  
+            
+          </div>
+          
+          
+          <div>
+          <Pagination totalPages={pvo} currentPage={currentPage} onPageChange={handlePageChange} />
           </div>
         </div>
       </StyledMemberDiv>

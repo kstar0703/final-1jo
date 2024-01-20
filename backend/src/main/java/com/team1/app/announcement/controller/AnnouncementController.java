@@ -92,6 +92,8 @@ public class AnnouncementController {
 	@GetMapping("list")
 	public Map<String,Object> list(AnnouncementVo vo,PageVo pageVo){
 		
+		
+		log.info("전달받은 pageVo 값 :{}" ,pageVo);
 		log.info("전달받은 vo값 {}",vo);
 		
 		Map<String,Object> resultMap = new HashMap();

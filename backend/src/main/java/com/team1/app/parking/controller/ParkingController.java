@@ -1,3 +1,4 @@
+
 package com.team1.app.parking.controller;
 
 import java.util.HashMap;
@@ -14,13 +15,14 @@ import com.team1.app.parking.service.ParkingService;
 import com.team1.app.parking.vo.ParkingVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 //차량 등록
 
 @RequestMapping("parking")
 @RestController
 @RequiredArgsConstructor
-
+@Slf4j
 public class ParkingController {
 		
 	private final ParkingService service;
@@ -112,7 +114,7 @@ public class ParkingController {
 	 * @return 
 	 */
 	@PostMapping("cancel")
-	public Map<String, String> cancel(ParkingVo vo){
+	public Map<String, String> cancel(@RequestBody ParkingVo vo){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -126,6 +128,27 @@ public class ParkingController {
 		
 		return resultMap;	
 	}
+	/**
+	 * 예약 복구
+	 * @param parkingNo
+	 * @return 
+	 */
+	@PostMapping("recovery")
+	public Map<String, String> recovery(@RequestBody ParkingVo vo){
+		Map<String, String>  resultMap = new HashMap();
+		resultMap.put("status", "bad");
+		resultMap.put("msg", "실패");
+		
+		int result = service.recovery(vo);
+		
+		if(result ==1) {
+			resultMap.put("status", "good");
+			resultMap.put("msg", "성공");
+		}
+		
+		return resultMap;	
+	}
+	
 	
 	@GetMapping("list")
 	/**
@@ -136,6 +159,7 @@ public class ParkingController {
 	public Map<String, Object> list(ParkingVo vo){
 		Map<String, Object>  resultMap = new HashMap();
 	
+		log.info("들어온 값 : {}  ",vo);
 		
 		List<ParkingVo> ParkingVoList = service.list(vo);  
 		
