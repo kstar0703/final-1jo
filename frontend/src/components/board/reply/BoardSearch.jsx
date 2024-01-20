@@ -8,20 +8,27 @@ const StyledBoardReplySearchDiv = styled.div`
     align-items: center;
     padding: 0%;
     margin: 0;
-
+    height: 40px;
+    & div {
+        height: 36px;
+        border: 0.1px solid #ccc;
+        border-radius: 2px;
+        background-color: white;
+        margin-right: 10px;
+        margin: 3px 5px 3px 10px;
+    }
     & select {
         width: 100px;
         float: right;
         height: 100%;
-        margin-right: 5px;
     }
     & input {
-        width: 100%;
+        width: 230px;
         height: 100%;
-        margin-right: 5px;
+        margin-left: 10px;
+        background-color: white;
     }
     & button {
-        
         width: 80px;
         height: 100%;
     }

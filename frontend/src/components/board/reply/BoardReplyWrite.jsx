@@ -6,15 +6,15 @@ const StyledBoardReplyWriteDiv = styled.div`
     .reply_write_box{
         display: flex;
         flex-direction: column;
-        padding: 20px 0 20px 0;
+        padding: 20px 0 0px 0;
         & form {
             width: 100%;
 
             & textarea {
                 width: 100%;
                 margin-right: 20px;
-                min-height: 100px;
                 resize: none;
+                border: 0.1px solid #ccc;
             }
         }
         & button {
@@ -64,7 +64,7 @@ const BoardReplyWrite = () => {
         <StyledBoardReplyWriteDiv>
             <div className='reply_write_box'>
                     <form>
-                        <textarea rows="10" cols="50" name='content' placeholder='댓글을 입력하세요.' onChange={handleInputChange} onKeyDown={handleKeyDown}/>
+                        <textarea rows="6" cols="50" name='content' placeholder='댓글을 입력하세요.' onChange={handleInputChange} onKeyDown={handleKeyDown}/>
                         <button className='sty02_btn' type='submit' onClick={handleSubmit}>등록</button>
                     </form>
             </div>

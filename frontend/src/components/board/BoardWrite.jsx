@@ -1,5 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledBoardWriteDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    .wrap{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .btn_under{
+        flex-direction: column;
+    }
+    .content_box{
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: baseline;
+        min-height: 300px;
+    }
+    .btn_space{
+        justify-content: space-between;
+    }
+`;
 
 const BoardWrite = () => {
     const navigator = useNavigate();
@@ -79,23 +104,63 @@ const BoardWrite = () => {
 
 
     return (
-        <div>
-            <div>소통게시판</div>
-            <form onSubmit={handleSubmit} encType='multipart/form-data'>
-                <div>
-                    <select value={selectedCategory}  onChange={handleChangeCategory}>
-                        <option value="">카테고리 선택</option>
-                        {categoryVoList.map(vo=>(
-                            <option key={vo.categoryNo} value={vo.categoryNo}>{vo.categoryName}</option>))}
-                    </select>
+        <StyledBoardWriteDiv>
+            <div className="wrap">
+                <div className="detail_heard_box">
+                    <h1>소통 게시판</h1>
+                </div>
+
+                <div className="tbl_detail_box btn_under">
+                    <form onSubmit={handleSubmit} encType='multipart/form-data'>
+                    <table>
+                        <tbody> 
+                            <caption>소통 게시판 수정하기 테이블</caption>
+                                <colgroup>
+                                    <col width="" />
+                                    <col width="" />
+                                    <col width="" />
+                                    <col width="" />
+                                </colgroup>
+                            <tr>
+                                <th scope="col">
+                                    <div className='title_box'>
+                                        <div>
+                                            <select value={selectedCategory}  onChange={handleChangeCategory}>
+                                                <option value="">카테고리 선택</option>
+                                                {categoryVoList.map(vo=>(
+                                                <option key={vo.categoryNo} value={vo.categoryNo}>{vo.categoryName}</option>))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th className='info_box'>   
+                                    <div>
+                                        <input type='text' name='title' placeholder='제목을 입력하세요.' onChange={handleChangeTitle}/>
+                                    </div>
+                                </th>
+                                <th className='content_box'>
+                                        <textarea name='content' placeholder='내용을 입력하세요.' onChange={handleChangeContent}/>
+                                </th>
+                                <th>
+                                    <div>
+                                        <input type='file' name='files' multiple='multiple' onChange={handleChangeFile}/>
+                                    </div>    
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>       
+                    <div className='btn_space'>
+                        <input type='submit' value='등록' className='sty01_btn'/> 
+                        <button className='sty01_btn' onClick={()=>{navigator("/board/list");}}>취소</button>
                     </div>
-                <div><input type='text' name='title' placeholder='제목을 입력하세요.' onChange={handleChangeTitle}/></div>
-                <div><input type='textarea' name='content' placeholder='내용을 입력하세요.' onChange={handleChangeContent}/></div>
-                <div><input type='file' name='files' multiple='multiple' onChange={handleChangeFile}/></div>
-                <div><input type='submit' value='등록'/> </div>
-            </form>
-            <button onClick={()=>{navigator("/board/list");}}>취소</button>
+                    </form>
+            </div>           
         </div>
+        </StyledBoardWriteDiv>
     );
 };
 
