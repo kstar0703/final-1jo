@@ -6,14 +6,20 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.team1.app.announcement.service.AnnouncementService;
 import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.util.vo.PageVo;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class AnnouncementDao {
 
 	//공지사항 작성(admin)이미지 첨부
 	public int write(SqlSessionTemplate sst, AnnouncementVo vo) {
+		
+		log.info("넘어온 vo 값 {}" , vo);
 		
 		
 		return sst.insert("Announcement.write",vo);
@@ -58,6 +64,9 @@ public class AnnouncementDao {
 	//공지사항 삭제 (취소)
 	public int cancelDelete(SqlSessionTemplate sst, AnnouncementVo vo) {
 		return sst.update("Announcement.cancelDelete",vo);
+	}
+	public String getCurrentAnnouncementNo(SqlSessionTemplate sst) {
+		return sst.selectOne("Announcement.getCurrentAnnouncementNo");
 	}
 	
 

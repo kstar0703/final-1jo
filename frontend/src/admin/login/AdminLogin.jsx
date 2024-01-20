@@ -72,15 +72,16 @@ const AdminLogin = () => {
                 return resp.json()})
                 .then( (data)=>{
                 if(data.status==="good"){
-                    console.log(data)
+                    
                     alert(data.msg);
-                    sessionStorage.setItem("loginMember", JSON.stringify(data.loginMember));
+                    sessionStorage.setItem("loginMember", JSON.stringify(data.loginManger));
+                  
                     navigate("/admin/")
                     
                     
                 }else{
                     alert(data.msg)
-                    console.log(data)
+                    
                     
                     return;
                 }

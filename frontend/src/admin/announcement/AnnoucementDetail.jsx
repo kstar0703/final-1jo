@@ -35,6 +35,8 @@ const AnnoucementDetail = () => {
 
     let {announcementNo} = useParams();
 
+   
+
     const [announcementVo, setBoardVo] = useState();  
 
     useEffect(
@@ -110,7 +112,11 @@ const AnnoucementDetail = () => {
                     }
                   }>목록으로</button>
 
-                  <button className='sty02_btn'>
+                  <button className='sty02_btn' onClick={
+                    ()=>{
+                      navigate(`/admin/announcement/change/${announcementNo}`)
+                    }
+                  }>
                     수정
                   </button>
             </div>

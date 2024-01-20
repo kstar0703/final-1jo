@@ -17,12 +17,16 @@ const StyledHeaderDiv = styled.div`
         }
   }
 `;
+
+
 const Header = () => {
+
+    const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
     return (
         <StyledHeaderDiv>
             <div>
                 <img src='resources/ico_info.svg' />
-                <span>관리자 님</span>
+                <span>{loginMember?.id}님</span>
             </div>
 
         </StyledHeaderDiv>

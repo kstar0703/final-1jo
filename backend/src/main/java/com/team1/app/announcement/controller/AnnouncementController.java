@@ -42,17 +42,19 @@ public class AnnouncementController {
 	@PostMapping("write")
 	public Map<String,String> write(AnnouncementVo vo,MultipartFile[] fileArr ) throws Exception{
 		
+		log.info("호출됌");
+		log.info("vo에 전달받은값 : {} ",vo);
 		
+		
+		
+		log.info("fileArr에 전달받은값 : {} ", fileArr.length  );
 		
 		
 		Map<String,String> resultMap = new HashMap();
 			
-		boolean success = service.write(vo,fileArr);
+		resultMap = service.write(vo,fileArr);
 		
-		if(success) {
-			resultMap.put("status", "good");
-			resultMap.put("msg", "게시글 작성 성공");
-		}
+		
 		
 		return resultMap;			
 	}
