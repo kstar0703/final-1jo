@@ -17,22 +17,27 @@ import org.mybatis.spring.SqlSessionTemplate;import org.springframework.core.typ
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team1.app.announcement.controller.AnnouncementController;
 import com.team1.app.announcement.dao.AnnouncementDao;
 import com.team1.app.announcement.vo.AnnouncementImgVo;
 import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import oracle.net.aso.f;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AnnouncementService {
 	
 	private final AnnouncementDao dao;
 	private final SqlSessionTemplate sst;
 	
 	//공지사항 작성(admin)이미지 첨부
-	public boolean write(AnnouncementVo vo, MultipartFile[] fileArr) throws Exception {
+	public Map<String, String> write(AnnouncementVo vo, MultipartFile[] fileArr) throws Exception {
 	
 		//result 확인용
 		int resultCheck = 1;
@@ -42,6 +47,9 @@ public class AnnouncementService {
 		
 		//디비 저장 경로
 		String path="http://127.0.0.1:8888/app/resources\\upload\\announcement\\img\\";
+		
+		//
+		Map<String,String> resultMap = new HashMap();
 		
 		//파일 이름 저장
 		if(fileArr !=null && fileArr.length>0) {
@@ -61,14 +69,22 @@ public class AnnouncementService {
 		int result = dao.write(sst,vo);
 		
 		if(resultCheck == result) {
-			retunrResult = true;
+				
+			//현재 번호 가져오기 
+			  String announcementNo = dao.getCurrentAnnouncementNo(sst);
+			  	
+				resultMap.put("announcementNo",announcementNo);
+				resultMap.put("status", "good");
+				resultMap.put("msg", "게시글 작성 성공");
+				
+			
 		}else if(resultCheck == result ) {
 //			TODO 시간 남으면 파일 삭제 내용 추가
 		}else {
 			throw new Exception("파일업로드실패");
 		}
 		
-		return retunrResult;
+		return resultMap;
 	}
 	
 		//공지사항 수정(관리자)
@@ -131,9 +147,11 @@ public class AnnouncementService {
 		String extendName = f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
 			File target = new File(path + UUIDfileName + extendName);
 			f.transferTo(target);
-			System.out.println("파일업로드 몇번?");
 			fileList.add(UUIDfileName+extendName);
+			
+			
 		}
+		log.info("fileArr에 전달받은값 : {} ", fileArr.length  );
 		
 		return fileList;
 	}

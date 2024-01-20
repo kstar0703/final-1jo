@@ -267,7 +267,9 @@ const AnnoucementList = () => {
 
               <div>
 
-                <button className="sty02_btn">공지사항 작성</button>
+                <button className="sty02_btn" onClick={()=>{
+                    navigate('/admin/announcement/write')
+                }}>공지사항 작성</button>
               </div>
             </div>
 
@@ -314,7 +316,7 @@ const AnnoucementList = () => {
 
                        <td>{vo.enrollDate}</td>
                        <td>{vo.delYn ==='Y' ? '비공개' : '공개'    }</td> 
-                       <td>{vo.delYn ==='Y' ?  (<button className="sty02_btn" onClick={()=>{
+                       <td>{vo.delYn ==='Y' ?  (<button className="sty02_btn"  onClick={()=>{
                           onClickVisible(vo.announcementNo)
                        }}>공개 처리</button>) : <button className="sty02_btn" onClick={ () =>{onClickHidden(vo.announcementNo) }}>비공개 처리</button>   }</td>
                        <td><button className="sty01_btn" onClick={ () =>{

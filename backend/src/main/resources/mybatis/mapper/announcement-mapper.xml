@@ -195,6 +195,11 @@
 	</insert>
 	
 	
+	<select id="getCurrentAnnouncementNo" resultType="String">
+ 		SELECT SEQ_ANNOUNCEMENT_NO.CURRVAL AS  from dual			
+	</select>
+	
+	
 	
 	
 
