@@ -16,7 +16,7 @@ const StyledBoardDetailDiv = styled.div`
     }
     .reply_box{
         border: 0.5px lightgray;
-        background-color: #ccc;
+        background-color: #F1F1F1;
         padding: 10px 30px 20px 30px;
     }
     .title_box{
@@ -28,10 +28,26 @@ const StyledBoardDetailDiv = styled.div`
         }
     }
     .info_box{
-
+        display: flex;
+        justify-content: space-between;
+        & div:first-child {
+            flex-direction: row;
+        }
     }
     .content_box{
-
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: baseline;
+        & :first-child{
+            min-height: 300px;
+            
+        }
+        & :nth-child(2){
+            justify-content: initial;
+            height: 20px;
+        }
     }
     .btn_bottom {
         width: 80%;
@@ -121,20 +137,20 @@ const BoardDetail = () => {
                             </tr>
                             <tr>
                                 <th className='info_box'>
-                                    <div>{boardVo.dong}동 {boardVo.name}</div>
-                                    <div>공감 {boardVo.likeCount}</div>
-                                    <div>조회 {boardVo.hit}</div>
-                                    <div>{boardVo.enrollDate}</div>
-                                    <div>댓글 {replyCount}</div>
+                                    <div>
+                                        <div>{boardVo.dong}동 {boardVo.name}</div>
+                                        <div>공감 {boardVo.likeCount}</div>
+                                        <div>조회 {boardVo.hit}</div>
+                                        <div>댓글 {replyCount}</div>
+                                    </div>
+                                    <div >
+                                        <div>{boardVo.enrollDate}</div>
+                                    </div>
                                 </th>
                             </tr>
                             <tr>
                                 <th className='content_box'>
                                     <div>{boardVo.content}</div>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
                                     <div>댓글수 {replyCount} 수정해야함</div>
                                     <BoardLike boardNo={boardNo}/>
                                 </th>

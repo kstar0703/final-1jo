@@ -18,7 +18,7 @@ const StyledBoardReplyListDiv = styled.div`
     }
     }
     button{
-        background-color: #ccc;
+        background-color: #F1F1F1;
     }
     .reply_list_box{
         padding: 15px 0px;
