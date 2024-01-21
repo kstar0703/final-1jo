@@ -1,5 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledFacilityNoticeDiv = styled.div`
+    .tbl_box{
+        & table {
+            width: 100%;
+        }
+    }
+    .align{
+        & table > tbody > tr > td:nth-child(2){
+            text-align: left !important;
+            padding-left: 30px;
+        }
+    }
+`;
 
 const FacilityNoticeList = ({facilitiesNo}) => {
     const [facilityNoticeVo, setFacilityNoticeVo] = useState({
@@ -28,8 +43,14 @@ const FacilityNoticeList = ({facilitiesNo}) => {
     };
     const navigator = useNavigate();
     return (
-        <div>
+        <StyledFacilityNoticeDiv>
+            <div className='tbl_box align'>
             <table>
+                <colgroup>
+                    <col width="80" />
+                    <col width="" />
+                    <col width="180" />
+                </colgroup>
                 <thead>
                         <tr>
                             <th></th>
@@ -44,7 +65,7 @@ const FacilityNoticeList = ({facilitiesNo}) => {
                         :
                         facilityNoticeVoList.map(vo=>
                             <tr onClick={()=>{navigator(`/facility/notice/${vo.facilitiesNoticeNo}`)}}>
-                                <td></td>
+                                <td>{vo.facilitiesNoticeNo}</td>
                                 <td>{vo.title}</td>
                                 <td>{formatDate(vo.enrollDate)}</td>
                             </tr>
@@ -52,7 +73,8 @@ const FacilityNoticeList = ({facilitiesNo}) => {
                     }
                 </tbody>
             </table>
-        </div>
+            </div>
+        </StyledFacilityNoticeDiv>
     );
 };
 

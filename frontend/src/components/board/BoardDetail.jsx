@@ -166,7 +166,7 @@ const BoardDetail = () => {
                     </table>
                     <div className='btn_bottom btn_space '>
                         <div>
-                            <button className="sty01_btn" onClick={()=>{navigator("/board/list");}}>목록으로</button>
+                            <button className="sty02_btn" onClick={()=>{navigator("/board/list");}}>목록으로</button>
                         </div>
                         
                         <div>

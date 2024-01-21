@@ -3,18 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const FacilitiesList = () => {
-
+    
     const StyledFacilitiesListDiv = styled.div`
         width: 100%;
         height: 100%;
         display: flex;
         flex-direction : column;
+        
+        .ad_wrap_mod{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         div > div > table > tbody > tr > td {
             text-align: center !important;
         }
         .btn_box{
             margin: 20px 0 100px 0;
             float: right;
+        }
+        .wid80{
+            width: 80%;
         }
     `;
     const navigator = useNavigate();
@@ -82,11 +92,11 @@ const FacilitiesList = () => {
     }
     return (
         <StyledFacilitiesListDiv>
-            <div className="ad_wrap">
+            <div className="ad_wrap_mod">
                 <div className="ad_search_box_bg">
-                    {/* <div className="ad_tit">
-                        <h2>커뮤니티 시설목록</h2>
-                    </div> */}
+                    <div className="ad_tit">
+                        <h2>시설목록</h2>
+                    </div>
 
                     <div className="ad_search_box">
                         <div className="search_item">
@@ -116,12 +126,12 @@ const FacilitiesList = () => {
                             <button className="sty02_btn" >검색</button>
                         </div>
                         <div>
-                            <button className='sty02_btn' onClick={()=>{navigator("/admin/facility/insert")}}>시설등록</button>
+                            <button className='sty02_btn' onClick={()=>{navigator("/admin/facility/insert")}}>미정</button>
                         </div>
                     </div>
                 </div>
                     
-                <div class="ad_tbl_box data mt40">
+                <div class="ad_tbl_box data mt40 mb50">
                     <table>
 
                         <caption>커뮤니티 시설목록</caption>

@@ -3,14 +3,24 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFacilityNoticeDiv = styled.div`
-
+    width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction : column;
+        
+        .ad_wrap_mod{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 `;
 
 const FacilityNoticeList = () => {
     const {facilitiesNo} = useParams();
     return (
         <StyledFacilityNoticeDiv>
-            <div className="ad_wrap">
+            <div className="ad_wrap_mod">
                 <div className="ad_search_box_bg">
                     <div className="ad_tit">
                         <h2>시설 공지사항</h2>
@@ -72,12 +82,12 @@ const FacilityNoticeList = () => {
                             <button className="sty02_btn" >검색</button>
                         </div>
                         <div>
-                            <button className="sty02_btn" >게시판으로 이동</button>
+                            <button className="sty02_btn" >작성</button>
                         </div>
                     </div>
                 </div>
                     
-                <div class="ad_tbl_box data mt40">
+                <div class="ad_tbl_box data mt40 mb50">
                     <table>
 
                         <caption>시설 공지사항</caption>

@@ -9,10 +9,16 @@ const StyledFacilityListDiv = styled.div`
     height: 100%;
     display: flex;
     flex-direction : column;
+    .menu_box{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
     .toggle_menu{
         display: flex;
         flex-direction : column;
         width: 100%;
+        align-items: center;
     }
     .menu_bar{
         display: flex;
@@ -54,9 +60,9 @@ const handleToggle3 = ()=>{
                     <div className="ad_tit">
                         <h2>커뮤니티</h2>  
                     </div>
-                    <div className='ad_search_box bcc'>
-                        <div className='toggle_menu' onClick={handleToggle1}>
-                            <div className='menu_bar ad_search_box'>커뮤니티 시설목록</div>
+                    <div className='menu_box'>
+                        <div className='toggle_menu' >
+                            <div className='menu_bar ad_search_box' onClick={handleToggle1}>커뮤니티 시설관리</div>
                             <div>
                                 {isListVisible && (
                                     <div>
@@ -66,8 +72,8 @@ const handleToggle3 = ()=>{
                             </div>
                         </div>
 
-                        <div className='toggle_menu' onClick={handleToggle2}>
-                            <div className='menu_bar ad_search_box'>시설공지사항</div>
+                        <div className='toggle_menu'>
+                            <div className='menu_bar ad_search_box'  onClick={handleToggle2}>커뮤니티 공지사항 관리</div>
                             <div>
                                 {isNoticeVisible && (
                                     <div>
@@ -77,8 +83,8 @@ const handleToggle3 = ()=>{
                             </div>
                         </div>
 
-                        <div className='toggle_menu' onClick={handleToggle3}>
-                            <div className='menu_bar ad_search_box'>예약내역</div>
+                        <div className='toggle_menu' >
+                            <div className='menu_bar ad_search_box' onClick={handleToggle3}>커뮤니티 예약내역 관리</div>
                             <div>
                                 {isHistoryVisible && (
                                     <div>

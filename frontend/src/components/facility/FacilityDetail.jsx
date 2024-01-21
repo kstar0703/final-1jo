@@ -3,6 +3,53 @@ import { useParams } from 'react-router-dom';
 import FacilityNoticeList from './notice/FacilityNoticeList';
 import FacilityHistoryWrite from './history/FacilityHistoryWrite';
 import FacilityHistoryWriteWithClick from './history/FacilityHistoryWriteWithClick';
+import styled from 'styled-components';
+
+const StyledFacilityDetailDiv = styled.div`
+    width: 65%;
+    height: 100%;
+    .wrap_history{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .font_size{
+        font-size: 2em;
+        padding: 10px;
+    }
+    .intro_box{
+        display: grid;
+        grid-template-columns: 0.8fr 1fr;
+        gap: 50px;
+        width: 100%;
+        padding: 15px 0 30px 0;
+        line-height: 1.8;
+        .img_box{
+            align-items: center;
+        }
+        & table {
+            margin-left: 25px;
+            line-height: 2.3;
+            text-align: left;
+            & tbody > tr > td {
+                padding-left: 30px;
+            }
+        }
+    }
+    .info_title{
+        font-size: 21px;
+        margin-bottom: 13px;
+    }
+    .notice_box{
+        width: 100%;
+        border: 0.1px solid #ccc;
+        border-radius: 10px;
+        padding: 30px 50px 30px 50px;
+        line-height: 1.8;
+
+    }
+    
+`;
 
 const FacilityDetail = () => {
     let {facilitiesNo} = useParams();
@@ -33,68 +80,76 @@ const FacilityDetail = () => {
         }
     };
     return (
-        <div>
-            <div>
-                커뮤니티 목록 상세<br/>
-                --------------------------------------
+        <StyledFacilityDetailDiv>
+            <div className='wrap_history'>
                 {
                     facilityVo?
                     (
                     <div>
-                        <div>{facilityVo.facilitiesName}</div>
-                        <div><img src={facilityVo.image} /></div>
-                            --------------------------------------
-                        <div>
-                            <div>[ 시설정보 ]</div>
-                            <div>운영안내</div>
-                            <table>
-                                <tr>
-                                    <th>시설 위치</th>
-                                    <td>{facilityVo.location}</td>
-                                </tr>
-                                <tr>
-                                    <th>운영 시간</th>
-                                    <td>{facilityVo.operationTime}월~금</td>
-                                </tr>
-                                <tr>
-                                    <th>휴일</th>
-                                    <td>{facilityVo.dayOff}</td>
-                                </tr>
-                                <tr>
-                                    <th>문의</th>
-                                    <td>{formatContact(facilityVo.contact)}</td>
-                                </tr>
-                                <tr>
-                                    <th>편의시설</th>
-                                    <td>{facilityVo.amenity}</td>
-                                </tr>
-                                <tr>
-                                    <th>안내사항</th>
-                                    <td>목적외 사용불가</td>
-                                </tr>
-                            </table>
-                            --------------------------------------
+                        <div className='ad_tit font_size'>
+                            <div>{facilityVo.facilitiesName} 예약</div>
+                        </div>
+                        <div className='intro_box'>
+                            <div className='img_box'>
+                                <img src={facilityVo.image} width='100%'/>
+                            </div>
+                            <div className='info_box'>
+                                <div className='info_title'>[ 운영안내 ]</div>
+                                    <table>
+                                        <colgroup>
+                                            <col width="130" />
+                                            <col width="300" />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th>시설 위치</th>
+                                                <td>{facilityVo.location}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>운영 시간</th>
+                                                <td>{facilityVo.operationTime}월~금</td>
+                                            </tr>
+                                            <tr>
+                                                <th>휴일</th>
+                                                <td>{facilityVo.dayOff}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>문의</th>
+                                                <td>{formatContact(facilityVo.contact)}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>편의시설</th>
+                                                <td>{facilityVo.amenity}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>안내사항</th>
+                                                <td>목적외 사용불가</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                             </div>
                         </div>
+                    </div>
                     ):(
                         <div>loading..</div>
                     )
                 }
-                <div>
-                    <div>[ 공지사항 ]</div>
+            </div>
+                
+                <div className='notice_box'>
+                    <div className='info_title'>[ 공지사항 ]</div>
                     <FacilityNoticeList facilitiesNo={facilitiesNo}/>
-                    --------------------------------------
                 </div>
-                <div>
+
+                <div className='reservation_box'>
                     <div>[ 예약신청 ]</div>
                     <FacilityHistoryWrite facilityVo={facilityVo}/>
                     선택2
                     <FacilityHistoryWriteWithClick />
-                    --------------------------------------
                 </div>
-                <div></div>
-            </div>
-        </div>
+                
+                    
+        </StyledFacilityDetailDiv>
     );
 };
 
