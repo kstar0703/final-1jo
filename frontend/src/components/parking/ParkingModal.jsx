@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ReactModal from 'react-modal';
+import ParkingRegister from './ParkingRegister';
 
 const customModalStyles = {
     // 여기가 모달창 밖에 부분 처리
@@ -15,8 +16,8 @@ const customModalStyles = {
     },
     // 여기가 모달창 안쪽영역 
     content: {
-      width: "600px",
-      height: "200px",
+      width: "80vh",
+      height: "80vh",
       zIndex: "150",
       position: "absolute",
       top: "50%",
@@ -40,10 +41,11 @@ const customModalStyles = {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    gap : 80px;
+  
 
     & > :nth-child(2)  {
         display: flex;
+        
         gap: 20px;
 
         & button {
@@ -52,26 +54,15 @@ const customModalStyles = {
     }  
    `
 
-   //모달 (외부창에서 쓸 함수)
-  // const [isOpen, setIsOpen] = useState(false);
-    
-   // 외부창에서 사용
-    //const openModal = () => {setIsModalOpen(true)};
 
-   // 프롭스로 전달 
-    //const closeModal = () => {setIsModalOpen(false)}
-
-    // 프롭스로 전달
-    // const fetch = () =>{console.log('패치실행')}
+const ParkingModal = ({ isOpen, closeModal ,title , fecthJava }) => {
 
 
-const Modal = ({ isOpen, closeModal ,title , fecthJava }) => {
-    
     const ajaxJava = async()=> {
-         await fecthJava();
-        closeModal()
+        await fecthJava();
+       closeModal()
 
-    }
+   }
 
     return (
         <ReactModal
@@ -81,10 +72,11 @@ const Modal = ({ isOpen, closeModal ,title , fecthJava }) => {
       >
 
       <ModalDiv>
-            <h1>{title}</h1>
+            <ParkingRegister/>
+
+
             <div>
-                <button className='sty02_btn' onClick={ajaxJava}>네</button>
-                <button className='sty01_btn' onClick={closeModal}>아니요</button>
+                <button className='sty02_btn good-div-end' onClick={closeModal}>목록으로</button>
             </div>
         </ModalDiv>
         
@@ -92,4 +84,4 @@ const Modal = ({ isOpen, closeModal ,title , fecthJava }) => {
     );
 };
 
-export default Modal;
+export default ParkingModal;

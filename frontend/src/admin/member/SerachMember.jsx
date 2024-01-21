@@ -1,5 +1,6 @@
 import { React,useRef, useState ,useEffect } from 'react';
 import styled from 'styled-components';
+import Pagination from '../../components/page/Pagination';
 // 관리자 수락 및 조회 
  const StyledMemberDiv = styled.div`
      width: 100%;
@@ -26,7 +27,6 @@ const SerachMember = () => {
     let searchDong = useRef();
 
 
-    
     // 서치vo 
     const [memberVo, setMemberVo] = useState({
       'permissionYn' : 'N'
@@ -39,6 +39,19 @@ const SerachMember = () => {
         [name] : value,
       }); 
     }
+
+    //페이징용 
+  const [pvo,setPvo] = useState();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  //페이징
+  const handlePageChange = (page) =>{
+    
+   
+    setCurrentPage(page); 
+    setStateSearch(stateSearch+'a')
+  };
 
 
 
@@ -70,22 +83,30 @@ const SerachMember = () => {
 
     useEffect( () =>{
 
+         const queryParams = new URLSearchParams();
+                if(memberVo){
 
+                for (const key in memberVo) {
+                  queryParams.append(key, memberVo[key]);
+                }
+          
+                queryParams.append('currentPage',currentPage)
+              }
 
-      
-    fetch("http://127.0.0.1:8888/app/admin/findMember",{
-        method: "post",
-        headers : {
-            "Content-Type" : "application/json"
-        },
-        body :   JSON.stringify(memberVo)
-    })
+              const queryString = queryParams.toString();
+
+    fetch(`http://127.0.0.1:8888/app/admin/findMember?${queryString}`)
     .then( (resp) => {
      
       return resp.json()})
     .then( (data)=>{
-     
-      setMemberArr(data)
+
+      console.log(data)
+      
+      if(data.status==='good'){
+      setPvo(data.pageVo);
+      setMemberArr(data.voList)
+      }
     })
     .catch()
     .finally( () => {patcherble = true})}
@@ -292,7 +313,7 @@ const SerachMember = () => {
                       <td>{vo.ownerYn != null ? (vo.ownerYn ==='Y' ? "세대주" : "세대원") : ''}</td>
                       <td>{`${vo.dong ? vo.dong : ''}동${vo.ho ? vo.ho : ''}호`}</td>
                       <td>{`${Math.floor(vo.vehTime / 60)}시간 ${vo.vehTime % 60}분`}</td>
-                      <td>{vo.permissionYn ? vo.permissionYn ==='Y' ? <span>승인</span> : <span>미승인</span> : '' }</td>
+                      <td>{vo.permissionYn ? vo.permissionYn ==='Y' ? <span style={{color :"green"}}>승인</span> : <span style={{color :"red"}} >미승인</span> : '' }</td>
                         <td>{vo.permissionYn==='Y' ?  
                         <button className='sty01_btn' onClick={ () => {
                           
@@ -302,12 +323,15 @@ const SerachMember = () => {
                         : <button className='sty02_btn' onClick={ () => {
                           
                           onClickPermission(vo.memberNo)
-                      }}>미승인</button>  } </td>
+                      }}>승인</button>  } </td>
                     </tr>
                     ))}
                     
               </tbody>
             </table>
+          </div>
+          <div>
+          <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange} />
           </div>
         </div>
       </StyledMemberDiv>

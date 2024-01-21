@@ -152,6 +152,67 @@ JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
 	
 	<choose>
     <when test="delYn == null or delYn.length() == 0">
+    </when>
+    
+    <otherwise>
+        P.DEL_YN = #{delYn} AND
+    </otherwise>
+	</choose>
+	
+	
+	<if test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
+  	P.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI') AND TO_DATE(#{endDate}, 'YYYY-MM-DD"T"HH24:MI') 
+	</if>
+    
+    <if test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
+       P.ENROLL_DATE >= TO_DATE(#{startDate}, 'YYYY-MM-DD"T"HH24:MI')
+    </if>
+    
+     <if test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
+       P.ENROLL_DATE &lt;  TO_DATE(#{endDate}, 'YYYY-MM-DD"T"HH24:MI') 
+    </if>
+    	
+</trim>
+
+
+ORDER BY P.PARKING_NO DESC
+</select>
+
+<select id="count" resultType="int">
+SELECT 
+COUNT(*)
+FROM PARKING P
+JOIN MEMBER M ON M.MEMBER_NO = P.MEMBER_NO
+JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO 
+
+<trim prefix="WHERE" suffixOverrides="AND">
+	<if test = "name!= null" >	
+	 M.NAME LIKE '%' || #{name} || '%' AND
+	</if>
+	
+	<if test = "phone != null" >	
+	 M.PHONE LIKE '%' || #{phone} || '%' AND
+	</if>
+	
+	<if test = "carNo != null" >	
+	 P.CAR_NO LIKE '%' || #{carNo} || '%' AND
+	</if>
+	
+	<if test = "purpose != null" >	
+	 P.PURPOSE LIKE '%' || #{purpose} || '%' AND
+	</if>
+
+	
+	 <if test="dong != null and dong.length() > 0">
+     U.DONG = #{dong} AND
+	</if>
+	 
+	<if test="ho != null and ho.length() > 0">
+     U.HO = #{ho} AND
+	</if>
+	
+	<choose>
+    <when test="delYn == null or delYn.length() == 0">
        
     </when>
     

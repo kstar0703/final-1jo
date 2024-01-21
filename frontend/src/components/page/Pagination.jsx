@@ -36,7 +36,7 @@ const StyledBtn = styled.div`
 const Pagination = ({ pvo, currentPage, onPageChange }) => {
   // 페이지를 표시할 범위 계산
 
-  console.log(pvo)
+
   
   const pageRange = Array.from({ 'length': pvo? Number(pvo.endPage)-Number(pvo.startPage)+1 :1 }, (_, index) => index + Number (pvo?.startPage) );
   
@@ -46,7 +46,7 @@ const Pagination = ({ pvo, currentPage, onPageChange }) => {
   return (
     
     <>
-    {JSON.stringify(pvo) !== '{}' ? 
+    {pvo?.listCount !==0 ? 
     
     <StyledBtn>
        {/* 처음으로 */}
@@ -71,7 +71,7 @@ const Pagination = ({ pvo, currentPage, onPageChange }) => {
         onPageChange(pvo?.currentPage <= pvo?.maxPage-5  ? pvo?.currentPage+5 : pvo?.maxPage )
       }} >{'>>'}</button>}
       {/* 페이징 마지막 */}
-      {pvo?.currentPage===pvo?.maxPage ? '': <button onClick={ () =>onPageChange(pvo?.maxPage)}>{'>>>'}</button> }
+      {(pvo?.currentPage===pvo?.maxPage  ) ? '': <button onClick={ () =>onPageChange(pvo?.maxPage)}>{'>>>'}</button>  }
 
     </StyledBtn>
    

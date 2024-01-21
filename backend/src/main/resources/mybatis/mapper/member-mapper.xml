@@ -158,6 +158,44 @@
 
 	</select>
 	
+	<!-- 회원검색 -->
+	<select id="count" resultType="int">
+	SELECT
+	
+	COUNT(*)
+	
+    FROM MEMBER M
+    JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO   
+	WHERE DEL_YN ='N' 
+	
+	 <if test="permissionYn != null and permissionYn != 'all' and permissionYn.length()!=0  ">
+		 AND PERMISSION_YN= #{permissionYn} 
+	 </if>
+	 
+	 <if test="ownerYn !=null  and ownerYn != 'all' and ownerYn.length()!=0 " >
+	 	AND OWNER_YN = #{ownerYn}
+	 </if>
+	 
+	<if test="name != null and name.length() > 0">
+    AND NAME LIKE '%' || #{name} || '%' 
+	</if>
+	 
+	 <if test="phone != null and phone.length() > 0">
+    AND PHONE LIKE '%' || #{phone} || '%'
+	</if>
+	 <if test="dong != null and dong.length() > 0">
+    AND U.DONG = #{dong}
+	</if>
+	 
+	<if test="ho != null and ho.length() > 0">
+    AND U.HO = #{ho}
+	</if>
+	 
+		  	
+	ORDER BY MEMBER_NO DESC
+
+	</select>
+	
 	<!-- 회원 수락 -->
 	<update id="acceptMember">
 	UPDATE MEMBER SET PERMISSION_YN = 'Y'

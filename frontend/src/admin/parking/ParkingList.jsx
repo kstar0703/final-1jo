@@ -1,6 +1,7 @@
 import { React,useRef, useState ,useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import Pagination from '../../components/page/Pagination';
 
 // 관리자 수락 및 조회 
 const StyledMemberDiv = styled.div`
@@ -37,8 +38,8 @@ const ParkingList = () => {
       })
     }
   
-  //페이징
-  const[pvo,setPvo] = useState({});
+  
+  
   //주차내역
   const[parkingVoList,setParkingVoList] = useState();
   
@@ -77,10 +78,26 @@ const ParkingList = () => {
   const onClickSearch = () =>{
     console.log(dataVo)
 
-    setPvo({});
+    
 
     setUpdateEffect(updateEffect +'a');
   }
+
+
+   //공지사항 map 
+   const [announcement,setAnnouncement] = useState([]);
+   //페이징용 
+   const [pvo,setPvo] = useState();
+ 
+   const [currentPage, setCurrentPage] = useState(1);
+   
+   //페이징
+   const handlePageChange = (page) =>{
+     
+    
+     setCurrentPage(page); 
+     setUpdateEffect(updateEffect+'a')
+   };
 
   //데이터 보내기   
   useEffect(  () => {
@@ -91,21 +108,22 @@ const ParkingList = () => {
                   queryParams.append(key, dataVo[key]);
                 }
           
-                for (const key in pvo) {
-                  queryParams.append(key, pvo[key]);
-
-                }
+                queryParams.append('currentPage',currentPage)
               }
+
+              
           
                 const queryString = queryParams.toString();
                 
                 fetch(`http://127.0.0.1:8888/app/parking/list?${queryString}`)
                 .then(resp => resp.json())
                 .then( data => {
+                  console.log('data 호출')
+                   console.log(data)
                     setParkingVoList(data.resultMap);
                     setPvo(data.pageVo);
                     
-                    console.log(data)
+                    
                    
 
 
@@ -116,6 +134,7 @@ const ParkingList = () => {
 
                 .finally ( () =>{
                   patcherble = true;
+                  
                 })
 
                 ;
@@ -337,9 +356,9 @@ const ParkingList = () => {
                        <td>{vo.arrivalTime ? vo.arrivalTime :  '입차대기'}</td>
                        <td>{vo.departureTime ? vo.departureTime : '출차대기'}</td>
                        <td>{vo.fee ? vo.fee +'분' : '정산대기'}</td>
-                       <td>{vo.delYn ==='Y' ? '예약취소' : '정상예약'}</td> 
+                       <td>{vo.delYn ==='Y' ?<span style={{ color: 'red' }}>예약취소</span> :  <span style={{ color: 'green' }}>정상예약</span>}</td> 
                        <td>{vo.delYn ==='Y' ?  (<button className="sty02_btn" onClick={ ()=>{onClickRecovery(vo);}}>예약복구</button>) 
-                                                                    : <button className="sty02_btn" onClick={ ()=>{onClickCancel(vo);}}>예약취소</button>} </td>
+                                                                    : <button className="sty02_btn"  onClick={ ()=>{onClickCancel(vo);}}>예약취소</button>} </td>
                     </tr>
                     ))}
 
@@ -350,6 +369,9 @@ const ParkingList = () => {
                     
               </tbody>
             </table>
+          </div>
+          <div>
+          <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange} />
           </div>
         </div>
       </StyledMemberDiv>

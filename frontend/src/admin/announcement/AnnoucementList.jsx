@@ -62,7 +62,7 @@ const AnnoucementList = () => {
 
   // 검색
   const onClickSearch = () =>{
-    console.log(`들어온 pageVo ${pvo}`)
+    
     
     if(!patcherble){
       return
@@ -111,10 +111,10 @@ const AnnoucementList = () => {
     
         
       if(data.status==='good'){
-          alert('공개 처리 성공')
+          alert('숨김 처리 성공')
           setUpdateEffect(updateEffect+'a')
       }else{
-        alert('숨김 실패')
+        alert('숨김 처리 실패')
       }
       
     })
@@ -142,10 +142,10 @@ const AnnoucementList = () => {
     .then( (data)=>{
         
       if(data.status==='good'){
-          alert('숨김 성공')
+          alert('공개 처리 성공')
           setUpdateEffect(updateEffect+'a')
       }else{
-        alert('숨김 실패')
+        alert('공개 처리 실패')
       }
       
     })
@@ -187,10 +187,11 @@ const AnnoucementList = () => {
                 .then(resp => resp.json())
                 .then( data => {
 
-                  console.log(`들어온 데이터 ${data}`)
+                  
                     setAnnouncement(data.voList);
 
                     setPvo(data.pageVo);
+                    
 
                    
                    
@@ -333,11 +334,11 @@ const AnnoucementList = () => {
               {announcement?.map( (vo)=>(
                       <tr key={vo.no}>
                        <td>{vo.announcementNo}</td> 
-                       <td>{vo.content}</td> 
+                       <td>{vo.title}</td> 
                        <td>{vo.id}</td> 
 
                        <td>{vo.enrollDate}</td>
-                       <td>{vo.delYn ==='Y' ? '비공개' : '공개'    }</td> 
+                       <td>{vo.delYn ==='Y' ? <span style={{color : 'red'}}>비공개</span> : <span style={{color : 'green'}}>공개</span>    }</td> 
                        <td>{vo.delYn ==='Y' ?  (<button className="sty02_btn"  onClick={()=>{
                           onClickVisible(vo.announcementNo)
                        }}>공개 처리</button>) : <button className="sty02_btn" onClick={ () =>{onClickHidden(vo.announcementNo) }}>비공개 처리</button>   }</td>

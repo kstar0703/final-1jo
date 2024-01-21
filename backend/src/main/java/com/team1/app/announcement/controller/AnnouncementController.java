@@ -99,6 +99,8 @@ public class AnnouncementController {
 		Map<String,Object> resultMap = new HashMap();
 		
 		int cnt = service.count(vo);
+		
+		log.info("전체 페이지 카운트 : {}" ,cnt);
 	
 		//페이지 리밋
 		int pageLimit = 10;	
