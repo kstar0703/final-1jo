@@ -66,8 +66,8 @@
 		(
 		    (SELECT GET_COMPLAINT_IMG_SEQ() FROM DUAL )
 		    ,SEQ_COMPLAINT_NO.CURRVAL
-		    ,'complaint_img_' || TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
-		    ,'resources/uplode/'
+		    ,TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
+		    ,'resources/uplode/complaint/img/'
 		    ,#{item.originName}
 		)	
 		</foreach>

@@ -44,6 +44,8 @@ const ComplaintWrite = () => {
     const [titleValue,setTitleValue] = useState();
     const [fileObj,setFileObk] = useState();
 
+    const memberNo = JSON.parse(sessionStorage.getItem("loginMember")).memberNo;
+
     //textArea자동 스크롤
     const textRef = useRef();
     const handleResizeHeight = useCallback(() => {
@@ -51,65 +53,130 @@ const ComplaintWrite = () => {
     },[]);
 
     const handleChangeFiles = (e) => {
-        setFileObk(e.target.files[0]);
-        console.log(e.target.files[0]);
+        setFileObk(e.target.files);
+    }
+
+    //접수 버튼
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // console.log(titleValue);
+        // console.log(contentValue);
+        // console.log(fileObj);
+        // console.log(memberNo);
+        
+        const fd = new FormData();
+        fd.append("title", titleValue);
+        fd.append("content",contentValue);
+        // fd.append("fileArr", fileObj);
+        for(let i=0; i< fileObj.length; i++){
+            fd.append("fileArr", fileObj[i]);
+        }
+        fd.append("memberNo", memberNo);
+        // console.log(fd);
+
+        fetch("http://127.0.0.1:8888/app/complaint/complaintSumit",{
+            method : "POST",
+            body : fd,
+        })
+        .then(resp => (resp.json))
+        .then((data)=>{
+            if(data){
+                alert("참이야")
+            }else{
+                alert("거짓이야")
+            }
+            console.log(data);
+        })
+        ;
     }
 
     return (
-        <StyledComplaintWriteDiv>
-            <div className='wrap'>
-                <div className='topTitleBox'>
-                    <div><h1>민원 처리 접수하기</h1></div>
-                </div>
-
-                <div className='ad_tbl_box mt40'>
-                    <table>
-                        <caption>설문투표 상세 테이블</caption>
-                        <colgroup>
-                            <col width="15%"/>
-                            <col width="35%"/>
-                            <col width="15%"/>
-                            <col width="35%"/>
-                        </colgroup>    
-                        <tbody>
-                            <tr>
-                                <th scop="row">제목</th>
-                                <td colSpan='3'>
-                                <div class="form_box">
-                                    <input type="text" onChange={(e)=>{setTitleValue(e.target.value)}} value={titleValue} placeholder='제목을 입력해주세요'/>
-                                </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope='row'>내용</th>
-                                <td colSpan='3'>
-                                    <div class="form_box">
-                                        <textarea ref={textRef} onChange={(e)=>{setContentValue(e.target.value)}} onInput={handleResizeHeight} type="text-area" placeholder="값을 입력해주세요" value={contentValue}></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope='row'>이미지 첨부</th>
-                                <td colSpan='3'>
-                                    <input onChange={handleChangeFiles} type='file' name='f' multiple/> 이미지를 여러개 클릭 후 선택해주세요
-                                </td>
-                                {
-                                    <img src='' alt='' />
-                                }
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className='button_btn_box'>
-                    <div>
-                        <button onClick={()=>{alert("접수중")}} className='sty02_btn'>접수하기</button>
-                        <button onClick={()=>{navigator('/complaint/list')}} className='sty01_btn'>목록가기</button>
-                    </div>
-                </div>
+      <StyledComplaintWriteDiv>
+        <div className="wrap">
+          <div className="topTitleBox">
+            <div>
+              <h1>민원 처리 접수하기</h1>
             </div>
+          </div>
 
-        </StyledComplaintWriteDiv>
+          <form>
+            <div className="ad_tbl_box mt40">
+              <table>
+                <caption>설문투표 상세 테이블</caption>
+                <colgroup>
+                  <col width="15%" />
+                  <col width="35%" />
+                  <col width="15%" />
+                  <col width="35%" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <th scop="row">제목</th>
+                    <td colSpan="3">
+                      <div class="form_box">
+                        <input
+                          type="text"
+                          onChange={(e) => {
+                            setTitleValue(e.target.value);
+                          }}
+                          value={titleValue}
+                          placeholder="제목을 입력해주세요"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">내용</th>
+                    <td colSpan="3">
+                      <div class="form_box">
+                        <textarea
+                          ref={textRef}
+                          onChange={(e) => {
+                            setContentValue(e.target.value);
+                          }}
+                          onInput={handleResizeHeight}
+                          type="text-area"
+                          placeholder="값을 입력해주세요"
+                          value={contentValue}
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">이미지 첨부</th>
+                    <td colSpan="3">
+                      <input
+                        onChange={handleChangeFiles}
+                        type="file"
+                        name="f"
+                        multiple
+                      />
+                      이미지를 여러개 클릭 후 선택해주세요
+                    </td>
+                    {<img src="" alt="" />}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+
+          <div className="button_btn_box">
+            <div>
+              <button onClick={handleSubmit} className="sty02_btn">
+                접수하기
+              </button>
+              <button
+                onClick={() => {
+                  navigator("/complaint/list");
+                }}
+                className="sty01_btn"
+              >
+                목록가기
+              </button>
+            </div>
+          </div>
+        </div>
+      </StyledComplaintWriteDiv>
     );
 };
 

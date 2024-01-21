@@ -32,8 +32,15 @@ public class ComplaintController {
 	
 	//민원 접수 
 	@PostMapping("complaintSumit")
-	public void complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
+	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws Exception {
+		System.out.println("vo :"+vo);
+		for (MultipartFile multipartFile : fileArr) {
+			System.out.println("fileArr :"+multipartFile.getOriginalFilename());
+		}
+		
 		boolean result = service.complaintSumit(vo,fileArr);
+		System.out.println(result);
+		return result;
 	}
 	
 	//내 민원 상세 조회
