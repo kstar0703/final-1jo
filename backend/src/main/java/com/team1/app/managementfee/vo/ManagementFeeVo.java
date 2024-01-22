@@ -12,6 +12,10 @@ public class ManagementFeeVo {
 	private String facilitiesFee;
 	private String totalAmount;
 	
+	private String dong;
+	private String ho;
+	private String scale;
+	
 	private String startDate;
 	private String endDate;
 }

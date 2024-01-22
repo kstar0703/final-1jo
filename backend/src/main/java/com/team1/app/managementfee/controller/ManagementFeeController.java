@@ -1,6 +1,8 @@
 package com.team1.app.managementfee.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +24,19 @@ public class ManagementFeeController {
 	
 	//세대별 관리비 조회(세대정보, 기간)
 	@GetMapping("list")
-	public List<ManagementFeeVo> listByUnitAndPeriod(@RequestBody ManagementFeeVo vo){
-		return service.listByUnitAndPeriod(vo);
+	public Map<String, Object> listByUnitAndPeriod(@RequestBody ManagementFeeVo vo){
+		List<ManagementFeeVo> managementVoList =  service.listByUnitAndPeriod(vo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("managementVoList", managementVoList);
+		return map;
 	}
 	
 	//전체 관리비 조회 (관리자)
 	@GetMapping("admin/list")
-	public List<ManagementFeeVo> list(){
-		return service.list();
+	public Map<String, Object> list(){
+		List<ManagementFeeVo> managementVoList =  service.list();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("managementVoList", managementVoList);
+		return map;
 	}
 }

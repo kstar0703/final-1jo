@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState}from 'react';
 import styled from 'styled-components';
+import ManagementEdit from './ManagementEdit';
 
 const StyledManagementListDiv = styled.div`
     width: 100%;
@@ -12,6 +13,32 @@ const StyledManagementListDiv = styled.div`
 `;
 
 const ManagementList = () => {
+    const [managementVoList, setManagementVoList] = useState([]);
+    const loadManagementVoList = ()=>{
+        fetch("http://127.0.0.1:8888/app/management/admin/list")
+        .then(resp=>resp.json())
+        .then(data=>{
+            setManagementVoList(data.managementVoList);
+            console.log(managementVoList);
+        });
+    }
+    useEffect(()=>{
+        loadManagementVoList();
+    }, []);
+
+    const price = (dataString)=>{
+        return parseInt(dataString).toLocaleString();
+    }
+    const formatPeriod = (dataString)=>{
+        const inputDate = new Date(dataString);
+        const options = {year: 'numeric', month: 'long'};
+        const formattedPeriod = inputDate.toLocaleString('ko-KR', options);
+        return formattedPeriod;
+    }
+    const handleEdit = (vo)=>{
+        console.log(vo);
+        return <ManagementEdit vo={vo}/>
+    }
     return (
         <StyledManagementListDiv>
             <div className="ad_wrap">
@@ -73,10 +100,10 @@ const ManagementList = () => {
                         <caption>소통 게시판</caption>
 
                         <colgroup>
-                            <col width="100px" />
+                            <col width="60px" />
                             <col width="150px" />
-                            <col width="100px" />
-                            <col width="100px" />
+                            <col width="60px" />
+                            <col width="80px" />
                             <col width="100px" />
                             <col width="100px" />
                             <col width="100px" />
@@ -103,24 +130,24 @@ const ManagementList = () => {
                         </thead>
                         <tbody>
                                 {
-                                    // boardVoList.length === 0
-                                    // ?
-                                    // <h1>loading..</h1>
-                                    // :
-                                    // boardVoList.map(vo => <tr key={vo.boardNo} onClick={()=>{navigator(`/admin/board/detail/${vo.boardNo}`)}}>
-                                    //         <td>{vo.boardNo}</td>
-                                    //         <td>{vo.categoryName}</td>
-                                    //         <td>{vo.title}</td>
-                                    //         <td>댓글수 수정</td>
-                                    //         <td>{vo.dong}동 {vo.name} (아이디)</td>
-                                    //         <td>{vo.hit}</td>
-                                    //         <td>{vo.likeCount}</td>
-                                    //         <td>{vo.enrollDate}</td>
-                                    //         <td>{vo.delYn}</td>
-                                    //         <td><button className='sty02_btn'>규제</button></td>
-                                    //         {/*규제되면 버튼 비활성화*/} 
-                                    //     </tr>
-                                    // )
+                                    managementVoList.length === 0
+                                    ?
+                                    <h1>loading..</h1>
+                                    :
+                                    managementVoList.map(vo => <tr key={vo.billingNo} >
+                                            <td>{vo.billingNo}</td>
+                                            <td>{formatPeriod(vo.usagePeriod)}</td>
+                                            <td>{vo.unitNo}</td>
+                                            <td>{vo.dong}동</td>
+                                            <td>{vo.ho}호</td>
+                                            <td>{price(vo.basicFee)}</td>
+                                            <td>{price(vo.mainternanceFee)}</td>
+                                            <td>{price(vo.facilitiesFee)}</td>
+                                            <td>{price(vo.totalAmount)}원</td>
+                                            <td><button onClick={()=>{handleEdit(vo);}}>수정</button></td>
+                                            {/*navigator(`/admin/management/detail/${vo.billingNo}`)}} */}
+                                        </tr>
+                                    )
                                 }
                         </tbody>
                     </table>
