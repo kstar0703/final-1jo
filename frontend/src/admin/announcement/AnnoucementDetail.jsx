@@ -23,7 +23,12 @@ const DetailDiv = styled.div`
   justify-content: space-between;
   margin: 10px;
 }
-          
+ 
+.div-flex{
+  display: flex;
+  align-items: center;
+  justify-content : center;
+}
 
    
 `; 
@@ -93,8 +98,11 @@ const AnnoucementDetail = () => {
 
                       {announcementVo?.fileList
                         ? announcementVo.fileList.map((file, index) => (
-                     <img key={index} src={file.path + file.imgName} alt={`File ${index}`} />
-                              ))
+                      <>
+                      <div className='div-flex'>
+                     <img style={{ width: '1000px', height: '1000px' }} key={index} src={file.path + file.imgName} alt={`File ${index}`} />
+                     </div>
+                     </>        ))
                     : ''}
 
                     </div>

@@ -161,6 +161,7 @@ public class ParkingController {
 		Map<String, Object>  resultMap = new HashMap();
 	
 		log.info("들어온 값 : {}  ",vo);
+		log.info("들어온 pageVo값 : {}  ",pageVo);
 		log.info("들어온 현재page값 : {}  ",pageVo.getCurrentPage());
 		
 		

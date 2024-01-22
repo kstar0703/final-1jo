@@ -56,6 +56,7 @@ const ParkingList = () => {
   let searchEndDate = useRef();
   let searchPurpose = useRef();
   let searchdelYn = useRef();
+  let searchBoardLimit = useRef();
 
 
   //초기화
@@ -69,6 +70,7 @@ const ParkingList = () => {
     searchEndDate.current.value='' 
     searchPurpose.current.value='' 
     searchdelYn.current.value='' 
+   
 
     setDataVo({});
   }
@@ -86,6 +88,7 @@ const ParkingList = () => {
 
    //공지사항 map 
    const [announcement,setAnnouncement] = useState([]);
+   
    //페이징용 
    const [pvo,setPvo] = useState();
  
@@ -99,6 +102,21 @@ const ParkingList = () => {
      setUpdateEffect(updateEffect+'a')
    };
 
+
+   const [boardLimit,setBoardLimit] = useState();
+
+   const onChangeBoardLimit = (e) =>{
+
+      const {value,name} = e.target
+
+      setBoardLimit({
+        [name] : value
+      })
+
+      setUpdateEffect(updateEffect+'a')
+
+      
+   }
   //데이터 보내기   
   useEffect(  () => {
                 const queryParams = new URLSearchParams();
@@ -109,6 +127,9 @@ const ParkingList = () => {
                 }
           
                 queryParams.append('currentPage',currentPage)
+              }
+              for (const key in boardLimit) {
+                queryParams.append(key, boardLimit[key]);
               }
 
               
@@ -303,6 +324,14 @@ const ParkingList = () => {
                 <button className="sty02_btn" onClick={onClickSearch}>검색</button>
               </div>
 
+              <div>
+                <select name='boardLimit' onChange={onChangeBoardLimit} ref={searchBoardLimit}>
+                  <option value="5">5개씩 보기</option>
+                  <option value="10">10개씩 보기</option>
+                  <option value="20">20개씩 보기</option>
+                </select>
+              </div>
+
             </div>
 
              
@@ -316,6 +345,7 @@ const ParkingList = () => {
                 <col width="80px" />
                 <col width="100px" />
                 <col width="150px" />
+                <col width="100px" />
                 <col width="150px" />
                 <col width="100px" />
                 <col width="100px" />
@@ -331,6 +361,7 @@ const ParkingList = () => {
                   <th scope="col">예약번호</th>      
                   <th scope="col">예약자</th>
                   <th scope="col">전화번호</th>
+                  <th scope='col'>방문지</th>
                   <th scope='col'>방문목적</th>
                   <th scope='co1'>차량번호</th>
                   <th scope="col">예약일</th>
@@ -350,13 +381,14 @@ const ParkingList = () => {
                        <td>{vo.parkingNo}</td> 
                        <td>{vo.name}</td> 
                        <td>{vo.phone}</td> 
+                       <td>{`${vo.dong}동${vo.ho}호`}</td>
                        <td>{vo.purpose}</td>
                        <td>{vo.carNo}</td>
                        <td>{vo.modifyDate ? vo.modifyDate +'(수정)' : vo.enrollDate }</td>
-                       <td>{vo.arrivalTime ? vo.arrivalTime :  '입차대기'}</td>
-                       <td>{vo.departureTime ? vo.departureTime : '출차대기'}</td>
-                       <td>{vo.fee ? vo.fee +'분' : '정산대기'}</td>
-                       <td>{vo.delYn ==='Y' ?<span style={{ color: 'red' }}>예약취소</span> :  <span style={{ color: 'green' }}>정상예약</span>}</td> 
+                       <td>{vo.delYn ==='Y' ? <span>--</span> :vo.arrivalTime ? vo.arrivalTime :  '입차대기'}</td>
+                       <td>{vo.delYn ==='Y' ? <span>--</span> :vo.departureTime ? vo.departureTime : '출차대기'}</td>
+                       <td>{vo.delYn ==='Y' ? <span>--</span> :vo.fee ? vo.fee +'분' : '정산대기'}</td>
+                       <td>{vo.delYn ==='Y' ?<span style={{ color: 'red' }}>예약취소</span> :  !vo.fee? <span style={{ color: 'green' }}>정상예약</span> : <span style={{ color: 'blue' }}>정산완료</span> }</td> 
                        <td>{vo.delYn ==='Y' ?  (<button className="sty02_btn" onClick={ ()=>{onClickRecovery(vo);}}>예약복구</button>) 
                                                                     : <button className="sty02_btn"  onClick={ ()=>{onClickCancel(vo);}}>예약취소</button>} </td>
                     </tr>

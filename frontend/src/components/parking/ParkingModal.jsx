@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ReactModal from 'react-modal';
 import ParkingRegister from './ParkingRegister';
 
+
 const customModalStyles = {
     // 여기가 모달창 밖에 부분 처리
     overlay: {
@@ -55,29 +56,26 @@ const customModalStyles = {
    `
 
 
-const ParkingModal = ({ isOpen, closeModal ,title , fecthJava }) => {
+const ParkingModal = ( props) => {
 
-
-    const ajaxJava = async()=> {
-        await fecthJava();
-       closeModal()
-
-   }
+    
 
     return (
         <ReactModal
-        isOpen={isOpen}
+        isOpen={props.isOpen}
         style={customModalStyles}
-        onRequestClose={closeModal}
+        onRequestClose={props.closeModal}
       >
 
       <ModalDiv>
-            <ParkingRegister/>
+            <ParkingRegister props={props} />
 
 
             <div>
-                <button className='sty02_btn good-div-end' onClick={closeModal}>목록으로</button>
+                <button className='sty02_btn good-div-end' onClick={props.closeModal}>목록으로</button>
             </div>
+
+            
         </ModalDiv>
         
       </ReactModal>

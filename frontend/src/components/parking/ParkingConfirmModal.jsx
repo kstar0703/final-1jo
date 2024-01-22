@@ -52,44 +52,12 @@ const customModalStyles = {
     }  
    `
 
-   //모달 (외부창에서 쓸 함수)
-  // const [isOpen, setIsOpen] = useState(false);
-    
-   // 외부창에서 사용
-    //const openModal = () => {setIsModalOpen(true)};
-
-   // 프롭스로 전달 
-    //const closeModal = () => {setIsModalOpen(false)}
-
-    // 프롭스로 전달
-    // const fetch = () =>{console.log('패치실행')}
-
-
-const Modal = ({ isOpen, closeModal ,title , fecthJava}) => {
-    
-    const ajaxJava = async()=> {
-         await fecthJava();
-        closeModal()
-
-    }
-
+const ParkingConfirmModal = (props) => {
     return (
-        <ReactModal
-        isOpen={isOpen}
-        style={customModalStyles}
-        onRequestClose={closeModal}
-      >
-
-      <ModalDiv>
-            <h1>{title}</h1>
-            <div>
-                <button className='sty02_btn' onClick={ajaxJava}>네</button>
-                <button className='sty01_btn' onClick={closeModal}>아니요</button>
-            </div>
-        </ModalDiv>
-        
-      </ReactModal>
+        <div>
+            
+        </div>
     );
 };
 
-export default Modal;
+export default ParkingConfirmModal;
