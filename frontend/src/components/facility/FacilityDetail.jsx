@@ -42,12 +42,18 @@ const StyledFacilityDetailDiv = styled.div`
     }
     .notice_box{
         width: 100%;
-        border: 0.1px solid #ccc;
         border-radius: 10px;
+        padding: 30px 0px 60px 0px;
+        line-height: 1.8;
+    }
+    .reservation_box{
+        width: 100%;
+        border: 0.3px solid #ccc;
+        border-radius: 8px;
         padding: 30px 50px 30px 50px;
         line-height: 1.8;
-
     }
+    
     
 `;
 
@@ -142,10 +148,12 @@ const FacilityDetail = () => {
                 </div>
 
                 <div className='reservation_box'>
-                    <div>[ 예약신청 ]</div>
-                    <FacilityHistoryWrite facilityVo={facilityVo}/>
-                    선택2
-                    <FacilityHistoryWriteWithClick />
+                    <div className='info_title'>[ 예약신청 ]</div>
+                    <div>
+                        <FacilityHistoryWrite facilityVo={facilityVo}/>
+                        {/* 선택2
+                        <FacilityHistoryWriteWithClick /> */}
+                    </div>                    
                 </div>
                 
                     
