@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect,useState,useRef} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledComplaintDetailDiv = styled.div`
@@ -11,6 +11,22 @@ height: 100%;
 
 const ComplaintDetail = () => {
     const navigator = useNavigate();
+    const {complaintNo} = useParams();
+    const loginMember = JSON.parse(sessionStorage.getItem("loginMember"));
+    const [compVo, setCompVo] = useState();
+
+    const loadCompVo = () => {
+      fetch(`http://127.0.0.1:8888/app/complaint/mySumitDetail?complaintNo=${complaintNo}&memberNo=${loginMember.memberNo}`)
+      .then(resp => (resp.json()))
+      .then((data)=>{
+        console.log(data);
+        setCompVo(data)
+      })
+      ;
+    }
+    useEffect(()=>{
+      loadCompVo();
+    },[])
 
     return (
         <StyledComplaintDetailDiv>
@@ -32,28 +48,38 @@ const ComplaintDetail = () => {
             <tbody>
               <tr>
                 <th scope="col">
-                  <div> 제목이란 이런 것이다</div>
-                  <div>NUM01</div>
+                  <div> {compVo?.title}</div>
+                  <div>{compVo?.complaintNo}</div>
                 </th>
               </tr>
               <tr>
                 <th>
-                  <div>미처리</div>
                   <div>
-                    <div>접수일자 : 2024-01-19 05:13:55</div>
-                    {/* <div>추가가능</div> */}
+                    {
+                      compVo?.status === 'N'
+                      ?
+                      "미처리"
+                      :
+                      "처리완료"
+                    }
+                    </div>
+                  <div>
+                    <div>접수일자 : {compVo?.enrollDate}</div>
                   </div>
                 </th>
               </tr>
                 <tr>
                     <th>
-                        <div>내용입니다 내용입니다. 내용입니다.</div>
+                        <div>{compVo?.content}</div>
                     </th>
               </tr>
               <tr>
                 <th>
-                    <div>
-                        <img width='50%' src='../../resources/logo.svg' alt='img01'/>
+                    <div>{compVo?.imgVoList.map((vo) => (
+
+                      <img width='50%' src={vo.path + vo.imgName} alt={vo.originName}/>
+                    
+                        ))}
                     </div>
                 </th>
               </tr>

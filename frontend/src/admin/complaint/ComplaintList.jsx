@@ -10,14 +10,28 @@ const StyledComplaintListDiv = styled.div`
 `;
 
 const ComplaintList = () => {
+    const navigator = useNavigate();
     const titleRef = useRef();
     const managerRef = useRef();
     const enrollsRef = useRef();
     const enrolleRef = useRef();
     const status = useRef();
     const delRes = useRef();
-
+    
+    const [compVoList, setCompVoList] = useState([]);
+    const loadCompVoList = () => {
+      fetch("http://127.0.0.1:8888/app/complaint/adminList")
+      .then(resp =>(resp.json()))
+      .then((data)=>{
+        setCompVoList(data)
+      })
+    }
+    useEffect(()=>{
+      loadCompVoList();
+    },[])
   return (
+    
+
     <StyledComplaintListDiv>
       <div className="ad_wrap">
         <div className="ad_search_box_bg">
@@ -99,11 +113,13 @@ const ComplaintList = () => {
               <col width="" />
               <col width="" />
               <col width="" />
+              <col width="" />
             </colgroup>
             <thead>
               <tr>
                 <th scope="col">번호</th>
                 <th scope="col">담당자</th>
+                <th scope="col">작성자</th>
                 <th scope="col">제 목</th>
                 <th scope="col">작성일자</th>
                 <th scope="col">공개여부</th>
@@ -111,7 +127,22 @@ const ComplaintList = () => {
                 <th scope="col">민원 처리 일자</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {
+                compVoList.map((vo)=>(
+                  <tr onClick={()=>{navigator(`/admin/complaint/detail/${vo.complaintNo}`)}} key={vo.complaintNo}>
+                    <td>{vo.complaintNo}</td>
+                    <td>{vo.managerNo > 0 ?vo.managerNo:"미지정"}</td>
+                    <td>{ vo.dong+ "동"+ vo.ho+ "호" + vo.name}</td>
+                    <td>{vo.title}</td>
+                    <td>{vo.enrollDate}</td>
+                    <td>{vo.delYn}</td>
+                    <td>{vo.status}</td>
+                    <td>{vo.replyDate}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
           </table>
         </div>
       </div>

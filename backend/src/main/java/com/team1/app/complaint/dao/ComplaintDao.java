@@ -19,7 +19,6 @@ public class ComplaintDao {
 	}
 
 	public int complaintSumit(SqlSessionTemplate sst, ComplaintVo vo) {
-		System.out.println(vo);
 		return sst.insert("ComplaintMapper.complaintSumit",vo);
 	}
 	

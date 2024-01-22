@@ -10,7 +10,7 @@ public class VoteVo {
 	                                                
 	private String voteNo;			//투표글 번호       
 	private String managerNo;		//작성자 번호       
-	private String managerId;		//작성자 아이디      
+	private String managerId;		//작성자 아이디
 	private String title;			//글 제목         
 	private String content;			//글 설명         
 	private String enrollDate;		//등록 일자
@@ -35,6 +35,11 @@ public class VoteVo {
 	private String replyNo;			//응답 번호        
 	private String prtcNo;			//응답자 번호       
 	private String retcDate;		//응답 일자      
+
+	private String name;		//응답자 이름
+	private String unitNo;			//세대번호
+	private String dong;			//동
+	private String ho;				//호
 	
 	private String count;			//합산
 	private String hit;				//조회수

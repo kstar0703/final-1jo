@@ -41,6 +41,11 @@ public class ManagerDao {
 	public int count(MemberVo vo, SqlSessionTemplate sst) {
 		return sst.selectOne("MemberMapper.count",vo);
 	}
+
+	//관리자 조회
+	public List<ManagerVo> managerSelect(SqlSessionTemplate sst) {
+		return sst.selectList("ManagerMapper.managerSelect");
+	}
 	
 	
 	

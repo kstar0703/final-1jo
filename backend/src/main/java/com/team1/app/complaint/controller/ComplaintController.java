@@ -1,6 +1,5 @@
 package com.team1.app.complaint.controller;
 
-import java.io.IOException;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +13,13 @@ import com.team1.app.complaint.service.ComplaintService;
 import com.team1.app.complaint.vo.ComplaintVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 //민원 하자 접수
 @RestController
 @RequestMapping("complaint")
 @RequiredArgsConstructor
+@Slf4j
 public class ComplaintController {
 
 	private final ComplaintService service;
@@ -33,47 +34,35 @@ public class ComplaintController {
 	//민원 접수 
 	@PostMapping("complaintSumit")
 	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws Exception {
-		System.out.println("vo :"+vo);
-		for (MultipartFile multipartFile : fileArr) {
-			System.out.println("fileArr :"+multipartFile.getOriginalFilename());
-		}
 		
-		boolean result = service.complaintSumit(vo,fileArr);
-		System.out.println(result);
-		return result;
+		return service.complaintSumit(vo,fileArr);
 	}
 	
 	//내 민원 상세 조회
 	@GetMapping("mySumitDetail")
-	public void mySumitDetail(ComplaintVo vo) {
-		ComplaintVo resultVo = service.mySumitDetail(vo);
-		System.out.println(resultVo);
-
+	public ComplaintVo mySumitDetail(ComplaintVo vo) {
+		ComplaintVo vvvo = service.mySumitDetail(vo);
+		System.out.println(vvvo);
+		return vvvo;
 	}
 	
 	//관리자 전체 게시글 조회
 	@GetMapping("adminList")
-	public void list() {
-		List<ComplaintVo> voList = service.list();
-		for (ComplaintVo complaintVo : voList) {
-			System.out.println(complaintVo);
-		}
+	public List<ComplaintVo> list() {
+		return service.list();
+		
 	}
 	
 	//관리자 게시글 상세 조회
 	@GetMapping("adminDetail")
-	public void detail(ComplaintVo vo) {
-		ComplaintVo resultVo = service.detail(vo);
-		System.out.println(resultVo);
+	public ComplaintVo detail(ComplaintVo vo) {
+		return service.detail(vo);
 	}
 	
 	//민원 해결 글 작성
 	@PostMapping("clear")
-	public void clear(ComplaintVo vo) {
-		vo.setManagerNo("11");
-		vo.setReply("민원 해결 테스트 답변입니다.");
-		vo.setComplaintNo("5");
-		int result = service.clear(vo);
+	public int clear( @RequestBody ComplaintVo vo) {
+		return service.clear(vo);
 	}
 	
 	//관리자 전체 민원 검색 (썸네일 사용 시)
