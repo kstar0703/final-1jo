@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team1.app.manager.Service.ManagerService;
 import com.team1.app.manager.vo.ManagerVo;
 import com.team1.app.member.vo.MemberVo;
+import com.team1.app.parking.vo.ParkingVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import oracle.net.aso.l;
 
 @RequestMapping("/admin")
 @RestController
 @RequiredArgsConstructor
-
+@Slf4j
 //status good bad 실패
 public class ManagerController {
 	
@@ -55,13 +58,38 @@ public class ManagerController {
 	 * @param vo permissionYn,name,phone
 	 * @return 회원 리스트
 	 */
-	@PostMapping("findMember")
-	public List<MemberVo> findMember(@RequestBody MemberVo vo){
+	@GetMapping("findMember")
+	public Map<String, Object> findMember(MemberVo vo,PageVo pageVo){
+		//결과맵
+		Map<String, Object>  resultMap = new HashMap();
+		
+		log.info("들어온 값 : {}  ",vo);
+		log.info("들어온 현재page값 : {}  ",pageVo.getCurrentPage());
 		
 		
-		List<MemberVo> list = service.findMember(vo);
+		int cnt = service.count(vo);
+	
+		
+		log.info("전체 페이지 갯수 :{}",cnt);
+		
+		//페이지 리밋
+		int pageLimit = 10;	
+				
+	   PageVo pvo = new PageVo(cnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
+		
+	   
+	   List<MemberVo> voList = service.findMember(vo,pvo);
+		
+	   log.info("나가는 페이지수 :  {}" ,voList.size() );
+	   
+		resultMap.put("voList",voList);
+		resultMap.put("status", "good");
+		resultMap.put("pageVo", pvo);
+		
+		
+		
 			
-		 return list;
+		 return resultMap;
 				 } 
 	/**
 	 * 

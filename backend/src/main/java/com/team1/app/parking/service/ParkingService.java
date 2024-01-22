@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.team1.app.member.service.MemberService;
 import com.team1.app.parking.dao.ParkingDao;
 import com.team1.app.parking.vo.ParkingVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,8 +57,8 @@ public class ParkingService {
 		}
 		
 		//예약 리스트
-		public List<ParkingVo> list(ParkingVo vo) {
-			return dao.list(sst,vo);
+		public List<ParkingVo> list(ParkingVo vo,PageVo pageVo) {
+			return dao.list(sst,vo,pageVo);
 		}
 		//예약 상세 정보
 		public ParkingVo detail(ParkingVo vo) {
@@ -68,6 +69,10 @@ public class ParkingService {
 		public int recovery(ParkingVo vo) {
 			
 			return dao.recovery(sst,vo);
+		}
+
+		public int count(ParkingVo vo) {
+			return dao.count(sst,vo);
 		}
 }
 	

@@ -157,7 +157,7 @@ const MyPage = () => {
        <MyPageDiv>
             {/* 1 */}
             <div>
-                <button>뒤로가기</button>
+                <button onClick={onClickHome}>뒤로가기</button>
                 <h2>마이페이지</h2>
                 <div></div>
             </div>

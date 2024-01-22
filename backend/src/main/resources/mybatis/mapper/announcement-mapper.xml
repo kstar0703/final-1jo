@@ -53,7 +53,7 @@
 	 A.CONTENT LIKE '%' || #{content} || '%' AND
 	</if>
 	<if test = "id != null" >	
-	  M.ID LIKE '%' || #{id} || '%' 
+	  M.ID LIKE '%' || #{id} || '%' AND
 		
 	</if>
 	
@@ -108,14 +108,14 @@
 	 A.CONTENT LIKE '%' || #{content} || '%' AND
 	</if>
 	<if test = "id != null" >	
-	  M.ID LIKE '%' || #{id} || '%' 
-		
+	  M.ID LIKE '%' || #{id} || '%' AND 		
 	</if>
 	
 	<choose>
     <when test="delYn == null or delYn.length() == 0">
         A.DEL_YN = 'N' AND
     </when>
+   
     <when test="delYn == 'all'">
     <!-- 아무 동작도 수행하지 않음 -->
 	</when>

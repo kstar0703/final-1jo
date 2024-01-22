@@ -77,6 +77,7 @@ const DetailDiv = styled.div`
 ` 
 
 const AnnoucementDetail = () => {
+    const navigate = useNavigate();
 
     let {announcementNo} = useParams();
 
@@ -94,6 +95,10 @@ const AnnoucementDetail = () => {
              })
         }
     ,[announcementNo]);
+
+    const goList = () =>{
+      navigate('/announcement/list')
+    }
 
     return (
         <DetailDiv>
@@ -142,7 +147,7 @@ const AnnoucementDetail = () => {
 
                     </div>
                     <div className='btn-div'>
-                    
+                      <button className='sty01_btn' onClick={goList}>목록으로</button>
                     </div>
                   </div>
                 </th>

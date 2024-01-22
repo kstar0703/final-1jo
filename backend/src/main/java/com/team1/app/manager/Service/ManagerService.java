@@ -10,6 +10,7 @@ import com.team1.app.manager.dao.ManagerDao;
 import com.team1.app.manager.vo.ManagerVo;
 import com.team1.app.member.service.MemberService;
 import com.team1.app.member.vo.MemberVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,9 +27,9 @@ public class ManagerService {
 	}
 
 	//회원 검색
-	public List<MemberVo> findMember(MemberVo vo) {
+	public List<MemberVo> findMember(MemberVo vo, PageVo pvo) {
 
-		return dao.findMember(vo,sst);
+		return dao.findMember(vo,sst,pvo);
 	}
 	//회원 수락
 	public int acceptMember(MemberVo vo) {
@@ -40,6 +41,11 @@ public class ManagerService {
 	public int cancelacceptMember(MemberVo vo) {
 		
 		return dao.cancelacceptMember(vo,sst);
+	}
+	
+	// 회원조회 카운트
+	public int count(MemberVo vo) {
+		return dao.count(vo,sst);
 	}
 	
 	
