@@ -15,7 +15,7 @@ const FacilityMain = () => {
             <Route path='lists' element={<FacilitiesList />}/>
             <Route path='insert' element={<FacilityInsert />}/>
             <Route path='edit/:facilitiesNo' element={<FacilityEdit />}/>
-            <Route path='notice/:facilitiesNo' element={<FacilityNoticeList />}/>
+            <Route path='notice/:facilitiesNoticeNo' element={<FacilityNoticeList />}/>
             <Route path='history' element={<FacilityHistoryList />}/>
         </Routes>
     );

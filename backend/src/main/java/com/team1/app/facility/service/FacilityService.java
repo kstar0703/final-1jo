@@ -107,6 +107,11 @@ public class FacilityService {
 		return dao.detailForAdmin(sst, vo);
 	}
 
+	//전체예약내역조회 (관리자)
+	public List<FacilityHistoryVo> listByHistoryForAdmin() {
+		return dao.listByHistoryForAdmin(sst);
+	}
+
 
 
 

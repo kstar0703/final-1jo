@@ -216,9 +216,10 @@ public class BoardController {
 	}
 	
 	// 게시글 상세 조회 (관리자)
-	@GetMapping("admin/detail")
+	@PostMapping("admin/detail")
 	public Map<String, Object> detailByAdmin(@RequestBody BoardVo vo){
 		BoardVo boardVo	= service.detailByAdmin(vo);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardVo", boardVo);
 		map.put("msg", "good");

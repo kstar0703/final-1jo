@@ -66,6 +66,11 @@ public class FacilityDao {
 		return sst.selectOne("FacilityMapper.detailForAdmin", vo);
 	}
 
+	//전체예약내역조회 (관리자)
+	public List<FacilityHistoryVo> listByHistoryForAdmin(SqlSessionTemplate sst) {
+		return sst.selectList("FacilityMapper.listByHistoryForAdmin");
+	}
+
 
 
 }

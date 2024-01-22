@@ -21,6 +21,7 @@ public class BoardVo {
 	private String unitNo;
 	private String name;
 	private String gender;
+	private String phone;
 		
 	private String dong;
 	private String ho;

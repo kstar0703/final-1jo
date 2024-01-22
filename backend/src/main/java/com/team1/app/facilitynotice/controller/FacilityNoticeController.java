@@ -48,8 +48,11 @@ public class FacilityNoticeController {
 
 	//커뮤니티공지 목록조회 (관리자)
 	@GetMapping("admin/list")
-	public List<FacilityNoticeVo> listByAdmin(){
-		return service.listByAdmin();
+	public Map<String, Object> listByAdmin(){
+		List<FacilityNoticeVo> facilityNoticeVoList = service.listByAdmin();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("facilityNoticeVoList", facilityNoticeVoList);
+		return map;
 	}
 
 	//커뮤니티공지 상세조회 (관리자)

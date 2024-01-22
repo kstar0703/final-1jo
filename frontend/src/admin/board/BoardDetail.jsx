@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,6 +11,24 @@ const StyledBoardDetailDiv = styled.div`
 
 const BoardDetail = () => {
     const { boardNo } = useParams();
+    const [boardVo, setBoardVo] = useState({
+        boardNo: boardNo
+    });
+    const loadBoardVo = ()=>{
+        fetch("http://127.0.0.1:8888/app/board/admin/detail", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(boardVo)
+        })
+        .then(resp=>resp.json())
+        .then(data=>{
+            setBoardVo(data.boardVo);
+            console.log("받은" + boardVo);
+        })
+    }
+    useEffect(()=>{
+        loadBoardVo();
+    }, [boardNo]);
     return (
         <StyledBoardDetailDiv>
             <div className='ad_wrap'>
@@ -31,79 +49,52 @@ const BoardDetail = () => {
                             <tbody>
                                 <tr>
                                     <th scope="row"><label form=''>글번호</label></th>
-                                    <td></td>
+                                    <td>{boardVo.boardNo}</td>
                                     <th scope="row"><label form=''>조회수</label></th>
-                                    <td></td>
+                                    <td>{boardVo.hit}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form=''>등록일</label></th>
-                                    <td></td>
+                                    <td>{boardVo.enrollDate}</td>
                                     <th scope="row"><label form=''>수정일</label></th>
-                                    <td></td>
+                                    <td>{boardVo.modifyDate}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form=''>삭제여부</label></th>
-                                    <td>
-                                        <div class="form_box">
-                                            <select class="sel_box" >
-                                                <option value="N">X</option>
-                                                <option value="Y">O</option>
-                                            </select>
-                                        </div>
-                                    </td>
+                                    <td>{boardVo.delYn}</td>
                                     <th scope="row"><label form=''>규제여부</label></th>
-                                    <td>
-                                        <div class="form_box">
-                                            <select class="sel_box">
-                                                <option value="Y">X</option>
-                                                <option value="N">O</option>
-                                            </select>
-                                        </div>
-                                    </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form="">작성자명</label></th>
-                                    <td></td>
+                                    <td>{boardVo.name} / ({boardVo.phone})</td>
                                     <th scope="row"><label form="">세대정보</label></th>
-                                    <td></td>
+                                    <td>{boardVo.dong}동 {boardVo.ho}호</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form="">카테고리</label></th>
-                                    <td colspan="3">
-                                        <div class="form_box">
-                                            <input type="text" />
-                                        </div>
-                                    </td>
+                                    <td colspan="3">{boardVo.categoryName}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label for="inp_03">제목</label></th>
-                                    <td colspan="3">
-                                        <div class="form_box">
-                                            <textarea type="text-area" placeholder="값을 입력해주세요" ></textarea>
-                                        </div>
-                                    </td>
+                                    <td colspan="3">{boardVo.title}</td>
                                 </tr>
                                 <tr>
                                     <th colspan="4" scope="row"><label form=''>본문</label></th>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                    {/* {
-                                        voteVoList.map((vo) => ( */}
                                     <span>
-                                        <tr className='item_data'>
-                                            <th></th>
-                                            <td></td>
-                                        </tr>
+                                        <td>{boardVo.content}</td>
                                     </span>
-                                    {/* ))
-                                    }    */}
+                                    
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label for="inp_03">첨부파일</label></th>
                                     <td colspan="4">첨부파일이름</td>
                                 </tr>
+                                <div></div>
                             </tbody>
                         </table>
                     </div>

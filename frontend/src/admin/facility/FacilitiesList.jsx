@@ -126,7 +126,7 @@ const FacilitiesList = () => {
                             <button className="sty02_btn" >검색</button>
                         </div>
                         <div>
-                            <button className='sty02_btn' onClick={()=>{navigator("/admin/facility/insert")}}>미정</button>
+                            <button className='sty02_btn' onClick={()=>{navigator("/admin/facility/insert")}}>시설등록</button>
                         </div>
                     </div>
                 </div>

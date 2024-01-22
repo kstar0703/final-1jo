@@ -18,4 +18,8 @@ public class FacilityHistoryVo {
 	private String startDate;
 	private String endDate;
 	
+	private String unitNo;
+	private String dong;
+	private String ho;
+	
 }
