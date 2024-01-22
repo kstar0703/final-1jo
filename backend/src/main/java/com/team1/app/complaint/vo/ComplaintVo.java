@@ -11,7 +11,10 @@ public class ComplaintVo {
 	private String complaintNo;		//민원 번호                 
 	private String managerNo;		//민원 처리 담당자 관리자 번호
 	private String memberNo;		//작성자 번호                
-	private String memberName;		//작성자 이름                
+	private String name;		//작성자 이름
+	private String unitNo;			//세대번호
+	private String dong;			//동
+	private String ho;				//호
 	private String title;			//민원 제목                 
 	private String content;			//민원 내용                 
 	private String enrollDate;		//작성 일자

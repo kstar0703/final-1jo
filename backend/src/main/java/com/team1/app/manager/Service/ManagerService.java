@@ -47,6 +47,10 @@ public class ManagerService {
 	public int count(MemberVo vo) {
 		return dao.count(vo,sst);
 	}
+	//관리자 조회
+	public List<ManagerVo> managerSelect() {
+		return dao.managerSelect(sst);
+	}
 	
 	
 

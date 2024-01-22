@@ -24,7 +24,9 @@ const ComplaintList = () => {
 
     //useState
     let [compVoList,setCompVoList] = useState([]);
-
+    const [staBtn ,  setStaBtn] = useState(
+      false
+    );
     //fetch 불러오기
     const loadCompVoList = () =>{
         fetch(`http://127.0.0.1:8888/app/complaint/mySumitList?memberNo=${loginMember.memberNo}`)
@@ -35,6 +37,18 @@ const ComplaintList = () => {
     useEffect(()=>{
         loadCompVoList();
     },[])
+
+    const handleSelect = () =>{
+      if(staBtn === true){
+        setStaBtn(
+          false
+        )
+      }else{
+          setStaBtn(
+            true
+          )
+        }
+    }
     
     return (
       <StyledComplaintListDiv>
@@ -45,8 +59,12 @@ const ComplaintList = () => {
             </div>
           </div>
           <div className="top_btn_box mt40">
-            <div>
-              <button className="sty01_btn">미처리 조회</button>
+            <div>{staBtn ? 
+
+              <button onClick={handleSelect} className='sty02_btn'>전체 조회</button>
+              :
+              <button onClick={handleSelect} className="sty01_btn">미처리 조회</button>
+            }
               <button
                 className="sty02_btn"
                 onClick={() => {
@@ -77,7 +95,9 @@ const ComplaintList = () => {
                 </tr>
               </thead>
               <tbody>
-                {compVoList.map((vo) => (
+                { !staBtn
+                ?
+                compVoList.map((vo) => (
                   <tr
                     onClick={() => {
                       navigator(`/complaint/detail/${vo.complaintNo}`);
@@ -89,20 +109,60 @@ const ComplaintList = () => {
                         width="60%"
                         height="60%"
                         src={
-                          "http://127.0.0.1:8888/app/" + vo.path + vo.imgName
+                          vo.path + vo.imgName
                         }
-                        alt="vo.imgName"
+                        alt={vo.imgName}
                       ></img>
                     </td>
                     <td>{"NUM" + vo.complaintNo}</td>
                     <td>
-                      {"http://127.0.0.1:8888/app/" + vo.path + vo.imgName}
                       {vo.title}
                     </td>
                     <td>{vo.enrollDate}</td>
-                    <td>{vo.status}</td>
+                    <td>
+                      {vo.status === 'N'
+                        ?
+                        "처리중"
+                        :
+                        "처리완료"
+                      }
+                    </td>
                   </tr>
-                ))}
+                ))
+                :
+                compVoList.filter((vo)=>{return vo.status ==='N'}).map((vo) => (
+                  <tr
+                    onClick={() => {
+                      navigator(`/complaint/detail/${vo.complaintNo}`);
+                    }}
+                    key={vo.complaintNo}
+                  >
+                    <td>
+                      <img
+                        width="60%"
+                        height="60%"
+                        src={
+                          vo.path + vo.imgName
+                        }
+                        alt={vo.imgName}
+                      ></img>
+                    </td>
+                    <td>{"NUM" + vo.complaintNo}</td>
+                    <td>
+                      {vo.title}
+                    </td>
+                    <td>{vo.enrollDate}</td>
+                    <td>
+                      {vo.status === 'N'
+                        ?
+                        "처리중"
+                        :
+                        "처리완료"
+                      }
+                    </td>
+                  </tr>
+                ))
+              }
               </tbody>
             </table>
           </div>

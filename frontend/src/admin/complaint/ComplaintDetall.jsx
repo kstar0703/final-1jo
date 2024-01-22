@@ -7,27 +7,73 @@ width: 100%;
 height: 100%;
 display: flex;
 flex-direction: column;
+img{
+  padding: 10px;
+}
 `;
 
 const ComplaintDetall = () => {
   const navigator = useNavigate();
-
   //글번호 받아오기
-  const { voteNo } = useParams();
-
-  const delYn = useRef();
-
+  const {complaintNo} = useParams();
+  
   //useState 설정
-  const [voteVo, setVoteVo] = useState([]);
-  const [voteVoList, setVoteVoList] = useState([]);
-  const [titleValue, setTitleValue] = useState([]);
-  const [contentValue, setContentValue] = useState([]);
+  const [compVo, setCompVo] = useState([]);
+  const [managerVoList, setManagerVoList] = useState([]);
+  const [reply, setReply] = useState([]);
+  const managerNo = useRef();
+  const delYn = useRef();
+  const status = useRef();
+
 
   //textArear 자동 스크롤
     const textRef = useRef();
     const handleResizeHeight = useCallback(() => {
       textRef.current.style.height = textRef.current.scrollHeight + "px";
     }, []);
+
+    const loadCompVo = () => {
+      console.log({complaintNo});
+      fetch(`http://127.0.0.1:8888/app/complaint/adminDetail?complaintNo=${complaintNo}`)
+      .then(resp=>(resp.json()))
+      .then((data)=>{setCompVo(data)})
+    } 
+    useEffect(()=>{
+      loadCompVo();
+      managerList();
+    },[])
+
+    const hendleSubmit = () => {
+      fetch("http://127.0.0.1:8888/app/complaint/clear",{
+        method : "POST"
+        ,headers : {
+          "Content-Type": "application/json",
+        }
+        ,body : JSON.stringify(
+          {
+            managerNo : managerNo.current.value,
+            delYn : delYn.current.value,
+            status: status.current.value,
+            reply: reply,
+            complaintNo,
+          }
+        ),
+      })
+      .then((resp) =>resp.json())
+      .then((data)=>{
+        if(data === 1){
+          alert("답변 및 수정 완료")
+        }else{
+          alert("에러발생")
+        }
+      })
+    }
+
+    const managerList = () => {
+      fetch("http://127.0.0.1:8888/app/admin/managerSelect")
+      .then(resp =>(resp.json()))
+      .then((data)=>{setManagerVoList(data);})
+    }
 
   return (
     <StryledComplaintDetailDiv>
@@ -51,21 +97,36 @@ const ComplaintDetall = () => {
                   <th scope="row">
                     <label form="">민원번호</label>
                   </th>
-                  <td></td>
+                  <td>{compVo?.complaintNo}</td>
                   <th scope="row">
                     <label form="">담당자</label>
                   </th>
-                  <td></td>
+                  <td>
+                    { compVo.managerNo > 0
+                        ?
+                        compVo.managerNo
+                        :
+                        <div class="form_box">
+                          <select ref={managerNo} class="sel_box">
+                            {
+                              managerVoList?.map((vo)=>(
+                                <option value={vo.managerNo}>{vo.managerNo}</option>
+                              ))
+                            }
+                          </select>
+                        </div>                        
+                      }
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">
-                    <label form="">작성자 번호</label>
+                    <label form="">작성자</label>
                   </th>
-                  <td></td>
+                  <td>{compVo?.dong+ "동 "+ compVo?.ho+ "호 " + compVo?.name + " 님"}</td>
                   <th scope="row">
                     <label form="">작성일자</label>
                   </th>
-                  <td></td>
+                  <td>{compVo?.enrollDate}</td>
                 </tr>
                 <tr>
                   <th scope="row">
@@ -84,7 +145,7 @@ const ComplaintDetall = () => {
                   </th>
                   <td>
                     <div class="form_box">
-                      <select class="sel_box">
+                      <select ref={status} class="sel_box">
                         <option value="Y">진행</option>
                         <option value="N">마감</option>
                       </select>
@@ -93,25 +154,22 @@ const ComplaintDetall = () => {
                 </tr>
                 <tr>
                   <th scope="row">
-                    <label form="">민원 처리 일자</label>
+                    <label form="">민원 글 제목</label>
                   </th>
-                  <td></td>
-                  <th scope="row">
-                    <label form=""></label>
-                  </th>
-                  <td></td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <label form="">제목</label>
-                  </th>
-                  <td colspan="3"></td>
+                  <td colspan="3">{compVo?.title}</td>
                 </tr>
                 <tr>
                   <th scope="row">
                     <label form="">민원 내용</label>
                   </th>
-                  <td colspan="3"></td>
+                  <td colspan="3">
+                    <p>{compVo.content}</p>
+                    {
+                      compVo?.imgVoList?.map((vo)=> (
+                        <img width={500+"px"} src={vo.path + vo.imgName} alt={vo.originName} />
+                    ))
+                    }
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">
@@ -122,15 +180,25 @@ const ComplaintDetall = () => {
                       <textarea
                         ref={textRef}
                         onChange={(e) => {
-                          setContentValue(e.target.value);
+                          setReply(e.target.value);
                         }}
                         onInput={handleResizeHeight}
                         type="text-area"
                         placeholder="값을 입력해주세요"
-                        value={contentValue}
+                        value={reply}
                       ></textarea>
                     </div>
                   </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <label form="">민원 처리 일자</label>
+                  </th>
+                  <td>{compVo?.replyDate}</td>
+                  <th scope="row">
+                    <label form=""></label>
+                  </th>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -148,7 +216,7 @@ const ComplaintDetall = () => {
               </button>
             </div>
             <div>
-              <button className="sty02_btn">수정하기</button>
+              <button onClick={hendleSubmit} className="sty02_btn">답변 및 수정</button>
             </div>
           </div>
         </div> 

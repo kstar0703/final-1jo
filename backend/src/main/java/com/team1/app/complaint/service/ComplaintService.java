@@ -40,6 +40,7 @@ public class ComplaintService {
 		
 		if(fileArr != null && fileArr.length > 0 ) {
 			List<String> fileList = saveFile(fileArr);
+
 			if(fileList.size() <= 0) {
 				throw new IllegalStateException();
 			}
@@ -52,7 +53,7 @@ public class ComplaintService {
 				new ComplaintImgVo(filename, path,fileArr[idx++].getOriginalFilename())
 				);
 			}
-
+			
 			int imgResult = dao.imgInsertSumit(sst, imgList);
 			if(imgResult <= 0) {
 				throw new IllegalStateException();

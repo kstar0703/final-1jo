@@ -6,8 +6,8 @@ import ComplaintDetall from './ComplaintDetall';
 const ComplaintMain = () => {
     return (
       <Routes>
-        <Route path="/list" element={<ComplaintList />} />
-        <Route path="/detail*" element={<ComplaintDetall />} />
+        <Route path="list" element={<ComplaintList />} />
+        <Route path="detail/:complaintNo*" element={<ComplaintDetall />} />
       </Routes>
     );
 };

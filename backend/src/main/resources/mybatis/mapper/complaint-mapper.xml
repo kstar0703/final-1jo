@@ -18,15 +18,18 @@
 		FROM
 		    COMPLAINT C
 		JOIN
-		    COMPLAINT_IMG I
+		    (SELECT I.*,ROW_NUMBER() OVER (PARTITION BY I.COMPLAINT_NO ORDER BY I.IMG_NO) AS RN FROM COMPLAINT_IMG I) I 
 		ON
 		    C.COMPLAINT_NO = I.COMPLAINT_NO
+        AND
+            I.RN = 1		   
 		WHERE
 		    DEL_YN = 'N'
+
 		AND
 		    C.MEMBER_NO = #{memberNo}
 		ORDER BY
-		    COMPLAINT_NO DESC	
+		    COMPLAINT_NO DESC, I.IMG_NO 
 	</select>
 
 	<!-- 민원 /접수 -->
@@ -66,8 +69,8 @@
 		(
 		    (SELECT GET_COMPLAINT_IMG_SEQ() FROM DUAL )
 		    ,SEQ_COMPLAINT_NO.CURRVAL
-		    ,TO_CHAR(SYSDATE,'YYYYMMDDHH24miSS')
-		    ,'resources/uplode/complaint/img/'
+		    ,#{item.imgName}
+		    ,#{item.path}
 		    ,#{item.originName}
 		)	
 		</foreach>
@@ -101,16 +104,19 @@
 		    C.COMPLAINT_NO = #{complaintNo}
 	</select>
 	
-	<!-- 관리자 전체 게시글 조회 -->
+	<!-- 관리자 전체 게시글 조회 -->								<!-- 전체 조회 중 중복 이미지 중 첫번쨰 이미지만 조회하는 SQL문  -->
 	<select id="adminList" resultType="ComplaintVo">
 		SELECT 
 		    C.COMPLAINT_NO
-		    ,MANAGER_NO
-		    ,MEMBER_NO
+		    ,C.MANAGER_NO
+		    ,M.MEMBER_NO
+            ,M.NAME
+            ,DONG
+            ,HO
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
-		    ,DEL_YN
+		    ,C.DEL_YN
 		    ,STATUS
 		    ,REPLY
 		    ,REPLY_DATE 
@@ -120,24 +126,37 @@
 		    ,ORIGIN_NAME
 		FROM
 		    COMPLAINT C
+        JOIN
+            MEMBER M
+        ON
+            M.MEMBER_NO = C.MEMBER_NO
+        JOIN
+            UNIT U
+        ON
+            M.UNIT_NO = U.UNIT_NO
 		JOIN
-		    COMPLAINT_IMG I
+		    (SELECT I.*,ROW_NUMBER() OVER (PARTITION BY I.COMPLAINT_NO ORDER BY I.IMG_NO) AS RN FROM COMPLAINT_IMG I) IMG
 		ON
-		    C.COMPLAINT_NO = I.COMPLAINT_NO
+		    C.COMPLAINT_NO = IMG.COMPLAINT_NO
+        AND
+            IMG.RN = 1
 		ORDER BY
-		    COMPLAINT_NO DESC	
+		    COMPLAINT_NO DESC, IMG.IMG_NO 
 	</select>
 	
 	<!--관리자 게시글 상세 조회 -->
 	<select id="adminDetail" resultType="ComplaintVo">
 		SELECT 
 		    C.COMPLAINT_NO
-		    ,MANAGER_NO
-		    ,MEMBER_NO
+		    ,C.MANAGER_NO
+		    ,M.MEMBER_NO
+            ,M.NAME
+            ,DONG
+            ,HO
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
-		    ,DEL_YN
+		    ,C.DEL_YN
 		    ,STATUS
 		    ,REPLY
 		    ,REPLY_DATE 
@@ -147,6 +166,14 @@
 		    ,ORIGIN_NAME
 		FROM
 		    COMPLAINT C
+        JOIN
+            MEMBER M
+        ON
+            M.MEMBER_NO = C.MEMBER_NO
+        JOIN
+            UNIT U
+        ON
+            M.UNIT_NO = U.UNIT_NO
 		JOIN
 		    COMPLAINT_IMG I
 		ON
@@ -161,8 +188,9 @@
 		    COMPLAINT
 		SET
 		    MANAGER_NO = #{managerNo}
-		    ,STATUS = 'Y'
+		    ,STATUS = #{status}
 		    ,REPLY = #{reply}
+		    ,DEL_YN = #{delYn}
 		    ,REPLY_DATE = SYSDATE
 		WHERE
 		    COMPLAINT_NO = #{complaintNo}

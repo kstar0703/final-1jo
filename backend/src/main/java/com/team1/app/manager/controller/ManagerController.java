@@ -54,6 +54,16 @@ public class ManagerController {
 	}
 	
 	/**
+	 * 관리자 계정 조회
+	 * @param vo (관리자 정보), no, id
+	 * @return 관리자 리스트
+	 */
+	@GetMapping("managerSelect")
+	public List<ManagerVo> managerSelect() {
+		return service.managerSelect();
+	}
+	
+	/**
 	 * 가입 승인용 조회
 	 * @param vo permissionYn,name,phone
 	 * @return 회원 리스트

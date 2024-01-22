@@ -10,6 +10,7 @@ const StyledLayoutDiv = styled.div`
     height: 100vh;
     display: grid;
     grid-template-rows: 0.8fr 9.2fr;
+    position: relative;
     & div{
         display: flex;
     }

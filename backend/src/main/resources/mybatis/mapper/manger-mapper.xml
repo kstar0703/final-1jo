@@ -9,4 +9,12 @@
 	WHERE ID =#{id} AND PWD =#{pwd}
 	</select>
 	
+	<select id="managerSelect" resultType="ManagerVo">
+	SELECT
+		MANAGER_NO
+		,ID
+	FROM
+		MANAGER
+	</select>
+	
 </mapper>

@@ -119,8 +119,6 @@ const VoteDetail = () => {
         // });
 
         // console.log(formData);
-        console.log(delYn.current.value);
-        console.log(acceptYn.current.value);
          fetch("http://127.0.0.1:8888/app/vote/edit", {
           method: "POST",
           headers: {
