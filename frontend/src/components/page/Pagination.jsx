@@ -33,6 +33,9 @@ const StyledBtn = styled.div`
 //     setCurrentPage(page)
 // }
 
+
+
+
 const Pagination = ({ pvo, currentPage, onPageChange }) => {
   // 페이지를 표시할 범위 계산
 
