@@ -1,5 +1,98 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledFacilityHistoryDiv = styled.div`
+    width: 80%;
+    height: 100%;
+    .wrap_history{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .font_size{
+        font-size: 2em;
+        padding: 10px;
+    }
+    .Myhistory_box{
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .search_box{
+        width: 100%;
+        background-color: #F1F1F1;
+        align-items: center;
+        & div{
+            margin-left: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        & input {
+            width: 200px;
+            padding: 5px 5px 5px 20px;
+            border: 0.3px solid #ccc;
+            border-radius: 3px;
+        }
+    }
+    .history_cnt_box{
+        width: 85%;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        margin-left: 15px;
+        padding: 10px 0 5px 0;
+        & div > span {
+            color: red;
+            font-weight: 400;
+        }
+    }
+    .history_area{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .history_card{
+        width: 87%;
+        border: 0.1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        line-height: 1.8;
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;        
+    }
+    .name_box{
+        margin: 10px 0 0 50px;
+        font-size: 22px;
+    }
+    .history_detail_box{
+        text-align: left;
+        margin-left: 5px;
+    }
+    .state_box{
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    .cancel_box{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        gap: 20px;
+        & button {
+            width: 65px;
+        }
+    }
+    .btn_left{
+        width: 80%;
+        display: flex;
+        margin-right: auto;
+    }
+`;
 
 const FacilityHistoryList = () => {
     const navigator = useNavigate();
@@ -71,72 +164,83 @@ const FacilityHistoryList = () => {
     }
     
     return (
-        <div>
-            <div>
-                <div>예약내역</div>
-                -----------------------------
-                <div>
-                    <input type='date'></input>
-                    <input type='date'></input>
-                </div>
-                <div>총 {historyVoList.length}건</div>
-                <div>시설 예약내역</div>
-                <div>
-                    {
-                        historyVoList.map(vo=>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <th>커뮤니티 이름</th>
-                                            <td>{vo.facilitiesName}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>결제일시</th>
-                                            <td>{vo.applicationDate}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>가격</th>
-                                            <td>{price(vo.price)}원</td>
-                                        </tr>
-                                        <tr>
-                                            <th>사용일시</th>
-                                            <td>{vo.useDate}</td>
-                                        </tr>
+        <StyledFacilityHistoryDiv>
+            <div className='wrap_history'>
+                <div className='ad_tit font_size'>예약내역</div>
+                <div className='Myhistory_box'>
+                    <div className='search_box'>
+                        <div>조회기간</div>
+                        <input type='date'></input>
+                        ~
+                        <input type='date'></input>
+                        <button className='sty02_btn'>검색</button>
+                    </div>
+
+                    <div className='history_cnt_box'>
+                        <div>시설 예약 내역</div>
+                        <div>총 <span>&nbsp;{historyVoList.length}</span> 건</div>
+                    </div>
+
+                    <div className='history_area mt20'>
+                        {
+                            historyVoList.map(vo=>
+                                <div className='history_card mb30'>
+                                    <div className='name_box'>
+                                        <div>{vo.facilitiesName}</div>
+                                    </div>
+
+                                    <div className='history_detail_box'>
+                                        <table>
+                                        <colgroup>
+                                            <col width="120" />
+                                            <col width="" />
+                                        </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <th>결제일시</th>
+                                                    <td>{vo.applicationDate}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>가격</th>
+                                                    <td>{price(vo.price)}원</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>사용일시</th>
+                                                    <td>{vo.useDate}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                
+
+                                    <div className='state_box'>
                                         {
                                             new Date(vo.useDate) < new Date()?
                                             (
-                                            <tr>
-                                                <th></th>
-                                                <td>사용완료</td>                                
-                                            </tr>
+                                                <div>사용완료</div>                                
                                             ):(
-                                            <tr>
-                                                <th></th>
-                                                <td>
-                                                    {
-                                                    vo.cancelDate == null?
-                                                    (<div>
-                                                        <div>취소가능</div>
-                                                        <button onClick={()=>{clickCancel(vo.applicationNo)}}>취소</button>
-                                                    </div>
-                                                    )
-                                                    :
-                                                    <div>취소완료</div>
-                                                }
-                                                </td>                                
-                                            </tr>
-                                        )
-                                    }
-                                    </tbody>
-                                </table>
-                            </div>
-                        )
-                    }
+                                                vo.cancelDate == null?
+                                                (<div className='cancel_box'>
+                                                    <div>취소가능</div>
+                                                    <button className='sty01_btn' onClick={()=>{clickCancel(vo.applicationNo)}}>취 소</button>
+                                                </div>
+                                                )
+                                                :
+                                                <div>취소완료</div>
+                                            )
+                                        }
+                                    </div>
+                                    
+                                </div>
+                            )
+                        }
+                    </div>
+                    <div className='btn_left'>
+                        <button className='sty02_btn' onClick={()=>{navigator("/facility/list")}}>시설예약</button>
+                    </div>
                 </div>
-                <div><button onClick={()=>{navigator("/facility/list")}}>예약하기</button></div>
             </div>
-        </div>
+        </StyledFacilityHistoryDiv>
     );
 };
 

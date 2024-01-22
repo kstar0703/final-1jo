@@ -39,16 +39,22 @@ const FacilityLayout = () => {
 
                 <div className='tbl_box mt10'>
                     <table>
-                        <div className="btn_under">
-                            <div className='ad_search_box histohisroty_box'>
-                                <div onClick={()=>navigator("/facility/history")}>My 예약 내역</div>
-                            </div>
-                            <div className='item_list'>
-                                <div>
-                                    <FacilityList />
-                                </div>
-                            </div>
-                        </div>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div className="btn_under">
+                                        <div className='ad_search_box histohisroty_box' onClick={()=>navigator("/facility/history")}>
+                                            <div >My 예약 내역</div>
+                                        </div>
+                                        <div className='item_list'>
+                                            <div>
+                                                <FacilityList />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

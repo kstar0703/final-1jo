@@ -5,7 +5,7 @@ import ManagementList from './ManagementList';
 const ManagementMain = () => {
     return (
         <Routes>
-            <Route path='admin/list' element={<ManagementList />}/>
+            <Route path='list' element={<ManagementList />}/>
             admin
         </Routes>
     );
