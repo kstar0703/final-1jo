@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../modal/Modal';
 
@@ -41,32 +41,93 @@ flex-direction: column;
 
 const ParkingRegister = (props) => {
 
+
+    const parkingVo = props?.props?.parkingVo;
+    const modalType = props?.props?.modalType;
+    const title = props?.props?.title;
+    const closeModal = props?.props?.closeModal;
+    const updateEffectModal = props?.props?.updateEffectModal;
+
     const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))    
+    
+    //데이터 가지고오기 
+    const [purpose, setPurpose] = useState(parkingVo?.purpose);
+    const handleInputChange = (e) => {setPurpose(e.target.value);};
 
-    const [purpose, setPurpose] = useState(props?.props?.parkingVo.purpose);
+    const [carNo, setCarNo] = useState(parkingVo?.carNo || '');
+    const handleInputChange2 = (e) => {setCarNo(e.target.value);};
 
-    const handleInputChange = (e) => {
-      setPurpose(e.target.value);
-    };
+    const [enrollDate, setEnrollDate] = useState(parkingVo?.enrollDate || '');
+    const handleDateChange3 = (e) =>{setEnrollDate(e.target.value);}
 
-    const [carNo, setCarNo] = useState(props?.props?.parkingVo?.carNo || '');
+    //modifyDate
+    const [modifyDate, setModifyDate] = useState(parkingVo?.modifyDate || '');
+    const handleDateChange4 = (e) =>{setModifyDate(e.target.value);}
+ 
+    // ref로 데이터 보낼떄 체크해볼까?
+    let enRollRef = useRef()
+    let enRollRef2 = useRef()
+    let purposeRef = useRef()
+    let carNoRef = useRef()
 
-    const handleInputChange2 = (e) => {
-    setCarNo(e.target.value);
-  };
-  
-   
-    const closeModal = () => {setIsModalOpenLogout(false)}
-    const [isModalOpenLogout, setIsModalOpenLogout] = useState(false);
-    const openModalLogout = () => {
+
+    const[dataVo,setDataVo] =useState({
+        'memberNo' : JSON?.parse(sessionStorage.getItem("loginMember"))?.memberNo
+        ,...parkingVo
         
-        setIsModalOpenLogout(true)};
+    })
+
+
+    const onChange = (e)  =>{
+        const{value,name} = e.target
+
+        setDataVo({
+            ...dataVo,
+            [name] : value
+        })
+    } 
+    
+    
+    let fetcherble = true
+    const parkingRegister = () =>{
+        
+        if(!fetcherble){return}
+
+        fetcherble = false
+        
+        fetch('http://127.0.0.1:8888/app/parking/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataVo),
+          })
+        .then((resp)=>{resp.json()})
+        .then((data)=>{
+            if(data.status === 'good'){
+                alert('호출')
+                closeModal()
+            }else{
+                alert('실패')
+            }
+        })
+        .catch( (e)=>{})
+        .finally(()=>{
+            fetcherble =true;
+            updateEffectModal})}   
+
+    const parkingChange = () =>{
+
+    }
+
+    const parkingDelete = () =>{
+
+    }
+
     
   
-
-        const fecthJava = () =>{
-            console.log('하이')
-        }
+   
+   
         
 
 
@@ -75,7 +136,7 @@ const ParkingRegister = (props) => {
         <div className='ad_wrap'>
             <div class="ad_detail_box">
                 <div className="ad_tit new-div">
-                    <h2>{props.props.title}</h2>  
+                    <h2>{title}</h2>  
                 </div>
 
                 <div className='ad_tbl_box new-div new-div2'>  
@@ -100,13 +161,20 @@ const ParkingRegister = (props) => {
                                 <th scope="row"><label form=''>예약일</label></th>
                                 <td>
                                     <div class="form_box">
-                                        {props?.props?.modalType ==='regiseter' ? 
-                                        <input type="datetime-local" name="enrollDate"/>
+                                        {
+                                        
+                                        modalType ==='regiseter' ? 
+                                        <input type="datetime-local" name="enrollDate" onChange={onChange} />
                                         : 
-                                        props?.props?.modalType === 'change' ?  
-                                        <input type="datetime-local" value ={props?.props?.parkingVo?.enrollDate}   name="enrollDate"/>
-                                        : 
-                                        <span>{props?.props?.parkingVo?.departureTime?.substring(0, 16)}</span>
+                                        modalType === 'change' ? parkingVo?.modifyDate ? 
+                                        <input type="datetime-local" value ={modifyDate} onInput={handleDateChange4} onChange={onChange}  name="enrollDate" ref={enRollRef}/>
+                                          :
+                                        <input type="datetime-local" value ={enrollDate} onInput={handleDateChange3} onChange={onChange} name="enrollDate" ref={enRollRef2}/>
+                                          : 
+                                          parkingVo?.modifyDate ? 
+                                          <span>{parkingVo?.modifyDate?.substring(0, 16)}(수정)</span>    
+                                                    :
+                                          <span>{parkingVo?.enrollDate?.substring(0, 16)}</span>
                                         }
 
                                     </div>
@@ -116,13 +184,13 @@ const ParkingRegister = (props) => {
                                 <th scope="row"><label form="">방문목적</label></th>
                                 <td colspan="3">
                                     <div class="form_box">
-                                        {props?.props?.modalType ==='regiseter' ? 
-                                         <input type="text" name='purpose'  placeholder='방문목적 ex) 집들이' />
+                                        {modalType ==='regiseter' ? 
+                                         <input type="text" name='purpose' onChange={onChange}  placeholder='방문목적 ex) 집들이' />
                                         : 
-                                        props?.props?.modalType === 'change' ?  
-                                        <input type="text" name='purpose'  placeholder='방문목적 ex) 집들이'  value={purpose} onInput={handleInputChange} />
+                                       modalType === 'change' ?  
+                                        <input type="text" name='purpose'  placeholder='방문목적 ex) 집들이' onChange={onChange} value={purpose} onInput={handleInputChange} ref={purposeRef} />
                                         : 
-                                        <input disabled='true' type="text" name='purpose'  placeholder='방문목적 ex) 집들이' value ={props?.props?.parkingVo?.purpose} />
+                                        <input disabled='true' type="text" name='purpose'  placeholder='방문목적 ex) 집들이' value ={parkingVo?.purpose} />
                                         }
                                     </div>
                                 </td>
@@ -131,13 +199,13 @@ const ParkingRegister = (props) => {
                                 <th scope="row"><label for="inp_03">차량번호</label></th>
                                 <td colspan="3">
                                     <div class="form_box">
-                                        {props?.props?.modalType ==='regiseter' ? 
-                                         <input type="text" name='carNo'  placeholder='36더8811' />
+                                        {modalType ==='regiseter' ? 
+                                         <input type="text" name='carNo'  placeholder='36더8811' onChange={onChange} />
                                         : 
-                                        props?.props?.modalType === 'change' ?  
-                                        <input type="text" name='carNo'  placeholder='36더8811' value={carNo}onInput={handleInputChange2} />
+                                        modalType === 'change' ?  
+                                        <input type="text" name='carNo'  placeholder='36더8811' onChange={onChange} value={carNo}onInput={handleInputChange2} ref={carNoRef}/>
                                         : 
-                                        <input disabled='true' type="text" name='carNo'  placeholder='방문목적 ex) 집들이' value ={props?.props?.parkingVo?.carNo} />
+                                        <input disabled='true' type="text" name='carNo' placeholder='방문목적 ex) 집들이' value ={parkingVo?.carNo} />
                                         }
                                     </div>
                                 </td>
@@ -150,8 +218,8 @@ const ParkingRegister = (props) => {
                                
                                 <td colSpan={1}>
                                     
-                                    {props?.props?.parkingVo?.departureTime ? <span>
-                                        {props?.props?.parkingVo?.departureTime?.substring(0, 16)}
+                                    {parkingVo?.departureTime ? <span>
+                                        {parkingVo?.departureTime?.substring(0, 16)}
                                     </span> 
                                     : 
                                     <span>
@@ -163,8 +231,8 @@ const ParkingRegister = (props) => {
                                 <th scope="row">출차 시간</th>
                                
                                 <td colSpan={1}>
-                                    {props?.props?.departureTime ? <span>
-                                        {props?.props?.arrivalTime?.substring(0, 16)}
+                                    {parkingVo?.departureTime ? <span>
+                                        {parkingVo?.arrivalTime?.substring(0, 16)}
                                     </span> 
                                     : 
                                     <span>
@@ -180,8 +248,9 @@ const ParkingRegister = (props) => {
                                     
                                     
                                 <td colSpan={5}> 
-                                    {props?.props?.fee ? <span>
-                                        {props?.props?.fee}
+                                    {parkingVo?.fee ? 
+                                    <span>
+                                        {parkingVo?.fee}
                                     </span> 
                                     : 
                                     <span>
@@ -197,13 +266,17 @@ const ParkingRegister = (props) => {
                         </tbody>
                     </table>
                     <div class="ad_btn_div mt20 new-div3">
-                    {props?.props?.modalType === 'regiseter' ?
+                    {modalType === 'regiseter' ?
                     <>
                     <div>
-                        <button className='sty02_btn' >작성하기</button>
+                        <button className='sty02_btn'onClick={
+                            () =>{
+                                parkingRegister()
+                            }
+                        }>등록하기</button>
                     </div>
                     </>
-                    : props?.props?.modalType === 'change' ? 
+                    : modalType === 'change' ? 
                     <>  
                          <div>
                         <button className='sty01_btn'  onClick={()=>{
