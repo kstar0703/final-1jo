@@ -15,6 +15,7 @@ public class ParkingVo {
 	 private String delYn;         //삭제여부
 	 private String fee; 			//요금
 	 private String enrollDate;  	// 등록일
+	 private String writeDate; //작성일
 	 
 	 private String phone;   // 휴대폰 번호
 	 private String name; 	//회원번호
