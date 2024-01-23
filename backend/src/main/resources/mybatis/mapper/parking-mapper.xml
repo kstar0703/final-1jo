@@ -10,16 +10,18 @@ INSERT INTO
 parking 
 (
 PARKING_NO
-,UNIT_NO
+,MEMBER_NO
 ,PURPOSE
 ,CAR_NO
+,ENROLL_DATE
 ) 
 VALUES 
 (
 seq_parking_no.nextval
-,#{unitNo}
+,#{memberNo}
 ,#{purpose}
 ,#{carNo}
+,TO_DATE(#{enrollDate}, 'YYYY-MM-DD"T"HH24:MI')
 )
 </insert>
 

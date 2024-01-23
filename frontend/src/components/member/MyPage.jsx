@@ -59,11 +59,10 @@ const MyPageDiv = styled.div`
 const MyPage = () => {
     //모달 (탈퇴))
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const openModal = () => {
-        
-        setIsModalOpen(true)};
-    //모달 (로그아웃)
+    const openModal = () => { setIsModalOpen(true)};
     const closeModal = () => {setIsModalOpen(false)}
+    //모달 (로그아웃)
+
         const [isModalOpenLogout, setIsModalOpenLogout] = useState(false);
         const openModalLogout = () => {
             

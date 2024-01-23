@@ -34,7 +34,10 @@ public class ParkingController {
 	 * @return 성공결과
 	 */
 	@PostMapping("register")
-	public Map<String, String> register(ParkingVo vo ){
+	public Map<String, String> register(@RequestBody ParkingVo vo ){
+		
+		log.info("들어온 데이터 vo {} :::" ,vo);
+		
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "예약 실패");
@@ -45,6 +48,7 @@ public class ParkingController {
 			resultMap.put("msg", "예약 성공");
 		}
 		
+		log.info("들어온 데이터 결과 {} :::" ,result);
 		
 		return resultMap;
 	}

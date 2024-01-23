@@ -92,10 +92,14 @@ const ParkingList = () => {
    
    //페이징
    const handlePageChange = (e) =>{
+      
     e.target.focus();
      setCurrentPage(currentPage+1); 
      setUpdateEffect(updateEffect+'a')
    };
+
+
+   
 
     //검색
     let patcherble = true;
@@ -206,7 +210,7 @@ const ParkingList = () => {
                 <label form="sel01">차량번호</label>
                 <div className="form_box">
                   <input type="text" name="carNo" ref={searchCarNo} onChange={onChange} />
-                </div>
+                </div> 
               </div>
 
               <div className="search_item">
@@ -322,7 +326,7 @@ const ParkingList = () => {
             
           </div>
           <div>
-            {(currentPage === pvo?.maxPage || pvo?.maxPage===0)? '': <button className='sty02_btn' onClick={
+            {(currentPage === pvo?.maxPage || pvo?.maxPage===0)? '': <button  className='sty02_btn' onClick={
                 (e)=>{
                     handlePageChange(e)
                 }}>더보기</button>}
