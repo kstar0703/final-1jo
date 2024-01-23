@@ -19,10 +19,9 @@ const ComplaintList = () => {
     const enrollsRef = useRef();
     const enrolleRef = useRef();
     const status = useRef();
-    const delRes = useRef();
+    const delRef = useRef();
 
     
-    const [delYn,setDelYn] = useState();
     const [compVoList, setCompVoList] = useState([]);
     const loadCompVoList = () => {
       fetch("http://127.0.0.1:8888/app/complaint/adminList")
@@ -51,6 +50,7 @@ const ComplaintList = () => {
       setModalOepn(true)
       
     }
+    //필요 없으면 지우기
     const replySubmit = () => {
       alert("성공함");
     } 
@@ -98,8 +98,6 @@ const ComplaintList = () => {
     }
     
   return (
-    
-
     <StyledComplaintListDiv>
       <div className="ad_wrap">
         <div className="ad_search_box_bg">
@@ -149,7 +147,7 @@ const ComplaintList = () => {
             <div className="search_item">
               <label form="sel01">공개여부</label>
               <div className="form_box">
-                <select ref={delRes} class="sel_box">
+                <select ref={delRef} class="sel_box">
                   <option value="N">공개</option>
                   <option value="Y">비공개</option>
                 </select>
@@ -196,32 +194,67 @@ const ComplaintList = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                compVoList.map((vo)=>(
-                  <tr>
-                    <td onClick={()=>{navigator(`/admin/complaint/detail/${vo.complaintNo}`)}} key={vo.complaintNo}>
-                      {vo.complaintNo}</td>
-                    <td>{vo.managerNo > 0 ?vo.managerNo:"미지정"}</td>
-                    <td>{ vo.dong+ "동"+ vo.ho+ "호" + vo.name}</td>
-                    <td>{vo.title}</td>
-                    <td>{vo.enrollDate}</td>
-                    <td>
-                      <button onClick={()=>{ ynModalOpenClick(vo)}}>{vo.delYn}<p>변경하기</p></button>
-                    </td>
-                    <td>{vo.status}</td>
-                    <td><button onClick={ ()=>{
-                        modalOpenClicik(vo)
-                    }}>답변 작성</button></td>
-                    
-                  </tr>
-                ))
-              }
+              {compVoList.map((vo) => (
+                <tr>
+                  <td
+                    onClick={() => {
+                      navigator(`/admin/complaint/detail/${vo.complaintNo}`);
+                    }}
+                    key={vo.complaintNo}
+                  >
+                    {vo.complaintNo}
+                  </td>
+                  <td>{vo.managerNo > 0 ? vo.managerNo : "미지정"}</td>
+                  <td>{vo.dong + "동" + vo.ho + "호" + vo.name}</td>
+                  <td>{vo.title}</td>
+                  <td>{vo.enrollDate}</td>
+                  <td>
+                    <p className="sty01_p">
+                      {vo.delYn === "N" ? "공개" : "비공개"}
+                    </p>
+                    <button
+                      className="sty02_btn_m"
+                      onClick={() => {
+                        ynModalOpenClick(vo);
+                      }}
+                    >
+                      변경하기
+                    </button>
+                  </td>
+                  <td>{vo.status === "Y" ? "처리완료" : "미처리"}</td>
+                  <td>
+                    {vo.status === "Y" ? (
+                      "답변완료"
+                    ) : (
+                      <button
+                        className="sty01_btn_m"
+                        onClick={() => {
+                          modalOpenClicik(vo);
+                        }}
+                      >
+                        답변 작성
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
-      <Modal fecthJava={delYnSubmit} closeModal={ynModalCloseClick} isOpen={ynModalOpen} title='공개여부 변경 선택' />
-      <ReplyModal fecthJava={replySubmit} closeModal={modalCloseClick} isOpen={modalOpen} title='민원처리 답변 작성' compVo={compVo} />
+      <Modal
+        fecthJava={delYnSubmit}
+        closeModal={ynModalCloseClick}
+        isOpen={ynModalOpen}
+        title="정말 공개여부를 변경하시겠습니까?"
+      />
+      <ReplyModal
+        fecthJava={replySubmit}
+        closeModal={modalCloseClick}
+        isOpen={modalOpen}
+        title="민원처리 답변 작성"
+        compVo={compVo}
+      />
     </StyledComplaintListDiv>
   );
 };

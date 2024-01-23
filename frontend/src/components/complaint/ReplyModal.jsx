@@ -44,7 +44,7 @@ const StyledReplyModalDiv = styled.div`
 
 const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
 
-    //fetch로 답변 업뎃하고 close
+    //fetch로 답변 업뎃하고 closev //안쓰면 지우기
     const ajaxJava = async() =>{
         await fecthJava();
         closeModal();
@@ -75,6 +75,7 @@ const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
       }
     //답변 내용
     const [reply, setReply] = useState([]);
+
     //textArear 자동 스크롤
     const textRef = useRef();
     const handleResizeHeight = useCallback(() => {
