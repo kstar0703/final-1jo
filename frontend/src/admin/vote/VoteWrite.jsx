@@ -31,16 +31,13 @@ const VoteWrite = () => {
         textRef.current.style.height = textRef.current.scrollHeight + "px";
     },[]);
     
-    
-    //작성하기 버튼 기능 onChange를 이용해서 select 값 받아서 묶어서 넘기기
-    // const [formData, setFormData] = useState([]);
-    
+    const managerNo = JSON.parse(sessionStorage.getItem("loginMember")).managerNo;
     const [titleValue,setTitleValue] = useState([]);
     const [contentValue,setContentValue] = useState([]);
     const acceptYn = useRef();
     const delYn = useRef();
     const deadDate = useRef();
-
+    
     const [itemArr,setItemArr] = useState([]);
     const [itemVo, setItemVo] = useState({});
     
@@ -60,58 +57,40 @@ const VoteWrite = () => {
             alert("투표 항목을 최소 1개 이상은 넣어주세요");
             return;
         }
-        
-        /* 모달 만들기 */
-        // setFormData({
-            //   title: titleValue,
-            //   content: contentValue,
-            //   delYn: delYn.current.value,
-            //   acceptYn: acceptYn.current.value,
-            //   voteNo,
-            // });
-            // console.log(formData);
-         /* 데이터 확인용 출력문 */    
-            // console.log(delYn.current.value);
-            // console.log(acceptYn.current.value);
-            // console.log(deadDate.current.value);
-            // console.log(titleValue);
-            // console.log(contentValue);
-            // console.log(itemArr);
-        // fetch("http://127.0.0.1:8888/app/vote/insert", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     title: titleValue,
-        //     content: contentValue,
-        //     delYn: delYn.current.value,
-        //     acceptYn: acceptYn.current.value,
-        //     deadlineDate: deadDate.current.value,
-        //     managerNo: "9",
-        //     voList: itemArr,
-        //   }),
-        // })
-        //   .then((resp) => resp.json())
-        //   .then((data) => {
-        //     console.log(data);
-        //     if (data) {
-        //       alert("작성이 완료되었습니다.");
-        //       navigator("/admin/vote/list");
-        //     }
-        //   });
 
-        //   fetch("http://127.0.0.1:8888/app/vote/itemInsert", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },body: JSON.stringify(itemArr)})
-        //     .then((resp) => resp.json())
-        //     .then((data) => {console.log(data);})
-        //     ;
+         /* 데이터 확인용 출력문 */    
+            console.log(delYn.current.value);
+            console.log(acceptYn.current.value);
+            console.log(deadDate.current.value);
+            console.log(titleValue);
+            console.log(contentValue);
+            console.log(itemArr);
+        fetch("http://127.0.0.1:8888/app/vote/insert", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: titleValue,
+            content: contentValue,
+            delYn: delYn.current.value,
+            acceptYn: acceptYn.current.value,
+            deadlineDate: deadDate.current.value,
+            managerNo: managerNo,
+            voList: itemArr,
+          }),
+        })
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log(data);
+            if (data) {
+              alert("작성이 완료되었습니다.");
+              navigator("/admin/vote/list");
+            }
+          });
 
     }
-    const handleAdd = (e) => {
+    const handleAdd = () => {
         setItemArr(
             [
                 ...itemArr, {
@@ -127,9 +106,6 @@ const VoteWrite = () => {
         setItemArr([
             ...itemArr,
         ])
-    }
-    const handleSubmit2 = () => {
-        console.log(itemArr);
     }
     return (
         <StyledVoteWriteDiv>
@@ -204,10 +180,6 @@ const VoteWrite = () => {
                                         </div>
                                     </td>
                                 </tr>
-                                    {/* <tr>
-                                        <th scope="row">1</th>
-                                        <td colSpan="3"><input type='text' placeholder='항목명 입력' /></td>
-                                    </tr> */}
                                 {
                                   itemArr.map( (a,index)=>
                                     (

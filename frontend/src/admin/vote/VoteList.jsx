@@ -8,7 +8,7 @@ const StyledVoteMainDiv = styled.div`
     height: 100%;
     display: flex;
     flex-direction : column;
-    .ad_wrap{
+    /* .ad_wrap{
         width: 100%;
         height: 100%;
         display: flex;
@@ -105,14 +105,14 @@ const StyledVoteMainDiv = styled.div`
                 }
             }
         }
-    }
+    } */
 `;
 
 const VoteList = () => {
     const navigator = useNavigate();
     //fetch
     let [voteVoList,setVoteVoList] = useState([]);
-
+    const [managerVoList, setManagerVoList] = useState([]);
     const loadVoteVoList = () => {
         fetch("http://127.0.0.1:8888/app/vote/adminList")
         .then(resp => resp.json())
@@ -121,6 +121,7 @@ const VoteList = () => {
     }
     useEffect(()=>{
         loadVoteVoList();
+        managerList();
     },[])
     
     const titleRef = useRef();
@@ -131,7 +132,6 @@ const VoteList = () => {
     const deadeRes = useRef();
     const delRes = useRef();
     const acceptRes = useRef();
-    const [submit,setSubmit] = useState();
 
     const handleSearch = () => {
       console.log(titleRef.current.value);
@@ -143,19 +143,6 @@ const VoteList = () => {
       console.log(delRes.current.value);
       console.log(acceptRes.current.value);
 
-      // setSubmit({
-      //   title: titleRef.current.value,
-      //   managerNo: managerRef.current.value,
-      //   enrollDateStart: enrollsRef.current.value,
-      //   enrollDateEnd: enrolleRef.current.value,
-      //   deadlineDateStart: deadsRes.current.value,
-      //   deadlineDateEnd: deadeRes.current.value,
-      //   delYn: delRes.current.value,
-      //   acceptYn: acceptRes.current.value,
-      // });
-
-      console.log(submit);
-
       fetch("http://127.0.0.1:8888/app/vote/adminSelect", {
         method: "POST",
         headers: {
@@ -163,7 +150,7 @@ const VoteList = () => {
         },
         body: JSON.stringify({
           title: titleRef.current.value,
-          managerNo: 1,//managerRef.current.value,
+          managerNo: managerRef.current.value,
           enrollDateStart: enrollsRef.current.value,
           enrollDateEnd: enrolleRef.current.value,
           deadlineDateStart: deadsRes.current.value,
@@ -179,6 +166,12 @@ const VoteList = () => {
         });
     }
 
+    const managerList = () => {
+      fetch("http://127.0.0.1:8888/app/admin/managerSelect")
+      .then(resp =>(resp.json()))
+      .then((data)=>{setManagerVoList(data);})
+    }
+
     return (
       <StyledVoteMainDiv>
         <div className="ad_wrap">
@@ -191,14 +184,21 @@ const VoteList = () => {
               <div className="search_item">
                 <label form="sel01">제목</label>
                 <div className="form_box">
-                  <input ref={titleRef} type="text" name="title" />
+                  <input ref={titleRef} type="text" name="title" placeholder=" -" />
                 </div>
               </div>
               <div className="search_item">
                 <label form="sel01">담당자</label>
-                <div className="form_box">
-                  <input ref={managerRef} type="text" name="title" />
-                </div>
+                <div class="form_box">
+                  <select ref={managerRef} class="sel_box">
+                    <option value=''> - </option>
+                    {
+                      managerVoList?.map((vo)=>(
+                        <option value={vo.managerNo}>{vo.managerNo}</option>
+                      ))
+                    }
+                  </select>
+                </div>      
               </div>
               <div className="search_item">
                 <label form="sel01">작성::시작</label>
@@ -228,6 +228,7 @@ const VoteList = () => {
                 <label form="sel01">투표진행</label>
                 <div className="form_box">
                   <select ref={acceptRes} class="sel_box">
+                    <option value=""> -</option>
                     <option value="Y">진행</option>
                     <option value="N">마감</option>
                   </select>
@@ -237,6 +238,7 @@ const VoteList = () => {
                 <label form="sel01">공개여부</label>
                 <div className="form_box">
                   <select ref={delRes} class="sel_box">
+                    <option value=""> -</option>
                     <option value="N">공개</option>
                     <option value="Y">비공개</option>
                   </select>
