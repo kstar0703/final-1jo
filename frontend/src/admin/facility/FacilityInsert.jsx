@@ -1,5 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledFacilityInsertDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction : column;
+    img {
+        margin-right: 20px;
+    }
+    .select_box{
+        display: flex;
+        flex-direction: row;
+        float: left;
+        & label {
+            display: flex;
+            align-items: center;
+            & span {
+                width: 100px;
+            }
+        }
+    }
+`;
 const FacilityInsert = () => {
     const navigator = useNavigate();
     //화면 정돈 
@@ -150,89 +173,110 @@ const FacilityInsert = () => {
     //     })        
     // }
     return (
-        <div>
-            <div>커뮤니티 시설등록</div>
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <table>
-                        <tbody>
-                        <tr>
-                                <th>시설 이름</th>
-                                <td><input type='text' name='facilitiesName' onChange={handleChangeFacilitiesName}></input></td>
-                                <th>사용여부</th>
-                                <td>
-                                    <label><input type='radio' name='delYn' value='N' onChange={handleChangeDelYn} checked='checked'/>가능</label>
-                                    <label><input type='radio' name='delYn' value='Y' onChange={handleChangeDelYn}/>불가능</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>이미지</th>  
-                                <td><input type='file' name='file' onChange={handleChangeImage}></input></td>
-                                <th>문의</th>
-                                <td><input type='text' name='contact' onInput={onInputContact} ></input></td>
-
-                            </tr>
-                            <tr>
-                                <th>단가</th>
-                                <td><input type='text' name='unitPrice' onChange={handleChangeUnitPrice}></input></td>
-                                <th>운영시간</th>
-                                <td><input type='text' name='operationTime' onChange={handleChangeOperationTime}></input></td>
-                            </tr>
-                            <tr>
-                                <th>위치</th>
-                                <td><input type='text' name='location' onChange={handleChangeLocation}></input></td>
-                                <th>휴일</th>
-                                <td><input type='text' name='dayOff' onChange={handleChangeDayOff}></input></td>
-                            </tr>
-                            <tr>
-                                <th>편의시설</th>
-                                <td colSpan='3'><input type='text' name='amenity' onChange={handleChangeAmenity}></input></td>
-                            </tr>
-
-
-                            {/*version_1                            
-                            
-                            <tr>
-                                <th>시설 이름</th>
-                                <td><input type='text' name='facilitiesName' onChange={handleInputVo}></input></td>
-                                <th>사용여부</th>
-                                <td>
-                                    <label><input type='radio' name='delYn' value='N' onChange={handleInputVo} checked='checked'/>가능</label>
-                                    <label><input type='radio' name='delYn' value='Y' onChange={handleInputVo}/>불가능</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>이미지</th>  
-                                <td><input type='file' name='image' onChange={handleFileInputVo}></input></td>
-                                <th>문의</th>
-                                <td><input type='text' name='contact' onInput={onInputContact}></input></td>
-
-                            </tr>
-                            <tr>
-                                <th>단가</th>
-                                <td><input type='text' name='unitPrice' onChange={handleInputVo}></input></td>
-                                <th>운영시간</th>
-                                <td><input type='text' name='operationTime' onChange={handleInputVo}></input></td>
-                            </tr>
-                            <tr>
-                                <th>위치</th>
-                                <td><input type='text' name='location' onChange={handleInputVo}></input></td>
-                                <th>휴일</th>
-                                <td><input type='text' name='dayOff' onChange={handleInputVo}></input></td>
-                            </tr>
-                            <tr>
-                                <th>편의시설</th>
-                                <td colSpan='3'><input type='text' name='amenity' onChange={handleInputVo}></input></td>
-                            </tr> */}
-                        </tbody>
-                    </table>
-                    <div>
-                        <input type='submit'value='등록'></input>
-                        <button onClick={()=>{navigator("/admin/facility/list");}}>취소</button>
+        <StyledFacilityInsertDiv>
+            <div className='ad_wrap'>
+                <div class="ad_detail_box">
+                    <div className="ad_tit">
+                        <h2>커뮤니티 시설등록</h2>
                     </div>
-                </form>
+
+                
+                        <div className='ad_tbl_box'>
+                            <table>
+                                <caption>커뮤니티시설 상세 테이블</caption>
+                                        <colgroup>
+                                            <col width="15%"/>
+                                            <col width="35%"/>
+                                            <col width="15%"/>
+                                            <col width="35%"/>
+                                        </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><label form=''>시설 이름</label></th>
+                                        <td><input type='text' name='facilitiesName' onChange={handleChangeFacilitiesName}></input></td>
+                                        <th scope="row"><label form=''>사용여부</label></th>
+                                        <td>
+                                            <div class="select_box">
+                                                <label><input type='radio' name='delYn' value='N' onChange={handleChangeDelYn} checked='checked'/><span>가능</span></label>
+                                                <label><input type='radio' name='delYn' value='Y' onChange={handleChangeDelYn}/><span>불가능</span></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><label form=''>이미지</label></th>  
+                                        <td><input type='file' name='file' onChange={handleChangeImage}></input></td>
+                                        <th scope="row"><label form=''>문의</label></th>
+                                        <td><input type='text' name='contact' onInput={onInputContact} ></input></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><label form=''>단가</label></th>
+                                        <td><input type='text' name='unitPrice' onChange={handleChangeUnitPrice}></input></td>
+                                        <th scope="row"><label form=''>운영시간</label></th>
+                                        <td><input type='text' name='operationTime' onChange={handleChangeOperationTime}></input></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><label form=''>위치</label></th>
+                                        <td><input type='text' name='location' onChange={handleChangeLocation}></input></td>
+                                        <th scope="row"><label form=''>휴일</label></th>
+                                        <td><input type='text' name='dayOff' onChange={handleChangeDayOff}></input></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><label form=''>편의시설</label></th>
+                                        <td colSpan='3'><input type='text' name='amenity' onChange={handleChangeAmenity}></input></td>
+                                    </tr>
+
+
+                                    {/*version_1                            
+                                    
+                                    <tr>
+                                        <th>시설 이름</th>
+                                        <td><input type='text' name='facilitiesName' onChange={handleInputVo}></input></td>
+                                        <th>사용여부</th>
+                                        <td>
+                                            <label><input type='radio' name='delYn' value='N' onChange={handleInputVo} checked='checked'/>가능</label>
+                                            <label><input type='radio' name='delYn' value='Y' onChange={handleInputVo}/>불가능</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>이미지</th>  
+                                        <td><input type='file' name='image' onChange={handleFileInputVo}></input></td>
+                                        <th>문의</th>
+                                        <td><input type='text' name='contact' onInput={onInputContact}></input></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>단가</th>
+                                        <td><input type='text' name='unitPrice' onChange={handleInputVo}></input></td>
+                                        <th>운영시간</th>
+                                        <td><input type='text' name='operationTime' onChange={handleInputVo}></input></td>
+                                    </tr>
+                                    <tr>
+                                        <th>위치</th>
+                                        <td><input type='text' name='location' onChange={handleInputVo}></input></td>
+                                        <th>휴일</th>
+                                        <td><input type='text' name='dayOff' onChange={handleInputVo}></input></td>
+                                    </tr>
+                                    <tr>
+                                        <th>편의시설</th>
+                                        <td colSpan='3'><input type='text' name='amenity' onChange={handleInputVo}></input></td>
+                                    </tr> */}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="ad_btn_div mt20">
+                            <div>
+                                <button className='sty02_btn' onClick={handleSubmit}>등록</button>
+                            </div>
+                            <div>
+                                <button className='sty01_btn' onClick={()=>{navigator("/admin/facility/list");}}>취소</button>
+                            </div>
+                        </div>
+
+                </div>
             </div>
-        </div>
+        </StyledFacilityInsertDiv>
     );
 };
 

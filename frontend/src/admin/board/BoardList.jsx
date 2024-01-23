@@ -13,6 +13,9 @@ const StyledBoardListDiv = styled.div`
             text-align: left !important;
         }
     }
+    .mod_btn{
+        width: 50px;
+    }
 `;
 
 const BoardList = () => {
@@ -94,7 +97,7 @@ const BoardList = () => {
                             <button className="sty02_btn" >검색</button>
                         </div>
                         <div>
-                            <button className="sty02_btn" >게시판으로 이동</button>
+                            <button className="sty02_btn" onClick={()=>{navigator("/board/list")}}>게시판으로 이동</button>
                         </div>
                     </div>
                 </div>
@@ -109,7 +112,7 @@ const BoardList = () => {
                             <col width="100px" />
                             <col width="" />
                             <col width="100px" />
-                            <col width="100px" />
+                            <col width="150px" />
                             <col width="100px" />
                             <col width="100px" />
                             <col width="100px" />
@@ -141,13 +144,13 @@ const BoardList = () => {
                                             <td>{vo.boardNo}</td>
                                             <td>{vo.categoryName}</td>
                                             <td>{vo.title}</td>
-                                            <td>댓글수 수정</td>
-                                            <td>{vo.dong}동 {vo.name} (아이디)</td>
+                                            <td>{vo.replyCount}</td>
+                                            <td>{vo.dong}동 {vo.name}<br/>({vo.phone})</td>
                                             <td>{vo.hit}</td>
                                             <td>{vo.likeCount}</td>
                                             <td>{vo.enrollDate}</td>
                                             <td>{vo.delYn}</td>
-                                            <td><button className='sty02_btn'>규제</button></td>
+                                            <td><button className='sty02_btn mod_btn'>규제</button></td>
                                             {/*규제되면 버튼 비활성화*/} 
                                         </tr>
                                     )

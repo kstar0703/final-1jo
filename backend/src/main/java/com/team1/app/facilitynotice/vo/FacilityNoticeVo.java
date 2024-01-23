@@ -14,4 +14,7 @@ public class FacilityNoticeVo {
 	private String delYn;
 	private String fileName;
 	private String fileNameRaw;
+	
+	private String facilitiesName;
+	private String id;
 }

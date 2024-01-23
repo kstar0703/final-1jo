@@ -134,6 +134,29 @@
 		AND DEL_YN = 'N'
 	</select>
 	
+	<!-- 예약내역조회 (관리자) -->
+	<select id="listByHistoryForAdmin" resultType="FacilityHistoryVo">
+		SELECT 
+		    F.FACILITIES_NO
+		    , FACILITIES_NAME
+		    , APPLICATION_NO
+		    , H.MEMBER_NO
+		    , APPLICATION_DATE
+		    , USE_DATE
+		    , PRICE
+		    , CANCEL_DATE        
+		    , NAME   
+		    , U.UNIT_NO
+			, DONG
+			, HO
+		FROM FACILITIES F
+		JOIN FACILITIES_HISTORY H ON F.FACILITIES_NO = H.FACILITIES_NO
+		JOIN MEMBER M ON M.MEMBER_NO = H.MEMBER_NO
+		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
+		ORDER BY APPLICATION_NO DESC
+		
+	</select>
+	
 	<!-- 예약내역조회 (사용자) -->
 	<select id="listByHistory" resultType="FacilityHistoryVo">
 		SELECT 

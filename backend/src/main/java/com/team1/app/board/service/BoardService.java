@@ -67,7 +67,7 @@ public class BoardService {
 				
 		int fileResult = 1;
 		BoardImgVo imgVo = new BoardImgVo();
-		if(vo.getBoardNo() != null) {
+		if(files != null) {
 			imgVo.setBoardNo(vo.getBoardNo());
 			
 			for (MultipartFile file : files) {

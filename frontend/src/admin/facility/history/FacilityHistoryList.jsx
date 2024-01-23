@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledFacilityHistoryListDiv = styled.div`
@@ -23,9 +23,27 @@ const StyledFacilityHistoryListDiv = styled.div`
         .wid80{
             width: 80%;
         }
+        .mod_btn{
+            width: 50px;
+        }
 `;
 
 const FacilityHistoryList = () => {
+    const [facilityHistoryVoList, setFacilityHistoryVoList] = useState([]);
+    const loadFacilityHistoryVoList = ()=>{
+        fetch("http://127.0.0.1:8888/app/facility/admin/history")
+        .then(resp=>resp.json())
+        .then(data=>{
+            setFacilityHistoryVoList(data.facilityHistoryVoList);
+        })
+    }
+    useEffect(()=>{
+        loadFacilityHistoryVoList();
+    }, []);
+    const handleDelete = (vo)=>{
+
+    }
+
     return (
         <StyledFacilityHistoryListDiv>
             <div className="ad_wrap_mod">
@@ -123,27 +141,23 @@ const FacilityHistoryList = () => {
                         </thead>
                         <tbody>
                             {
-                                // facilityVoList.length === 0
-                                // ?
-                                // <h1>loading..</h1>
-                                // :
-                                // facilityVoList.map(vo => <tr key={vo.facilitiesNo}>
-                                //         <td>{vo.facilitiesNo}</td>
-                                //         <td>{vo.delYn === "N"?"O":"X"}</td>
-                                //         <td>{vo.facilitiesName}</td>
-                                //         <td><img src={vo.image} style={{width: '150px'}}/></td>
-                                //         <td>{price(vo.unitPrice)}원</td>
-                                //         <td>{formatContact(vo.contact)}</td>
-                                //         <td>{vo.operationTime}</td>
-                                //         <td>{vo.dayOff}</td>
-                                //         <td>{vo.location}</td>
-                                //         <td>{vo.amenity}</td>
-                                //         <td>{vo.enrollDate}</td>
-                                //         <td>{vo.modifyDate == null? "-":vo.modifyDate}</td>
-                                //         <td><button onClick={()=>{navigator(`/admin/facility/edit/${vo.facilitiesNo}`);}}>상세</button></td>
-                                //         <td><button onClick={()=>{handleDelete(vo)}}>사용전환</button></td>
-                                //     </tr>
-                                // )
+                                facilityHistoryVoList.length === 0
+                                ?
+                                <h1>loading..</h1>
+                                :
+                                facilityHistoryVoList.map(vo => <tr key={vo.applicationNo}>
+                                        <td>{vo.applicationNo}</td>
+                                        <td>{vo.facilitiesName}</td>
+                                        <td>{vo.useDate}</td>
+                                        <td>{vo.dong}동</td>
+                                        <td>{vo.ho}호</td>
+                                        <td>{vo.name}</td>
+                                        <td>{vo.applicationDate}</td>
+                                        <td>{vo.cancelDate?"취소완료": new Date(vo.useDate) > new Date()? "취소가능":"사용완료"}</td>
+                                        <td>{vo.cancelDate?vo.cancelDate:"-"}</td>                                        
+                                        <td>{new Date(vo.useDate) > new Date()?<button className='sty02_btn mod_btn' onClick={()=>{handleDelete(vo)}}>취소</button>:"-"}</td>
+                                    </tr>
+                                )
                             }
                         </tbody>
                     </table>

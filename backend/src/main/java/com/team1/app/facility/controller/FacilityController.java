@@ -59,6 +59,15 @@ public class FacilityController {
 		return map;
 	}
 	
+	//전체예약내역조회 (관리자)
+	@GetMapping("admin/history")
+	public Map<String, Object> listByHistoryForAdmin(){
+		List<FacilityHistoryVo> facilityHistoryVoList = service.listByHistoryForAdmin();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("facilityHistoryVoList", facilityHistoryVoList);
+		return map;
+	}
+	
 	//예약내역조회 (사용자) + 기간으로 조회 
 	@PostMapping("history")
 	public Map<String, Object> listByHistory(@RequestBody FacilityHistoryVo vo){

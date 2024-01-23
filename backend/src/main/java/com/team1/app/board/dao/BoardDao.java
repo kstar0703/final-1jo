@@ -125,7 +125,9 @@ public class BoardDao {
 
 	// 게시글 상세 조회 (관리자)
 	public BoardVo detailByAdmin(SqlSessionTemplate sst, BoardVo vo) {
-		return sst.selectOne("BoardMapper.detailByAdmin", vo);
+		BoardVo boardVo = sst.selectOne("BoardMapper.detailByAdmin", vo);
+		System.out.println(boardVo);
+		return boardVo;
 	}
 	
 	//카테고리 조회

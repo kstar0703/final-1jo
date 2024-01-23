@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -17,7 +17,17 @@ const StyledFacilityNoticeDiv = styled.div`
 `;
 
 const FacilityNoticeList = () => {
-    const {facilitiesNo} = useParams();
+    const [facilityNoticeVoList, setFacilityNoticeVoList] = useState([]);
+    const loadFacilityNoticeVoList = ()=>{
+        fetch("http://127.0.0.1:8888/app/facility/notice/admin/list")
+        .then(resp=>resp.json())
+        .then(data=>{
+            setFacilityNoticeVoList(data.facilityNoticeVoList);
+        });
+    }
+    useEffect(()=>{
+        loadFacilityNoticeVoList();
+    }, []);
     return (
         <StyledFacilityNoticeDiv>
             <div className="ad_wrap_mod">
@@ -28,7 +38,7 @@ const FacilityNoticeList = () => {
 
                     <div className="ad_search_box">
                         <div className="search_item">
-                            <label form="sel01">번호</label>
+                            <label form="sel01">시설명</label>
                                 <div className="form_box">
                                     <input type="text" name="id" />
                                 </div>
@@ -94,6 +104,7 @@ const FacilityNoticeList = () => {
 
                         <colgroup>
                             <col width="100px" />
+                            <col width="100px" />
                             <col width="" />
                             <col width="100px" />
                             <col width="100px" />
@@ -105,6 +116,7 @@ const FacilityNoticeList = () => {
                         <thead>
                             <tr>
                             <th scope="col">번호</th>
+                            <th scope="col">시설명</th>
                             <th scope="col">제목</th>
                             <th scope='col'>조회</th>
                             <th scope="col">작성자</th>
@@ -116,24 +128,23 @@ const FacilityNoticeList = () => {
                         </thead>
                         <tbody>
                                 {
-                                    // boardVoList.length === 0
-                                    // ?
-                                    // <h1>loading..</h1>
-                                    // :
-                                    // boardVoList.map(vo => <tr key={vo.boardNo} onClick={()=>{navigator(`/admin/board/detail/${vo.boardNo}`)}}>
-                                    //         <td>{vo.boardNo}</td>
-                                    //         <td>{vo.categoryName}</td>
-                                    //         <td>{vo.title}</td>
-                                    //         <td>댓글수 수정</td>
-                                    //         <td>{vo.dong}동 {vo.name} (아이디)</td>
-                                    //         <td>{vo.hit}</td>
-                                    //         <td>{vo.likeCount}</td>
-                                    //         <td>{vo.enrollDate}</td>
-                                    //         <td>{vo.delYn}</td>
-                                    //         <td><button className='sty02_btn'>규제</button></td>
-                                    //         {/*규제되면 버튼 비활성화*/} 
-                                    //     </tr>
-                                    // )
+                                    facilityNoticeVoList.length === 0
+                                    ?
+                                    <h1>loading..</h1>
+                                    :
+                                    facilityNoticeVoList.map(vo => <tr key={vo.boardNo} onClick={()=>{navigator(`/admin/notice/detail/${vo.facilitiesNoticeNo}`)}}>
+                                            <td>{vo.facilitiesNoticeNo}</td>
+                                            <td>{vo.facilitiesName}</td>
+                                            <td>{vo.title}</td>
+                                            <td>조회수</td>
+                                            <td>관리자 {vo.managerNo}<br/>({vo.id})</td>
+                                            <td>{vo.enrollDate}</td>
+                                            <td>{vo.modifyDate?vo.modifyDate:"-"}</td>
+                                            <td>{vo.delYn}</td>
+                                            <td><button className='sty02_btn'>비공개</button></td>
+                                            {/*규제되면 버튼 비활성화*/} 
+                                        </tr>
+                                    )
                                 }
                         </tbody>
                     </table>
