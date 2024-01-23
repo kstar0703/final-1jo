@@ -186,12 +186,20 @@
 	<update id="clear">
 		UPDATE 
 		    COMPLAINT
-		SET
+<trim prefix="set" prefixOverrides=",">
+	<if test="managerNo != null and managerNo.length() > 0">
 		    MANAGER_NO = #{managerNo}
-		    ,STATUS = #{status}
-		    ,REPLY = #{reply}
-		    ,DEL_YN = #{delYn}
+	</if>
+	<if test="reply != null and reply.length() > 0">
+		    ,REPLY = #{reply}	
 		    ,REPLY_DATE = SYSDATE
+		    ,STATUS = 'Y'
+	</if>
+	<if test="delYn != null and delYn.length() > 0">
+		    ,DEL_YN = #{delYn}	
+	</if>
+
+</trim>		
 		WHERE
 		    COMPLAINT_NO = #{complaintNo}
 	</update>
@@ -219,37 +227,44 @@
 		    COMPLAINT_IMG I
 		ON
 		    C.COMPLAINT_NO = I.COMPLAINT_NO
-		WHERE
-		    TITLE LIKE '%${title}%'
-		<if test="content!=null">
+		    
+<trim prefix="where" prefixOverrides="and">
+	<if test="title != null and title.length() > 0">
+		    TITLE LIKE '%${title}%'	
+	</if>
+	<if test="content != null and content.length() > 0">
 		AND
 		    CONTENT LIKE '%${content}%'		
-		</if>
-		<if test="delYn != delYn">
+	</if>
+	<if test="delYn != null and delYn.length() > 0 ">
 		AND
-		    DEL_YN = #{delYn}
-		</if>
-		<if test="reply == null"> <!-- 답변 없는 것만 검색 -->
+			DEL_YN = #{delYn}
+	</if>	
+	<if test="delYn != null and delYn.length() > 0 ">
 		AND
-		    REPLY IS NULL
-		</if>
-		<if test="reply != null">
-		AND
-		    REPLY LIKE '%${reply}%'			
-		</if>
-		<if test="status != null">
+		    REPLY LIKE '%${reply}%'				
+	</if>	
+	<if test="status != null and status.length() > 0 ">
 		AND
 		    STATUS = #{status} 
-		</if>
-
-		<if test="enrollDateStart != null and enrollDateEnd != null">
+	</if>
+	<if test="(enrollDateStart == null or enrollDateEnd == null) and (enrollDateStart.length() == 0 or enrollDateEnd.length() == 0)">
 		AND
-		    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))
-		</if>
-		<if test="replyDateStart != null and replyDateEnd != null">
+		    ENROLL_DATE IS NULL
+	</if>
+	<if test="(enrollDateStart != null and enrollDateEnd != null) and (enrollDateStart.length() > 0 and enrollDateEnd.length() > 0)"> 
 		AND
-		    (REPLY_DATE BETWEEN TO_DATE(#{replyDateStart}) AND TO_DATE(#{replyDateEnd}))
-		</if>
+		    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
+	</if>
+	<if test="replyDateStart == null or replyDateEnd == null) and (replyDateStart.length() == 0 or replyDateEnd.length() == 0)">
+		AND
+		    REPLY_DATE IS NULL
+	</if>
+	<if test="replyDateStart != null and replyDateEnd != null) and (replyDateStart.length() > 0 and replyDateEnd.length() > 0)"> 
+		AND
+		    (REPLY_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
+	</if>
+</trim>
 		ORDER BY
 		    C.COMPLAINT_NO DESC
 	</select>

@@ -53,8 +53,6 @@ const ComplaintDetall = () => {
           {
             managerNo : managerNo.current.value,
             delYn : delYn.current.value,
-            status: status.current.value,
-            reply: reply,
             complaintNo,
           }
         ),
@@ -175,20 +173,7 @@ const ComplaintDetall = () => {
                   <th scope="row">
                     <label for="inp_03">민원 처리 답변</label>
                   </th>
-                  <td colspan="3">
-                    <div class="form_box">
-                      <textarea
-                        ref={textRef}
-                        onChange={(e) => {
-                          setReply(e.target.value);
-                        }}
-                        onInput={handleResizeHeight}
-                        type="text-area"
-                        placeholder="값을 입력해주세요"
-                        value={reply}
-                      ></textarea>
-                    </div>
-                  </td>
+                  <td colspan="3">{compVo.reply}</td>
                 </tr>
                 <tr>
                   <th scope="row">
