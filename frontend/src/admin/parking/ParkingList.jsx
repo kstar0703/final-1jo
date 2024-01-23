@@ -284,7 +284,7 @@ const ParkingList = () => {
 
             
               <div className="search_item">
-                <label form="sel01">등록일</label>
+                <label form="sel01">방문예정일</label>
                 <div className="form_box">
                   <input type="datetime-local" name='startDate' ref={searchstartDate} onChange={onChange}   />
                 </div>
@@ -354,6 +354,7 @@ const ParkingList = () => {
                 <col width="100px" />
                 <col width="100px" />
                 <col width="100px" />
+                <col width="100px" />
                
               </colgroup>
               <thead>
@@ -365,6 +366,7 @@ const ParkingList = () => {
                   <th scope='col'>방문목적</th>
                   <th scope='co1'>차량번호</th>
                   <th scope="col">예약일</th>
+                  <th scope="col">방문예정일</th>
                   <th scope='col'>입차시간</th>
                   <th scope='col'>출차시간</th>
                   <th scope='col'>차감시간</th>
@@ -384,6 +386,7 @@ const ParkingList = () => {
                        <td>{`${vo.dong}동${vo.ho}호`}</td>
                        <td>{vo.purpose}</td>
                        <td>{vo.carNo}</td>
+                       <td>{vo.writeDate}</td>
                        <td>{vo.modifyDate ? vo.modifyDate +'(수정)' : vo.enrollDate }</td>
                        <td>{vo.delYn ==='Y' ? <span>--</span> :vo.arrivalTime ? vo.arrivalTime :  '입차대기'}</td>
                        <td>{vo.delYn ==='Y' ? <span>--</span> :vo.departureTime ? vo.departureTime : '출차대기'}</td>

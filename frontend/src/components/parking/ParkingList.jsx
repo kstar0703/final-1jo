@@ -44,10 +44,13 @@ import ParkingModal from './ParkingModal';
 
    `
 const ParkingList = () => {
+  const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))    
     //상태업데이트
     const [updateEffect,setUpdateEffect] = useState('');
 
     const handleUpdateEffect = () =>{
+      setCurrentPage(1)
+      setParkingVoList([])
       setUpdateEffect(updateEffect+'a')
     }
 
@@ -188,12 +191,73 @@ const ParkingList = () => {
         setModalOpenDetail(true)
         setParkingVo(vo)}
 
-      
+        
+        let fetcherble =true;
+        const onClickArrival = (vo)=>{ 
 
-    
-    const test = ()=>{
-        console.log('테스트')
+          if(!fetcherble) {return}
+
+          fetch('http://127.0.0.1:8888/app/parking/arrival', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              parkingNo : vo.parkingNo
+            }),
+          })
+        .then((resp) => {return resp.json()})
+        .then((data)=>{ 
+            
+            if(data.status === 'good'){
+                alert(data.msg)
+                handleUpdateEffect()
+                
+            }else{
+                alert('실패')
+            }
+        })
+        .catch( (e)=>{})
+        .finally(()=>{
+            fetcherble =true;
+            })
+
     }
+         
+        
+
+        const onClcikDepature = (vo)=>{ 
+          if(!fetcherble) {return}
+
+          fetch('http://127.0.0.1:8888/app/parking/departure', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              parkingNo : vo.parkingNo,
+              unitNo : loginMember.unitNo
+            }),
+          })
+        .then((resp) => {return resp.json()})
+        .then((data)=>{ 
+            
+            if(data.status === 'good'){
+                alert(data.msg)
+                handleUpdateEffect()
+                
+            }else{
+                alert('실패')
+            }
+        })
+        .catch( (e)=>{})
+        .finally(()=>{
+            fetcherble =true;
+            })
+
+        }
+    
+
 
     return (
         <StyledMemberDiv>
@@ -237,7 +301,7 @@ const ParkingList = () => {
 
             
               <div className="search_item">
-                <label form="sel01">등록시작일</label>
+                <label form="sel01">방문 예정일</label>
                 <div className="form_box">
                 <input type="datetime-local" name='startDate' ref={searchstartDate} onChange={onChange}  />
                 <span>~</span>
@@ -281,6 +345,7 @@ const ParkingList = () => {
                 <col width="80px" />
                 <col width="80px" />
                 <col width="80px" />
+                <col width="80px" />
                 <col width="100px" />
                 <col width="100px" />
                 <col width="100px" />
@@ -291,7 +356,8 @@ const ParkingList = () => {
                 <tr>
                   <th scope="col">방문목적</th>
                   <th scope="col">차량번호</th>
-                  <th scope="col">예약일</th>
+                  <th scope='col'>예약 등록일</th>
+                  <th scope="col">방문 예정일</th>
                   <th scope='col'>입차시간</th>
                   <th scope='col'>출차시간</th>
                   <th scope='col'>차감시간</th>
@@ -304,9 +370,10 @@ const ParkingList = () => {
                       <tr key={vo.no} style={{ zIndex: 0 }} >
                        <td onClick={()=>{onClickDetail(vo)}}>{vo.purpose}</td>
                        <td onClick={()=>{onClickDetail(vo)}}>{vo.carNo}</td>
+                       <td onClick={()=>{onClickDetail(vo)}}>{vo.writeDate}</td>
                        <td onClick={()=>{onClickDetail(vo)}}>{ vo?.delYn ==='Y' ? <span className='cancel-span'> --</span> : vo.delYn ==='Y' ? <span style={{ color: 'red' }} >예약취소</span > : vo.modifyDate ?<span style={{ color: 'green' }}> {vo.modifyDate.substring(0, 16) +'(수정)'}</span> : vo.enrollDate  }</td>
-                       <td onClick={()=>{onClickDetail(vo)}}>{ vo?.delYn ==='Y' ? <span className='cancel-span'>--</span> : vo.arrivalTime ? vo.arrivalTime.substring(0, 16) : <span>입차대기</span> }</td>
-                       <td onClick={()=>{onClickDetail(vo)}}>{ vo?.delYn ==='Y' ? <span className='cancel-span'>--</span> : vo.departureTime ? vo.departureTime.substring(0, 16) : <span>출차대기</span>}</td>
+                       <td onClick={()=>{onClickArrival(vo)}}>{ vo?.delYn ==='Y' ? <span className='cancel-span'>--</span> : vo.arrivalTime ? vo.arrivalTime.substring(0, 16) : <button className='sty02_btn'>입차</button> }</td>
+                       <td onClick={()=>{onClcikDepature(vo)}}>{ vo?.delYn ==='Y' ? <span className='cancel-span'>--</span> : vo.departureTime ? vo.departureTime.substring(0, 16) :  vo.arrivalTime ? <button className='sty02_btn'>출차</button> :<span>입차대기</span>}</td>
                        <td onClick={()=>{onClickDetail(vo)}}>{vo?.delYn ==='Y' ? <span className='cancel-span'>--</span> : vo.fee ? vo.fee +'분' : '정산대기'}</td>
                        <td onClick={()=>{onClickDetail(vo)}}>{vo.delYn ==='Y' ?<span style={{ color: 'red' }}>예약취소</span> : !vo.fee? <span style={{ color: 'green' }}>정상예약</span> : <span style={{ color: 'blue' }}>정산완료</span> } </td> 
                        <td>

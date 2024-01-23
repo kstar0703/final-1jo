@@ -59,7 +59,10 @@ public class ParkingController {
 	 * @return 결과 
 	 */
 	@PostMapping("arrival")
-	public Map<String, String> arrival(ParkingVo vo){
+	public Map<String, String> arrival(@RequestBody ParkingVo vo){
+		
+		
+		
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -67,7 +70,7 @@ public class ParkingController {
 		
 		if(result ==1) {
 			resultMap.put("status", "good");
-			resultMap.put("msg", "성공");
+			resultMap.put("msg", "입차성공");
 		}
 		
 		return resultMap;
@@ -77,7 +80,11 @@ public class ParkingController {
 	 * @return 결과
 	 */
 	@PostMapping("departure")
-	public Map<String, String> departure(ParkingVo vo) {
+	public Map<String, String> departure(@RequestBody ParkingVo vo) {
+		
+		log.info("들어온 등록값 ::: {}", vo);
+		
+		
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
 		resultMap.put("msg", "실패");
@@ -97,16 +104,18 @@ public class ParkingController {
 	 * @return 결과
 	 */
 	@PostMapping("change")
-	public Map<String, String> change(ParkingVo vo){
+	public Map<String, String> change(@RequestBody ParkingVo vo){
+		log.info("들어온 값 ::: {}" ,vo);
+		
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
-		resultMap.put("msg", "실패");
+		resultMap.put("msg", "변경 실패");
 		
 		int result = service.change(vo);
 		
 		if(result ==1) {
 			resultMap.put("status", "good");
-			resultMap.put("msg", "성공");
+			resultMap.put("msg", "변경 성공");
 		}
 		
 		return resultMap;
@@ -122,13 +131,13 @@ public class ParkingController {
 	public Map<String, String> cancel(@RequestBody ParkingVo vo){
 		Map<String, String>  resultMap = new HashMap();
 		resultMap.put("status", "bad");
-		resultMap.put("msg", "실패");
+		resultMap.put("msg", "취소 실패");
 		
 		int result = service.cancel(vo);
 		
 		if(result ==1) {
 			resultMap.put("status", "good");
-			resultMap.put("msg", "성공");
+			resultMap.put("msg", "취소 성공");
 		}
 		
 		return resultMap;	

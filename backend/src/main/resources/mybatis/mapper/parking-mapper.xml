@@ -67,6 +67,7 @@ FROM
 WHERE 
   PARKING_NO = #{parkingNo} AND DEL_YN = 'N'
 )
+WHERE UNIT_NO = #{unitNo}
 </update>
 <!-- 예약 취소  -->
 <update id="cancel">
@@ -74,7 +75,6 @@ UPDATE PARKING
 SET 
 
 DEL_YN = 'Y' 
-,MODIFY_DATE = SYSDATE
 WHERE 
 PARKING_NO = #{parkingNo}
 </update>
@@ -84,7 +84,6 @@ PARKING_NO = #{parkingNo}
 UPDATE PARKING 
 SET 
 DEL_YN = 'N' 
-,MODIFY_DATE = SYSDATE
 WHERE 
 PARKING_NO = #{parkingNo}
 </update>
@@ -96,7 +95,19 @@ PARKING
 <trim prefix="SET" suffixOverrides=",">
 <if test="purpose !=null">PURPOSE= #{purpose}, </if> 
 <if test="carNo !=null"> CAR_NO =#{carNo},   </if> 
-MODIFY_DATE = SYSDATE
+<if test="enrollDate !=null and enrollDate.indexOf('T') != -1">
+MODIFY_DATE = TO_DATE(#{enrollDate}, 'YYYY-MM-DD"T"HH24:MI'),
+</if>
+<if test="enrollDate !=null and enrollDate.indexOf('T') != -1">
+ENROLL_DATE = TO_DATE(#{enrollDate}, 'YYYY-MM-DD"T"HH24:MI'),
+</if>
+
+<if test="enrollDate !=null and enrollDate.indexOf('T') == -1">
+MODIFY_DATE = #{enrollDate},
+</if>
+
+
+
 </trim>
 WHERE PARKING_NO = #{parkingNo} 
 AND ARRIVAL_TIME IS NULL  
@@ -114,6 +125,7 @@ P.PARKING_NO
 ,P.ARRIVAL_TIME
 ,P.DEPARTURE_TIME
 ,P.MODIFY_DATE
+,P.WRITE_DATE
 ,TO_NUMBER( EXTRACT(MINUTE FROM (DEPARTURE_TIME - ARRIVAL_TIME) DAY TO SECOND)) AS FEE 
 ,P.DEL_YN
 ,M.UNIT_NO
@@ -252,6 +264,7 @@ PARKING_NO
 ,CAR_NO
 ,ARRIVAL_TIME
 ,DEPARTURE_TIME
+,WRITE_DATE
 ,TO_NUMBER( EXTRACT(MINUTE FROM (DEPARTURE_TIME - ARRIVAL_TIME) DAY TO SECOND)) AS FEE 
 ,ENROLL_DATE
 FROM PARKING

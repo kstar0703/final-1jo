@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.team1.app.member.service.MemberService;
 import com.team1.app.parking.dao.ParkingDao;
@@ -11,9 +12,13 @@ import com.team1.app.parking.vo.ParkingVo;
 import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class ParkingService {
 	
 		private final ParkingDao dao;
@@ -34,11 +39,17 @@ public class ParkingService {
 		//출차 등록 
 		public int departure(ParkingVo vo)  {
 			int result = dao.departure(sst,vo);
+			
+			log.info("출차결과 ::: {}" ,result);
+			
 			if(result !=1) {
 				throw new IllegalArgumentException("출차 등록 실패");
 			}
 			//출차시간 업데이트
 			int unitUpdateresult =dao.subtractUnitTime(sst,vo);
+			
+			log.info("시간차감결과 :::{} " ,unitUpdateresult);
+			
 			
 			if(unitUpdateresult !=1) { throw new IllegalArgumentException("출차 등록 실패");}
 			else {return unitUpdateresult;}
