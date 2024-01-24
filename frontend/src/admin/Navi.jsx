@@ -12,7 +12,7 @@ const StyledNaviDiv = styled.div`
     align-items: center;
     position: sticky;
     top : 0px;
-    width: 200px;
+    width: 100px;
     max-height: 100vh;
     padding-top: 20px;
     & .logo{
@@ -20,10 +20,10 @@ const StyledNaviDiv = styled.div`
     }
     & div:hover {
       border-radius: 3px;
-      padding: 2px;
       background-color: pink;
-      padding: 5px;
-      color: #fff;
+      & a{
+        color: #fff;
+      }
     }
   }
 `;

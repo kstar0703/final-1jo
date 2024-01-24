@@ -10,8 +10,8 @@ import com.team1.app.vote.vo.VoteVo;
 @Repository
 public class VoteDao {
 	
-	public List<VoteVo> list(SqlSessionTemplate sst){
-		return sst.selectList("VoteMapper.list");
+	public List<VoteVo> list(SqlSessionTemplate sst,VoteVo vo){
+		return sst.selectList("VoteMapper.list",vo);
 	}
 
 	public List<VoteVo> detailBoard(SqlSessionTemplate sst, VoteVo vo) {

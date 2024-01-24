@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import ReactModal from 'react-modal';
 
@@ -43,8 +43,8 @@ const StyledReplyModalDiv = styled.div`
 `;
 
 const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
-
-    //fetch로 답변 업뎃하고 closev //안쓰면 지우기
+    
+    //필요없으면 지우기
     const ajaxJava = async() =>{
         await fecthJava();
         closeModal();
@@ -67,14 +67,21 @@ const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
         .then((resp) =>resp.json())
         .then((data)=>{
           if(data === 1){
-            alert("답변 및 수정 완료")
+            alert("수정이 완료되었습니다.")
+            ajaxJava();
           }else{
             alert("에러발생")
           }
         })
       }
     //답변 내용
-    const [reply, setReply] = useState([]);
+    const [reply, setReply] = useState();
+    
+    useEffect(() => {
+      setReply(compVo?.reply);
+    }, [compVo?.reply]);
+  
+
 
     //textArear 자동 스크롤
     const textRef = useRef();
@@ -87,7 +94,8 @@ const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
 
 
         <StyledReplyModalDiv>
-            <h1>{title}</h1>
+            <h1 onClick={()=>{
+            }}>{title}</h1>
             <div>
                 <div className='ad_tbl_box'>
                     <table>
@@ -115,13 +123,13 @@ const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
                                 <div class="form_box">
                                     <textarea
                                         ref={textRef}
+                                        value={reply}
                                         onChange={(e) => {
                                         setReply(e.target.value);
                                         }}
                                         onInput={handleResizeHeight}
                                         type="text-area"
                                         placeholder="값을 입력해주세요"
-                                        value={reply}
                                     ></textarea>
                                     </div>
                                 </td>

@@ -7,7 +7,7 @@ const StyledVoteDetailDiv = styled.div`
     height: 100%;
     display: flex;
     flex-direction : column;
-    .ad_wrap{
+     /* .ad_wrap{
         background-color: #f0f0f0;
 
         & .ad_detail_box{
@@ -39,20 +39,9 @@ const StyledVoteDetailDiv = styled.div`
                         
                         padding: 5px 10px;
                         text-align: left;
-                    }
+                    } */
 
-                    .item_data{
-                        & th {
-                            padding: 15px 10px;
-                        }
-                        & td {
-                            padding: 0px 20px;
-                            & p{
-                                margin: 0 auto;
-                            }
-                        }
-                    }
-                    & input, select {
+                    /* & input, select {
                         width: 100%;
                     }
                     & textarea {
@@ -61,6 +50,25 @@ const StyledVoteDetailDiv = styled.div`
                     }
                 }
             }
+        }
+    }  */
+    .item_data{
+        & th {
+            padding: 15px 10px;
+        }
+        & td {
+            padding: 0px 20px;
+            & p{
+                margin: 0 auto;
+            }
+        }
+    }
+    .deadline_div_sty{
+        display: flex;
+        justify-content: center;
+        align-items : center;
+        & button{
+            margin-left: 10px;
         }
     }
 
@@ -79,6 +87,8 @@ const VoteDetail = () => {
     const [voteVoList,setVoteVoList] = useState([]);
     const [titleValue,setTitleValue] = useState([]);
     const [contentValue,setContentValue] = useState([]);
+    const [delYnValue , setDelYnValue] = useState([]);
+    const [acceptYnValue, setAcceptYnValue] = useState([]);
 
     //페이지 로딩 시 정보 받아오기 (게시글 + 투표 항목)
     const loadVoteVo = () =>{
@@ -89,6 +99,8 @@ const VoteDetail = () => {
             setVoteVoList(data.voList);
             setTitleValue(data.title);
             setContentValue(data.content);
+            setDelYnValue(data.delYn);
+            setAcceptYnValue(data.acceptYn);
         })
         ;
     }
@@ -107,24 +119,12 @@ const VoteDetail = () => {
     const acceptYn = useRef();
     const delYn = useRef();
     
-    // const [formData, setFormData] = useState([]);
     const handleSubmit = () => {
-
-        //  setFormData({
-        //   title: titleValue,
-        //   content: contentValue,
-        //   delYn: delYn.current.value,
-        //   acceptYn: acceptYn.current.value,
-        //   voteNo,
-        // });
-
-        // console.log(formData);
          fetch("http://127.0.0.1:8888/app/vote/edit", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-        //   body: JSON.stringify(formData),
           body: JSON.stringify(
             {
             title: titleValue,
@@ -143,7 +143,6 @@ const VoteDetail = () => {
               navigator("/admin/vote/list");
             }
           });
-
 
     }
 
@@ -167,12 +166,6 @@ const VoteDetail = () => {
                                 </colgroup>                        
                             <tbody>
                                 <tr>
-                                    <th scope="row"><label form=''>글번호</label></th>
-                                    <td>{voteVo.voteNo}</td>
-                                    <th scope="row"><label form=''>조회수</label></th>
-                                    <td>{voteVo.hit}</td>
-                                </tr>
-                                <tr>
                                     <th scope="row"><label form=''>작성일자</label></th>
                                     <td>{voteVo.enrollDate}</td>
                                     <th scope="row"><label form=''>마감일자</label></th>
@@ -182,7 +175,7 @@ const VoteDetail = () => {
                                     <th scope="row"><label form=''>공개여부</label></th>
                                     <td>
                                         <div class="form_box">
-                                            <select ref={delYn} class="sel_box" >
+                                            <select ref={delYn} value={delYnValue} onChange={(e)=>{setDelYnValue(e.target.value)}} class="sel_box" >
                                                 <option value="N">공개</option>
                                                 <option value="Y">비공개</option>
                                             </select>
@@ -190,12 +183,19 @@ const VoteDetail = () => {
                                     </td>
                                     <th scope="row"><label form=''>투표 진행</label></th>
                                     <td>
+                                        {
+                                            voteVo.acceptYn === 'N' /*여기서 마감일자가 현재시간이 지난 이후 인지 확인하기*/
+                                            ? 
+                                            <div className='deadline_div_sty'><p>마감</p> <button className='sty02_btn_m'>마감 연장</button></div> 
+                                            : 
                                         <div class="form_box">
-                                            <select ref={acceptYn} class="sel_box">
+                                            <select ref={acceptYn} value={acceptYnValue} onChange={(e)=>{setAcceptYnValue(e.target.value)}} class="sel_box">
+                                                <option value="R">대기</option>
                                                 <option value="Y">진행</option>
                                                 <option value="N">마감</option>
                                             </select>
                                         </div>
+                                        }
                                     </td>
                                 </tr>
                                 <tr>
@@ -229,8 +229,8 @@ const VoteDetail = () => {
                                         voteVoList.map((vo) => (
                                     <span>
                                         <tr className='item_data'>
-                                            <th>{vo.voteOrder}</th>
-                                            <td><p>{vo.itemName}</p><p>00%</p></td>
+                                            <th>{vo?.voteOrder}</th>
+                                            <td><p>{vo?.itemName}</p><p>00%</p></td>
                                         </tr>
                                     </span>
                                     ))

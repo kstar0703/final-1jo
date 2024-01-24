@@ -20,9 +20,10 @@ const ComplaintList = () => {
     const enrolleRef = useRef();
     const status = useRef();
     const delRef = useRef();
-
-    
     const [compVoList, setCompVoList] = useState([]);
+    const [update,setUpdate] = useState();
+    
+    
     const loadCompVoList = () => {
       fetch("http://127.0.0.1:8888/app/complaint/adminList")
       .then(resp =>(resp.json()))
@@ -30,13 +31,13 @@ const ComplaintList = () => {
         setCompVoList(data)
       })
     }
-
-    const [update,setUpdate] = useState();
     useEffect(()=>{
       loadCompVoList();
-      console.log(managerNo);
+      managerList();
     },[update])
-    
+
+
+
     const [modalOpen,setModalOepn] = useState(false);
     const [compVo, setCompVo] = useState();
 
@@ -65,14 +66,11 @@ const ComplaintList = () => {
     //열기
     const ynModalOpenClick = (vo) => {
 
-      console.log(vo)
       setYesNo({...vo})
       setYnModalOpen(true)
     }
-    //실행되야 할 함수
+    //글공개 모달이 실행되야 할 함수
     const delYnSubmit = () => {
-
-      console.log(yesNo)
       fetch("http://127.0.0.1:8888/app/complaint/clear",{
         method : "POST"
         ,headers : {
@@ -89,14 +87,58 @@ const ComplaintList = () => {
       .then((resp) =>resp.json())
       .then((data)=>{
         if(data === 1){
-          alert("답변 및 수정 완료")
+          alert("공개여부 수정 완료되었습니다.")
           setUpdate(update +'1')
         }else{
           alert("에러발생")
         }
       })
     }
-    
+
+
+    //검색영역 담당자 명단 불러오는 fetch
+    const [managerVoList, setManagerVoList] = useState([]);
+
+    const managerList = () => {
+      fetch("http://127.0.0.1:8888/app/admin/managerSelect")
+      .then(resp =>(resp.json()))
+      .then((data)=>{setManagerVoList(data);})
+    }
+  
+    //검색 기능 fetch
+    const handleSeatch = () => {
+      fetch("http://127.0.0.1:8888/app/complaint/adminSelect",{
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json",
+        },
+        body: JSON.stringify({
+            title: titleRef.current.value,
+            managerNo : managerRef.current.value ,
+            enrollDateStart : enrollsRef.current.value ,
+            enrollDateEnd : enrolleRef.current.value ,
+            status : status.current.value ,
+            delYn : delRef.current.value ,
+        }),
+      })
+      .then((resp) => (resp.json()))
+      .then((data) => {
+        console.log(data);
+        setCompVoList(data)
+      })
+      ;
+    }
+
+    //초기화 버튼
+    const handleResetBtn = () => {
+      titleRef.current.value = '';
+      managerRef.current.value = '';
+      enrollsRef.current.value = '';
+      enrolleRef.current.value = '';
+      status.current.value = '';
+      delRef.current.value = '';    
+    }
+
   return (
     <StyledComplaintListDiv>
       <div className="ad_wrap">
@@ -109,15 +151,22 @@ const ComplaintList = () => {
             <div className="search_item">
               <label form="sel01">제목</label>
               <div className="form_box">
-                <input ref={titleRef} type="text" name="title" />
+                <input ref={titleRef} type="text" name="title" placeholder=" - " />
               </div>
             </div>
 
             <div className="search_item">
               <label form="sel01">담당자</label>
-              <div className="form_box">
-                <input ref={managerRef} type="text" name="manager" />
-              </div>
+              <div class="form_box">
+                  <select ref={managerRef} class="sel_box">
+                    <option value=''> - </option>
+                    {
+                      managerVoList?.map((vo)=>(
+                        <option value={vo.managerNo}>{vo.managerNo}</option>
+                      ))
+                    }
+                  </select>
+                </div>    
             </div>
 
             <div className="search_item">
@@ -135,9 +184,10 @@ const ComplaintList = () => {
             </div>
 
             <div className="search_item">
-              <label form="sel01">민원처리</label>
+              <label form="sel01">처리상태</label>
               <div className="form_box">
                 <select ref={status} class="sel_box">
+                  <option value="">*</option>
                   <option value="N">진행</option>
                   <option value="Y">처리</option>
                 </select>
@@ -148,6 +198,7 @@ const ComplaintList = () => {
               <label form="sel01">공개여부</label>
               <div className="form_box">
                 <select ref={delRef} class="sel_box">
+                  <option value="">*</option>
                   <option value="N">공개</option>
                   <option value="Y">비공개</option>
                 </select>
@@ -157,13 +208,13 @@ const ComplaintList = () => {
 
           <div className="btn_div">
             <div>
-              <button className="sty01_btn">초기화</button>
+              <button onClick={handleResetBtn} className="sty01_btn">초기화</button>
             </div>
             <div>
-              <button className="sty02_btn">검색</button>
+              <button onClick={handleSeatch} className="sty02_btn">검색</button>
             </div>
             <div>
-              <button className="sty01_btn">답변</button>
+              {/* <button className="sty01_btn">미답변 조회</button> */}
             </div>
           </div>
         </div>
@@ -195,17 +246,14 @@ const ComplaintList = () => {
             </thead>
             <tbody>
               {compVoList.map((vo) => (
-                <tr>
-                  <td
-                    onClick={() => {
-                      navigator(`/admin/complaint/detail/${vo.complaintNo}`);
-                    }}
-                    key={vo.complaintNo}
-                  >
+                <tr onClick={() => {
+                  navigator(`/admin/complaint/detail/${vo?.complaintNo}`);
+                }} key={vo.complaintNo}>
+                  <td>
                     {vo.complaintNo}
                   </td>
                   <td>{vo.managerNo > 0 ? vo.managerNo : "미지정"}</td>
-                  <td>{vo.dong + "동" + vo.ho + "호" + vo.name}</td>
+                  <td>{vo.dong + "동 " + vo.ho + "호 " + vo.name}</td>
                   <td>{vo.title}</td>
                   <td>{vo.enrollDate}</td>
                   <td>
@@ -214,7 +262,8 @@ const ComplaintList = () => {
                     </p>
                     <button
                       className="sty02_btn_m"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation(); // 부모 요소의 onClick 이벤트 전파 방지
                         ynModalOpenClick(vo);
                       }}
                     >
@@ -228,7 +277,8 @@ const ComplaintList = () => {
                     ) : (
                       <button
                         className="sty01_btn_m"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation(); // 부모 요소의 onClick 이벤트 전파 방지
                           modalOpenClicik(vo);
                         }}
                       >

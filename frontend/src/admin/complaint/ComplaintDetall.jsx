@@ -17,13 +17,12 @@ const ComplaintDetall = () => {
   const navigator = useNavigate();
   //글번호 받아오기
   const { complaintNo } = useParams();
-
+  const loginMember = JSON.parse(sessionStorage.getItem("loginMember")).managerNo;
   //useState 설정
   const [compVo, setCompVo] = useState([]);
   const [managerVoList, setManagerVoList] = useState([]);
-  const [reply, setReply] = useState([]);
   const managerNo = useRef();
-  const status = useRef();
+  const [update, setUpdate] = useState();
 
   //textArear 자동 스크롤
   const textRef = useRef();
@@ -31,8 +30,9 @@ const ComplaintDetall = () => {
     textRef.current.style.height = textRef.current.scrollHeight + "px";
   }, []);
 
+
+  //로딩 시 값 불러오기
   const loadCompVo = () => {
-    console.log({ complaintNo });
     fetch(
       `http://127.0.0.1:8888/app/complaint/adminDetail?complaintNo=${complaintNo}`
     )
@@ -44,9 +44,9 @@ const ComplaintDetall = () => {
   useEffect(() => {
     loadCompVo();
     managerList();
-  }, []);
+  }, [update]);
 
-  //답변수정 모달 /******************************************************************* */
+  //답변수정 모달
   const [modalOpen, setModalOepn] = useState(false);
 
   //프롭스로 모달에 전달해서 사용
@@ -59,7 +59,7 @@ const ComplaintDetall = () => {
   };
   //필요 없으면 지우기
   const replySubmit = () => {
-    alert("성공함");
+    setUpdate(update +'1')
   };
 
   /*필요없으면 지우기*/
@@ -207,11 +207,16 @@ const ComplaintDetall = () => {
                 목록가기
               </button>
             </div>
+            {compVo?.managerNo === loginMember
+              ?
             <div>
               <button onClick={modalOpenClicik} className="sty02_btn">
                 답변 수정
               </button>
             </div>
+              :
+              ""
+            }
           </div>
         </div>
       </div>

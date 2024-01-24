@@ -209,11 +209,14 @@
 		SELECT 		 
 		    C.COMPLAINT_NO
 		    ,MANAGER_NO
-		    ,MEMBER_NO
+		    ,M.MEMBER_NO
+            ,M.NAME
+            ,DONG
+            ,HO
 		    ,TITLE
 		    ,CONTENT
 		    ,ENROLL_DATE
-		    ,DEL_YN
+		    ,C.DEL_YN
 		    ,STATUS
 		    ,REPLY
 		    ,REPLY_DATE
@@ -223,11 +226,19 @@
 		    ,ORIGIN_NAME
 		FROM
 		    COMPLAINT C
+        JOIN
+            MEMBER M
+        ON
+            M.MEMBER_NO = C.MEMBER_NO
 		JOIN
 		    COMPLAINT_IMG I
 		ON
 		    C.COMPLAINT_NO = I.COMPLAINT_NO
-		    
+        JOIN
+            UNIT U
+        ON
+            M.UNIT_NO = U.UNIT_NO	 
+ 
 <trim prefix="where" prefixOverrides="and">
 	<if test="title != null and title.length() > 0">
 		    TITLE LIKE '%${title}%'	
@@ -236,11 +247,15 @@
 		AND
 		    CONTENT LIKE '%${content}%'		
 	</if>
+	<if test="managerNo != null and managerNo.length() > 0">
+		AND
+		    MANAGER_NO = #{managerNo}		
+	</if>
 	<if test="delYn != null and delYn.length() > 0 ">
 		AND
-			DEL_YN = #{delYn}
+			C.DEL_YN = #{delYn}
 	</if>	
-	<if test="delYn != null and delYn.length() > 0 ">
+	<if test="reply != null and reply.length() > 0 ">
 		AND
 		    REPLY LIKE '%${reply}%'				
 	</if>	
@@ -256,14 +271,14 @@
 		AND
 		    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
 	</if>
-	<if test="replyDateStart == null or replyDateEnd == null) and (replyDateStart.length() == 0 or replyDateEnd.length() == 0)">
-		AND
-		    REPLY_DATE IS NULL
-	</if>
-	<if test="replyDateStart != null and replyDateEnd != null) and (replyDateStart.length() > 0 and replyDateEnd.length() > 0)"> 
-		AND
-		    (REPLY_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
-	</if>
+<!-- 	<if test="(replyDateStart == null or replyDateEnd == null) or (replyDateStart.length() == 0 or replyDateEnd.length() == 0)"> -->
+<!-- 		AND -->
+<!-- 		    REPLY_DATE IS NULL -->
+<!-- 	</if> -->
+<!-- 	<if test="(replyDateStart != null and replyDateEnd != null) and (replyDateStart.length() > 0 and replyDateEnd.length() > 0)">  -->
+<!-- 		AND -->
+<!-- 		    (REPLY_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		 -->
+<!-- 	</if> -->
 </trim>
 		ORDER BY
 		    C.COMPLAINT_NO DESC

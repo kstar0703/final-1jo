@@ -25,7 +25,7 @@ const Header = () => {
     return (
         <StyledHeaderDiv>
             <div>
-                <img src='resources/ico_info.svg' />
+                <img src='../../resources/ico_info.svg' />
                 <span>{loginMember?.id}님</span>
             </div>
 
