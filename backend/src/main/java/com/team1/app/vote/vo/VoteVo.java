@@ -35,8 +35,9 @@ public class VoteVo {
 	private String replyNo;			//응답 번호        
 	private String prtcNo;			//응답자 번호       
 	private String retcDate;		//응답 일자      
+	private String replyStatus;		//응답 여부     
 
-	private String name;		//응답자 이름
+	private String name;			//응답자 이름
 	private String unitNo;			//세대번호
 	private String dong;			//동
 	private String ho;				//호

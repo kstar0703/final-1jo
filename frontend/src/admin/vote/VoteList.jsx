@@ -134,14 +134,6 @@ const VoteList = () => {
     const acceptRes = useRef();
 
     const handleSearch = () => {
-      console.log(titleRef.current.value);
-      console.log(managerRef.current.value);
-      console.log(enrollsRef.current.value);
-      console.log(enrolleRef.current.value);
-      console.log(deadsRes.current.value);
-      console.log(deadeRes.current.value);
-      console.log(delRes.current.value);
-      console.log(acceptRes.current.value);
 
       fetch("http://127.0.0.1:8888/app/vote/adminSelect", {
         method: "POST",
@@ -229,6 +221,7 @@ const VoteList = () => {
                 <div className="form_box">
                   <select ref={acceptRes} class="sel_box">
                     <option value=""> -</option>
+                    <option value="R">대기</option>
                     <option value="Y">진행</option>
                     <option value="N">마감</option>
                   </select>

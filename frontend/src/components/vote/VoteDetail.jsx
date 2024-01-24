@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const StyledVoteDetailDiv = styled.div`
   width: 100%;
   height: 100%;
-  .detail_heard_box {
+  /* .detail_heard_box {
     height: 200px;
     display: flex;
     justify-content: center;
@@ -70,6 +70,14 @@ const StyledVoteDetailDiv = styled.div`
     justify-content: end;
     align-items: center;
     padding: 40px 0;
+  } */
+  .cont {
+        margin: 3em 0 2.5em;
+      }
+
+  .sty01_p{
+    font-size: 3em;
+    font-weight: 400;
   }
 `;
 
@@ -88,10 +96,14 @@ const VoteDetail = () => {
     prtcNo: memberNo,
   });
 
-  //fetch ::: 글 정보 불러오기 + 회원 투표 여부 조회하기 +종료 되었는지 확인후 정보 가져오기
+
+
   let [voteVo, setVoteVo] = useState([]);
   let [voteVoList, setVoteVoList] = useState([]);
   let [voteVoHistory, setVoteVoHistory] = useState([]);
+  const [voteStatus, setVoteStatus] = useState();
+  
+  //fetch ::: 글 정보 불러오기 + 회원 투표 여부 조회하기 +종료 되었는지 확인후 정보 가져오기
   const loadVoteVo = () => {
     fetch("http://127.0.0.1:8888/app/vote/detail", {
       method: "POST",
@@ -109,10 +121,10 @@ const VoteDetail = () => {
         const today = new Date();
         // 마감일자 + 현재 시간 비교문
         if(deadLine < today){
-          alert("마감된 투표입니다.");
+          setVoteStatus("마감된 투표입니다.")
         // 이미 투표한 게시글 확인
-        }else if(data.count !== '0'){
-          alert("이미 투표한 게시글입니다.");
+        }else if(data.replyStatus !== '0'){
+          setVoteStatus("이미 투표한 게시글입니다.")
         }
         
       });
@@ -197,6 +209,7 @@ const VoteDetail = () => {
                 <th>
                   <div>
                     <div className="cont">
+                      <p className='sty01_p'>{voteStatus}</p>
                       <h1>{voteVo.content}</h1>
                     </div>
                     {
@@ -211,7 +224,7 @@ const VoteDetail = () => {
                                 type="radio"
                                 value={vo.itemNo}
                                 name="itemNo"
-                                checked = { voteVo.count === '0' ? null : false}
+                                checked = { voteVo.replyStatus === '0' ? null : false}
                                 onChange={handleClickRadio}
                               />{" "}
                               {vo.voteOrder}번 {vo.itemName}
@@ -231,9 +244,9 @@ const VoteDetail = () => {
                     }
                     {/*투표 안하고 누르면 막고 팝업창 띄우기*/}
                     { 
-                      voteVo.count === '0' && voteVoHistory.length === 0
+                      voteVo.replyStatus === '0' && voteVoHistory.length === 0
                     ?
-                      <button onClick={handleSubmit}>투표하기</button>
+                      <button className='sty02_btn' onClick={handleSubmit}>투표하기</button>
                       :
                       <></>
                     }

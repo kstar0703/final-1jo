@@ -27,30 +27,25 @@ public class ComplaintController {
 	//내 민원 글조회
 	@GetMapping("mySumitList")
 	public List<ComplaintVo> mySumitList( ComplaintVo vo) {
-
 		return service.mySumitList(vo);
 	}
 	
 	//민원 접수 
 	@PostMapping("complaintSumit")
 	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws Exception {
-		
 		return service.complaintSumit(vo,fileArr);
 	}
 	
 	//내 민원 상세 조회
 	@GetMapping("mySumitDetail")
 	public ComplaintVo mySumitDetail(ComplaintVo vo) {
-		ComplaintVo vvvo = service.mySumitDetail(vo);
-		System.out.println(vvvo);
-		return vvvo;
+		return service.mySumitDetail(vo);
 	}
 	
 	//관리자 전체 게시글 조회
 	@GetMapping("adminList")
 	public List<ComplaintVo> list() {
 		return service.list();
-		
 	}
 	
 	//관리자 게시글 상세 조회
@@ -66,25 +61,9 @@ public class ComplaintController {
 	}
 	
 	//관리자 전체 민원 검색 (썸네일 사용 시)
-	@GetMapping("adminSelect")
-	public void select(ComplaintVo vo) {
-
-		//test용 데이터
-		vo.setTitle("테스트");
-		vo.setContent("테스트");
-		vo.setDelYn("N");
-		vo.setReply("테스트");
-		vo.setStatus("Y");
-		vo.setEnrollDateStart("20230101");
-		vo.setEnrollDateEnd("20240110");
-		vo.setReplyDateStart("20230101");
-		vo.setReplyDateEnd("20240110");
-		vo.setDelYn("N");
-		List<ComplaintVo> voList = service.select(vo); 
-		
-		for (ComplaintVo complaintVo : voList) {
-			System.out.println(complaintVo);
-		}
+	@PostMapping("adminSelect")
+	public List<ComplaintVo> select(@RequestBody ComplaintVo vo) {
+		return service.select(vo); 
 	}
 	
 }

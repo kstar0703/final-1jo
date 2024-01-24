@@ -19,8 +19,8 @@ public class VoteService {
 	private final VoteDao dao;
 	private final SqlSessionTemplate sst;
 	
-	public List<VoteVo> list(){
-		return dao.list(sst);
+	public List<VoteVo> list(VoteVo vo){
+		return dao.list(sst,vo);
 	}
 
 	public VoteVo detail(VoteVo vo) throws ParseException {
@@ -46,21 +46,18 @@ public class VoteService {
 			voList.get(0).setVoHistory(dao.history(sst,vo));
 		}
 		
-		//만약 이미 투표한 사람이라면 투표 했단 표시인 count 값
-		String cnt = dao.votingYn(sst,vo).getCount();
-		VoteVo resultVo = voList.get(0);
-		resultVo.setCount(cnt);
+		//로그인한 회원이 투표 했는지 구분		
+		String status = voList.get(0).getReplyStatus();
 		
 		//마감 안 되고 이미 투표 안 했으면 조회수 올리기
-		
-		if(voList.get(0).getVoHistory().size() == 0 && Integer.parseInt(cnt) == 0) {
+		if(voList.get(0).getVoHistory().size() == 0 && Integer.parseInt(status) == 0) {
 			int hitResunt = dao.increaseHit(sst,vo);
 			if(hitResunt != 1) {
 				throw new IllegalStateException();
 			}
 		}
 
-		return resultVo;
+		return voList.get(0);
 	}
 
 	public boolean insert(VoteVo vo, List<VoteVo> voList) {

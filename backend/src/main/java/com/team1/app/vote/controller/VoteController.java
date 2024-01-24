@@ -30,8 +30,8 @@ public class VoteController {
 	
 	// 전체 투표 게시글 조회
 	@GetMapping("list")
-	public List<VoteVo> list() {
-		return service.list();
+	public List<VoteVo> list(VoteVo vo) {
+		return service.list(vo);
 	}
 	
 	//투표 게시글 상세 조회

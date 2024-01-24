@@ -179,13 +179,7 @@
         & div {
           width: 100%;
           flex-direction: column;
-          & .cont {
-            margin: 3em 0 2.5em;
-          }
-          & button {
-            border-radius: 20px;
-            height: 70px;
-          }
+          align-items: center;
         }
       }
 

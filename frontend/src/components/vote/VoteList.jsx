@@ -62,13 +62,13 @@ const StyledVoteListDiv = styled.div`
 
 const VoteList = () => {
     const navigator = useNavigate();
-
+    const loginMember = JSON.parse(sessionStorage.getItem("loginMember")).memberNo;
     //fetch
     let [voteVoList,setVoteVoList] = useState([]);
     const loadVoteVoList = () => {
-        fetch('http://127.0.0.1:8888/app/vote/list')
+        fetch(`http://127.0.0.1:8888/app/vote/list?replyNo=${loginMember}`)
         .then( resp => resp.json() )
-        .then((data)=>{setVoteVoList(data);} )
+        .then((data)=>{setVoteVoList(data); console.log(data);} )
         ;
     }
     useEffect(()=>{
@@ -121,10 +121,11 @@ const VoteList = () => {
                             <tr>
                                 <th scope="col">번호</th>
                                 <th scope="col">제목</th>
-                                <th scope="col">내용</th>
                                 <th scope="col">시작일자</th>
                                 <th scope="col">마감일자</th>
+                                <th scope="col">마감여부</th>
                                 <th scope="col">조회수</th>
+                                <th scope="col">내투표</th>
                             </tr>
                         </thead>
                         <tbody> 
@@ -137,10 +138,11 @@ const VoteList = () => {
                                     (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} key={vo.no} >{/*key={vo.no} */}
                                         <td>{vo.voteNo}</td>
                                         <td>{vo.title}</td>
-                                        <td>{vo.content}</td>
                                         <td>{vo.enrollDate}</td>
                                         <td>{vo.deadlineDate}</td>
                                         <td>{vo.hit}</td>
+                                        <td>{vo.acceptYn === 'Y' ? '진행' : '마감'}</td>
+                                        <td>{vo.replyStatus}</td>
                                     </tr>)
                                 )
                             }
