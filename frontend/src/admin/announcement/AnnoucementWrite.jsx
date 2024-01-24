@@ -2,6 +2,7 @@ import React , {useState,useCallback,useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+
 const StyledAdminWriteDiv = styled.div`
 width: 100%;
 height: 100%;
@@ -35,10 +36,48 @@ flex-direction: row;
         height: 50%;
     }
 
+    .img-box{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-wrap: wrap;
+
+    }
+
+    .img-div{
+        width: 100px;
+        height: 100px;
+    }
+
+    .btn-x{
+        position: absolute;
+        margin-left: 90px;
+        color: red;
+        
+    }
+
+    .img-sumnail{
+       width: 100px;
+       height: 100px;
+       
+    }
+
     
 `;
 
 const AnnoucementWrite = () => {
+
+  
+
+   const onChangeTest = (e)=>{
+       
+    const selectedFiles = e.target.files;
+
+    // 파일 선택 여부 확인
+    if (selectedFiles && selectedFiles.length > 0) {
+        setTestDiv((prevTestDiv) => [...prevTestDiv, selectedFiles[0]]);
+    }
+   }
 
     const navigate =useNavigate()
 
@@ -54,22 +93,31 @@ const AnnoucementWrite = () => {
     },[]);
 
     const[dataVo,setDataVo] = useState();
-    const [fileArr,setFileArr] = useState([]);
+    const [fileArr,setFileArr] = useState([1]);
 
     const onChange = (e) =>{
         const {value,name} = e.target
 
+        
         setDataVo({
             ...dataVo
             ,[name] : value
     })
 
-   
- 
+    }
+    //파일 업로드 미리보기
+    const [fileSrc,setFileSrc] = useState([]); 
+    const onChangefiles = (e)=>{
+        
+        setFileArr(e.target.files);
+        
+        
+
+
     }
 
-    const onChangefiles = (e)=>{
-        setFileArr(e.target.files);
+    //deleteImg
+    const deleteImg = () =>{
         
     }
 
@@ -117,6 +165,9 @@ const AnnoucementWrite = () => {
         .finally( ()=>{patcherble =true; })
         ;
     };
+
+   
+
 
 
 
@@ -179,9 +230,14 @@ const AnnoucementWrite = () => {
                             <tr>
                                 <th scope='row'>이미지 썸내일</th>
                                 <td colSpan='3'>
-                                    <div class="form_box">
-                                        <textarea type="text-area" placeholder="값을 입력해주세요" ></textarea>
+                                <div className='img-box'>
+                                    <div className=''>
+                                        <img src="" alt="" className='img-sumnail' />
+                                        <button className='btn-x' type='button' onClick={()=>{
+                                            deleteImg()
+                                        }}>X</button>
                                     </div>
+                                </div>
                                 </td>
                             </tr>
                         </tbody>
