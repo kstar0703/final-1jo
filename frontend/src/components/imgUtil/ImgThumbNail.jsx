@@ -92,14 +92,14 @@ const ImgThumbNail = ({fileSrc,onChangefiles,deleteImg,orignSrc,deleteOriginImg}
     return (
         <ThumbNailDiv>
         {orignSrc?.map( (src,index)=>
-            <ImgBox onClick={()=>{
+            <ImgBox key={index} onClick={()=>{
                 
             }} src={src?.path + src?.imgName} index={index} deleteImg={deleteOriginImg}/>
         )
        }
 
         {fileSrc?.map( (src,index)=>
-            <ImgBox src={src} index={index} deleteImg={deleteImg}/>
+            <ImgBox key={index} src={src} index={index} deleteImg={deleteImg}/>
         )
        }
        { fileSrc?.length + (orignSrc?.length ||0) < 10 ? 

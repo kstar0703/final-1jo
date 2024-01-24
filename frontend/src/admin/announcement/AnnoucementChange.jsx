@@ -167,14 +167,61 @@ const AnnoucementChange = () => {
      
     }
 
-
+    //공지사항수정
+    let patcherble = true;
     const handleChange = () =>{
       
+      
+        console.log(announcementVo)
         
+        if(!patcherble){
+            return
+        }
 
-    }
+        patcherble= false;
 
-    console.log(announcementVo)
+        const fd = new FormData();
+        fd.append("announcementNo", announcementVo.announcementNo);
+        fd.append("title" , announcementVo.title);
+        fd.append("content",announcementVo.content)
+       fd.append("managerNo" , loginMember.managerNo);
+      
+       announcementVo?.deleteNoArr.forEach((item, index) => {
+        console.log(`반복문 호출 annc`)
+        fd.append(`deleteNoArr[${index}].imgNo`, item.imgNo);
+        fd.append(`deleteNoArr[${index}].imgName`, item.imgName);
+      })
+       
+      
+       for (let i = 0; i < fileArr.length; i++) {
+        fd.append("fileArr", fileArr[i]);
+     }
+
+     
+        fetch("http://127.0.0.1:8888/app/announcement/change" , {
+            method: "POST",
+            body : fd ,
+        })
+        .then( resp => resp.json() )
+        .then( data => {
+            if(data.status === "good"){
+                alert("공지사항 수정성공 !");
+                
+                navigate(`/admin/announcement/detail/${announcementVo.announcementNo}`)
+
+
+            }else{
+                
+            }
+        } )
+        .catch( ()=>{
+            
+        })
+        .finally( ()=>{patcherble = true; })
+        ;
+    };
+
+   
     
 
     

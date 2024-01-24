@@ -15,6 +15,7 @@ import javax.swing.DefaultRowSorter;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;import org.springframework.core.type.filter.AbstractClassTestingTypeFilter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.announcement.controller.AnnouncementController;
@@ -31,6 +32,7 @@ import oracle.net.aso.f;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class AnnouncementService {
 	
 	private final AnnouncementDao dao;
@@ -91,22 +93,30 @@ public class AnnouncementService {
 	}
 	
 		//공지사항 수정(관리자)
-		public Boolean change(AnnouncementVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
+	public Boolean change(AnnouncementVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
 			
+			//업데이트 횟수
+			int imgUpdateResult = (fileArr == null) ? 1 : 1+ fileArr.length;
+			
+			// 삭제 횟수
+			int imgDeleteResult = vo.getDeleteNoArr().size();
 			//파일 삭제
+			
+			// 이거 파일삭제
+			if(imgDeleteResult!=0) {
 			int deleteCnt = dao.deleteFile(sst, vo);
-			int imgUpdateresult=0;
-			System.out.println(deleteCnt);
-			System.out.println("파일삭제 성공");
-			
-			//게시글 수정(수정내용이 없을 수도 있다)
-			
-			
-			//TODO 기존 게시글하고 같으면 실행안하는 로직 처리
+			if(imgDeleteResult !=deleteCnt ) {
+					throw new IllegalStateException("삭제  실패");
+				}
+			}
 			
 			int result = dao.change(vo,sst);
-			System.out.println("게시글 내용 수정 완료");
-			System.out.println(result);
+			
+			log.info(" 게시글 수정 결과 ::: {}",result);
+			
+			if(result !=1) {
+				throw new IllegalStateException("삭제  실패");
+			}
 			
 			//디비 저장 경로
 			String path="http://127.0.0.1:8888/app/resources\\upload\\announcement\\img\\";
@@ -123,12 +133,12 @@ public class AnnouncementService {
 					   new AnnouncementImgVo(fileList.get(i),path,fileArr[i].getOriginalFilename()) );
 				}
 				
-				imgUpdateresult = dao.changeImg(vo,sst); 
+				imgDeleteResult = dao.changeImg(vo,sst); 
 			}
 			
 			
 	
-			if(result ==0 && imgUpdateresult ==0) {
+			if(result ==0 && imgDeleteResult ==0) {
 				throw new IllegalStateException("수정 내용이 없습니다");
 			}
 			

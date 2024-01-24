@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.team1.app.announcement.service.AnnouncementService;
+import com.team1.app.announcement.vo.AnnouncementImgVo;
 import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.util.vo.PageVo;
 
@@ -45,16 +46,21 @@ public class AnnouncementDao {
 	
 	//공지 사항 파일삭제
 	public int deleteFile(SqlSessionTemplate sst, AnnouncementVo vo) {
-		System.out.println("호출");
-		return sst.update("Announcement.deleteFile",vo);
+		int result =0;
+		
+		for (AnnouncementImgVo file : vo.getDeleteNoArr()) {
+			
+			result += sst.update("Announcement.deleteFile",file);
+		}
+		return result;
 	}
 	//공지사항 수정(관리자)
 	public int change(AnnouncementVo vo, SqlSessionTemplate sst) {
-		System.out.println("vo" +vo);
+		log.info("관리자 공지사항 글 수정 결과 ::: {} " ,vo);
 		return sst.update("Announcement.change",vo);
 	}
+	//공지사항 수정
 	public int changeImg(AnnouncementVo vo, SqlSessionTemplate sst) {
-		System.out.println("vo" +vo);
 		return sst.insert("Announcement.changeImg",vo);
 		}
 	//개수

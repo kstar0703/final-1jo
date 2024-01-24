@@ -1,9 +1,10 @@
 package com.team1.app.announcement.vo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-
+@NoArgsConstructor
 public class AnnouncementImgVo {
 	private String imgNo;		 //파일넘버    
 	private String imgName;      //파일이름    
@@ -16,6 +17,8 @@ public class AnnouncementImgVo {
 		this.path = path;
 		this.originName = originName;
 	}
+	
+	
 
 
 	public AnnouncementImgVo(String imgNo, String imgName, String path, String originName) {
@@ -24,7 +27,10 @@ public class AnnouncementImgVo {
 		this.path = path;
 		this.originName = originName;
 	}
-	
+
+
+
+
 	
 
 

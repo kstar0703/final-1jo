@@ -184,11 +184,12 @@
 	WHERE DEL_YN ='Y' AND ANNOUNCEMENT_NO=#{announcementNo}
 	</update>
 	
+	<!-- 파일삭제  -->
 	<delete id="deleteFile">
 	DELETE 
 	ANNOUNCEMENT_IMG 
 	WHERE 
-	ANNOUNCEMENT_NO=#{announcementNo}
+	IMG_NO=#{imgNo}
 	</delete>
 	
 	
@@ -222,7 +223,7 @@
     ) 
     VALUES 
     (
-    (SELECT GET_ITEM_SEQ() FROM DUAL)
+    (SELECT GET_ITEM_SEQ_ANNOUNCEMENT_IMG() FROM DUAL)
     ,#{announcementNo}
     ,#{file.imgName}
     ,#{file.path}

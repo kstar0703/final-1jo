@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.announcement.service.AnnouncementService;
+import com.team1.app.announcement.vo.AnnouncementImgVo;
 import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.util.vo.PageVo;
 
@@ -44,10 +46,7 @@ public class AnnouncementController {
 		
 		log.info("호출됌");
 		log.info("vo에 전달받은값 : {} ",vo);
-		
-		
-		
-		log.info("fileArr에 전달받은값 : {} ", fileArr.length  );
+		log.info("fileArr에 전달받은값 : {} ", fileArr.length);
 		
 		
 		Map<String,String> resultMap = new HashMap();
@@ -68,9 +67,14 @@ public class AnnouncementController {
 	 * @throws IllegalStateException 
 	 */
 	@PostMapping("change")
-	public Map<String,Object> change(AnnouncementVo vo,MultipartFile[] fileArr) throws IllegalStateException, IOException{
+	public Map<String,Object> change(@ModelAttribute AnnouncementVo vo,MultipartFile[] fileArr) throws IllegalStateException, IOException{
 		
 		Map<String,Object> resultMap = new HashMap();
+		if(fileArr!=null) {
+		log.info("들어온 파일개수 :::{}",fileArr.length );
+		}
+		log.info("들어온 파일정보 ::: {}",vo  );
+		log.info("들어온 삭제될 ::: {}",vo.getDeleteNoArr());
 
 		Boolean result = service.change(vo,fileArr);
 		
