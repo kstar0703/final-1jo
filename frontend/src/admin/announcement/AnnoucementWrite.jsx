@@ -1,6 +1,10 @@
-import React , {useState,useCallback,useRef} from 'react';
+import React , {useState,useCallback,useRef,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import ImgBox from '../../components/imgUtil/ImgBox';
+import ImgPlusBox from '../../components/imgUtil/ImgPlusBox';
+import ImgThumbNail from '../../components/imgUtil/ImgThumbNail';
+import ImgNameBox from '../../components/imgUtil/ImgNameBox';
 
 
 const StyledAdminWriteDiv = styled.div`
@@ -36,48 +40,13 @@ flex-direction: row;
         height: 50%;
     }
 
-    .img-box{
-        display: flex;
-        width: 100%;
-        height: 100%;
-        flex-wrap: wrap;
-
-    }
-
-    .img-div{
-        width: 100px;
-        height: 100px;
-    }
-
-    .btn-x{
-        position: absolute;
-        margin-left: 90px;
-        color: red;
-        
-    }
-
-    .img-sumnail{
-       width: 100px;
-       height: 100px;
-       
-    }
+    
+    
 
     
 `;
 
 const AnnoucementWrite = () => {
-
-  
-
-   const onChangeTest = (e)=>{
-       
-    const selectedFiles = e.target.files;
-
-    // 파일 선택 여부 확인
-    if (selectedFiles && selectedFiles.length > 0) {
-        setTestDiv((prevTestDiv) => [...prevTestDiv, selectedFiles[0]]);
-    }
-   }
 
     const navigate =useNavigate()
 
@@ -93,12 +62,11 @@ const AnnoucementWrite = () => {
     },[]);
 
     const[dataVo,setDataVo] = useState();
-    const [fileArr,setFileArr] = useState([1]);
+    
+    const [fileArr,setFileArr] = useState([]);
 
     const onChange = (e) =>{
-        const {value,name} = e.target
-
-        
+        const {value,name} = e.target   
         setDataVo({
             ...dataVo
             ,[name] : value
@@ -106,24 +74,61 @@ const AnnoucementWrite = () => {
 
     }
     //파일 업로드 미리보기
-    const [fileSrc,setFileSrc] = useState([]); 
-    const onChangefiles = (e)=>{
-        
-        setFileArr(e.target.files);
-        
-        
+    const [fileSrc, setFileSrc] = useState([]);
 
+    const onChangefiles = (e) => {
 
+        const filesArray = Array.from(e.target.files)
+
+        console.log(filesArray.length)
+
+        if(fileArr.length + filesArray.length >10){
+            alert("파일업로드는 10까지 가능합니다")
+            return
+        }
+
+        setFileArr([...fileArr,...filesArray]);
+
+        console.log(fileArr)
+    
+        const files = Array.from(e.target.files);
+    
+        files.forEach((file, index, array) => {
+            if (file) {
+                const reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    setFileSrc(prevFileSrc => [...prevFileSrc, e.target.result]);
+                };
+    
+                reader.readAsDataURL(file);
+            }
+        });   
     }
 
     //deleteImg
-    const deleteImg = () =>{
+    const deleteImg = (index) => {
+        // fileSrc 배열에서 해당 인덱스의 이미지를 제외한 새로운 배열 생성
+        const updatedFileSrc = fileSrc.filter((_, i) => i !== index);
+    
+        // 업로드할 파일 업데이트
+        setFileSrc(updatedFileSrc);
+
+        const updatedFileArr = fileArr.filter((_, i) => i !== index);
         
+        // 업로드할 파일 업데이트
+        setFileArr(updatedFileArr);
+
     }
+    
+    
 
     let patcherble = true;
     const handleSubmit = (e) =>{
-           
+        
+        console.log(fileArr)
+        console.log(fileSrc)
+
         e.preventDefault();
 
         
@@ -141,7 +146,9 @@ const AnnoucementWrite = () => {
         fd.append("fileArr", fileArr[i]);
      }
 
-       
+
+
+
 
         fetch("http://127.0.0.1:8888/app/announcement/write" , {
             method: "POST",
@@ -156,7 +163,7 @@ const AnnoucementWrite = () => {
 
 
             }else{
-                console.log(data)
+                
             }
         } )
         .catch( (e)=>{
@@ -165,6 +172,8 @@ const AnnoucementWrite = () => {
         .finally( ()=>{patcherble =true; })
         ;
     };
+
+   
 
    
 
@@ -217,27 +226,17 @@ const AnnoucementWrite = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <th scope='row'>이미지 첨부</th>
+                                <th scope='row'>이미지 첨부된 이미지</th>
                                 <td colSpan='3'>
-                                    <input type='file' multiple  name='f' onChange={
-                                        onChangefiles
-                                    }/> 이미지를 여러개 클릭 후 선택해주세요
+                                    
+                                     <ImgNameBox deleteImg={deleteImg} fileArr={fileArr}/>
                                 </td>
-                                {
-                                    <img src='' alt='' />
-                                }
+                                
                             </tr>
                             <tr>
                                 <th scope='row'>이미지 썸내일</th>
                                 <td colSpan='3'>
-                                <div className='img-box'>
-                                    <div className=''>
-                                        <img src="" alt="" className='img-sumnail' />
-                                        <button className='btn-x' type='button' onClick={()=>{
-                                            deleteImg()
-                                        }}>X</button>
-                                    </div>
-                                </div>
+                                    <ImgThumbNail fileSrc ={fileSrc} onChangefiles={onChangefiles} deleteImg={deleteImg} />
                                 </td>
                             </tr>
                         </tbody>

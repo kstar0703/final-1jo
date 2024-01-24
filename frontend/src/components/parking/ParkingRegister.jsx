@@ -194,7 +194,7 @@ const ParkingRegister = (props) => {
 
         fetcherble = false
         
-        fetch('http://127.0.0.1:8888/app/parking/change', {
+        fetch('http://127.0.0.1:8888/app/parking/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

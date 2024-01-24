@@ -48,6 +48,8 @@ public class ParkingController {
 			resultMap.put("msg", "예약 성공");
 		}
 		
+		log.info("결과값 {} :::",resultMap);
+		
 		log.info("들어온 데이터 결과 {} :::" ,result);
 		
 		return resultMap;

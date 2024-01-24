@@ -47,6 +47,7 @@ const AnnoucementDetail = () => {
     useEffect(
         ()=>{
             
+
             const url = `http://127.0.0.1:8888/app/announcement/detail/${announcementNo}`;
           
              fetch(url)
@@ -55,7 +56,7 @@ const AnnoucementDetail = () => {
                     setBoardVo(data.resultVo); 
              })
         }
-    ,[announcementNo]);
+    ,[]);
 
     return (
         <DetailDiv>

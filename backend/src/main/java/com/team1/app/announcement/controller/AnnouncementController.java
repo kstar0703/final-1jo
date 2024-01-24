@@ -132,6 +132,8 @@ public class AnnouncementController {
 	@GetMapping("detail/{announcementNo}")
 	public Map<String,Object> detail(@PathVariable String announcementNo){
 		
+		System.out.println(announcementNo);
+		
 		Map<String,Object> resultMap = new HashMap();
 		resultMap.put("status", "good");
 		resultMap.put("msg", "조회 성공");
@@ -141,6 +143,7 @@ public class AnnouncementController {
 		vo.setAnnouncementNo(announcementNo);
 		AnnouncementVo resultVo = service.detail(vo);
 		
+		log.info("나가는 파일 이름 :{}" , resultVo.getFileList()); 
 		
 		if(resultVo ==null) {
 			resultMap.put("status", "bad");
