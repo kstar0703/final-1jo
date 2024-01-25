@@ -2,16 +2,21 @@ package com.team1.app.vote.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.team1.app.util.vo.PageVo;
 import com.team1.app.vote.vo.VoteVo;
 
 @Repository
 public class VoteDao {
 	
-	public List<VoteVo> list(SqlSessionTemplate sst,VoteVo vo){
-		return sst.selectList("VoteMapper.list",vo);
+	public List<VoteVo> list(SqlSessionTemplate sst,VoteVo vo, PageVo pageVo){
+		int limit = pageVo.getBoardLimit();
+		int offset = (pageVo.getCurrentPage()-1)* pageVo.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sst.selectList("VoteMapper.list",vo,rowBounds);
 	}
 
 	public List<VoteVo> detailBoard(SqlSessionTemplate sst, VoteVo vo) {

@@ -1,6 +1,7 @@
 import React, {useEffect,useState,useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Pagination from '../page/Pagination';
 
 const StyledVoteListDiv = styled.div`
   width: 100%;
@@ -63,17 +64,25 @@ const StyledVoteListDiv = styled.div`
 const VoteList = () => {
     const navigator = useNavigate();
     const loginMember = JSON.parse(sessionStorage.getItem("loginMember")).memberNo;
-    //fetch
     let [voteVoList,setVoteVoList] = useState([]);
+    const [pvo,setPvo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [updateEffect,setUpdateEffect] = useState('');
+
+
+    //fetch
     const loadVoteVoList = () => {
-        fetch(`http://127.0.0.1:8888/app/vote/list?replyNo=${loginMember}`)
+        fetch(`http://127.0.0.1:8888/app/vote/list?replyNo=${loginMember}&currentPage=${currentPage}`)
         .then( resp => resp.json() )
-        .then((data)=>{setVoteVoList(data); console.log(data);} )
+        .then((data)=>{
+          setVoteVoList(data.voList);
+          setPvo(data.pageVo);
+        } )
         ;
     }
     useEffect(()=>{
         loadVoteVoList();
-    },[]);
+    },[updateEffect]);
     
     
     let keyword = useRef();
@@ -89,11 +98,19 @@ const VoteList = () => {
         //fetch 갔다가 값 가져오기
         fetch(`http://127.0.0.1:8888/app/vote/select?title=${keyword.title}`)
         .then(resp => (resp.json()))
-        .then((data)=>{setVoteVoList(data);})
+        .then((data)=>{
+          setVoteVoList(data);
+        })
         ;
     }
 
-    
+    const handlePageChange = (page) => {
+      //페이지 
+
+      setCurrentPage(page);
+      setUpdateEffect(updateEffect+'a');
+
+    };
     
     return (
         <StyledVoteListDiv>
@@ -148,6 +165,10 @@ const VoteList = () => {
                             }
                         </tbody>
                     </table>
+                </div>
+                {}
+                <div>
+                  <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange}/>
                 </div>
             </div>
         </StyledVoteListDiv>

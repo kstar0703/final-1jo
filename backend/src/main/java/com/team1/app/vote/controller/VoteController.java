@@ -29,9 +29,9 @@ public class VoteController {
 	public Map<String,Object> list(VoteVo vo, PageVo pageVo) {
 		int pageCnt = service.pageCnt(vo);
 		int pageLimit = 3; //page 제한
-		PageVo pvo = new PageVo(pageCnt, pageVo.getCurrentPage(), pageLimit, pageVo.getBoardLimit() );
+		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
 		
-		List<VoteVo> voList = service.list(vo);
+		List<VoteVo> voList = service.list(vo, pvo);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("voList",voList);

@@ -7,6 +7,7 @@ import java.util.*;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
+import com.team1.app.util.vo.PageVo;
 import com.team1.app.vote.dao.VoteDao;
 import com.team1.app.vote.vo.VoteVo;
 
@@ -19,8 +20,8 @@ public class VoteService {
 	private final VoteDao dao;
 	private final SqlSessionTemplate sst;
 	
-	public List<VoteVo> list(VoteVo vo){
-		return dao.list(sst,vo);
+	public List<VoteVo> list(VoteVo vo, PageVo pageVo){
+		return dao.list(sst,vo,pageVo);
 	}
 
 	public VoteVo detail(VoteVo vo) throws ParseException {
