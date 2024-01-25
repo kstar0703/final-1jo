@@ -270,6 +270,12 @@
 	</select>
 	
 	
+	<select id='emailCheck' resultType='int' >
+	select count(*) from member
+	where email = #{email}
+	</select>
+	
+	
 	
 
 	

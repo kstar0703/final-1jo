@@ -1,6 +1,7 @@
 package com.team1.app.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -47,6 +48,12 @@ public class MemberDao {
 	public MemberVo localStoargeMember(SqlSessionTemplate sst, MemberVo vo) {
 		// TODO Auto-generated method stub
 		return sst.selectOne("MemberMapper.localStoargeMember",vo);
+	}
+
+	//이메일중복검사
+	public int emailCheck(SqlSessionTemplate sst, Map<String, String> map) {
+	
+		return sst.selectOne("MemberMapper.emailCheck",map);
 	}
 	
 	

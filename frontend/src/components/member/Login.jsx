@@ -18,6 +18,9 @@ const StyledLoginDiv = styled.div`
         gap: 10px;
         margin-bottom: 50px;
     }
+    .input-iput{
+        
+    }
 `
 const Login = () => {
 
@@ -126,11 +129,11 @@ const Login = () => {
 
             <div>
                 <form action="">
-                    <input type="text" name='phone' placeholder="전화번호 11자리('-'빼고입력)" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
+                    <input  type="text" name='phone' placeholder="전화번호 11자리('-'빼고입력)" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
                     <br />
-                    <input type="password" name='pwd' placeholder='비밀번호' ref={pwd}  onKeyDown={keydown}/>
+                    <input  type="password" name='pwd' placeholder='비밀번호' ref={pwd}  onKeyDown={keydown}/>
                     <div>
-                    <input type="checkbox" name="" id="check" />
+                    <input  type="checkbox" name="" id="check" />
                     <label for="check">아이디 기억하기</label>
                     </div>
                 </form>
@@ -139,11 +142,11 @@ const Login = () => {
 
             <div>
                 <div>
-                    <button onClick={clickLogin}>로그인</button>
+                    <button onClick={clickLogin} className='sty02_btn' >로그인</button>
                 </div>
                 <div>
-                    <span >비밀번호 찾기 </span>
-                    <span onClick={clickJoin}>회원가입</span>
+                    <span className='sty01_btn' >비밀번호 찾기</span>
+                    <span onClick={clickJoin} className='sty01_btn'>회원가입</span>
                 </div>
 
             
