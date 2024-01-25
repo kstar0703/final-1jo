@@ -162,6 +162,17 @@ const VoteList = () => {
       fetch("http://127.0.0.1:8888/app/admin/managerSelect")
       .then(resp =>(resp.json()))
       .then((data)=>{setManagerVoList(data);})
+    } 
+
+    const handleResetBtn = () => {
+      titleRef.current.value = '';
+      managerRef.current.value = '';
+      enrollsRef.current.value = '';
+      enrolleRef.current.value = '';
+      deadsRes.current.value = '';
+      deadeRes.current.value = '';
+      delRes.current.value = '';          
+      acceptRes.current.value = '';
     }
 
     return (
@@ -241,7 +252,7 @@ const VoteList = () => {
 
             <div className="btn_div">
               <div>
-                <button className="sty01_btn">초기화</button>
+                <button onClick={handleResetBtn} className="sty01_btn">초기화</button>
               </div>
               <div>
                 <button onClick={handleSearch} className="sty02_btn">
@@ -303,7 +314,7 @@ const VoteList = () => {
                       <td>{vo.enrollDate}</td>
                       <td>{vo.deadlineDate}</td>
                       <td>{vo.delYn === "N" ? "공개" : "비공개"}</td>
-                      <td>{vo.acceptYn === "N" ? "마감" : "진행"}</td>
+                      <td>{vo.acceptYn === "N" ? "마감" : vo.acceptYn === 'R' ? "대기" : "진행"}</td>
                     </tr>
                   ))
                 )}

@@ -95,7 +95,7 @@ const VoteWrite = () => {
             [
                 ...itemArr, {
                     "itemName" : itemVo,
-                    "itemNo" : itemArr.length+1,
+                    "voteOrder" : itemArr.length+1,
                 }
             ]
 
@@ -145,6 +145,7 @@ const VoteWrite = () => {
                                     <td>
                                         <div class="form_box">
                                             <select ref={acceptYn} class="sel_box">
+                                                <option value="R">대기</option>
                                                 <option value="Y">진행</option>
                                                 <option value="N">마감</option>
                                             </select>
@@ -184,7 +185,7 @@ const VoteWrite = () => {
                                   itemArr.map( (a,index)=>
                                     (
                                         <tr key={index}>
-                                            <th scope="row">{a.itemNo}</th>
+                                            <th scope="row">{a.voteOrder}</th>
                                             <td colSpan="3">{a.itemName}</td>
                                         </tr> 
 

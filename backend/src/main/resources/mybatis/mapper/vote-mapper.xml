@@ -144,6 +144,10 @@
 		SET
 			DEL_YN = #{delYn}
 			,ACCEPT_YN = #{acceptYn}
+			,MODIFY_DATE = SYSDATE
+		<if test="deadlineDate != null and deadlineDate.length() > 0">
+			,DEADLINE_DATE = #{deadlineDate}
+		</if>
 		<if test="title != null">
 	    	,TITLE = #{title}				
 		</if>
@@ -153,17 +157,7 @@
 		WHERE 
     		VOTE_NO = #{voteNo}
 	</update>
-
-	<!-- 게시글 삭제 -->
-	<update id="delete">
-		UPDATE 
-		    VOTE_BOARD 
-		SET
-		    DEL_YN = 'Y'
-		WHERE 
-		    VOTE_NO = #{voteNo}
-	</update>
-
+	
 	<!-- 게시글 검색 -->	
 	<select id="select" resultType="VoteVo">
 		SELECT 
@@ -219,7 +213,7 @@
 		SELECT 
 		    VOTE_NO
 		    ,ITEM_NAME
-		    ,COUNT(*)
+		    ,COUNT(*) AS COUNT
 		    ,VOTE_ORDER
 		FROM 
 		    (SELECT 
@@ -262,26 +256,26 @@
 	</insert>
 	
 	<!-- 투표 조회 -->
-	<select id="voteCheck" resultType="VoteVo">
-		SELECT 
-			VOTE_NO
-		    ,ITEM_NAME
-		    ,COUNT(*)
-		    ,VOTE_ORDER
-		FROM 
-		    (SELECT 
-		        R.REPLY_NO, R.VOTE_NO, R.ITEM_NO, ITEM_NAME, VOTE_ORDER
-		    FROM 
-		        VOTE_REPLY R
-		    JOIN
-		        VOTE_ITEM I
-		    ON
-		        R.ITEM_NO = I.ITEM_NO)
-		WHERE 
-		    VOTE_NO = #{voteNo}
-		GROUP BY
-		    VOTE_NO, ITEM_NO, ITEM_NAME, VOTE_ORDER		
-	</select>
+<!-- 	<select id="voteCheck" resultType="VoteVo"> -->
+<!-- 		SELECT  -->
+<!-- 			VOTE_NO -->
+<!-- 		    ,ITEM_NAME -->
+<!-- 		    ,COUNT(*) -->
+<!-- 		    ,VOTE_ORDER -->
+<!-- 		FROM  -->
+<!-- 		    (SELECT  -->
+<!-- 		        R.REPLY_NO, R.VOTE_NO, R.ITEM_NO, ITEM_NAME, VOTE_ORDER -->
+<!-- 		    FROM  -->
+<!-- 		        VOTE_REPLY R -->
+<!-- 		    JOIN -->
+<!-- 		        VOTE_ITEM I -->
+<!-- 		    ON -->
+<!-- 		        R.ITEM_NO = I.ITEM_NO) -->
+<!-- 		WHERE  -->
+<!-- 		    VOTE_NO = #{voteNo} -->
+<!-- 		GROUP BY -->
+<!-- 		    VOTE_NO, ITEM_NO, ITEM_NAME, VOTE_ORDER		 -->
+<!-- 	</select> -->
 
 	<!-- 투표하기 -->
 	<insert id="voting">
@@ -336,6 +330,7 @@
 		    ,ENROLL_DATE
 		    ,MODIFY_DATE
 		    ,DEADLINE_DATE
+		    ,DEL_YN
 		    ,ACCEPT_YN
 		    ,ID
 		    ,ITEM_NO
@@ -435,30 +430,30 @@
 		ON
 		    H.VOTE_NO = B.VOTE_NO
 		WHERE
-			H.VOTE_NO = #{voteNo}		
+			H.VOTE_NO = #{voteNo}
 	</select>
 	
 	<!-- 관리자 투표 전체 결과 이력 조회  -->
-	<select id="adminHistory" resultType="VoteVo">
-		SELECT 
-		    VOTE_HISTORY_NO
-		    ,MANAGER_NO
-		    ,TITLE
-		    ,CONTENT
-		    ,ENROLL_DATE
-		    ,DEADLINE_DATE
-		    ,ACCEPT_YN
-		    ,H.VOTE_NO
-		    ,VOTE_NAME
-		    ,VOTE_COUNT
-		    ,VOTE_ORDER
-		FROM
-		    VOTE_HISTORY H
-		JOIN
-		    VOTE_BOARD B
-		ON
-		    H.VOTE_NO = B.VOTE_NO		
-	</select>
+<!-- 	<select id="adminHistory" resultType="VoteVo"> -->
+<!-- 		SELECT  -->
+<!-- 		    VOTE_HISTORY_NO -->
+<!-- 		    ,MANAGER_NO -->
+<!-- 		    ,TITLE -->
+<!-- 		    ,CONTENT -->
+<!-- 		    ,ENROLL_DATE -->
+<!-- 		    ,DEADLINE_DATE -->
+<!-- 		    ,ACCEPT_YN -->
+<!-- 		    ,H.VOTE_NO -->
+<!-- 		    ,VOTE_NAME -->
+<!-- 		    ,VOTE_COUNT -->
+<!-- 		    ,VOTE_ORDER -->
+<!-- 		FROM -->
+<!-- 		    VOTE_HISTORY H -->
+<!-- 		JOIN -->
+<!-- 		    VOTE_BOARD B -->
+<!-- 		ON -->
+<!-- 		    H.VOTE_NO = B.VOTE_NO		 -->
+<!-- 	</select> -->
 	
 	<!-- 조회수 증가 -->
 	<update id="increaseHit">
@@ -468,4 +463,23 @@
 			HIT = HIT + 1
 		WHERE VOTE_NO = #{voteNo}
 	</update>
+	
+	<!-- 페이징 전체 갯수 조회 -->
+	<select id="pageCnt" resultType="int">
+		SELECT 
+    		COUNT(*)
+		FROM
+		    VOTE_BOARD
+		WHERE
+			DEL_YN = 'N'
+		<if test="title != null">
+			AND
+			    TITLE like '%${title}%'
+		</if>
+		<if test="title != null">
+			OR 
+			    CONTENT like '%${title}%'
+		</if>
+	</select>
+	
 </mapper>

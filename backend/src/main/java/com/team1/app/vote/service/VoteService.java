@@ -7,6 +7,7 @@ import java.util.*;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
+import com.team1.app.util.vo.PageVo;
 import com.team1.app.vote.dao.VoteDao;
 import com.team1.app.vote.vo.VoteVo;
 
@@ -19,8 +20,8 @@ public class VoteService {
 	private final VoteDao dao;
 	private final SqlSessionTemplate sst;
 	
-	public List<VoteVo> list(VoteVo vo){
-		return dao.list(sst,vo);
+	public List<VoteVo> list(VoteVo vo, PageVo pageVo){
+		return dao.list(sst,vo,pageVo);
 	}
 
 	public VoteVo detail(VoteVo vo) throws ParseException {
@@ -32,7 +33,7 @@ public class VoteService {
 		if(voList.get(0).getItemNo().length() > 0) {
 			for (VoteVo vVo : voList) {
 				voList.get(0).getVoList().add(
-						new VoteVo(vVo.getVoteNo(),vVo.getVoteOrder(),vVo.getItemNo(),vVo.getItemName(),vVo.getVoteType()) 
+						new VoteVo(vVo.getVoteNo(),vVo.getVoteOrder(),vVo.getItemNo(),vVo.getItemName()) 
 				);
 			}
 		}
@@ -88,10 +89,6 @@ public class VoteService {
 		return result;
 	}
 
-	public int delete(String no) {
-		return dao.delete(sst,no);
-	}
-
 	public List<VoteVo> select(VoteVo vo) {
 		return dao.select(sst,vo);
 	}
@@ -131,9 +128,9 @@ public class VoteService {
 		return result;
 	}
 
-	public List<VoteVo> voteCheck(String no) {
-		return dao.voteCheck(sst,no);
-	}
+//	public List<VoteVo> voteCheck(String no) {
+//		return dao.voteCheck(sst,no);
+//	}
 
 	public int voting(VoteVo vo) {
 		int result = dao.voting(sst,vo);
@@ -150,14 +147,37 @@ public class VoteService {
 	public VoteVo adminDetail(VoteVo vo) {
 		
 		List<VoteVo> voList = dao.adminDetailBoard(sst,vo);
+		if(voList == null) {
+			throw new IllegalStateException();
+		}
 		
 		//투표항목이 있다면 voList 0번째 List 객체안에 투표 정보 넣기
 		if(voList.get(0).getItemNo().length() >0) {
 			for (VoteVo vVo : voList) {
 				voList.get(0).getVoList().add(
-					new VoteVo(vVo.getVoteNo(),vVo.getVoteOrder(),vVo.getItemNo(),vVo.getItemName(),vVo.getVoteType())
+					new VoteVo(vVo.getVoteNo(),vVo.getVoteOrder(),vVo.getItemNo(),vVo.getItemName())
 				);
 			}
+			
+			List<VoteVo> voCntList = dao.voteEndCountSelect(sst, vo);
+			if(voCntList == null) {
+				throw new IllegalStateException();
+			}
+			//전체 투표 수 합산
+			Integer cnt = 0;
+			for (VoteVo voteVo : voCntList) {
+				cnt = cnt + Integer.parseInt(voteVo.getCount());
+			}
+			
+			//전체 투표 수 삽입
+			voList.get(0).setCount(cnt.toString());
+			//항목별 투표 수 삽입
+			voList.get(0).setVoCntList(voCntList);
+			
+			//마감된 투표 결과 있으면 담기
+			List<VoteVo> histryVo =dao.history(sst, vo);
+			voList.get(0).setVoHistory(histryVo);
+
 		}
 		
 		return voList.get(0);
@@ -167,12 +187,17 @@ public class VoteService {
 		return dao.adminSelect(sst,vo);
 	}
 
-	public List<VoteVo> history(VoteVo vo) {
-		return dao.history(sst,vo);
+	//페이지 용 전체 갯수 count
+	public int pageCnt(VoteVo vo) {
+		return dao.pageCnt(sst,vo);
 	}
 
-	public List<VoteVo> adminHistory() {
-		return dao.adminHistory(sst);
-	}
+//	public List<VoteVo> history(VoteVo vo) {
+//		return dao.history(sst,vo);
+//	}
+
+//	public List<VoteVo> adminHistory() {
+//		return dao.adminHistory(sst);
+//	}
 	
 }
