@@ -76,7 +76,7 @@ const AdminLogin = () => {
                     alert(data.msg);
                     sessionStorage.setItem("loginMember", JSON.stringify(data.loginManger));
                   
-                    navigate("/admin/")
+                    navigate("/admin/home")
                     
                     
                 }else{

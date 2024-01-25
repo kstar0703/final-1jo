@@ -21,16 +21,7 @@ const StyledMainDiv = styled.div`
 `;
 
 const Main = () => {
-   const navigate =useNavigate()
-
-    useEffect(
-        ()=>{
-            if(!sessionStorage.getItem("loginMember")){
-                navigate("/")
-            }
-        }
-    ,[])
-
+  
 
     return (
         <StyledMainDiv>
