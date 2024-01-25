@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class ManagementFeeController {
 	private final ManagementFeeService service;
 	
 	//세대별 관리비 조회(세대정보, 기간)
-	@GetMapping("list")
+	@PostMapping("list")
 	public Map<String, Object> listByUnitAndPeriod(@RequestBody ManagementFeeVo vo){
 		List<ManagementFeeVo> managementVoList =  service.listByUnitAndPeriod(vo);
 		Map<String, Object> map = new HashMap<String, Object>();

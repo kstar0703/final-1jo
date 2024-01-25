@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const StyledManagementListDiv = styled.div`
@@ -52,6 +52,23 @@ const StyledManagementListDiv = styled.div`
 `;
 
 const ManagementList = () => {
+    const [managementVoList, setManagementVoList] = useState({
+        // unitNo: JSON.parse(sessionStorage.getItem("loginMemberVo")).unitNo
+        unitNo: 1
+    });
+    const loadManagementFeeVoList = ()=>{
+        fetch("http://127.0.0.1:8888/app/management/list", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(managementVoList)
+        })
+        .then(resp=>resp.json())
+        .then(data=>{
+            setManagementVoList(data.managementVoList);
+            
+        })
+    }
+    loadManagementFeeVoList();
     return (
         <StyledManagementListDiv>
             <div className='wrap'>
@@ -59,13 +76,14 @@ const ManagementList = () => {
                     <div className='pageTitle mb30'><h1>세대 관리비 조회</h1></div>
                 </div>
                 <div className=''>
+                {managementVoList.map(vo=>
                     <div class="ad_detail_box">
                         <div className='tbl_box mt30 mb10'>
                             <table>
                                 <tbody>
                                     <tr>
                                         <th className='bcc_gray'>세대정보</th>
-                                        <td>101동 108호</td>
+                                        <td>{vo.dong}동 {vo.ho}호</td>
                                         <th className='bcc_gray'>세대주</th>
                                         <td>박땡땡</td>
                                         <th className='bcc_gray'>이메일</th>
@@ -142,8 +160,8 @@ const ManagementList = () => {
                             </div>
                         </div>
                     
-                   
                     </div>
+                            )}
                 </div>
             </div>
             
