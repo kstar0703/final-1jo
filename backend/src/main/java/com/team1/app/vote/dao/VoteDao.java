@@ -19,9 +19,7 @@ public class VoteDao {
 	}
 	
 	public VoteVo votingYn(SqlSessionTemplate sst, VoteVo vo) {
-		
-		VoteVo vvv = sst.selectOne("VoteMapper.votingYn",vo);
-		return vvv;
+		return sst.selectOne("VoteMapper.votingYn",vo);
 	}
 
 //	public List<VoteVo> detailItem(SqlSessionTemplate sst, VoteVo vo) {
@@ -33,18 +31,11 @@ public class VoteDao {
 	}
 
 	public int insertItem(SqlSessionTemplate sst, List<VoteVo> voList) {
-		for (VoteVo voteVo : voList) {
-			System.out.println(voteVo);
-		}
 		return sst.insert("VoteMapper.insertItem",voList);
 	}
 
 	public int edit(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.update("VoteMapper.edit",vo);
-	}
-
-	public int delete(SqlSessionTemplate sst, String no) {
-		return sst.update("VoteMapper.delete",no);
 	}
 
 	public List<VoteVo> select(SqlSessionTemplate sst, VoteVo vo) {
@@ -54,7 +45,8 @@ public class VoteDao {
 	public int voteCount(SqlSessionTemplate sst, String no) {
 		return sst.selectOne("VoteMapper.voteCount",no);
 	}
-
+	
+	//voteEnd
 	public int voteEndDayInsert(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.update("VoteMapper.voteEndDayInsert",vo);
 	}
@@ -66,10 +58,11 @@ public class VoteDao {
 	public int voteEndFinishInsert(SqlSessionTemplate sst, List<VoteVo> voEnd) {
 		return sst.insert("VoteMapper.voteEndFinishInsert",voEnd);
 	}
-
-	public List<VoteVo> voteCheck(SqlSessionTemplate sst, String no) {
-		return sst.selectList("VoteMapper.voteCheck",no);
-	}
+	/*****************************************************************************/
+	
+//	public List<VoteVo> voteCheck(SqlSessionTemplate sst, String no) {
+//		return sst.selectList("VoteMapper.voteCheck",no);
+//	}
 
 	public int voting(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.insert("VoteMapper.voting",vo);
@@ -95,12 +88,16 @@ public class VoteDao {
 		return sst.selectList("VoteMapper.history",vo);
 	}
 
-	public List<VoteVo> adminHistory(SqlSessionTemplate sst) {
-		return sst.selectList("VoteMapper.adminHistory");
-	}
+//	public List<VoteVo> adminHistory(SqlSessionTemplate sst) {
+//		return sst.selectList("VoteMapper.adminHistory");
+//	}
 
 	public int increaseHit(SqlSessionTemplate sst, VoteVo vo) {
 		return sst.update("VoteMapper.increaseHit",vo);
+	}
+
+	public int pageCnt(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.selectOne("VoteMapper.pageCnt",vo);
 	}
 
 

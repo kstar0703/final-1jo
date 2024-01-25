@@ -30,7 +30,6 @@ public class VoteVo {
 	                                                
 	private String itemNo;			//투표 항목 번호     
 	private String itemName;		//투표 항목 명      
-	private String voteType;		//항목 유형        
 	                                                
 	private String replyNo;			//응답 번호        
 	private String prtcNo;			//응답자 번호       
@@ -48,14 +47,15 @@ public class VoteVo {
 	
 	private List<VoteVo> voList = new ArrayList<>();
 	private List<VoteVo> voHistory = new ArrayList<>();
+	private List<VoteVo> voCntList = new ArrayList<>();
 	
 	
-	public VoteVo(String voteNo, String voteOrder, String itemNo, String itemName, String voteType) {
+	
+	public VoteVo(String voteNo, String voteOrder, String itemNo, String itemName) {
 		this.voteNo = voteNo;
 		this.voteOrder = voteOrder;
 		this.itemNo = itemNo;
 		this.itemName = itemName;
-		this.voteType = voteType;
 	}
 
 	public VoteVo() {
