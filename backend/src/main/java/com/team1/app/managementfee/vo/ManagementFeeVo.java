@@ -18,4 +18,9 @@ public class ManagementFeeVo {
 	
 	private String startDate;
 	private String endDate;
+	
+	private String name;
+    private String ownerYn;
+    private String email;
+	
 }
