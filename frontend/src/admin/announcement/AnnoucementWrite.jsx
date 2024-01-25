@@ -138,7 +138,7 @@ const AnnoucementWrite = () => {
         patcherble= false;
 
         const fd = new FormData();
-        fd.append("announcementNo", dataVo.announcementNo);
+        
         fd.append("title" , dataVo.title);
         fd.append("content",dataVo.content)
        fd.append("managerNo" , loginMember.managerNo);

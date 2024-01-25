@@ -176,8 +176,8 @@ const Home = () => {
             {/* 1 동 호수 */}
             <div>
                <div> 
-               <span>{loginMember.name}님</span>               
-                <span>덕편한세상 {' ' + loginMember.dong}동{loginMember.ho}호</span>
+               <span>{loginMember?.name}님</span>               
+                <span>덕편한세상 {' ' + loginMember?.dong}동{loginMember?.ho}호</span>
                </div>
 
                 <div>
@@ -201,13 +201,13 @@ const Home = () => {
                     <div>
                         <button>세대원수</button>
                         
-                        <span>{loginMember.unitCount} 명</span>
+                        <span>{loginMember?.unitCount} 명</span>
                     </div>
 
                     <div>
                         <button>방문예약</button>
                         <span>잔여시간</span>
-                        {unitInfo ? <h3>{Math.floor(unitInfo.vehTime  / 60)  } 시간{unitInfo.vehTime%60}분</h3> : ''}
+                        {unitInfo ? <h3>{Math.floor(unitInfo?.vehTime  / 60)  } 시간{unitInfo?.vehTime%60}분</h3> : ''}
                     </div>        
                 </div>
 

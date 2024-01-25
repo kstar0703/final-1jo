@@ -234,6 +234,20 @@ public class MemberService {
 		
 		return loginMember;
 	}
+	// 이메일 중복검사
+	public Map<String, String> emailCheck(Map<String, String> map) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+
+		resultMap.put("status","good");
+		
+		int result = dao.emailCheck(sst,map);
+		
+		if(result>0) {
+			resultMap.put("status","bad");
+		}
+		
+		return resultMap;
+	}
 	
 	
 	

@@ -29,7 +29,7 @@ const Main = () => {
     return (
         <StyledMainDiv>
             <Routes>
-                <Route path='/' element={<h1>관리자 메인화면</h1>} />
+                <Route path='/home' element={<h1>관리자 메인화면</h1>} />
                 <Route path='/member/*' element={<MemberMain/>}/>
                 <Route path='/announcement/*' element={<AnnouncementMain/>}/>
                 <Route path='/vote/*' element={<VoteMain />}/>
