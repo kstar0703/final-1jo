@@ -12,10 +12,10 @@ const StyledLayoutDiv = styled.div`
 const Layout = () => {
 
     const navigate =useNavigate()
-
+    const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
     useEffect(
         ()=>{
-            if(!sessionStorage.getItem("loginMember") || !sessionStorage.getItem("loginMember").memberNo)
+            if(!loginMember || !(loginMember?.memberNo))
             {   alert('로그인 상태가 아닙니다')
                 navigate("/")
             }

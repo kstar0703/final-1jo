@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRef, useState } from 'react';
+import { useRef, useState ,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const StyledLoginDiv = styled.div`
@@ -23,6 +23,18 @@ const Login = () => {
 
     // 네비게이트
    const navigate = useNavigate();
+   const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
+   
+    useEffect(
+        ()=>{
+            if(loginMember && loginMember?.memberNo)
+            {   alert('잘못된 접근입니다')
+                navigate("/member/home")
+            }
+        }
+    ,[])
+
+  
     //로긴멤버
     let loginMemberVo = {};
   

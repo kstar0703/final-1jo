@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useState } from 'react';
+import { useRef, useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -26,6 +26,17 @@ const StyledLoginDiv = styled.div`
 const AdminLogin = () => {
 
     const navigate = useNavigate();
+
+
+    const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
+    useEffect(
+      ()=>{
+          if(loginMember && loginMember?.managerNo)
+          {   alert('잘못된 접근입니다')
+              navigate("/admin/home")
+          }
+      }
+  ,[])
 
   let loginMemberVo = {}
   

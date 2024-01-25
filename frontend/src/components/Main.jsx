@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import VoteMain from './vote/VoteMain';
 import BoardMain from './board/BoardMain';

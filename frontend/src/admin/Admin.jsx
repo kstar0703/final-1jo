@@ -5,9 +5,7 @@ import {  useNavigate } from 'react-router-dom';
 
 const Admin = () => {
   const navigate =  useNavigate()
-    const loginMember = JSON.parse(sessionStorage.getItem("loginMember"))
 
-    
   useEffect(() => {
     const loginMember = JSON.parse(sessionStorage.getItem("loginMember"));
 
