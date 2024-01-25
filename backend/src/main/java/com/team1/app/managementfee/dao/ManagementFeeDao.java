@@ -13,7 +13,7 @@ public class ManagementFeeDao {
 	//세대별 관리비 조회(세대정보, 기간)
 	public List<ManagementFeeVo> listByUnitAndPeriod(SqlSessionTemplate sst, ManagementFeeVo vo) {
 		
-		List<ManagementFeeVo> list = sst.selectList("ManagementFeeMapper.listByUnitAndPeriod", vo);
+		List<ManagementFeeVo> list = sst.selectList("ManagementFeeMapper.listByUnitForYear", vo);
 		System.out.println(list);
 		return list;
 	}
