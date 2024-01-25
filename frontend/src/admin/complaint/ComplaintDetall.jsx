@@ -20,15 +20,14 @@ const ComplaintDetall = () => {
   const loginMember = JSON.parse(sessionStorage.getItem("loginMember")).managerNo;
   //useState 설정
   const [compVo, setCompVo] = useState([]);
-  const [managerVoList, setManagerVoList] = useState([]);
   const managerNo = useRef();
   const [update, setUpdate] = useState();
 
-  //textArear 자동 스크롤
-  const textRef = useRef();
-  const handleResizeHeight = useCallback(() => {
-    textRef.current.style.height = textRef.current.scrollHeight + "px";
-  }, []);
+  //textArear 자동 스크롤 필요 없으면 지우기
+  // const textRef = useRef();
+  // const handleResizeHeight = useCallback(() => {
+  //   textRef.current.style.height = textRef.current.scrollHeight + "px";
+  // }, []);
 
 
   //로딩 시 값 불러오기
@@ -43,7 +42,6 @@ const ComplaintDetall = () => {
   };
   useEffect(() => {
     loadCompVo();
-    managerList();
   }, [update]);
 
   //답변수정 모달
@@ -81,14 +79,6 @@ const ComplaintDetall = () => {
         } else {
           alert("에러발생");
         }
-      });
-  };
-
-  const managerList = () => {
-    fetch("http://127.0.0.1:8888/app/admin/managerSelect")
-      .then((resp) => resp.json())
-      .then((data) => {
-        setManagerVoList(data);
       });
   };
 
