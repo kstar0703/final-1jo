@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledBoardDetailDiv = styled.div`
@@ -29,6 +29,7 @@ const BoardDetail = () => {
     useEffect(()=>{
         loadBoardVo();
     }, [boardNo]);
+    const navigator = useNavigate();
     return (
         <StyledBoardDetailDiv>
             <div className='ad_wrap'>
@@ -57,7 +58,7 @@ const BoardDetail = () => {
                                     <th scope="row"><label form=''>등록일</label></th>
                                     <td>{boardVo.enrollDate}</td>
                                     <th scope="row"><label form=''>수정일</label></th>
-                                    <td>{boardVo.modifyDate}</td>
+                                    <td>{boardVo.modifyDate?boardVo.modifyDate:"-"}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form=''>삭제여부</label></th>
@@ -67,7 +68,7 @@ const BoardDetail = () => {
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form="">작성자명</label></th>
-                                    <td>{boardVo.name} / ({boardVo.phone})</td>
+                                    <td>{boardVo.name} ( {boardVo.phone} )</td>
                                     <th scope="row"><label form="">세대정보</label></th>
                                     <td>{boardVo.dong}동 {boardVo.ho}호</td>
                                 </tr>
@@ -85,7 +86,7 @@ const BoardDetail = () => {
                                 <tr>
                                     <td colspan="4">
                                     <span>
-                                        <td>{boardVo.content}</td>
+                                        {boardVo.content}
                                     </span>
                                     
                                     </td>
@@ -100,13 +101,13 @@ const BoardDetail = () => {
                     </div>
                     <div class="ad_btn_div mt20">
                         <div>
-                            <button className='sty01_btn' >목록가기</button>
+                            <button className='sty01_btn' onClick={()=>{navigator("/admin/board/list");}} >목록가기</button>
                         </div>
                         <div>
                             <button className='sty01_btn' >규제</button>
                         </div>
                         <div>
-                            <button className='sty02_btn' >본문확인</button>
+                            <button className='sty02_btn' onClick={()=>{navigator(`/board/detail/${boardVo.boardNo}`);}}>본문확인</button>
                         </div>
                     </div>
 

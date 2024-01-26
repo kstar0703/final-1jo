@@ -230,9 +230,7 @@ const FacilityEdit = () => {
 
                 </div>
 
-                <div>
-                    <FacilityNoticeList />
-                </div>
+               
 
 
 

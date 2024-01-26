@@ -41,7 +41,19 @@ const FacilityHistoryList = () => {
         loadFacilityHistoryVoList();
     }, []);
     const handleDelete = (vo)=>{
-
+        fetch("http://127.0.0.1:8888/app/facility/cancel", {
+            method: "PUT",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(cancelVo)
+        })
+        .then(resp=>resp.json())
+        .then(data=>{
+            if(data.msg === 1){
+                alert("취소성공");
+            }else{
+                alert("취소실패");
+            }
+        })
     }
 
     return (
