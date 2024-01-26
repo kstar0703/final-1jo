@@ -56,6 +56,11 @@ const StyledJoinDiv = styled.div`
     .sty01_span:hover{
     background-color: #ccc;   
 }
+
+.input-unit{
+  
+  width: 300px !important
+}
 `;
 
 const Join = () => {
@@ -131,6 +136,7 @@ const Join = () => {
              duplicationInput.current.disabled = true;
              duplicationInput.current.style.backgroundColor = 'lightgrey';
               setduplication(data.status)
+             
           }else{    
               setduplication(data.status)
             return;
@@ -159,10 +165,6 @@ const Join = () => {
 
      let pwdCheck =useRef(false)
      let pwdCheckCheck = useRef(false)
-      
-     
-
-
 
       let emailRef = useRef()
       let emailCheckRef = useRef()
@@ -173,6 +175,8 @@ const Join = () => {
       let genderRef = useRef()
 
       let unitNoRef = useRef()
+
+      let arrayRef = useRef([name,pwdRef,pwdCheckRef,emailRef,brithRef])
       
       
 
@@ -188,10 +192,10 @@ const Join = () => {
       let patcherbleJoin = true
       //이메일
 
-      const [emailState, setEmailState] = useState();
+      const [emailState, setEmailState] = useState(false);
       const [authCode, setAuthCode] = useState('');
       const [authCodeDiv, setAuthCodeDiv] =useState(false)
- const [emailStatus,setEmailStatus] = useState(true);
+      const [emailStatus,setEmailStatus] = useState(true);
       // 이메일 중복확인
       const emailCheck = ()=>{
 
@@ -224,8 +228,9 @@ const Join = () => {
           if(data.status==="good"){
             alert('이메일 중복확인 완료')
             emailRef.current.disabled = true;
-              setEmailState(!emailState)
-          }else{    
+              setEmailState(true)
+          }else{  
+            alert('중복된 이메일입니다')  
             return;
           }
       })
@@ -359,11 +364,12 @@ const Join = () => {
       
       
        const ModalOpenUnit = () =>{
-          
+          setIsOpen(true)
+        
       }
 
       const closeModal = () =>{
-
+          setIsOpen(false)
       }
 
       
@@ -372,9 +378,60 @@ const Join = () => {
     
       //제출--------------------------------------------------------------------------------
       const ClickJoin = (e) => {
+
+        const hasEmptyValue = arrayRef.current.some((item) => {
+          if (!item?.current?.value) {
+            alert("필수 값을 채워주세요");
+            item.current?.focus();
+            return true; // 배열 순회 중단
+          }
+          return false; // 계속해서 다음 필드 검사
+        });
+      
+        if (hasEmptyValue) {
+        
+          return;
+        }
+
+        if(duplication !== 'good'){
+          duplicationInput.current.focus()
+          alert('중복확인을 완료하세요')
+          return 
+        }
+
+        if(!emailState){
+          emailRef?.current?.focus()
+          alert('이메일 중복검사를 완료하세요')
+          return
+        }
+
+        if(emailStatus){
+          emailCheckRef?.current?.focus()
+          alert('이메일 인증번호 확인을 완료하세요')
+        }
+
+        if(!pwdCheck?.current){
+          alert('비밀번호를 확인 하세요')
+          pwdRef?.current?.focus()
+        }
+
+        if(!pwdCheckCheck.current){
+          pwdCheckRef?.current?.focus()
+          alert('비밀번호가 일치하지 않습니다')
+        }
+
+
+        if(JoinMemberInfo)
+
+        
+
+      
+          
+
+       
         
         if(!patcherbleJoin){return;}
-
+        
       patcherbleJoin =false;
 
       fetch("http://127.0.0.1:8888/app/member/join",{
@@ -390,7 +447,8 @@ const Join = () => {
           if(data.status==="good"){
               alert('회원가입성공!')
               navigate('/')
-          }else{    
+          }else {    
+            alert(data.msg)
             return;
           }
       })
@@ -455,7 +513,7 @@ const Join = () => {
               
              <div>
                 <img src="\resources\person.svg" alt="" />
-                <input ref={emailCheckRef} useRef  placeholder='인증번호를 입력하세요' onChange={onChange}/>
+                <input ref={emailCheckRef} useRef  placeholder='인증번호를 입력하세요' />
                 
                 {emailStatus ? 
                 <button className='sty02_btn' onClick={checkemailNum}> 인증번호 확인 </button>
@@ -499,8 +557,9 @@ const Join = () => {
             </div>
             {/* 11 */}
             <div>
-                <input ref={unitNoRef} style={{display:'none'}} name='unitNo' onChange={onchange} ></input>
-                <span></span>
+              <span>세대 정보 : </span>
+                <input className='input-unit' ref={unitNoRef} style={{display:'none'}} name='unitNo' disabled ={true} onChange={onchange} ></input>
+             
             </div>
             
             {/* 12 */}
@@ -523,7 +582,7 @@ const Join = () => {
         </div>
         
         
-        <UnitSearchModal> </UnitSearchModal>
+        <UnitSearchModal closeModal={closeModal} isOpen={isOpen} setInfo={setInfo} unitNoRef={unitNoRef} > </UnitSearchModal>
         
         </StyledJoinDiv>
     );

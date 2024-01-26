@@ -1,13 +1,16 @@
 package com.team1.app.member.service;
 
 import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties.ContainerType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -15,11 +18,14 @@ import com.team1.app.member.dao.MemberDao;
 import com.team1.app.member.util.MemberUtil;
 import com.team1.app.member.vo.MemberVo;
 import com.team1.app.unit.vo.UnitVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 	
 	private final MemberDao dao;
@@ -249,8 +255,74 @@ public class MemberService {
 		return resultMap;
 	}
 	
-	
-	
-	
+	// 유닛검샘 카운트
+	public int countUnit(MemberVo vo) {
 
+		List<MemberVo> list	= dao.countUnit(sst,vo);
+		
+		
+		log.info("들어온 리스트 ?? {} ::: ",list);
+		
+		 
+		Map  resultMap = new HashMap();
+		
+		for (MemberVo memberVo : list) { 
+			resultMap.put(memberVo.getUnitNo(),memberVo);
+		}
+		
+		List<MemberVo> resultList= new ArrayList<MemberVo>(resultMap.values());
+		
+		int result = resultList.size();
+		
+		return result; 
+	}
+	
+	// 유닛검새
+	public List<MemberVo> Unitlist(MemberVo vo, PageVo pvo) {
+		
+		List<MemberVo> list	= dao.countUnit(sst,vo);
+		
+		if(list.size() ==0) {
+			return new ArrayList<MemberVo>();
+		}
+		
+		Map <String,MemberVo> resultMap = new LinkedHashMap<String, MemberVo>();
+		
+		for (MemberVo memberVo : list) { 
+			log.info("찍힌 번호 ::: {} ", memberVo.getUnitNo());
+			resultMap.put(memberVo.getUnitNo(),memberVo);
+		}
+		
+		List<MemberVo> originList= new ArrayList<MemberVo>(resultMap.values());
+		
+		
+		for (MemberVo memberVo : originList) {
+			log.info("찍힌 번호 ::: {} ", memberVo.getUnitNo());
+		}
+		
+		
+		log.info("유닛검색 찍힌 리스트 사이즈 ::: {}", originList );
+		log.info("유닛검색 찍힌 넘어온 pvo ::: {}", pvo );
+		
+		
+		
+		
+		
+		// 시작위치는 큐런트 페이지  private int boardLimit;		// 한 페이지에 보여줄 게시글 갯수
+		
+		int offset = (pvo.getCurrentPage()-1) * pvo.getBoardLimit();
+		int limit =  offset + pvo.getBoardLimit();
+	
+	
+		if(limit > originList.size()){
+			limit =   originList.size();
+		}
+		
+		
+		List<MemberVo> 	pageList = new ArrayList<>(originList.subList(offset, limit));
+		
+		
+			
+		return pageList;
+	}
 }

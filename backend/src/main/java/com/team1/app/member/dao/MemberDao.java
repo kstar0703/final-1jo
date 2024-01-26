@@ -55,6 +55,12 @@ public class MemberDao {
 	
 		return sst.selectOne("MemberMapper.emailCheck",map);
 	}
+
+	// 유닛검색 카운트
+	public List<MemberVo> countUnit(SqlSessionTemplate sst, MemberVo vo) {
+		
+		return sst.selectList("MemberMapper.countUnit",vo);
+	}
 	
 	
 	
