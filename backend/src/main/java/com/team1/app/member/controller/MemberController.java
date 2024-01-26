@@ -2,6 +2,7 @@ package com.team1.app.member.controller;
 
 import java.lang.reflect.Member;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -20,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.manager.Service.ManagerService;
 import com.team1.app.member.service.MemberService;
 import com.team1.app.member.vo.MemberVo;
+import com.team1.app.member.vo.RequestDto;
 import com.team1.app.unit.vo.UnitVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -184,6 +188,38 @@ public class MemberController {
             
             return map;
 		}
+	
+	
+	@PostMapping("findUnit")
+	public Map<String,Object> findUnit(@RequestBody RequestDto requestDto) {
+		
+		MemberVo vo = requestDto.getMemberVo();
+	    PageVo pageVo = requestDto.getPageVo();
+
+			
+			 
+			log.info ( "들어온 페이지  +  ::: {}", pageVo);
+			log.info ( "들어온 MemberVo  +  ::: {}", vo);
+		
+	
+			
+			Map<String, Object> resultMap =  new HashMap();
+			
+			int cnt = service.countUnit(vo);	
+		
+			//페이지 리밋
+			int pageLimit = 10;	
+			
+			PageVo pvo = new PageVo(cnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
+			
+			List<MemberVo> voList = service.Unitlist(vo,pvo);
+			
+			resultMap.put("status", "good");
+			resultMap.put("msg", "조회 성공");
+
+			resultMap.put("voList", voList);
+			resultMap.put("pageVo",pvo);
+			return resultMap;
     }
-    
+}    
 
