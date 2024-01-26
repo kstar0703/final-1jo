@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import ManagementGraph from './ManagementGraph';
 
 const StyledManagementListDiv = styled.div`
     width: 100%;
@@ -49,6 +50,26 @@ const StyledManagementListDiv = styled.div`
             width: 100%;
         }
     }
+    .red{
+        color: red;
+        font-size: 12px;
+    }
+    .green{
+        color: green;
+        font-size: 12px;
+    }
+    .border_top{
+        border-top: 2.3px solid black !important;
+    }
+    .align_2n3{
+        tbody > tr > td:nth-child(2){
+            text-align: right !important;
+        }
+        tbody > tr > td:nth-child(3){
+            text-align: right !important;
+            padding-right: 30px;
+        }
+        }
 `;
 
 const ManagementList = () => {
@@ -80,6 +101,15 @@ const ManagementList = () => {
         const date = new Date(dataString);
         date.setMonth(date.getMonth() + 1);
         return `${date.getFullYear()}. ${date.getMonth()+1}. 20`;
+    }
+    const differenceCheck = (dataString)=>{
+        if(dataString > 0){
+            return <span className='red'>( ▲ {`${price(dataString)}`})</span>;
+        }else if(dataString < 0){
+            return <span className='green'>(▼ {`${price(dataString)}`})</span>;
+        }else{
+            return `( + ${dataString})`;
+        }
     }
     return (
         <StyledManagementListDiv>
@@ -120,40 +150,45 @@ const ManagementList = () => {
                                     <h2>상세내역</h2>
                                 </div>
 
-                                <table>
+                                <table className='border_top align_2n3'>
                                     <caption>세대 관리비 테이블</caption>
                                     <colgroup>
-                                        <col width="150" />
-                                        <col width="200" />
-                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="80" />
+                                        <col width="50" />
+                                        <col width="180" />
                                     </colgroup>
                                     <thead>
                                         <tr>
                                             <th scope="col"></th>
-                                            <th scope="col">이번달 사용</th>
+                                            <th colSpan="2" scope="col">이번달 사용</th>
                                             <th scope="col">전월달 사용</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>일반관리비</td>
-                                            <td>{managementVoList[0]?.basicFee}원</td>
-                                            <td>{managementVoList[1]?.basicFee}원</td>
+                                            <td>{price(managementVoList[0]?.basicFee)}원</td>
+                                            <td>{differenceCheck(managementVoList[1]?.basicFee-managementVoList[0]?.basicFee)}</td>
+                                            <td>{price(managementVoList[1]?.basicFee)}원</td>
                                         </tr>
                                         <tr>
                                             <td>세대사용료</td>
-                                            <td>{managementVoList[0]?.mainternanceFee}원</td>
-                                            <td>{managementVoList[1]?.mainternanceFee}원</td>
+                                            <td>{price(managementVoList[0]?.mainternanceFee)}원</td>
+                                            <td>{differenceCheck(managementVoList[1]?.mainternanceFee-managementVoList[0]?.mainternanceFee)}</td>
+                                            <td>{price(managementVoList[1]?.mainternanceFee)}원</td>
                                         </tr>
                                         <tr>
                                             <td>커뮤니티사용</td>
-                                            <td>{managementVoList[0]?.facilitiesFee}원</td>
-                                            <td>{managementVoList[1]?.facilitiesFee}원</td>
+                                            <td>{price(managementVoList[0]?.facilitiesFee)}원</td>
+                                            <td>{differenceCheck(managementVoList[1]?.facilitiesFee-managementVoList[0]?.facilitiesFee)}</td>
+                                            <td>{price(managementVoList[1]?.facilitiesFee)}원</td>
                                         </tr>
                                         <tr>
                                             <td>합계</td>
-                                            <td>{managementVoList[0]?.totalAmount}원</td>
-                                            <td>{managementVoList[1]?.totalAmount}원</td>
+                                            <td>{price(managementVoList[0]?.totalAmount)}원 </td>
+                                            <td>{differenceCheck(managementVoList[1]?.totalAmount-managementVoList[0]?.totalAmount)}</td>
+                                            <td>{price(managementVoList[1]?.totalAmount)}원</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -163,15 +198,10 @@ const ManagementList = () => {
                                 <div className="table_title">
                                     <h2>분석</h2>
                                 </div>
+                                    <ManagementGraph managementVoList={managementVoList}/>
                                 <table>
                                     <tr>
-                                        <td>2023</td>
-                                        <td>{managementVoList[2]?.totalAmount}</td>
-                                        <td>{managementVoList[3]?.totalAmount}</td>
-                                        <td>{managementVoList[4]?.totalAmount}</td>
-                                        <td>{managementVoList[5]?.totalAmount}</td>
-                                        <td>{managementVoList[6]?.totalAmount}</td>
-                                        <td>2024</td>
+                                        
                                     </tr>
                                 </table>
                             </div>

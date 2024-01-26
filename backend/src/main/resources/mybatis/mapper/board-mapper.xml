@@ -118,6 +118,7 @@
 		    , HIT
 		    , M.UNIT_NO
 		    , NAME
+		    , PHONE
 		    , DONG
 		    , HO
 		    , IMG_NO
