@@ -65,6 +65,13 @@ public class ParkingDao {
 	public int count(SqlSessionTemplate sst, ParkingVo vo) {
 		return sst.selectOne("ParkingMapper.count",vo);
 	}
+
+	public List<ParkingVo> todayParking(SqlSessionTemplate sst) {
+		int limit = 5;
+		int offset = 0;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sst.selectList("ParkingMapper.todayParking","",rowBounds);
+	}
 	
 
 }

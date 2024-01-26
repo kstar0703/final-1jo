@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.team1.app.announcement.vo.AnnouncementVo;
+import com.team1.app.board.vo.BoardVo;
+import com.team1.app.complaint.vo.ComplaintVo;
 import com.team1.app.manager.Service.ManagerService;
 import com.team1.app.manager.vo.ManagerVo;
 import com.team1.app.member.vo.MemberVo;
@@ -140,7 +144,40 @@ public class ManagerController {
 		return resultMap;
 	}
 	
+	/*** 관리자 메인 페이지 기능 **************/
 	
+	@GetMapping("adminMainPage")
+	public Map<String,Object> adminMainPage() {
+		
+		HashMap<String, Object> map = new HashMap<>();
+		
+		//민원 미처리 조회
+		List<ComplaintVo> complainVoList = service.statuseSelect();
+		map.put("complainVoList", complainVoList);
+		
+		//회원 승인
+		List<MemberVo> memberVoList = service.permissionSelect();
+		map.put("memberVoList", memberVoList);
+		
+		//최근 공지사항 5개
+		List<AnnouncementVo> announcementVoList = service.topSelect();
+		map.put("announcementVoList", announcementVoList);
+		
+		//조회숭 많은 소통 게시판 5개
+		List<BoardVo> boardVoList = service.topHitSelect();
+		map.put("boardVoList", boardVoList);
+		
+		//오늘 방문 차량 조회
+		List<ParkingVo> parkingVoList = service.todayParking();
+		map.put("parkingVoList", parkingVoList);
+		
+		return map;
+		
+	}
+	
+	//회원 권한 승인
+	
+	//데시보드	
 	
 	
 	
