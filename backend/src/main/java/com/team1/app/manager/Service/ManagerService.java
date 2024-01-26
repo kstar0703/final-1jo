@@ -6,10 +6,17 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
+import com.team1.app.announcement.dao.AnnouncementDao;
+import com.team1.app.announcement.vo.AnnouncementVo;
+import com.team1.app.board.dao.BoardDao;
+import com.team1.app.board.vo.BoardVo;
+import com.team1.app.complaint.dao.ComplaintDao;
+import com.team1.app.complaint.vo.ComplaintVo;
 import com.team1.app.manager.dao.ManagerDao;
 import com.team1.app.manager.vo.ManagerVo;
-import com.team1.app.member.service.MemberService;
 import com.team1.app.member.vo.MemberVo;
+import com.team1.app.parking.dao.ParkingDao;
+import com.team1.app.parking.vo.ParkingVo;
 import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +27,10 @@ public class ManagerService {
 	
 	private final SqlSessionTemplate sst;
 	private final ManagerDao dao;
+	private final ComplaintDao daoCompl;
+	private final AnnouncementDao daoAnnoun;
+	private final BoardDao daoBoard;
+	private final ParkingDao daoParking;
 
 	// 로그인
 	public ManagerVo login(ManagerVo vo) {
@@ -50,6 +61,28 @@ public class ManagerService {
 	//관리자 조회
 	public List<ManagerVo> managerSelect() {
 		return dao.managerSelect(sst);
+	}
+
+	//관리자 메인 페이지 기능
+	
+	public List<ComplaintVo> statuseSelect() {
+		return daoCompl.statuseSelect(sst);
+	}
+
+	public List<MemberVo> permissionSelect() {
+		return dao.permissionSelect(sst);
+	}
+
+	public List<AnnouncementVo> topSelect() {
+		return daoAnnoun.topSelect(sst);
+	}
+
+	public List<BoardVo> topHitSelect() {
+		return daoBoard.topHitSelect(sst);
+	}
+
+	public List<ParkingVo> todayParking() {
+		return daoParking.todayParking(sst);
 	}
 	
 	
