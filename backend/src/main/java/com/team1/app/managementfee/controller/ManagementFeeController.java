@@ -26,6 +26,7 @@ public class ManagementFeeController {
 	//세대별 관리비 조회(세대정보, 기간)
 	@PostMapping("list")
 	public Map<String, Object> listByUnitAndPeriod(@RequestBody ManagementFeeVo vo){
+		System.out.println("요청들어온" + vo);
 		List<ManagementFeeVo> managementVoList =  service.listByUnitAndPeriod(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("managementVoList", managementVoList);

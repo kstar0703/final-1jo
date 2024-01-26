@@ -23,25 +23,31 @@
 	
 	<!-- 관리비 조회 (세대정보, 작년비교)-->
 	<select id="listByUnitForYear" resultType="ManagementFeeVo">
-		<!-- SELECT ROWNUM, A.*
-			FROM 
-			(SELECT 
-				    BILLING_NO
-				    , M.UNIT_NO
-				    , USAGE_PERIOD
-				    , BASIC_FEE
-				    , MAINTERNANCE_FEE
-				    , FACILITIES_FEE
-				    , TOTAL_AMOUNT
-				    , DONG
-				    , HO
-				    , SCALE
-				FROM UNIT U
-				JOIN MANAGEMENT_FEE M ON M.UNIT_NO = U.UNIT_NO
-				WHERE U.UNIT_NO = #{unitNo}
-			    ORDER BY USAGE_PERIOD DESC
-			    ) A
-				WHERE ROWNUM <= 13 -->
+	 SELECT ROWNUM, A.*
+		FROM 
+		(SELECT 
+			    BILLING_NO
+			    , F.UNIT_NO
+                , M.MEMBER_NO
+                , NAME
+                , OWNER_YN
+                , EMAIL
+			    , USAGE_PERIOD
+			    , BASIC_FEE
+			    , MAINTERNANCE_FEE
+			    , FACILITIES_FEE
+			    , TOTAL_AMOUNT
+			    , DONG
+			    , HO
+			    , SCALE
+			FROM UNIT U
+			JOIN MANAGEMENT_FEE F ON F.UNIT_NO = U.UNIT_NO
+            JOIN MEMBER M ON U.UNIT_NO = M.UNIT_NO
+			WHERE U.UNIT_NO = #{unitNo}
+            AND OWNER_YN ='Y'
+		    ORDER BY USAGE_PERIOD DESC
+		    ) A
+			WHERE ROWNUM BETWEEN 1 AND 13
 	</select>
 	
 	

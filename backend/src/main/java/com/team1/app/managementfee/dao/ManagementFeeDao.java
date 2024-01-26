@@ -14,7 +14,7 @@ public class ManagementFeeDao {
 	public List<ManagementFeeVo> listByUnitAndPeriod(SqlSessionTemplate sst, ManagementFeeVo vo) {
 		
 		List<ManagementFeeVo> list = sst.selectList("ManagementFeeMapper.listByUnitForYear", vo);
-		System.out.println(list);
+		System.out.println("조회된" + list);
 		return list;
 	}
 
