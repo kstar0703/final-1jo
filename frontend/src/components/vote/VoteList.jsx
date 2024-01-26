@@ -6,7 +6,7 @@ import Pagination from '../page/Pagination';
 const StyledVoteListDiv = styled.div`
   width: 100%;
   height: 100%;
-  .seach_box_bg {
+  /* .seach_box_bg {
     height: 200px;
     background-color: #eee;
     display: flex;
@@ -32,7 +32,6 @@ const StyledVoteListDiv = styled.div`
     justify-content: center;
     align-items: center;
     & table {
-      /* 테이블 */
       width: 80%;
       & th {
         padding: 15px 0;
@@ -56,7 +55,7 @@ const StyledVoteListDiv = styled.div`
         font-size: 13px;
       }
     }
-  }
+  } */
 `;
 
 

@@ -6,8 +6,9 @@
     height: 38px !important ;
     border-radius: 10px;
     background-color: #ccc;
+    /* border: 1px solid #f1f1f1; */
     &:hover{
-        background-color: lightcoral;
+        background-color: #394538;
         color: #fff;
     }
 }
@@ -16,10 +17,10 @@
     width: 100px;
     height: 38px !important ;
     border-radius: 10px;
-    background-color: #292929;
-    color:#fff;
+    background-color: #BAE2B9;
+    color:#394538;
     &:hover{
-        background-color: lightcoral;
+        background-color: #394538;
         color: #fff;        
     }
 }
@@ -81,10 +82,12 @@
 */
 .seach_box_bg{
     height: 300px;
-    background-color: #dadada;
+    background-color: #7C967B; /*#9DBF9D #7C967B #BBE3BA #5A6E5A #394538  pantone mint green*/
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    
     & form input{
         width: 300px;
         height: 40px;

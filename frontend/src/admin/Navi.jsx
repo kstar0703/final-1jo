@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledNaviDiv = styled.div`
@@ -29,10 +29,11 @@ const StyledNaviDiv = styled.div`
 `;
 
 const Navi = () => {
+    const navigater = useNavigate();
     return (
       <StyledNaviDiv className="container">
         <div className='navi'>
-          <div className="logo">
+          <div className="logo" onClick={()=>{navigater('/admin/home')}}>
             <img src="../../resources/logo.svg" />
             <img src="../../resources/logo.svg" />
           </div>

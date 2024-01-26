@@ -10,6 +10,7 @@ import ErrorPageNotFound from './error/ErrorPageNotFound';
 import { Route, Routes } from 'react-router-dom';
 import AnnouncementMain from './announcement/AnnoucementMain';
 import MemberMain from './member/MemberMain';
+import MainPage from './MainPage';
 
 const StyledMainDiv = styled.div`
     width: 100%;
@@ -29,7 +30,7 @@ const Main = () => {
     return (
         <StyledMainDiv>
             <Routes>
-                <Route path='/home' element={<h1>관리자 메인화면</h1>} />
+                <Route path='/home' element={<MainPage />} />
                 <Route path='/member/*' element={<MemberMain/>}/>
                 <Route path='/announcement/*' element={<AnnouncementMain/>}/>
                 <Route path='/vote/*' element={<VoteMain />}/>
