@@ -284,4 +284,41 @@
 		    C.COMPLAINT_NO DESC
 	</select>
 	
+	<!-- 관리자 메인 페이지 기능 -->
+	<select id="statuseSelect" resultType="ComplaintVo">
+		SELECT 		 
+		    C.COMPLAINT_NO
+		    ,MANAGER_NO
+		    ,M.MEMBER_NO
+            ,M.NAME
+            ,DONG
+            ,HO
+		    ,TITLE
+		    ,CONTENT
+		    ,ENROLL_DATE
+		    ,C.DEL_YN
+		    ,STATUS
+		    ,REPLY
+		    ,REPLY_DATE
+		    ,IMG_NO
+		    ,IMG_NAME
+		    ,PATH
+		    ,ORIGIN_NAME
+		FROM
+		    COMPLAINT C
+        JOIN
+            MEMBER M
+        ON
+            M.MEMBER_NO = C.MEMBER_NO
+		JOIN
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
+        JOIN
+            UNIT U
+        ON
+            M.UNIT_NO = U.UNIT_NO
+        WHERE
+            STATUS = 'N'
+	</select>
 </mapper>

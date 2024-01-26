@@ -75,6 +75,14 @@ public class AnnouncementDao {
 		return sst.selectOne("Announcement.getCurrentAnnouncementNo");
 	}
 	
+	//관리자 메인 페이지 기능 top 5개 조회하기
+	public List<AnnouncementVo> topSelect(SqlSessionTemplate sst) {
+		int limit = 5;
+		int offset = 0;
+		RowBounds rowBounds = new RowBounds(offset, limit);		
+		return sst.selectList("Announcement.topSelect","",rowBounds);
+	}
+	
 
 
 	

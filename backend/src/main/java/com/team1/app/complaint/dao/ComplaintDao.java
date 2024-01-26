@@ -46,4 +46,9 @@ public class ComplaintDao {
 		return sst.selectList("ComplaintMapper.adminSelect",vo);
 	}
 	
+	//관리자 메인 페이지 기능
+	public List<ComplaintVo> statuseSelect(SqlSessionTemplate sst) {
+		return sst.selectList("ComplaintMapper.statuseSelect");
+	}
+	
 }

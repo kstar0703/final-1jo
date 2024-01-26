@@ -3,6 +3,7 @@ package com.team1.app.board.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -138,6 +139,14 @@ public class BoardDao {
 	//작성자 번호로 최근 게시물 번호 1개 조회
 	public BoardVo findLatestPost(SqlSessionTemplate sst, String writerNo) {
 		return sst.selectOne("BoardMapper.findLatestPost", writerNo);
+	}
+
+	//관리자 메인 페이지 조회수 많은 글 조회
+	public List<BoardVo> topHitSelect(SqlSessionTemplate sst) {
+		int limit = 5;
+		int offset = 0;
+		RowBounds rowBounds = new RowBounds(offset, limit);				
+		return sst.selectList("BoardMapper.topHitSelect","",rowBounds);
 	}
 
 

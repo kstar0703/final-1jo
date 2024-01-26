@@ -47,6 +47,10 @@ public class ManagerDao {
 		return sst.selectList("ManagerMapper.managerSelect");
 	}
 	
+	//관리자 메인 페이지 : 권한 미승인 회원 조회
+	public List<MemberVo> permissionSelect(SqlSessionTemplate sst) {
+		return sst.selectList("MemberMapper.permissionSelect");
+	}
 	
 	
 	
