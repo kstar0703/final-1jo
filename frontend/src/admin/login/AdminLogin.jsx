@@ -15,7 +15,7 @@ const StyledLoginDiv = styled.div`
     & >div:first-child{
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
         margin-bottom: 50px;
     }
 
@@ -104,7 +104,7 @@ const AdminLogin = () => {
     return (
         <StyledLoginDiv>
             <div>
-                <h2>관리자 로그인</h2>
+                <h2>그래이 아파트 관리자 로그인</h2>
                 <img src="\resources\logo.svg" alt="logo" />
             </div>
 
@@ -113,18 +113,17 @@ const AdminLogin = () => {
                     <input ref={id}  type="text" name='phone' placeholder="아이디"  />
                     <br />
                     <input ref={pwd} type="password" name='pwd' placeholder='비밀번호' />
-                    <br/>
-                    
-                    <button onClick={clcikLogin} >로그인</button>
-                    
+                    <br/> 
                 </form>
+            </div>
+
+            <div>
+            <button onClick={clcikLogin}className='sty02_btn' >로그인</button>
             </div>
 
 	
 
-            <div>
-                [카피라이트 어쩌구 이미지 추가]
-            </div>
+           
         </StyledLoginDiv>
     );
 };

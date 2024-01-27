@@ -7,8 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import java.util.regex.Pattern;import org.apache.commons.io.input.TeeInputStream;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties.ContainerType;
 import org.springframework.stereotype.Service;
@@ -324,5 +323,35 @@ public class MemberService {
 		
 			
 		return pageList;
+	}
+	// 비밀번호 찾기 이메일 매칭 맞는지 확인하는 메소드
+	public int isEmailInUse(MemberVo vo) {
+		return dao.isEmailInUse(sst,vo);
+	}
+	//임시 비밀번호 만들기
+	public String getTempPwd(MemberVo vo) {
+		
+	String tmepPwd = util.generateTemporaryPassword();
+	
+	log.info("생성한 임시 비밀번호 :::{}",tmepPwd);
+	
+	vo.setPwd(tmepPwd);
+	
+	
+	
+	
+	
+	int result = dao.updateTempPwd(sst,vo);
+	
+	if(result!=1) {
+		return null;
+	}
+
+		
+		return tmepPwd;
+	}
+	//이름 얻기
+	public String getName(MemberVo vo) {
+		return dao.getName(vo,sst); 
 	}
 }

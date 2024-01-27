@@ -40,7 +40,6 @@ const Pagination = ({ pvo, currentPage, onPageChange }) => {
   // 페이지를 표시할 범위 계산
 
 
-  
   const pageRange = Array.from({ 'length': pvo? Number(pvo.endPage)-Number(pvo.startPage)+1 :1 }, (_, index) => index + Number (pvo?.startPage) );
   
 

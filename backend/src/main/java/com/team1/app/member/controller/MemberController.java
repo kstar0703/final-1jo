@@ -29,6 +29,7 @@ import com.team1.app.member.vo.RequestDto;
 import com.team1.app.unit.vo.UnitVo;
 import com.team1.app.util.vo.PageVo;
 
+import ch.qos.logback.core.joran.conditional.IfAction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.proxy.annotation.Post;
@@ -139,56 +140,6 @@ public class MemberController {
 		return resultMap;
 	}
 	
-	@PostMapping("authorizeEmail")
-	public Map findAuth(@RequestBody MemberVo vo) {
-		
-		log.info("이메일 인증 호출  :::{} ",vo);
-		
-		Map map = new HashMap();
-	    
-		Random r = new Random();
-        int num = r.nextInt(999999); //랜덤 난수 
-        
-        StringBuilder sb = new StringBuilder();
-        
-        // DB에 저장된 email            입력받은 email
-        
-    
-            String setFrom = "kkimbabb@naver.com";//발신자 이메일
-            String tomail = vo.getEmail();//수신자 이메일
-            
-            String title = "[그래이아파트] 비밀번호 변경 인증 이메일입니다.";
-           
-            String content = String.format("<h1>안녕하세요 %s님</h1><p>그레이 아파트 비밀번호 찾기(변경) 인증번호는 <strong> %d</strong> 입니다.</p>", vo.getName(), num);
-            
-            log.info("메세지 내용 호출 ::: {}",content );
-		
-            try {
-                MimeMessage msg = mailSender.createMimeMessage();
-                MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
-                
-                log.info("트라이안에 호출");
-                
-                msgHelper.setFrom(setFrom);
-                msgHelper.setTo(tomail);
-                msgHelper.setSubject(title);
-                msgHelper.setText(content,true);
-               
-                //메일 전송
-                mailSender.send(msg);
-                
-            }catch (Exception e) {
-                // TODO: handle exception
-                System.out.println(e.getMessage());
-            }
-            //성공적으로 메일 
-            map.put("status", "good");
-            map.put("num", num);
-          
-            
-            return map;
-		}
-	
 	
 	@PostMapping("findUnit")
 	public Map<String,Object> findUnit(@RequestBody RequestDto requestDto) {
@@ -221,5 +172,119 @@ public class MemberController {
 			resultMap.put("pageVo",pvo);
 			return resultMap;
     }
+	
+	@PostMapping("authorizeEmail")
+	public Map findAuth(@RequestBody MemberVo vo) {
+		
+		
+		Map map = new HashMap();
+	    
+		Random r = new Random();
+        
+        
+        String sendTitle = "[그래이 아파트 이메일 인증]";
+        int num = r.nextInt(999999); //랜덤 난수 
+        String sendContent = String.format("<h1>안녕하세요 %s님</h1><p>그레이 아파트 회원가입 인증번호는 <strong> %d</strong> 입니다.</p>", vo.getName(), num);
+        
+       
+       if(  emailSender(vo.getEmail() , sendTitle, sendContent )) {
+       
+        //성공적으로 메일 
+        map.put("status", "good");
+        map.put("num", num);
+       }
+            
+            return map;
+		}
+	
+	
+	
+	@PostMapping("isEmailInUse")
+	public Map isEmailInUse(@RequestBody MemberVo vo) {
+		
+		log.info("들어온 값 ::: {}" ,vo);
+		Map map = new HashMap();
+		map.put("status", "good");
+	    
+		
+		if(service.isEmailInUse(vo)!=1) {
+			map.put("status", "bad");
+		}
+        
+            return map;
+	}
+	
+	@PostMapping("findPassWord")
+	public Map findPassWord(@RequestBody MemberVo vo) {
+		Map map = new HashMap();
+		map.put("status", "bad");
+		
+		String sendTitle = "[그래이 아파트 임시 비밀번호]";
+        
+		// 템프 패스워드겸
+		String tempPwd = service.getTempPwd(vo);
+		
+		if(tempPwd==null) {
+			return map;
+		}
+		
+		String name = service.getName(vo);
+		
+		
+		
+        String sendContent = String.format("<h1>안녕하세요 %s님</h1><p>그레이 아파트 임시 비밀번호는 <strong>%s</strong> 입니다.</p>", name, tempPwd);
+		
+		
+		if(emailSender(vo.getEmail() , sendTitle, sendContent )) {
+		       
+	        //성공적으로 메일 
+	        map.put("status", "good");
+	        map.put("num", tempPwd);
+		}
+	    
+		
+		
+        
+            return map;
+	}
+	
+	
+	
+	
+	
+	
+	
+	//이메일 샌더
+	public boolean emailSender(String toEmail,String snedTitle,String sendContnet) {
+		
+	          
+         String setFrom = "kkimbabb@naver.com";//발신자 이메일
+         String tomail = toEmail;
+         String title = sendContnet;
+         String content = sendContnet; 
+         
+		
+         try {
+             MimeMessage msg = mailSender.createMimeMessage();
+             MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
+             
+             log.info("트라이안에 호출");
+             
+             msgHelper.setFrom(setFrom);
+             msgHelper.setTo(tomail);
+             msgHelper.setSubject(title);
+             msgHelper.setText(content,true);
+            
+             //메일 전송
+             mailSender.send(msg);
+             
+         }catch (Exception e) {
+         
+             
+         }
+		return true;
+	
+	
+	}
 }    
 

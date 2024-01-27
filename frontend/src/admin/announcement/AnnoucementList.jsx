@@ -27,13 +27,11 @@ const AnnoucementList = () => {
   const [announcement,setAnnouncement] = useState([]);
   //페이징용 
   const [pvo,setPvo] = useState();
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   
   //페이징
   const handlePageChange = (page) =>{
-    
-   
     setCurrentPage(page); 
     setUpdateEffect(updateEffect+'a')
   };

@@ -61,6 +61,19 @@ public class MemberDao {
 		
 		return sst.selectList("MemberMapper.countUnit",vo);
 	}
+
+	public int isEmailInUse(SqlSessionTemplate sst, MemberVo vo) {
+		return sst.selectOne("MemberMapper.isEmailInUse",vo);
+	}
+
+	public int updateTempPwd(SqlSessionTemplate sst, MemberVo vo) {
+		return sst.update("MemberMapper.updateTempPwd",vo);
+	}
+
+	//이름 얻기
+	public String getName(MemberVo vo,SqlSessionTemplate sst) {
+		return sst.selectOne("MemberMapper.getName",vo);
+	}
 	
 	
 	

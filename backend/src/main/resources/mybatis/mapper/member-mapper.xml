@@ -277,6 +277,97 @@
 	
 
 	
+   
+    <select id="permissionSelect" resultType="MemberVo">
+   SELECT
+      MEMBER_NO
+      ,U.UNIT_NO
+      ,PHONE
+      ,PWD
+      ,OWNER_YN
+      ,NAME
+      ,GENDER
+      ,BIRTH
+      ,DEL_YN
+      ,PERMISSION_YN
+       ,DONG
+       ,HO
+       ,SCALE
+       ,VEH_TIME
+       ,EMAIL
+       ,JOIN_DATE
+    FROM 
+       MEMBER M
+    JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO   
+   WHERE 
+      DEL_YN ='N' 
+    AND 
+       PERMISSION_YN = 'N'   
+   </select>
+   
+   <select id="isEmailInUse" resultType="int">
+   SELECT
+      COUNT(*)
+      FROM MEMBER
+      WHERE PHONE = #{phone} AND EMAIL = #{email}
+   </select>
+   
+  
+   <update id="updateTempPwd"> 
+   UPDATE 
+   MEMBER 
+	SET PWD = #{pwd}
+	WHERE PHONE = #{phone}   
+	</update>
+	
+	 <select id="countUnit" resultType='MemberVo' >
+   SELECT 
+    U.UNIT_NO,
+    NVL(M.NAME, '세대주 정보 미등록') AS NAME,
+    U.DONG,    
+    U.HO
+   
+   FROM 
+    UNIT U
+   LEFT JOIN 
+    MEMBER M ON U.UNIT_NO = M.UNIT_NO AND M.OWNER_YN = 'Y'
+    
+    <trim prefix="where" suffixOverrides="and"> 
+    
+    <if test="name != null and name.length()>0" >
+        NAME = #{name} and
+    </if> 
+   
+     <if test="dong != null and dong.length()>0" >
+     DONG =#{dong} and    
+    </if>
+    
+    <if test="ho != null and ho.length()>0" >
+    HO = #{ho}
+    </if>
+    </trim>
+     ORDER BY U.UNIT_NO DESC    
+   </select>
+   
+   <select id="getName" resultType="String" >
+   select name
+   from member 
+   where Email=#{email}
+   </select>
+	
+   
+      
+   
+
+   
+   
+   
+   
+
+   
+   
+	
+	
 	
 	
 

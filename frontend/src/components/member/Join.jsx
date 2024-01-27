@@ -81,7 +81,7 @@ const Join = () => {
     //상태 업데이트용
     const[updateState,setUpdateState] =useState('');
     //조인인 정보
-    const [JoinMemberInfo,setInfo] = useState({unitNo : 1});
+    const [JoinMemberInfo,setInfo] = useState();
 
   
      //하이픈 추가함수
@@ -163,8 +163,8 @@ const Join = () => {
       let pwdRef = useRef()
       let pwdCheckRef = useRef()
 
-     let pwdCheck =useRef(false)
-     let pwdCheckCheck = useRef(false)
+      let pwdCheck =useRef(false)
+      let pwdCheckCheck = useRef(false)
 
       let emailRef = useRef()
       let emailCheckRef = useRef()
@@ -176,7 +176,10 @@ const Join = () => {
 
       let unitNoRef = useRef()
 
-      let arrayRef = useRef([name,pwdRef,pwdCheckRef,emailRef,brithRef])
+      let arrayRef = useRef([duplicationInput,name,pwdRef,pwdCheckRef,emailRef,brithRef])
+      
+      let findUnitRef = useRef()
+
       
       
 
@@ -379,6 +382,8 @@ const Join = () => {
       //제출--------------------------------------------------------------------------------
       const ClickJoin = (e) => {
 
+        console.log(unitNoRef?.current.value)
+
         const hasEmptyValue = arrayRef.current.some((item) => {
           if (!item?.current?.value) {
             alert("필수 값을 채워주세요");
@@ -394,35 +399,57 @@ const Join = () => {
         }
 
         if(duplication !== 'good'){
-          duplicationInput.current.focus()
+          duplicationInput?.current?.focus()
           alert('중복확인을 완료하세요')
           return 
         }
 
         if(!emailState){
-          emailRef?.current?.focus()
           alert('이메일 중복검사를 완료하세요')
+          emailRef?.current?.focus()
           return
         }
 
-        if(emailStatus){
-          emailCheckRef?.current?.focus()
+        if(emailStatus){        
           alert('이메일 인증번호 확인을 완료하세요')
+          emailCheckRef?.current?.focus()
+          return
         }
 
         if(!pwdCheck?.current){
           alert('비밀번호를 확인 하세요')
-          pwdRef?.current?.focus()
+          pwdRef?.current.focus()
+          return
         }
 
         if(!pwdCheckCheck.current){
-          pwdCheckRef?.current?.focus()
           alert('비밀번호가 일치하지 않습니다')
+          pwdCheckRef?.current?.focus()
+          return
         }
 
 
-        if(JoinMemberInfo)
+        if(!JoinMemberInfo?.ownerYn){
+          ownerRef?.current.focus()
+          alert('세대주 여부를 선택하세요')
+          return
+        }
 
+        if(!JoinMemberInfo?.gender){
+          genderRef?.current.focus()
+          alert('성별을 선택하세요')
+          return
+        }
+
+   
+
+        if(!unitNoRef?.current.value){
+          alert('세대 정보 찾기를 완료하세요')
+          console.log(findUnitRef.current)
+          findUnitRef?.current?.click();
+
+          return
+        }
         
 
       
@@ -553,7 +580,7 @@ const Join = () => {
 
             {/* 10 */}
             <div className='sumbitDiv'>
-                <button className='sty02_btn' onClick={ModalOpenUnit} >세대 찾기</button>
+                <button className='sty02_btn' onClick={ModalOpenUnit} ref={findUnitRef} >세대 찾기</button>
             </div>
             {/* 11 */}
             <div>

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRef, useState ,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PwdSearchModal from './PwdSearchModal';
 
 const StyledLoginDiv = styled.div`
     width: 100%;
@@ -17,9 +18,29 @@ const StyledLoginDiv = styled.div`
         flex-direction: column;
         gap: 10px;
         margin-bottom: 50px;
+
+
     }
-    .input-iput{
-        
+    .input-input{
+      width: 200px;
+      height: 20px;
+      padding: 10px;
+    }
+
+    .btn-div{
+        display: flex;
+        justify-content: center;
+    }
+    .btn-div2{
+        display: flex;
+        gap :5px;
+
+        & button{
+            width: 60px;
+            height: 20px !important;
+            font-size: 10px;
+            padding: 0px;
+        }
     }
 `
 const Login = () => {
@@ -40,11 +61,18 @@ const Login = () => {
   
     //로긴멤버
     let loginMemberVo = {};
+
+    //저장멤버
+    const rememberMember = JSON.parse(sessionStorage.getItem("rememberMember"))
+
+
+
+    let cbRef = useRef() 
   
     
 
    //전화번호
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState(rememberMember?.phone ||'');
 
     const phone = useRef();
     const pwd = useRef();
@@ -67,8 +95,8 @@ const Login = () => {
             
             
              loginMemberVo = { 
-              phone : phone.current.value,
-              pwd : pwd.current.value
+              phone : phone?.current.value,
+              pwd : pwd?.current.value
             }
             
             if(!patcherble){
@@ -87,10 +115,19 @@ const Login = () => {
                 return resp.json()})
                 .then( (data)=>{
                 if(data.status==="good"){
+
+                    console.log(cbRef.current.value)
+
+                    if(cbRef.current.checked){
+                        sessionStorage.setItem("rememberMember", JSON.stringify({phone : phone.current.value}))
+                    }else{
+                        sessionStorage.removeItem("rememberMember")
+                    }
+
                     alert(data.msg);
-                    console.log(data.loginMember)
+                   
                     sessionStorage.setItem("loginMember", JSON.stringify(data.loginMember));
-                    console.log(JSON.parse(sessionStorage.getItem("loginMember")))
+                    
                     navigate('/member')
                 }else{
                     alert(data.msg)
@@ -113,6 +150,17 @@ const Login = () => {
      const clickJoin = () => {
         navigate('/join')
      }
+
+     const [checkModal,setCheckModal] = useState(false);
+
+
+     const openModal =()=>{
+        setCheckModal(true)
+     }
+
+     const closeModal = ()=>{
+        setCheckModal(false)
+     }
     
  
 
@@ -123,17 +171,20 @@ const Login = () => {
     <>
         <StyledLoginDiv>
             <div>
-                <h1>로그인</h1>
+                <h1>그래이 아파트 로그인</h1>
                 <img src="\resources\logo.svg" alt="logo" />
             </div>
 
             <div>
                 <form action="">
-                    <input  type="text" name='phone' placeholder="전화번호 11자리('-'빼고입력)" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
-                    <br />
-                    <input  type="password" name='pwd' placeholder='비밀번호' ref={pwd}  onKeyDown={keydown}/>
+                    {rememberMember?.phone ?  
+                    <input className='input-input' value={phoneNumber}  type="text" name='phone' placeholder="전화번호 11자리('-'빼고입력)" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
+                    :
+                    <input className='input-input'  type="text" name='phone' placeholder="전화번호 11자리('-'빼고입력)" ref={phone}  maxLength="13" onInput={(e) => autoHyphen2(e.target)}  />
+                    } <br />
+                    <input className='input-input'  type="password" name='pwd' placeholder='비밀번호' ref={pwd}  onKeyDown={keydown}/>
                     <div>
-                    <input  type="checkbox" name="" id="check" />
+                    <input  type="checkbox" ref={cbRef} value={'good'} name="rememberPwd" id="check" />
                     <label for="check">아이디 기억하기</label>
                     </div>
                 </form>
@@ -141,20 +192,21 @@ const Login = () => {
 
 
             <div>
-                <div>
+                <div className='btn-div'>
                     <button onClick={clickLogin} className='sty02_btn' >로그인</button>
                 </div>
-                <div>
-                    <span className='sty01_btn' >비밀번호 찾기</span>
-                    <span onClick={clickJoin} className='sty01_btn'>회원가입</span>
+
+                <div className='btn-div2'>
+                    <button className='sty01_btn' onClick={openModal} >비밀번호 찾기</button>
+                    <button onClick={clickJoin} className='sty01_btn'>회원가입</button>
                 </div>
 
             
             </div>
 
-            <div>
-                [카피라이트 어쩌구 이미지 추가]
-            </div>
+          
+
+            <PwdSearchModal isOpen={checkModal} closeModal={closeModal} ></PwdSearchModal>
 
             
         </StyledLoginDiv>
