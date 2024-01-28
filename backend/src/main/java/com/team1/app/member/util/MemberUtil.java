@@ -1,5 +1,6 @@
 package com.team1.app.member.util;
 
+import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,5 +39,29 @@ public class MemberUtil {
         return matcher.matches();
 	}
 	
+	public String generateTemporaryPassword() {
+		SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
 
+        // 특수문자 1개, 대소문자 영어 1개 이상, 8자리 이상의 비밀번호 생성
+        String specialCharacters = "!@#$%^&*()-_=+[]{}|;:'\",.<>?";
+        String upperCaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
+        String digits = "0123456789";
+
+        // 대소문자, 숫자, 특수문자 각각 1개를 포함한 총 4개의 문자를 초기 비밀번호로 추가
+        password.append(upperCaseCharacters.charAt(random.nextInt(upperCaseCharacters.length())));
+        password.append(lowerCaseCharacters.charAt(random.nextInt(lowerCaseCharacters.length())));
+        password.append(digits.charAt(random.nextInt(digits.length())));
+        password.append(specialCharacters.charAt(random.nextInt(specialCharacters.length())));
+
+        // 나머지 글자를 랜덤으로 추가 (총 10글자로 고정)
+        for (int i = 4; i < 10; i++) {
+            String allCharacters = upperCaseCharacters + lowerCaseCharacters + digits + specialCharacters;
+            int randomIndex = random.nextInt(allCharacters.length());
+            password.append(allCharacters.charAt(randomIndex));
+        }
+
+        return password.toString();
+    }
 }
