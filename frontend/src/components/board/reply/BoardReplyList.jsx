@@ -26,6 +26,7 @@ const StyledBoardReplyListDiv = styled.div`
 `;
 
 const BoardReply = () => {
+    const memberNo = JSON.parse(sessionStorage.getItem("loginMember")).memberNo;
     let {boardNo} = useParams();
     const boardVo = {boardNo};
     const [replyVoList, setReplyVoList] = useState([]);
@@ -90,10 +91,17 @@ const BoardReply = () => {
                                 <div>{replyVo.dong}동 {replyVo.name}</div>
                                 <div>{replyVo.enrollDate}</div>
                             </div>
+                            {replyVo.memberNo == memberNo? 
+                        <>
                             <div>
                                 <div><button onClick={()=>{handleEdit(replyVo)}}>수정</button></div>
                                 <div><button onClick={()=>{handleDelete(replyVo)}}>삭제</button></div>
                             </div>
+                        
+                        </>
+                        :
+                        <></>
+                            }
 
                         </div>
                         <div>

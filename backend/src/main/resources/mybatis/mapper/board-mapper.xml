@@ -59,7 +59,27 @@
 		JOIN RESIDENT_BOARD B ON C.CATEGORY_NO = B.CATEGORY_NO
 		JOIN MEMBER M ON B.WRITER_NO = M.MEMBER_NO
 		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
-		WHERE B.DEL_YN = 'N'
+		WHERE 
+        B.DEL_YN = 'N'
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (TITLE LIKE '%' || #{searchKeyword} || '%' OR CONTENT LIKE '%' || #{searchKeyword} || '%')
+        </if>
+		ORDER BY ENROLL_DATE DESC
+	</select>
+	
+	<!-- 글 수 조회 (사용자) -->
+	<select id="count" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM CATEGORY C
+		JOIN RESIDENT_BOARD B ON C.CATEGORY_NO = B.CATEGORY_NO
+		JOIN MEMBER M ON B.WRITER_NO = M.MEMBER_NO
+		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
+		WHERE 
+        B.DEL_YN = 'N'
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (TITLE LIKE '%' || #{searchKeyword} || '%' OR CONTENT LIKE '%' || #{searchKeyword} || '%')
+        </if>
 		ORDER BY ENROLL_DATE DESC
 	</select>
 

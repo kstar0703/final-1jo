@@ -29,6 +29,7 @@ import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
 import com.team1.app.board.vo.CategoryVo;
+import com.team1.app.util.vo.PageVo;
 import com.team1.app.util.vo.SearchVo;
 
 import lombok.RequiredArgsConstructor;
@@ -40,11 +41,20 @@ public class BoardController {
 	private final BoardService service;
 
 	// 전체 게시글 조회 (+댓글수 + 좋아요수 추가)
-	@GetMapping("list")
-	public Map<String, Object> list(){
-		List<BoardVo> boardVoList = service.list();
+	@PostMapping("list")
+	public Map<String, Object> list(@RequestBody BoardVo boardVo, PageVo pageVo){
+		System.out.println("들어온" + pageVo);
+		System.out.println("들어온" + boardVo);
+		int cnt = service.count(boardVo);
+		System.out.println(cnt);
+		PageVo pvo = new PageVo(cnt, pageVo.getCurrentPage(), 5, 5);
+		
+		List<BoardVo> boardVoList = service.list(boardVo, pvo);
+		System.out.println(boardVoList);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardVoList", boardVoList);
+		map.put("pageVo", pvo);	
+		System.out.println(pvo);
 		map.put("msg", "good");
 		return map;
 	}
@@ -194,15 +204,24 @@ public class BoardController {
 	}
 
 	//좋아요수 조회
-	@GetMapping("listLikeCount")
-	public int listLikeCount(String boardNo) {
-		return service.listLikeCount(boardNo);
+	@GetMapping("listLikeCount/{boardNo}")
+	public Map<String, Integer> listLikeCount(@PathVariable String boardNo) {
+		int likeCount = service.listLikeCount(boardNo);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("likeCount", likeCount);
+		return map;
 	}
 
 	//좋아요 클릭
-	@GetMapping("clickLike")
-	public int clickLike(BoardLikeVo vo) {
-		return service.clickLike(vo);
+	@PostMapping("clickLike")
+	public Map<String, String> clickLike(@RequestBody BoardLikeVo vo) {
+		int result = service.clickLike(vo);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("msg", "good");
+		if(result != 1) {
+			map.put("msg", "bad");
+		}
+		return map;
 	}
 
 	// 전체 게시글 조회 (관리자)

@@ -19,6 +19,7 @@ import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
 import com.team1.app.board.vo.CategoryVo;
+import com.team1.app.util.vo.PageVo;
 import com.team1.app.util.vo.SearchVo;
 
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class BoardService {
 	private final SqlSessionTemplate sst;
 
 	// 전체 게시글 조회 (+댓글수 + 좋아요수 추가)
-	public List<BoardVo> list() {
-		List<BoardVo> boardVoList = dao.list(sst);
+	public List<BoardVo> list(BoardVo bvo, PageVo pvo) {
+		List<BoardVo> boardVoList = dao.list(sst, bvo, pvo);
 		for (BoardVo boardVo : boardVoList) {
 			String boardNo = boardVo.getBoardNo();
 			int replyCount = dao.replyCount(sst, boardNo);
@@ -40,6 +41,11 @@ public class BoardService {
 			boardVo.setLikeCount(likeCount);
 		}
 		return boardVoList;
+	}
+	
+	//글 수 조회
+	public int count(BoardVo vo) {
+		return dao.count(sst, vo);
 	}
 
 	//게시글 상세 조회 

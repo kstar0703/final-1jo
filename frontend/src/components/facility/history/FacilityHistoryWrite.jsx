@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFacilityHistoryWriteDiv = styled.div`
@@ -55,7 +56,10 @@ const StyledFacilityHistoryWriteDiv = styled.div`
     }
 `;
 
-const FacilityHistoryWrite = ({facilityVo}) => {
+const FacilityHistoryWrite = ({facilityVo, onMove}) => {
+    let result = 0;
+    const navigator = useNavigate();
+    const [nextPage, setNextPage] = useState([0]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [reservationDate, setReservationDate] = useState();
     const [showModal, setShowModal] = useState(false);
@@ -90,7 +94,7 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         setHistoryVo({
             ...historyVo,
             price: facilityVo.unitPrice
-        });
+        });        
     }, [facilityVo.unitPrice]);
 
     //동의 & 모달
@@ -98,27 +102,27 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         setShowModal(true);
     }
     const handleCloseModal = ()=>{
+        setIsAgreed(false);
         setShowModal(false);
     }
     const handleAgreeAndCloseModal = ()=>{
         setIsAgreed(true);
         setShowModal(false);
-        console.log(isAgreed);
     }
     const openModal = (e)=>{
         e.preventDefault();
         handleShowModal();
     }
+    const move = (e)=>{
+        e.preventDefault();
+        navigator("/board/list");
+    }
 
     //신청제출
-   
-    useEffect(()=>{
-        sendHistoryVo();
-        console.log(historyVo);
-    }, [historyVo, isAgreed]);
-
     const sendHistoryVo = ()=>{
-        if(isAgreed){
+        if(!isAgreed){
+            alert("이용약관에 동의해야 합니다.");
+        } else {
         console.log("예약일:" + historyVo.useDate);
         console.log("신청금액:" + historyVo.price);
         fetch("http://127.0.0.1:8888/app/facility/apply", {
@@ -131,27 +135,22 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         .then(resp=>resp.json())
         .then(data=>{
             if(data.msg === "good"){
-                alert("이용신청완료");
+                alert("성공");
+                onMove();
             }else{
                 alert("신청실패");
             }
-        })}
+        });
     }
-
-    const handleSubmit = (event)=>{
-        event.preventDefault();
-        if(!isAgreed){
-            alert("이용약관에 동의해야 합니다.");
-        }else{
-            sendHistoryVo();
-        }
     }
-
+    
+   
+    
 
     return (
         <StyledFacilityHistoryWriteDiv>
             <div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div className='reservation_info_box'>
                     <div className='reservation_summary_box'>
                         <div>{facilityVo.facilitiesName}</div>
@@ -214,7 +213,7 @@ const FacilityHistoryWrite = ({facilityVo}) => {
 
                 </div>
                 <div className='application_box'>
-                    <input className='sty02_btn' type='submit' name='' value='이용 신청하기'/>
+                    <button className='sty02_btn' onClick={()=>{sendHistoryVo()}}>이용신청하기 </button>
                 </div>
             </form>
             
