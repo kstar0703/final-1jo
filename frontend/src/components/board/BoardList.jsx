@@ -77,7 +77,7 @@ const BoardList = () => {
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({
                 pageVo: {currentPage:currentPage},
-                boardVo
+                ...boardVo
             })
         })
         .then(resp=>resp.json())
