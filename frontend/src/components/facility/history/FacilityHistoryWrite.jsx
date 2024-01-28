@@ -225,8 +225,9 @@ const FacilityHistoryWrite = ({facilityVo}) => {
                 shouldCloseOnOverlayClick={false}
                 style={{
                     content: {
-                        width: '500px',
-                        height: '500px',
+                        width: '780px',
+                        height: '520px',
+                        borderRadius: '20px',
                         top: '50%',
                         left: '50%',
                         right: 'auto',
@@ -234,7 +235,6 @@ const FacilityHistoryWrite = ({facilityVo}) => {
                         transform: 'translate(-50%, -50%)',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center',
                         alignItems: 'center',
                     },
                     overlay: {
@@ -242,25 +242,42 @@ const FacilityHistoryWrite = ({facilityVo}) => {
                     }
                 }}
                 >
-                    <div className='modal_content' style={{ margin: '30px' }}>
+                    <div className='modal_content' style={{ margin: '30px 30px 0 30px' }}>
                         <div >
-                            <div style={{ margin: '20px' }}>
+                            <div style={{ margin: '5px 20px 35px 20px', fontSize: '20px' }}>
                                 [ 커뮤니티 서비스 이용약관 ]
                             </div>
                             <div style={{ 
                                 borderTop: '1px solid black',
                                 borderBottom: '1px solid black',
-                                padding: '10px',
-                                marginBottom: '20px',
-                                lineHeight: '1.7',
+                                padding: '25px 20px',
+                                marginBottom: '40px',
+                                lineHeight: '1.6',
+                                
                                 '& > br': {
                                     margin: '10px'
                                 }
                                 }}>
-                                - 입주민, 중학생 이상 (보호자 동반 시 초등학생 이하 가능)만 이용 가능합니다.<br/>
-                                - 이용자 중 외부 주민 무단 이용 및 1일 1회 이용 제한 수칙 위반 시 즉시 퇴장 조치 되며, 추후 이용이 제한 될 수 있습니다. (책임 소지 대표 예약자)<br/>
-                                - 시설 이용 중 시설물의 손상과 화재, 도난 등 모든 사고에 의한 피해와 이용자 과실로 인한 비용 발생 시 이용자 본인이 부담합니다. <br />
-                                - 이용 전 시설물 이상(파손 등) 이 있을 경우 즉시 커뮤니티 안내데스크로 연락 주시기 바랍니다. 이용 후 발생된 파손은 이용자 과실로 간주 될 수 있습니다. <br/>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                    <div style={{ margin: '2px 10px 0 0', fontSize: '14px' }}>●</div>
+                                        <div> 입주민, 중학생 이상 (보호자 동반 시 초등학생 이하 가능)만 이용 가능합니다.<br/></div>
+                                    </div>
+                                    <div style={{height: '18px'}}></div>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                        <div style={{ margin: '2px 10px 0 0', fontSize: '14px' }}>●</div>
+                                        <div> 이용자 중 외부 주민 무단 이용 및 1일 1회 이용 제한 수칙 위반 시 즉시 퇴장 조치 되며, 추후 이용이 제한 될 수 있습니다. (책임 소지 대표 예약자)<br/></div>
+                                    </div>
+                                    <div style={{height: '10px'}}></div>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                    <div style={{ margin: '2px 10px 0 0', fontSize: '14px' }}>●</div>
+                                        <div> 시설 이용 중 시설물의 손상과 화재, 도난 등 모든 사고에 의한 피해와 이용자 과실로 인한 비용 발생 시 이용자 본인이 부담합니다.<br/></div>
+                                    </div>
+                                    <div style={{height: '10px'}}></div>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                    <div style={{ margin: '2px 10px 0 0', fontSize: '14px' }}>●</div>
+                                        <div> 이용 전 시설물 이상(파손 등) 이 있을 경우 즉시 커뮤니티 안내데스크로 연락 주시기 바랍니다. 이용 후 발생된 파손은 이용자 과실로 간주 될 수 있습니다.<br/></div>
+                                    </div>
+                               
                             </div>
                         </div>
                         <div style={{

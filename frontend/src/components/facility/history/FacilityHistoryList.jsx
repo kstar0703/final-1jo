@@ -68,6 +68,10 @@ const StyledFacilityHistoryDiv = styled.div`
         margin: 10px 0 0 50px;
         font-size: 22px;
     }
+    .custom-underline{
+        border-bottom: 1px solid black;
+        padding-bottom: 2px;
+    }
     .history_detail_box{
         text-align: left;
         margin-left: 5px;
@@ -84,13 +88,52 @@ const StyledFacilityHistoryDiv = styled.div`
         width: 100%;
         gap: 20px;
         & button {
-            width: 65px;
+            width: 60px;
+            height: 30px !important;
+            border-radius: 20px;
+            justify-content: center;
+            align-items: center;
+            background-color: #BAE2B9;
+            color:#394538;
+            &:hover{
+                background-color: #394538;
+                color: #fff;        
+            }
         }
     }
     .btn_left{
         width: 80%;
         display: flex;
         margin-right: auto;
+    }
+    .red_font{
+        color: red !important;
+    }
+
+    .cancel_css{
+        color: inherit;
+        text-decoration: line-through;
+        text-decoration-color: #f04e4e;
+        text-decoration-thickness: 1.5px;
+    }
+    .state_css{
+        width: 100px;
+        height: 38px !important ;
+        border-radius: 19px;
+        border: 0.3px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .state_cancel_css{
+        width: 100px;
+        height: 38px !important ;
+        border-radius: 19px;
+        background-color: #fcd9d9;
+        border: 0.3px solid #f8f8f8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 `;
 
@@ -186,7 +229,7 @@ const FacilityHistoryList = () => {
                             historyVoList.map(vo=>
                                 <div className='history_card mb30'>
                                     <div className='name_box'>
-                                        <div>{vo.facilitiesName}</div>
+                                        <div><span  className='custom-underline'>{vo.facilitiesName}</span></div>
                                     </div>
 
                                     <div className='history_detail_box'>
@@ -196,41 +239,64 @@ const FacilityHistoryList = () => {
                                             <col width="" />
                                         </colgroup>
                                             <tbody>
-                                                <tr>
-                                                    <th>결제일시</th>
-                                                    <td>{vo.applicationDate}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>가격</th>
-                                                    <td>{price(vo.price)}원</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>사용일시</th>
-                                                    <td>{vo.useDate}</td>
-                                                </tr>
+                                                {vo.cancelDate?
+                                                    <>
+                                                        <tr>
+                                                            <th>결제일시</th>
+                                                            <td>{vo.applicationDate}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>가격</th>
+                                                            <td><span className='cancel_css'>{price(vo.price)}원</span>&nbsp;&nbsp;<span style={{color: 'red'}}>취소</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style={{color: 'red'}}>취소일시</th>
+                                                            <td style={{color: 'red'}}>{vo.cancelDate}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>사용일시</th>
+                                                            <td>{vo.useDate}</td>
+                                                        </tr>
+                                                    </>
+                                                :
+                                                    <>
+                                                        <tr>
+                                                            <th>결제일시</th>
+                                                            <td>{vo.applicationDate}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>가격</th>
+                                                            <td>{price(vo.price)}원</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>사용일시</th>
+                                                            <td>{vo.useDate}</td>
+                                                        </tr>
+
+                                                        </>
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
                                 
 
                                     <div className='state_box'>
-                                        {
-                                            new Date(vo.useDate) < new Date()?
+                                        { vo.cancelDate != null?
                                             (
-                                                <div>사용완료</div>                                
+                                                <div className='state_cancel_css'>취소완료</div>
                                             ):(
-                                                vo.cancelDate == null?
-                                                (<div className='cancel_box'>
-                                                    <div>취소가능</div>
-                                                    <button className='sty01_btn' onClick={()=>{clickCancel(vo.applicationNo)}}>취 소</button>
-                                                </div>
-                                                )
-                                                :
-                                                <div>취소완료</div>
+                                                new Date(vo.useDate) < new Date()?
+                                                    (
+                                                        <div className='state_css'>사용완료</div>                                
+                                                    ):(
+                                                        <div className='cancel_box'>
+                                                            <div >취소가능</div>
+                                                            <button className='sty01_btn' onClick={()=>{clickCancel(vo.applicationNo)}}>취 소</button>
+                                                        </div>
+                                                    )
                                             )
                                         }
                                     </div>
-                                    
                                 </div>
                             )
                         }

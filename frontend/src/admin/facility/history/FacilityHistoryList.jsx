@@ -40,16 +40,21 @@ const FacilityHistoryList = () => {
     useEffect(()=>{
         loadFacilityHistoryVoList();
     }, []);
+
     const handleDelete = (vo)=>{
+        console.log(vo);
         fetch("http://127.0.0.1:8888/app/facility/cancel", {
             method: "PUT",
             headers: {"Content-Type" : "application/json"},
-            body: JSON.stringify(cancelVo)
+            body: JSON.stringify({
+                applicationNo: vo.applicationNo
+            })
         })
         .then(resp=>resp.json())
         .then(data=>{
-            if(data.msg === 1){
+            if(data.msg === "good"){
                 alert("취소성공");
+                loadFacilityHistoryVoList();
             }else{
                 alert("취소실패");
             }
@@ -167,7 +172,7 @@ const FacilityHistoryList = () => {
                                         <td>{vo.applicationDate}</td>
                                         <td>{vo.cancelDate?"취소완료": new Date(vo.useDate) > new Date()? "취소가능":"사용완료"}</td>
                                         <td>{vo.cancelDate?vo.cancelDate:"-"}</td>                                        
-                                        <td>{new Date(vo.useDate) > new Date()?<button className='sty02_btn mod_btn' onClick={()=>{handleDelete(vo)}}>취소</button>:"-"}</td>
+                                        <td>{vo.cancelDate == null && (new Date(vo.useDate) > new Date())?<button className='sty02_btn mod_btn' onClick={()=>{handleDelete(vo)}}>취소</button>:"-"}</td>
                                     </tr>
                                 )
                             }
