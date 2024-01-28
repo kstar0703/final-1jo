@@ -36,7 +36,7 @@ public class VoteController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("voList",voList);
 		map.put("pageVo", pvo);
-		return map;
+		return map;							
 	}
 
 	// 투표 게시글 상세 조회
@@ -103,8 +103,17 @@ public class VoteController {
 
 	// 관리자 전체 투표 게시글 조회
 	@GetMapping("adminList")
-	public List<VoteVo> adminList() {
-		return service.adminList();
+	public Map<String,Object> adminList(PageVo pageVo) {
+		int pageCnt = service.pageCnt(null);
+		int pageLimit = 3; //page 제한
+		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage(), pageLimit, pageVo.getBoardLimit());
+		
+		List<VoteVo> voList = service.adminList();
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("voList", voList);
+		map.put("pageVo",pvo);
+		return map;
 	}
 
 	// 관리자 게시글 상세 조회
@@ -115,8 +124,17 @@ public class VoteController {
 
 	// 관리자 게시글 검색
 	@PostMapping("adminSelect")
-	public List<VoteVo> adminSelect(@RequestBody VoteVo vo) {
-		return service.adminSelect(vo);
+	public Map<String,Object> adminSelect(@RequestBody VoteVo vo, PageVo pageVo) {
+		int pageCnt = service.adminPageCnt(vo);
+		int pageLimit = 3; //page 제한
+		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage(), pageLimit, pageVo.getBoardLimit());
+		
+		List<VoteVo> voList = service.adminSelect(vo);
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("voList", voList);
+		map.put("pageVo",pvo);
+		return map;
 	}
 
 	// 투표 결과 상세 조회*************************************************

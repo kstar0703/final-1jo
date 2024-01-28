@@ -192,6 +192,10 @@ public class VoteService {
 		return dao.pageCnt(sst,vo);
 	}
 
+	public int adminPageCnt(VoteVo vo) {
+		return dao.adminPageCnt(sst, vo);
+	}
+
 //	public List<VoteVo> history(VoteVo vo) {
 //		return dao.history(sst,vo);
 //	}

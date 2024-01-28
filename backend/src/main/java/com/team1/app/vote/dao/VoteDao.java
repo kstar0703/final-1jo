@@ -105,5 +105,9 @@ public class VoteDao {
 		return sst.selectOne("VoteMapper.pageCnt",vo);
 	}
 
+	public int adminPageCnt(SqlSessionTemplate sst, VoteVo vo) {
+		return sst.selectOne("VoteMapper.adminPageCnt",vo);
+	}
+
 
 }

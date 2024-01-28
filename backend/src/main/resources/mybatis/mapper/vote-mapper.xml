@@ -482,4 +482,50 @@
 		</if>
 	</select>
 	
+	<!-- 관리자 게시글 검색 페이징 갯수 조회 -->
+	<select id="adminPageCnt" resultType="int">
+		SELECT 
+		   COUNT(*)
+		FROM 
+		    VOTE_BOARD V
+		JOIN
+		    MANAGER M
+		ON 
+		    M.MANAGER_NO = V.MANAGER_NO
+		<trim prefix="where" prefixOverrides ="AND">
+			<if test="delYn != null and delYn.length() > 0 ">
+				DEL_YN = #{delYn}
+			</if>
+			<if test="managerNo != null and managerNo.length() > 0">
+				AND
+				    V.MANAGER_NO = #{managerNo}
+			</if>
+			<if test="title != null and title.length() > 0">
+				AND
+				    TITLE like '%${title}%'
+			</if>
+			<if test="(enrollDateStart == null or enrollDateEnd == null) and (enrollDateStart.length() == 0 or enrollDateEnd.length() == 0)">
+				AND
+				    ENROLL_DATE IS NULL
+			</if>
+			<if test="(enrollDateStart != null and enrollDateEnd != null) and (enrollDateStart.length() > 0 and enrollDateEnd.length() > 0)"> 
+				AND
+				    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
+			</if>
+			<if test="(deadlineDateStart == null or deadlineDateEnd == null) and (deadlineDateStart.length() == 0 or deadlineDateEnd.length() == 0)">
+				AND
+				    DEADLINE_DATE IS NULL		
+			</if>
+			<if test="(deadlineDateStart != null and deadlineDateEnd != null) and (deadlineDateStart.length() > 0 and deadlineDateEnd.length() > 0)"> 
+				AND
+				    (DEADLINE_DATE BETWEEN TO_DATE(#{deadlineDateStart}) AND TO_DATE(#{deadlineDateEnd}))
+			</if>
+			<if test="acceptYn != null and acceptYn.length() > 0">
+				AND
+			    	ACCEPT_YN = #{acceptYn}
+		    </if>
+		</trim>
+		ORDER BY 
+		    VOTE_NO DESC
+	</select>
 </mapper>
