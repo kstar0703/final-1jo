@@ -82,7 +82,7 @@
 */
 .seach_box_bg{
     height: 300px;
-    background-color: #7C967B; /*#9DBF9D #7C967B #BBE3BA #5A6E5A #394538  pantone mint green*/
+    background-color: #eee; /*#9DBF9D #7C967B #BBE3BA #5A6E5A #394538  pantone mint green*/
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -94,11 +94,13 @@
         border-radius: 10px;
         margin: 10px;
         text-align: center;
+
     }
     & form input[type=submit]{
         width: 100px;
+        background-color:#d6d6d6;
         &:hover{
-            background-color: lightcoral;
+            background-color: #BAE2B9;
             color: #fff;
         }
     }
