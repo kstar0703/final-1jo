@@ -220,8 +220,7 @@
 	    FACILITIES_HISTORY
 	SET 
 	    CANCEL_DATE = SYSDATE
-	WHERE MEMBER_NO = #{memberNo}
-		AND APPLICATION_NO = #{applicationNo}
+	WHERE APPLICATION_NO = #{applicationNo}
 	</update>
 	
 </mapper>
