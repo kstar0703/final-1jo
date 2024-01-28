@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Pagination from "../../components/page/Pagination";
 
 const StyledVoteMainDiv = styled.div`
 
@@ -113,16 +114,23 @@ const VoteList = () => {
     //fetch
     let [voteVoList,setVoteVoList] = useState([]);
     const [managerVoList, setManagerVoList] = useState([]);
+    const [pvo, setPvo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [updateEffect, setUpdateEffect] = useState("");  
     const loadVoteVoList = () => {
-        fetch("http://127.0.0.1:8888/app/vote/adminList")
-        .then(resp => resp.json())
-        .then((data)=>{setVoteVoList(data);})
-        ;
+        fetch(
+          `http://127.0.0.1:8888/app/vote/adminList?currentPage=${currentPage}`
+        )
+          .then((resp) => resp.json())
+          .then((data) => {
+            setVoteVoList(data.voList);
+            setPvo(data.pageVo);
+          });
     }
-    useEffect(()=>{
-        loadVoteVoList();
-        managerList();
-    },[])
+    useEffect(() => {
+      loadVoteVoList();
+      managerList();
+    }, [updateEffect]);
     
     const titleRef = useRef();
     const managerRef = useRef();
@@ -149,12 +157,13 @@ const VoteList = () => {
           deadlineDateEnd: deadeRes.current.value,
           delYn: delRes.current.value,
           acceptYn: acceptRes.current.value,
+          currentPage: currentPage,
         }),
       })
         .then((resp) => resp.json())
         .then((data) => {
-          console.log(data);
-          setVoteVoList(data);
+          setVoteVoList(data.voList);
+          setPvo(data.pageVo);
         });
     }
 
@@ -175,6 +184,13 @@ const VoteList = () => {
       acceptRes.current.value = '';
     }
 
+    const handlePageChange = (page) => {
+      //페이지
+
+      setCurrentPage(page);
+      setUpdateEffect(updateEffect + "a");
+    };
+
     return (
       <StyledVoteMainDiv>
         <div className="ad_wrap">
@@ -187,21 +203,24 @@ const VoteList = () => {
               <div className="search_item">
                 <label form="sel01">제목</label>
                 <div className="form_box">
-                  <input ref={titleRef} type="text" name="title" placeholder=" -" />
+                  <input
+                    ref={titleRef}
+                    type="text"
+                    name="title"
+                    placeholder=" -"
+                  />
                 </div>
               </div>
               <div className="search_item">
                 <label form="sel01">담당자</label>
                 <div class="form_box">
                   <select ref={managerRef} class="sel_box">
-                    <option value=''> - </option>
-                    {
-                      managerVoList?.map((vo)=>(
-                        <option value={vo.managerNo}>{vo.managerNo}</option>
-                      ))
-                    }
+                    <option value=""> - </option>
+                    {managerVoList?.map((vo) => (
+                      <option value={vo.managerNo}>{vo.managerNo}</option>
+                    ))}
                   </select>
-                </div>      
+                </div>
               </div>
               <div className="search_item">
                 <label form="sel01">작성::시작</label>
@@ -252,7 +271,9 @@ const VoteList = () => {
 
             <div className="btn_div">
               <div>
-                <button onClick={handleResetBtn} className="sty01_btn">초기화</button>
+                <button onClick={handleResetBtn} className="sty01_btn">
+                  초기화
+                </button>
               </div>
               <div>
                 <button onClick={handleSearch} className="sty02_btn">
@@ -314,12 +335,25 @@ const VoteList = () => {
                       <td>{vo.enrollDate}</td>
                       <td>{vo.deadlineDate}</td>
                       <td>{vo.delYn === "N" ? "공개" : "비공개"}</td>
-                      <td>{vo.acceptYn === "N" ? "마감" : vo.acceptYn === 'R' ? "대기" : "진행"}</td>
+                      <td>
+                        {vo.acceptYn === "N"
+                          ? "마감"
+                          : vo.acceptYn === "R"
+                          ? "대기"
+                          : "진행"}
+                      </td>
                     </tr>
                   ))
                 )}
               </tbody>
             </table>
+          </div>
+          <div>
+            <Pagination
+              pvo={pvo}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       </StyledVoteMainDiv>
