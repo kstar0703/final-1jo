@@ -98,12 +98,12 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         setShowModal(true);
     }
     const handleCloseModal = ()=>{
+        setIsAgreed(false);
         setShowModal(false);
     }
     const handleAgreeAndCloseModal = ()=>{
         setIsAgreed(true);
         setShowModal(false);
-        console.log(isAgreed);
     }
     const openModal = (e)=>{
         e.preventDefault();
@@ -112,13 +112,11 @@ const FacilityHistoryWrite = ({facilityVo}) => {
 
     //신청제출
    
-    useEffect(()=>{
-        sendHistoryVo();
-        console.log(historyVo);
-    }, [historyVo, isAgreed]);
 
     const sendHistoryVo = ()=>{
-        if(isAgreed){
+        if(!isAgreed){
+            alert("이용약관에 동의해야 합니다.");
+        } else {
         console.log("예약일:" + historyVo.useDate);
         console.log("신청금액:" + historyVo.price);
         fetch("http://127.0.0.1:8888/app/facility/apply", {
@@ -138,20 +136,10 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         })}
     }
 
-    const handleSubmit = (event)=>{
-        event.preventDefault();
-        if(!isAgreed){
-            alert("이용약관에 동의해야 합니다.");
-        }else{
-            sendHistoryVo();
-        }
-    }
-
-
     return (
         <StyledFacilityHistoryWriteDiv>
             <div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div className='reservation_info_box'>
                     <div className='reservation_summary_box'>
                         <div>{facilityVo.facilitiesName}</div>
@@ -214,7 +202,7 @@ const FacilityHistoryWrite = ({facilityVo}) => {
 
                 </div>
                 <div className='application_box'>
-                    <input className='sty02_btn' type='submit' name='' value='이용 신청하기'/>
+                    <button className='sty02_btn' onClick={()=>{sendHistoryVo();}}>이용신청하기 </button>
                 </div>
             </form>
             
