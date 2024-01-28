@@ -56,6 +56,7 @@ const BoardList = () => {
             <div className='wrap'>
                 {/* 검색창 */}
                     <div className='seach_box_bg'>
+                    <div className='mb30'><h1>소통 게시판</h1></div>    
                         <form >
                             <input  type='text' name='title' placeholder='키워드 검색'/>
                             <input type='submit' value="검색"/>
