@@ -354,6 +354,36 @@
    from member 
    where Email=#{email}
    </select>
+   
+   <select id="dashBoard" resultType="com.team1.app.member.vo.DashBoardDto" >
+   
+		  SELECT  
+		(SELECT COUNT(*) FROM PARKING 
+		WHERE MEMBER_NO =#{memberNo} AND ARRIVAL_TIME IS NULL) 
+		AS PARKING_CNT
+		,
+		(SELECT VEH_TIME FROM UNIT U 
+		JOIN MEMBER M 
+		ON U.UNIT_NO = M.UNIT_NO
+		WHERE M.MEMBER_NO = #{memberNo} ) 
+		AS VEH_TIME
+		,
+		
+		(SELECT COUNT(*) FROM  FACILITIES_HISTORY
+		WHERE MEMBER_NO =#{memberNo} AND APPLICATION_DATE IS NOT NULL
+		AND CANCEL_DATE IS NULL) 
+		AS FACILITIES_COUNT
+		,
+		(SELECT COUNT(*) FROM COMPLAINT
+		WHERE MEMBER_NO =#{memberNo} AND STATUS ='N')
+		AS COMPLAINT_COUNT
+		
+		
+		FROM MEMBER
+		WHERE MEMBER_NO =#{memberNo}
+   
+   
+   </select>
 	
    
       

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.team1.app.member.dao.MemberDao;
 import com.team1.app.member.util.MemberUtil;
+import com.team1.app.member.vo.DashBoardDto;
 import com.team1.app.member.vo.MemberVo;
 import com.team1.app.unit.vo.UnitVo;
 import com.team1.app.util.vo.PageVo;
@@ -353,5 +354,8 @@ public class MemberService {
 	//이름 얻기
 	public String getName(MemberVo vo) {
 		return dao.getName(vo,sst); 
+	}
+	public DashBoardDto getDashBoard(MemberVo vo) {
+		return dao.dashBoardDto(vo,sst);
 	}
 }

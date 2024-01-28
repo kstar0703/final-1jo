@@ -34,7 +34,7 @@ const Header = () => {
     
     return (
         <StyledHeaderDiv>
-            <div className='logo' onClick={()=>{navigator("/");}}>
+            <div className='logo' onClick={()=>{navigator("/member/home");}}>
                 <img src='resources/logo.svg'/>
                 <img src='resources/logo.svg'/>
                 <img src='resources/logo.svg'/>
