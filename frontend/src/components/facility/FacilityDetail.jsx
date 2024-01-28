@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FacilityNoticeList from './notice/FacilityNoticeList';
 import FacilityHistoryWrite from './history/FacilityHistoryWrite';
 import FacilityHistoryWriteWithClick from './history/FacilityHistoryWriteWithClick';
 import styled from 'styled-components';
+import FacilityHistoryComplete from './history/FacilityHistoryComplete';
 
 const StyledFacilityDetailDiv = styled.div`
     width: 65%;
@@ -53,11 +54,10 @@ const StyledFacilityDetailDiv = styled.div`
         padding: 30px 50px 30px 50px;
         line-height: 1.8;
     }
-    
-    
 `;
 
 const FacilityDetail = () => {
+    const navigator = useNavigate();
     let {facilitiesNo} = useParams();
     const [facilityVo, setFacilityVo] = useState({
         facilitiesNo: facilitiesNo
@@ -77,6 +77,7 @@ const FacilityDetail = () => {
     }
     useEffect(()=>{
         loadFaciilityVoList();
+        console.log("처음~");
     }, [facilitiesNo]);
     const formatContact = (dataString)=>{
         if(dataString != null){
@@ -85,6 +86,16 @@ const FacilityDetail = () => {
             return '';
         }
     };
+
+    const handleMove = () => {
+        const answer = window.confirm("이동?");
+        if(answer){
+            navigator("/");
+        }
+    };
+    
+    
+    
     return (
         <StyledFacilityDetailDiv>
             <div className='wrap_history'>
@@ -150,7 +161,9 @@ const FacilityDetail = () => {
                 <div className='reservation_box'>
                     <div className='info_title'>[ 예약신청 ]</div>
                     <div>
-                        <FacilityHistoryWrite facilityVo={facilityVo}/>
+                        
+                            <FacilityHistoryWrite facilityVo={facilityVo} onMove={handleMove}/>
+
                         {/* 선택2
                         <FacilityHistoryWriteWithClick /> */}
                     </div>                    

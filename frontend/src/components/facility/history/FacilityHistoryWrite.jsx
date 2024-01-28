@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFacilityHistoryWriteDiv = styled.div`
@@ -55,7 +56,10 @@ const StyledFacilityHistoryWriteDiv = styled.div`
     }
 `;
 
-const FacilityHistoryWrite = ({facilityVo}) => {
+const FacilityHistoryWrite = ({facilityVo, onMove}) => {
+    let result = 0;
+    const navigator = useNavigate();
+    const [nextPage, setNextPage] = useState([0]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [reservationDate, setReservationDate] = useState();
     const [showModal, setShowModal] = useState(false);
@@ -90,7 +94,7 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         setHistoryVo({
             ...historyVo,
             price: facilityVo.unitPrice
-        });
+        });        
     }, [facilityVo.unitPrice]);
 
     //동의 & 모달
@@ -109,10 +113,12 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         e.preventDefault();
         handleShowModal();
     }
+    const move = (e)=>{
+        e.preventDefault();
+        navigator("/board/list");
+    }
 
     //신청제출
-   
-
     const sendHistoryVo = ()=>{
         if(!isAgreed){
             alert("이용약관에 동의해야 합니다.");
@@ -129,12 +135,17 @@ const FacilityHistoryWrite = ({facilityVo}) => {
         .then(resp=>resp.json())
         .then(data=>{
             if(data.msg === "good"){
-                alert("이용신청완료");
+                alert("성공");
+                onMove();
             }else{
                 alert("신청실패");
             }
-        })}
+        });
     }
+    }
+    
+   
+    
 
     return (
         <StyledFacilityHistoryWriteDiv>
@@ -202,7 +213,7 @@ const FacilityHistoryWrite = ({facilityVo}) => {
 
                 </div>
                 <div className='application_box'>
-                    <button className='sty02_btn' onClick={()=>{sendHistoryVo();}}>이용신청하기 </button>
+                    <button className='sty02_btn' onClick={()=>{sendHistoryVo()}}>이용신청하기 </button>
                 </div>
             </form>
             

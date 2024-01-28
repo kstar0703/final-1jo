@@ -12,14 +12,25 @@ import com.team1.app.board.vo.BoardLikeVo;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
 import com.team1.app.board.vo.CategoryVo;
+import com.team1.app.util.vo.PageVo;
 import com.team1.app.util.vo.SearchVo;
 
 @Repository
 public class BoardDao {
 
 	// 전체 게시글 조회
-	public List<BoardVo> list(SqlSessionTemplate sst) {
-		return sst.selectList("BoardMapper.list");
+	public List<BoardVo> list(SqlSessionTemplate sst, BoardVo bvo, PageVo pvo) {
+		int offset = (pvo.getCurrentPage()-1) * pvo.getBoardLimit();
+		int limit = pvo.getBoardLimit();
+		System.out.println(offset);
+		System.out.println(limit);
+		RowBounds rb = new RowBounds(offset, limit);
+		return sst.selectList("BoardMapper.list", bvo, rb);
+	}
+	
+	//글 수 조회
+	public int count(SqlSessionTemplate sst, BoardVo vo) {
+		return sst.selectOne("BoardMapper.count", vo);
 	}
 
 	//게시글 상세 조회 )

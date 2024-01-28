@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Pagination from '../page/Pagination';
 
 const StyledBoardListDiv = styled.div`
     width: 100%;
@@ -26,6 +27,7 @@ const StyledBoardListDiv = styled.div`
 `;
 
 const BoardList = () => {
+    //형식변환
     const formatDate = (dateString)=>{
         const option1 = {year: 'numeric', month:'2-digit', day:'2-digit'};
         const preDate = new Date(dateString);
@@ -40,15 +42,55 @@ const BoardList = () => {
             return preDate.toLocaleDateString(undefined, option1).substring(0,12);
         }
     }
+    
+    //페이징
+    const [pvo,setPvo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [updateEffect,setUpdateEffect] = useState('');
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        console.log("선택한페이지" + currentPage);
+        setUpdateEffect(updateEffect+'a');
+        loadBoardVoList();
+    };
+
+    //검색
+    const [boardVo, setBoardVo] = useState({});
+    const onChange = (e)=>{
+        const value = e.target.value;
+        setBoardVo({
+            ...boardVo,
+            searchKeyword: value
+        });
+    }
+    const onClickSearch = (e)=>{
+        e.preventDefault();
+        loadBoardVoList();
+    }
+
+    //데이터조회
     const [boardVoList, setBoardVoList] = useState([]);
     const loadBoardVoList = ()=>{
-        fetch("http://127.0.0.1:8888/app/board/list")
+        console.log(boardVo);
+        fetch("http://127.0.0.1:8888/app/board/list", {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({
+                pageVo: {currentPage:currentPage},
+                boardVo
+            })
+        })
         .then(resp=>resp.json())
-        .then(data=>{setBoardVoList(data.boardVoList);});
+        .then(data=>{
+            setBoardVoList(data.boardVoList);
+            setPvo(data.pageVo);
+        });
     }
+
+    
     useEffect(()=>{
         loadBoardVoList();
-    }, []);
+    }, [updateEffect]);
     const navigator = useNavigate();
 
     return (
@@ -58,8 +100,8 @@ const BoardList = () => {
                     <div className='seach_box_bg'>
                     <div className='mb30'><h1>소통 게시판</h1></div>    
                         <form >
-                            <input  type='text' name='title' placeholder='키워드 검색'/>
-                            <input type='submit' value="검색"/>
+                            <input  type='text' name='searchKeyword' placeholder='키워드 검색' onChange={onChange}/>
+                            <input type='submit' value="검색" onClick={onClickSearch}/>
                         </form>
                     </div>
 
@@ -105,6 +147,9 @@ const BoardList = () => {
                     </table>
                 <div className='btn_bottom'>
                     <button onClick={()=>{navigator("/board/write");}} className='sty02_btn'>글쓰기</button>
+                </div>
+                <div>
+                  <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange}/>
                 </div>
                 </div>
             </div>
