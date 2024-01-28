@@ -16,9 +16,10 @@ const StyledManagementListDiv = styled.div`
     }
     .fee_box{
         border: 1px solid #dbe3e6 !important;
-        border-radius: 20px !important;
-        background-color: #b8f5e2b9;
-        padding: 60px;
+        border-radius: 10px !important;
+        background-color: BAE2B9;
+        padding: 50px;
+        margin: 40px 0 40px 0;
         display: grid;
         grid-template-columns: 2.3fr 4fr 1fr 1fr;
         & > :first-child{
