@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.team1.app.member.vo.DashBoardDto;
 import com.team1.app.member.vo.MemberVo;
 import com.team1.app.unit.vo.UnitVo;
 
@@ -73,6 +74,10 @@ public class MemberDao {
 	//이름 얻기
 	public String getName(MemberVo vo,SqlSessionTemplate sst) {
 		return sst.selectOne("MemberMapper.getName",vo);
+	}
+
+	public DashBoardDto dashBoardDto(MemberVo vo, SqlSessionTemplate sst) {
+		return sst.selectOne("MemberMapper.dashBoard",vo);
 	}
 	
 	

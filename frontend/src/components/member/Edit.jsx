@@ -99,7 +99,7 @@ const Edit = () => {
 
             <div>
                 <div>
-                <img src="\resources\person.svg" alt="" /><input name='name' type="text" placeholder='이메일' disabled={true} value={'gmltjd3391@naver.com'} />
+                <img src="\resources\person.svg" alt="" /><input name='name' type="text" placeholder='이메일' disabled={true} value={loginMember.email} />
                 </div>
             </div>
 

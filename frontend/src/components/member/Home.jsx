@@ -38,9 +38,10 @@ import styled from 'styled-components';
      & > div:nth-of-type(2){
         padding: 10px;
 
-        height: 20%;
+        height: 40%;
         border :1px solid black;
-        background-color: lightblue;
+        border-radius: 5%;
+        background-color: #7C967B;;
         display: flex;
         flex-direction: column;
         gap :20px;
@@ -73,6 +74,7 @@ import styled from 'styled-components';
         &  div{
             height: 80px;
             border-bottom: 1px solid lightgrey;
+           
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -116,7 +118,7 @@ const Home = () => {
 
     const [unitInfo,setUnifInfo] = useState({});
 
-    console.log(unitInfo)
+
 
     // 공지사항 리스트
     useEffect(
@@ -129,7 +131,7 @@ const Home = () => {
                 
             })
             
-            fetch("http://127.0.0.1:8888/app/unit/info",{
+            fetch("http://127.0.0.1:8888/app/member/getDashBoard",{
                 method: "post",
                 headers : {
                     "Content-Type" : "application/json"
@@ -138,11 +140,14 @@ const Home = () => {
             })
             .then( resp => resp.json())
             .then( data => {   
-                setUnifInfo(data.unitVo)
+                setUnifInfo(data?.dashBoardDto)
             })
         }
         
     ,[]);
+
+
+
 
     const  announcementMove = () =>{
         navigate("/announcement/list")
@@ -181,7 +186,7 @@ const Home = () => {
                </div>
 
                 <div>
-                  <span onClick={onClickMyPage}>마이페이지</span>    
+                  <button className='sty02_btn' onClick={onClickMyPage}>마이페이지</button>    
                 </div>            
             </div>
 
@@ -194,18 +199,19 @@ const Home = () => {
                 {/* 2 */}
                 <div>
                     <div>
-                        <button>편의시설</button>
-                        <button>예약내역</button>
+                        <button className='sty02_btn'>편의시설 예약 건수</button>
+                        <span>{unitInfo?.facilitiesCount} 건</span>
                     </div>
                         
                     <div>
-                        <button>세대원수</button>
+                        <button className='sty02_btn'>민원답변대기</button>
                         
-                        <span>{loginMember?.unitCount} 명</span>
+                        <span>{unitInfo?.complaintCount} 건</span>
                     </div>
 
                     <div>
-                        <button>방문예약</button>
+                        <button className='sty02_btn'>방문예약</button>
+                        <span>{unitInfo?.parkingCnt} 건</span>
                         <span>잔여시간</span>
                         {unitInfo ? <h3>{Math.floor(unitInfo?.vehTime  / 60)  } 시간{unitInfo?.vehTime%60}분</h3> : ''}
                     </div>        
@@ -216,7 +222,7 @@ const Home = () => {
             <div>
                 <div>
                    <span>공지사항</span>
-                   <button onClick={announcementMove}>공지사항이동</button>
+                   <button onClick={announcementMove} className='sty01_btn'>공지사항이동</button>
                 </div>
 
                

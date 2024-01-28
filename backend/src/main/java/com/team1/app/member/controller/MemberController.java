@@ -12,6 +12,7 @@ import javax.naming.spi.DirStateFactory.Result;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team1.app.announcement.vo.AnnouncementVo;
 import com.team1.app.manager.Service.ManagerService;
+import com.team1.app.member.dao.MemberDao;
 import com.team1.app.member.service.MemberService;
+import com.team1.app.member.vo.DashBoardDto;
 import com.team1.app.member.vo.MemberVo;
 import com.team1.app.member.vo.RequestDto;
 import com.team1.app.unit.vo.UnitVo;
@@ -283,8 +286,27 @@ public class MemberController {
              
          }
 		return true;
+	}
 	
-	
+	@PostMapping("getDashBoard")
+	public Map<String,Object> getDashBoard(@RequestBody MemberVo vo){
+		
+		Map<String,Object> resultMap = new HashMap();
+		
+		log.info("데이터 호출 ::: {}" ,vo);
+		
+		
+		DashBoardDto dashBoardDto = service.getDashBoard(vo);
+		
+		log.info("데이터 호출 결과보기 ::: {}" ,dashBoardDto);
+		
+		
+		if(dashBoardDto != null) {
+			resultMap.put("status", "good");
+			resultMap.put("dashBoardDto", dashBoardDto);
+		}
+		
+		return resultMap;
 	}
 }    
 
