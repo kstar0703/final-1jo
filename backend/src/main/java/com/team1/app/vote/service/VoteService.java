@@ -89,8 +89,8 @@ public class VoteService {
 		return result;
 	}
 
-	public List<VoteVo> select(VoteVo vo) {
-		return dao.select(sst,vo);
+	public List<VoteVo> select(VoteVo vo, PageVo pageVo) {
+		return dao.select(sst,vo,pageVo);
 	}
 
 	public int voteCount(String no) {
@@ -140,8 +140,8 @@ public class VoteService {
 		return result;
 	}
 
-	public List<VoteVo> adminList() {
-		return dao.adminList(sst);
+	public List<VoteVo> adminList(PageVo pageVo) {
+		return dao.adminList(sst,pageVo);
 	}
 
 	public VoteVo adminDetail(VoteVo vo) {
@@ -183,8 +183,8 @@ public class VoteService {
 		return voList.get(0);
 	}
 
-	public List<VoteVo> adminSelect(VoteVo vo) {
-		return dao.adminSelect(sst,vo);
+	public List<VoteVo> adminSelect(VoteVo vo,PageVo pageVo) {
+		return dao.adminSelect(sst,vo,pageVo);
 	}
 
 	//페이지 용 전체 갯수 count

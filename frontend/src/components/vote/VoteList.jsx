@@ -98,7 +98,8 @@ const VoteList = () => {
         fetch(`http://127.0.0.1:8888/app/vote/select?title=${keyword.title}`)
         .then(resp => (resp.json()))
         .then((data)=>{
-          setVoteVoList(data);
+          setVoteVoList(data.voList);
+          setPvo(data.pageVo);
         })
         ;
     }
@@ -148,7 +149,7 @@ const VoteList = () => {
                             {
                                 voteVoList.length ===0
                                 ?
-                                <h1>loding</h1>
+                                <h1>검색 결과 없음</h1>
                                 :
                                 voteVoList.map( vo=>
                                     (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} key={vo.no} >{/*key={vo.no} */}

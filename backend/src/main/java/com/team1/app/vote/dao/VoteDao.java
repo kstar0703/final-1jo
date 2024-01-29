@@ -9,7 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.team1.app.util.vo.PageVo;
 import com.team1.app.vote.vo.VoteVo;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class VoteDao {
 	
 	public List<VoteVo> list(SqlSessionTemplate sst,VoteVo vo, PageVo pageVo){
@@ -43,8 +46,11 @@ public class VoteDao {
 		return sst.update("VoteMapper.edit",vo);
 	}
 
-	public List<VoteVo> select(SqlSessionTemplate sst, VoteVo vo) {
-		return sst.selectList("VoteMapper.select",vo);
+	public List<VoteVo> select(SqlSessionTemplate sst, VoteVo vo,PageVo pageVo) {
+		int limit = pageVo.getBoardLimit();
+		int offset = (pageVo.getCurrentPage()-1)* pageVo.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sst.selectList("VoteMapper.select",vo,rowBounds);
 	}
 
 	public int voteCount(SqlSessionTemplate sst, String no) {
@@ -73,8 +79,11 @@ public class VoteDao {
 		return sst.insert("VoteMapper.voting",vo);
 	}
 
-	public List<VoteVo> adminList(SqlSessionTemplate sst) {
-		return sst.selectList("VoteMapper.adminList");
+	public List<VoteVo> adminList(SqlSessionTemplate sst,PageVo pageVo) {
+		int limit = pageVo.getBoardLimit();
+		int offset = (pageVo.getCurrentPage()-1)*pageVo.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		return sst.selectList("VoteMapper.adminList"," ",rowBounds);
 	}
 
 	public List<VoteVo> adminDetailBoard(SqlSessionTemplate sst, VoteVo vo) {
@@ -85,8 +94,13 @@ public class VoteDao {
 //		return sst.selectList("VoteMapper.adminDetailItem",no);
 //	}
 
-	public List<VoteVo> adminSelect(SqlSessionTemplate sst, VoteVo vo) {
-		return sst.selectList("VoteMapper.adminSelect",vo);
+	public List<VoteVo> adminSelect(SqlSessionTemplate sst, VoteVo vo,PageVo pageVo) {
+
+		int limit = pageVo.getBoardLimit();
+		int offset = (pageVo.getCurrentPage()-1)*pageVo.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+
+		return sst.selectList("VoteMapper.adminSelect",vo,rowBounds);
 	}
 
 	public List<VoteVo> history(SqlSessionTemplate sst, VoteVo vo) {
