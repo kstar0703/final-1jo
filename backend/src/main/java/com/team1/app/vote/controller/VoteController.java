@@ -12,14 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team1.app.util.vo.PageVo;
 import com.team1.app.vote.service.VoteService;
+import com.team1.app.vote.vo.VotePageDto;
 import com.team1.app.vote.vo.VoteVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 //투표
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("vote")
+@Slf4j
 public class VoteController {
 
 	private final VoteService service;
@@ -28,7 +31,7 @@ public class VoteController {
 	@GetMapping("list")
 	public Map<String,Object> list(VoteVo vo, PageVo pageVo) {
 		int pageCnt = service.pageCnt(vo);
-		int pageLimit = 3; //page 제한
+		int pageLimit = 10; //page 제한
 		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
 		
 		List<VoteVo> voList = service.list(vo, pvo);
@@ -54,8 +57,17 @@ public class VoteController {
 
 	// 투표 게시글
 	@GetMapping("select")
-	public List<VoteVo> select(VoteVo vo) {
-		return service.select(vo);
+	public Map<String,Object> select(VoteVo vo, PageVo pageVo) {
+		int pageCnt = service.pageCnt(vo);
+		int pageLimit = 10; //page 제한
+		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage() , pageLimit  , pageVo.getBoardLimit() );
+		
+		List<VoteVo> voList = service.select(vo, pvo);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("voList",voList);
+		map.put("pageVo", pvo);
+		return map;					
 	}
 
 	// 투표 게시글, 투표 항목 작성하기
@@ -105,10 +117,10 @@ public class VoteController {
 	@GetMapping("adminList")
 	public Map<String,Object> adminList(PageVo pageVo) {
 		int pageCnt = service.pageCnt(null);
-		int pageLimit = 3; //page 제한
+		int pageLimit = 10; //page 제한
 		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage(), pageLimit, pageVo.getBoardLimit());
 		
-		List<VoteVo> voList = service.adminList();
+		List<VoteVo> voList = service.adminList(pvo);
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("voList", voList);
@@ -124,12 +136,15 @@ public class VoteController {
 
 	// 관리자 게시글 검색
 	@PostMapping("adminSelect")
-	public Map<String,Object> adminSelect(@RequestBody VoteVo vo, PageVo pageVo) {
+	public Map<String,Object> adminSelect(@RequestBody VotePageDto dto) {
+		VoteVo vo = dto.getVoList();
+		PageVo pageVo = dto.getPageVo();
+		
 		int pageCnt = service.adminPageCnt(vo);
-		int pageLimit = 3; //page 제한
+		int pageLimit = 10; //page 제한
 		PageVo pvo = new PageVo(pageCnt,pageVo.getCurrentPage(), pageLimit, pageVo.getBoardLimit());
 		
-		List<VoteVo> voList = service.adminSelect(vo);
+		List<VoteVo> voList = service.adminSelect(vo,pvo);
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("voList", voList);

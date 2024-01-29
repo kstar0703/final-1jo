@@ -35,14 +35,14 @@ const Header = () => {
     return (
         <StyledHeaderDiv>
             <div className='logo' onClick={()=>{navigator("/member/home");}}>
-                <img src='resources/logo.svg'/>
-                <img src='resources/logo.svg'/>
-                <img src='resources/logo.svg'/>
+                <img className='logo_img' src='../resources/logo.png'/>
+                {/* <img src='resources/logo.svg'/> */}
+                {/* <img src='resources/logo.svg'/> */}
             </div>
             <Navi />
-            <div className='info'>
-                <img src='resources/ico_info.svg' />
-                {loginMember ? <span onClick={clickMyPage}>{loginMember.name}님 </span> : <button onClick={clickLogin}>로그인</button> }
+            <div className='info' onClick={clickMyPage}>
+                <img src='/resources/ico_info.svg' />
+                {loginMember ? <span>{loginMember.name}님 </span> : <button onClick={clickLogin}>로그인</button> }
             </div>
         </StyledHeaderDiv>
     );

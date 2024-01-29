@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team1.app.complaint.service.ComplaintService;
+import com.team1.app.complaint.vo.ComplaintPageVo;
 import com.team1.app.complaint.vo.ComplaintVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +46,15 @@ public class ComplaintController {
 	
 	//관리자 전체 게시글 조회
 	@GetMapping("adminList")
-	public List<ComplaintVo> list() {
-		return service.list();
+	public Map<String,Object> list(PageVo pageVo) {
+		int listCount = service.listCnt(null);
+		int pageLimit = 10;
+		PageVo pvo = new PageVo(listCount,pageVo.getCurrentPage(), pageLimit, pageVo.getBoardLimit());
+		List<ComplaintVo> voList = service.list(pvo);
+		Map<String,Object> map = new HashMap<>();
+		map.put("voList", voList);
+		map.put("pageVo", pvo);
+		return map;
 	}
 	
 	//관리자 게시글 상세 조회
@@ -62,8 +71,18 @@ public class ComplaintController {
 	
 	//관리자 전체 민원 검색 (썸네일 사용 시)
 	@PostMapping("adminSelect")
-	public List<ComplaintVo> select(@RequestBody ComplaintVo vo) {
-		return service.select(vo); 
+	public Map<String,Object> select(@RequestBody ComplaintPageVo dto) {
+		ComplaintVo vo = dto.getVoList();
+		PageVo pageVo = dto.getPageVo();
+		int listCount = service.listSelectCnt(vo);
+		int pageLimit = 10;
+		PageVo pvo = new PageVo(listCount,pageVo.getCurrentPage(),pageLimit,pageVo.getBoardLimit());
+		List<ComplaintVo> voList = service.select(vo,pvo);
+		Map map = new HashMap<>();
+		map.put("voList", voList);
+		map.put("pageVo", pvo);
+		
+		return map; 
 	}
 	
 }

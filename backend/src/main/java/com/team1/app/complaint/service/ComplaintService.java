@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team1.app.complaint.dao.ComplaintDao;
 import com.team1.app.complaint.vo.ComplaintImgVo;
 import com.team1.app.complaint.vo.ComplaintVo;
+import com.team1.app.util.vo.PageVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -99,8 +100,8 @@ public class ComplaintService {
 	}
 
 
-	public List<ComplaintVo> list() {
-		return dao.list(sst);
+	public List<ComplaintVo> list(PageVo pageVo) {
+		return dao.list(sst,pageVo);
 	}
 
 
@@ -124,7 +125,15 @@ public class ComplaintService {
 	}
 
 
-	public List<ComplaintVo> select(ComplaintVo vo) {
-		return dao.select(sst,vo);
+	public List<ComplaintVo> select(ComplaintVo vo, PageVo pvo) {
+		return dao.select(sst,vo, pvo);
+	}
+
+	// 페이징을 위한 페이지 총 갯수 구하기
+	public int listCnt(ComplaintVo vo) {
+		return dao.listCnt(sst,vo);
+	}
+	public int listSelectCnt(ComplaintVo vo) {
+		return dao.listSelectCnt(sst,vo);
 	}
 }

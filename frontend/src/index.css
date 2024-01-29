@@ -163,3 +163,9 @@ table caption {
 .search_box .search_item .form_box {
     min-width: 160px;
 }
+.logo_img{
+    height: 8vh;
+}
+.ad_logo{
+    height: 10vh;
+}

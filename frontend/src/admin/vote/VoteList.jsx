@@ -149,19 +149,24 @@ const VoteList = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: titleRef.current.value,
-          managerNo: managerRef.current.value,
-          enrollDateStart: enrollsRef.current.value,
-          enrollDateEnd: enrolleRef.current.value,
-          deadlineDateStart: deadsRes.current.value,
-          deadlineDateEnd: deadeRes.current.value,
-          delYn: delRes.current.value,
-          acceptYn: acceptRes.current.value,
-          currentPage: currentPage,
+          voList : {
+            title: titleRef.current.value,
+            managerNo: managerRef.current.value,
+            enrollDateStart: enrollsRef.current.value,
+            enrollDateEnd: enrolleRef.current.value,
+            deadlineDateStart: deadsRes.current.value,
+            deadlineDateEnd: deadeRes.current.value,
+            delYn: delRes.current.value,
+            acceptYn: acceptRes.current.value,
+          },
+          pageVo :{
+            currentPage: currentPage,
+          }
         }),
       })
         .then((resp) => resp.json())
         .then((data) => {
+          console.log(data);
           setVoteVoList(data.voList);
           setPvo(data.pageVo);
         });
@@ -318,10 +323,10 @@ const VoteList = () => {
                 </tr>
               </thead>
               <tbody>
-                {voteVoList.length === 0 ? (
-                  <h1>loding</h1>
+                {voteVoList?.length === 0 ? (
+                  <h1>검색 결과 없음</h1>
                 ) : (
-                  voteVoList.map((vo) => (
+                  voteVoList?.map((vo) => (
                     <tr
                       onClick={() => {
                         navigator(`/admin/vote/detail/${vo.voteNo}`);

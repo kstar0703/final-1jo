@@ -321,4 +321,79 @@
         WHERE
             STATUS = 'N'
 	</select>
+	
+	<!-- 페이징용 페이지 갯수 -->
+	<select id="listCnt" resultType="int">
+		SELECT 
+		    COUNT(*)
+		FROM
+		    COMPLAINT C
+        JOIN
+            MEMBER M
+        ON
+            M.MEMBER_NO = C.MEMBER_NO
+        JOIN
+            UNIT U
+        ON
+            M.UNIT_NO = U.UNIT_NO
+		JOIN
+		    (SELECT I.*,ROW_NUMBER() OVER (PARTITION BY I.COMPLAINT_NO ORDER BY I.IMG_NO) AS RN FROM COMPLAINT_IMG I) IMG
+		ON
+		    C.COMPLAINT_NO = IMG.COMPLAINT_NO
+        AND
+            IMG.RN = 1
+	</select>
+	
+	<select id="listSelectCnt" resultType="int">
+	SELECT 		 
+		    COUNT(*)
+		FROM
+		    COMPLAINT C
+        JOIN
+            MEMBER M
+        ON
+            M.MEMBER_NO = C.MEMBER_NO
+		JOIN
+		    COMPLAINT_IMG I
+		ON
+		    C.COMPLAINT_NO = I.COMPLAINT_NO
+        JOIN
+            UNIT U
+        ON
+            M.UNIT_NO = U.UNIT_NO	 
+<trim prefix="where" prefixOverrides="AND">
+	<if test="title != null and title.length() > 0">
+		    TITLE LIKE '%${title}%'	
+	</if>
+	<if test="content != null and content.length() > 0">
+		AND
+		    CONTENT LIKE '%${content}%'		
+	</if>
+	<if test="managerNo != null and managerNo.length() > 0">
+		AND
+		    MANAGER_NO = #{managerNo}		
+	</if>
+	<if test="delYn != null and delYn.length() > 0 ">
+		AND
+			C.DEL_YN = #{delYn}
+	</if>	
+	<if test="reply != null and reply.length() > 0 ">
+		AND
+		    REPLY LIKE '%${reply}%'				
+	</if>	
+	<if test="status != null and status.length() > 0 ">
+		AND
+		    STATUS = #{status} 
+	</if>
+	<if test="(enrollDateStart == null or enrollDateEnd == null) and (enrollDateStart.length() == 0 or enrollDateEnd.length() == 0)">
+		AND
+		    ENROLL_DATE IS NULL
+	</if>
+	<if test="(enrollDateStart != null and enrollDateEnd != null) and (enrollDateStart.length() > 0 and enrollDateEnd.length() > 0)"> 
+		AND
+		    (ENROLL_DATE BETWEEN TO_DATE(#{enrollDateStart}) AND TO_DATE(#{enrollDateEnd}))		
+	</if>	
+
+</trim>
+	</select>
 </mapper>
