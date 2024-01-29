@@ -199,18 +199,26 @@ const Home = () => {
                 {/* 2 */}
                 <div>
                     <div>
-                        <button className='sty02_btn'>편의시설 예약 건수</button>
+                        <button className='sty02_btn' onClick={()=>{
+                            navigate("/facility/history")
+                        }}>편의시설 예약 건수</button>
                         <span>{unitInfo?.facilitiesCount} 건</span>
                     </div>
                         
                     <div>
-                        <button className='sty02_btn'>민원답변대기</button>
+                        <button className='sty02_btn' onClick={
+                           ()=>{
+                            navigate("/complaint/list")
+                           }
+                        }>민원답변대기</button>
                         
                         <span>{unitInfo?.complaintCount} 건</span>
                     </div>
 
                     <div>
-                        <button className='sty02_btn'>방문예약</button>
+                        <button className='sty02_btn' onClick={()=>{
+                            navigate("/parking/list")
+                        }}>방문예약</button>
                         <span>{unitInfo?.parkingCnt} 건</span>
                         <span>잔여시간</span>
                         {unitInfo ? <h3>{Math.floor(unitInfo?.vehTime  / 60)  } 시간{unitInfo?.vehTime%60}분</h3> : ''}

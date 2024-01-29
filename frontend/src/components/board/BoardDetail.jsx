@@ -101,6 +101,7 @@ const BoardDetail = () => {
             .then(data => {
                 setBoardVo(data.boardVo);
                 setReplyCount(data.boardVo.replyCount);
+                console.log(data)
             });
         }
 
@@ -177,6 +178,13 @@ const BoardDetail = () => {
                                 <th className='content_box bottom_no'>
                                     <div>{boardVo.content}</div>
                                         {/*<div>댓글수 {replyCount}</div>*/}
+                                   {/* 이미지 영역 */}
+                                    <div>
+                                    {boardVo?.imgs?.map((img)=>
+                                        <img src={img.path} alt="" />
+                                    )}
+                                    
+                                    </div>
                                 </th>
                                     <div className='container_btnbox'>
                                         <button className='sty02_btn'><BoardLike boardNo={boardNo} likeCount={likeCount} setLikeCount={setLikeCount}/></button>

@@ -19,7 +19,7 @@ const StyledBtn = styled.div`
     padding: 10px 15px;
     /* width: 40px; */
     /* height: 30px; */
-    font-weight: 300 !important;
+   
     color: #999;
     /* border-radius: 5px;  버튼 모서리 둥글게 */
     /* border: 1px solid lightgray;  버튼 테두리 스타일 */
@@ -64,7 +64,7 @@ const Pagination = ({ pvo, currentPage, onPageChange }) => {
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          style={{ fontWeight: currentPage === page ? 'bold' : 'normal' }}
+          style={{ fontWeight: currentPage === page ? 'bold' : 'normal'   }}
         >
           {page}
         </button>

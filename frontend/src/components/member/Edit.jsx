@@ -26,15 +26,19 @@ const StyledDiv = styled.div`
       
 
         & div{
+            display: flex;
+            align-items: center;
             width: 100%;
             height: 100%;
             
             gap:  10px;
             margin: 5px;
+            margin-left: 1em;
         }
 
         & div input{
             background-color: white;
+            padding: 1em;
             height: 50px;
             width: 400px;
         }

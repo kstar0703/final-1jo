@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team1.app.board.service.BoardService;
 import com.team1.app.board.vo.BoardImgVo;
 import com.team1.app.board.vo.BoardLikeVo;
+import com.team1.app.board.vo.BoardListDto;
 import com.team1.app.board.vo.BoardReplyVo;
 import com.team1.app.board.vo.BoardVo;
 import com.team1.app.board.vo.CategoryVo;
@@ -42,7 +43,11 @@ public class BoardController {
 
 	// 전체 게시글 조회 (+댓글수 + 좋아요수 추가)
 	@PostMapping("list")
-	public Map<String, Object> list(@RequestBody BoardVo boardVo, PageVo pageVo){
+	public Map<String, Object> list(@RequestBody BoardListDto boardListDto){
+		
+		
+		BoardVo boardVo = boardListDto.getBoardVo();
+		PageVo pageVo = boardListDto.getPageVo();
 		System.out.println("들어온" + pageVo);
 		System.out.println("들어온" + boardVo);
 		int cnt = service.count(boardVo);
@@ -85,7 +90,7 @@ public class BoardController {
 		System.out.println("wno:" + vo.getWriterNo());
 		System.out.println("title:" + vo.getTitle());
 		System.out.println("content:" + vo.getContent());
-		System.out.println(files);
+		System.out.println(files.size());
 		
 		int result = service.insert(vo, files, req);
 		

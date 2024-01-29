@@ -277,7 +277,8 @@
 			    , ORIGIN_NAME
 			) VALUES (
 			    SEQ_RESIDENT_BOARD_IMG_NO.NEXTVAL
-			    , #{boardNo}
+			   <!--  , #{boardNo} -->
+			    , SEQ_RESIDENT_BOARD_NO.CURRVAL
 			    , #{imgName}
 			    , #{path}
 			    , #{originName}
