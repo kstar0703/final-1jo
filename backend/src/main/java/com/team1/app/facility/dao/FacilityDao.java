@@ -53,6 +53,8 @@ public class FacilityDao {
 
 	//커뮤니티시설 수정 (관리자)
 	public int edit(SqlSessionTemplate sst, FacilityVo vo) {
+
+		System.out.println("vo" + vo);
 		return sst.update("FacilityMapper.edit", vo);
 	}
 

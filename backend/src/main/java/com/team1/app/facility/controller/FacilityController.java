@@ -153,9 +153,9 @@ public class FacilityController {
 	
 	//커뮤니티시설 수정 (관리자)
 	@CrossOrigin(origins = "http://localhost:3000")
-	@PutMapping("admin/edit")
+	@PostMapping("admin/edit")
 	public Map<String, String> edit(@ModelAttribute FacilityVo vo, @RequestParam(required = false) MultipartFile file) throws Exception{
-		System.out.println("vo" + vo);
+		
 		System.out.println("file" + file);
 		if(file != null) {
 			String fullPath = saveFile(file);
@@ -174,6 +174,7 @@ public class FacilityController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("admin/delete")
 	public Map<String, String> delete(@RequestBody FacilityVo vo){
+		System.out.println(vo);
 		int result = service.delete(vo);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", "good");

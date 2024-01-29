@@ -22,5 +22,10 @@ public class ManagementFeeDao {
 	public List<ManagementFeeVo> list(SqlSessionTemplate sst) {
 		return sst.selectList("ManagementFeeMapper.list");
 	}
+	
+	//view
+//	public List name() {
+//		
+//	}
 
 }

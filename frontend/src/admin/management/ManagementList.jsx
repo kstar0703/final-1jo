@@ -1,6 +1,7 @@
 import React, { useEffect, useState}from 'react';
 import styled from 'styled-components';
 import ManagementEdit from './ManagementEdit';
+import { useNavigate } from 'react-router-dom';
 
 const StyledManagementListDiv = styled.div`
     width: 100%;
@@ -39,6 +40,7 @@ const ManagementList = () => {
         console.log(vo);
         return <ManagementEdit vo={vo}/>
     }
+    const navigator = useNavigate();
     return (
         <StyledManagementListDiv>
             <div className="ad_wrap">
@@ -90,6 +92,9 @@ const ManagementList = () => {
                         </div>
                         <div>
                             <button className="sty02_btn" >검색</button>
+                        </div>
+                        <div>
+                            <button className="sty02_btn" onClick={()=>{navigator("/admin/management/write");}}>관리비 부과</button>
                         </div>
                     </div>
                 </div>
