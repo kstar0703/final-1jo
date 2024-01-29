@@ -250,4 +250,17 @@ public class BoardController {
 		return map;
 	}
 	
+	//관리자 규제
+	@GetMapping("admin/ban/{boardNo}")
+	public Map<String, String> banByAdmin(@PathVariable String boardNo){
+		System.out.println(boardNo);
+		int result = service.banByAdmin(boardNo);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("msg", "good");
+		if(result != 1) {
+			map.put("msg", "bad");
+		}
+		return map;
+	}
+	
 }

@@ -39,4 +39,6 @@ public class BoardVo {
 	private List<String> paths;
 	
 	private String searchKeyword;
+	
+	private String banYn;
 }
