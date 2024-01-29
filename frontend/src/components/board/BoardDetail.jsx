@@ -41,12 +41,13 @@ const StyledBoardDetailDiv = styled.div`
         gap: 10px;
         align-items: baseline;
         & :first-child{
-            min-height: 300px;
+            min-height: 100px;
+            align-items: center;
+            justify-content: center;
             
         }
         & :nth-child(2){
             justify-content: initial;
-            height: 20px;
         }
     }
     .btn_bottom {
@@ -80,6 +81,9 @@ const StyledBoardDetailDiv = styled.div`
     .bottom_no{
         border-bottom: none
         ;
+    }
+    .pink_btn{
+        background-color: pink;
     }
 `;
 
@@ -135,6 +139,8 @@ const BoardDetail = () => {
         }
     }
 
+    console.log(boardVo)
+
 
     return (
         <StyledBoardDetailDiv>
@@ -179,15 +185,17 @@ const BoardDetail = () => {
                                     <div>{boardVo.content}</div>
                                         {/*<div>댓글수 {replyCount}</div>*/}
                                    {/* 이미지 영역 */}
-                                    <div>
-                                    {boardVo?.imgs?.map((img)=>
-                                        <img src={img.path} alt="" />
-                                    )}
-                                    
+                                    <div className='img_are'>
+                                        <div>
+                                            {boardVo?.imgs?.map((img)=>
+                                                <img src={img.path} alt="이미지" style={{width: '35%'}}/>
+                                            
+                                            )}
+                                        </div>
                                     </div>
                                 </th>
                                     <div className='container_btnbox'>
-                                        <button className='sty02_btn'><BoardLike boardNo={boardNo} likeCount={likeCount} setLikeCount={setLikeCount}/></button>
+                                        <button className='sty02_btn pink_btn'><BoardLike boardNo={boardNo} likeCount={likeCount} setLikeCount={setLikeCount}/></button>
                                     </div>
                             </tr>
                             <tr>
