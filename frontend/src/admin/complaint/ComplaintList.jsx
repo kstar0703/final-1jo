@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "../../components/modal/Modal";
 import ReplyModal from "../../components/complaint/ReplyModal";
+import Pagination from "../../components/page/Pagination";
 
 const StyledComplaintListDiv = styled.div`
   width: 100%;
@@ -22,13 +23,15 @@ const ComplaintList = () => {
     const delRef = useRef();
     const [compVoList, setCompVoList] = useState([]);
     const [update,setUpdate] = useState();
-    
+    const [pvo, setPvo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
     
     const loadCompVoList = () => {
       fetch("http://127.0.0.1:8888/app/complaint/adminList")
       .then(resp =>(resp.json()))
       .then((data)=>{
-        setCompVoList(data)
+        setCompVoList(data.voList);
+        setPvo(data.pageVo);
       })
     }
     useEffect(()=>{
@@ -113,18 +116,23 @@ const ComplaintList = () => {
             "Content-Type" : "application/json",
         },
         body: JSON.stringify({
+          voList: {
             title: titleRef.current.value,
             managerNo : managerRef.current.value ,
             enrollDateStart : enrollsRef.current.value ,
             enrollDateEnd : enrolleRef.current.value ,
             status : status.current.value ,
             delYn : delRef.current.value ,
+          },
+          pageVo:{
+            currentPage : currentPage,
+          }
         }),
       })
       .then((resp) => (resp.json()))
       .then((data) => {
-        console.log(data);
-        setCompVoList(data)
+        setCompVoList(data.voList);
+        setPvo(data.pageVo);
       })
       ;
     }
@@ -137,6 +145,13 @@ const ComplaintList = () => {
       enrolleRef.current.value = '';
       status.current.value = '';
       delRef.current.value = '';    
+    }
+
+    const handlePageChange =(page) => {
+      //페이지
+
+      setCurrentPage(page);
+      setUpdate(update + "a");
     }
 
   return (
@@ -290,6 +305,13 @@ const ComplaintList = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div>
+        <Pagination
+              pvo={pvo}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />          
         </div>
       </div>
       <Modal
