@@ -4,7 +4,7 @@ import Pagination from '../../components/page/Pagination';
 // 관리자 수락 및 조회 
  const StyledMemberDiv = styled.div`
      width: 100%;
-   
+     height: 100%;
     display: flex;
     flex-direction : column;
  `
