@@ -34,8 +34,7 @@ const Navi = () => {
       <StyledNaviDiv className="container">
         <div className='navi'>
           <div className="logo" onClick={()=>{navigater('/admin/home')}}>
-            <img src="../../resources/logo.svg" />
-            <img src="../../resources/logo.svg" />
+            <img className='ad_logo' src="../../resources/logo.png" />
           </div>
           <div><Link to="member/search">회원검색</Link></div>
           <div><Link to="announcement/list">공지사항</Link></div>
