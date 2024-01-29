@@ -3,264 +3,272 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Announcement">
-	<!-- 게시글 작성  -->
+	<!-- 게시글 작성 -->
 	<insert id="write" parameterType="AnnouncementVo">
-	INSERT ALL
-    INTO ANNOUNCEMENT 
-    (
-    ANNOUNCEMENT_NO
-    ,MANAGER_NO
-    ,TITLE,CONTENT 
-    ) VALUES 
-    (
-    SEQ_ANNOUNCEMENT_NO.NEXTVAL
-    ,#{managerNo}
-    ,#{title}
-    ,#{content}
-    )  
-    <foreach collection="fileList" item="file">
-    INTO ANNOUNCEMENT_IMG 
-    (
-    IMG_NO
-    ,ANNOUNCEMENT_NO
-    ,IMG_NAME
-    ,PATH
-    ,ORIGIN_NAME
-    ) 
-    VALUES 
-    (
-    (SELECT GET_ITEM_SEQ_ANNOUNCEMENT_IMG() FROM DUAL)
-    ,SEQ_ANNOUNCEMENT_NO.CURRVAL
-    ,#{file.imgName}
-    ,#{file.path}
-    ,#{file.originName}
-    )
-    </foreach>
-    SELECT * FROM DUAL
+		INSERT ALL
+		INTO ANNOUNCEMENT
+		(
+		ANNOUNCEMENT_NO
+		,MANAGER_NO
+		,TITLE,CONTENT
+		) VALUES
+		(
+		SEQ_ANNOUNCEMENT_NO.NEXTVAL
+		,#{managerNo}
+		,#{title}
+		,#{content}
+		)
+		<foreach collection="fileList" item="file">
+			INTO ANNOUNCEMENT_IMG
+			(
+			IMG_NO
+			,ANNOUNCEMENT_NO
+			,IMG_NAME
+			,PATH
+			,ORIGIN_NAME
+			)
+			VALUES
+			(
+			(SELECT GET_ITEM_SEQ_ANNOUNCEMENT_IMG() FROM DUAL)
+			,SEQ_ANNOUNCEMENT_NO.CURRVAL
+			,#{file.imgName}
+			,#{file.path}
+			,#{file.originName}
+			)
+		</foreach>
+		SELECT * FROM DUAL
 	</insert>
-	
-	<!-- 게시글 총개수  -->
+
+	<!-- 게시글 총개수 -->
 	<select id="count" resultType="int">
-	SELECT  
-	count(*)
-	FROM ANNOUNCEMENT A 
-	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
-	<trim prefix="WHERE" suffixOverrides="AND">
-	<if test = "title!= null" >	
-	 A.TITLE LIKE '%' || #{title} || '%' AND
-	</if>
-	<if test = "content != null" >	
-	 A.CONTENT LIKE '%' || #{content} || '%' AND
-	</if>
-	<if test = "id != null" >	
-	  M.ID LIKE '%' || #{id} || '%' AND
-		
-	</if>
-	
-	<choose>
-    <when test="delYn == null or delYn.length() == 0">
-        A.DEL_YN = 'N' AND
-    </when>
-    <when test="delYn == 'all'">
-    <!-- 아무 동작도 수행하지 않음 -->
-	</when>
-    
-    <otherwise>
-        A.DEL_YN = #{delYn} AND
-    </otherwise>
-	</choose>
-	
-	<if test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
-  	A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
-	</if>
-    
-    <if test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
-       A.ENROLL_DATE > TO_DATE(#{startDate}, 'YYYY-MM-DD')
-    </if>
-    
-     <if test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
-       A.ENROLL_DATE &lt;  TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
-    </if>
-    	
-	</trim>
-	ORDER BY A.ANNOUNCEMENT_NO DESC
+		SELECT
+		count(*)
+		FROM ANNOUNCEMENT A
+		JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
+		<trim prefix="WHERE" suffixOverrides="AND">
+			<if test="title!= null">
+				A.TITLE LIKE '%' || #{title} || '%' AND
+			</if>
+			<if test="content != null">
+				A.CONTENT LIKE '%' || #{content} || '%' AND
+			</if>
+			<if test="id != null">
+				M.ID LIKE '%' || #{id} || '%' AND
+
+			</if>
+
+			<choose>
+				<when test="delYn == null or delYn.length() == 0">
+					A.DEL_YN = 'N' AND
+				</when>
+				<when test="delYn == 'all'">
+					<!-- 아무 동작도 수행하지 않음 -->
+				</when>
+
+				<otherwise>
+					A.DEL_YN = #{delYn} AND
+				</otherwise>
+			</choose>
+
+			<if
+				test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
+				A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate},
+				'YYYY-MM-DD') + INTERVAL '1' DAY
+			</if>
+
+			<if
+				test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
+				A.ENROLL_DATE > TO_DATE(#{startDate}, 'YYYY-MM-DD')
+			</if>
+
+			<if
+				test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
+				A.ENROLL_DATE &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+			</if>
+
+		</trim>
+		ORDER BY A.ANNOUNCEMENT_NO DESC
 	</select>
-	
-	
-	<!-- 게시글 조회  -->
-	<select id="list" resultType="AnnouncementVo" >
-	SELECT  
-	A.ANNOUNCEMENT_NO
-	,A.MANAGER_NO
-	,A.TITLE
-	,A.CONTENT
-	,A.ENROLL_DATE
-	,A.MODIFY_DATE
-	,A.DEL_YN
-	,M.ID
-	FROM ANNOUNCEMENT A 
-	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
-	<trim prefix="WHERE" suffixOverrides="AND">
-	<if test = "title!= null" >	
-	 A.TITLE LIKE '%' || #{title} || '%' AND
-	</if>
-	<if test = "content != null" >	
-	 A.CONTENT LIKE '%' || #{content} || '%' AND
-	</if>
-	<if test = "id != null" >	
-	  M.ID LIKE '%' || #{id} || '%' AND 		
-	</if>
-	
-	<choose>
-    <when test="delYn == null or delYn.length() == 0">
-        A.DEL_YN = 'N' AND
-    </when>
-   
-    <when test="delYn == 'all'">
-    <!-- 아무 동작도 수행하지 않음 -->
-	</when>
-    
-    <otherwise>
-        A.DEL_YN = #{delYn} AND
-    </otherwise>
-	</choose>
-	
-	<if test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
-  	A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
-	</if>
-    
-    <if test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
-       A.ENROLL_DATE > TO_DATE(#{startDate}, 'YYYY-MM-DD')
-    </if>
-    
-     <if test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
-       A.ENROLL_DATE &lt;  TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
-    </if>
-    	
-	</trim>
-	ORDER BY A.ANNOUNCEMENT_NO DESC
+
+
+	<!-- 게시글 조회 -->
+	<select id="list" resultType="AnnouncementVo">
+		SELECT
+		A.ANNOUNCEMENT_NO
+		,A.MANAGER_NO
+		,A.TITLE
+		,A.CONTENT
+		,A.ENROLL_DATE
+		,A.MODIFY_DATE
+		,A.DEL_YN
+		,M.ID
+		FROM ANNOUNCEMENT A
+		JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
+		<trim prefix="WHERE" suffixOverrides="AND">
+			<if test="title!= null">
+				A.TITLE LIKE '%' || #{title} || '%' AND
+			</if>
+			<if test="content != null">
+				A.CONTENT LIKE '%' || #{content} || '%' AND
+			</if>
+			<if test="id != null">
+				M.ID LIKE '%' || #{id} || '%' AND
+			</if>
+
+			<choose>
+				<when test="delYn == null or delYn.length() == 0">
+					A.DEL_YN = 'N' AND
+				</when>
+
+				<when test="delYn == 'all'">
+					<!-- 아무 동작도 수행하지 않음 -->
+				</when>
+
+				<otherwise>
+					A.DEL_YN = #{delYn} AND
+				</otherwise>
+			</choose>
+
+			<if
+				test="startDate != null and startDate.length() > 0 and endDate != null and endDate.length() > 0">
+				A.ENROLL_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate},
+				'YYYY-MM-DD') + INTERVAL '1' DAY
+			</if>
+
+			<if
+				test="startDate != null and startDate.length() > 0 and (endDate == null or endDate.length() == 0)">
+				A.ENROLL_DATE > TO_DATE(#{startDate}, 'YYYY-MM-DD')
+			</if>
+
+			<if
+				test="(startDate == null or startDate.length()==0) and endDate != null and endDate.length()>0">
+				A.ENROLL_DATE &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY
+			</if>
+
+		</trim>
+		ORDER BY A.ANNOUNCEMENT_NO DESC
 	</select>
-	
-	<!-- 게시글 상세조회  -->
+
+	<!-- 게시글 상세조회 -->
 	<select id="detail" resultType="AnnouncementVo">
-	SELECT  
-	A.ANNOUNCEMENT_NO
-	,A.MANAGER_NO
-	,A.TITLE
-	,A.CONTENT
-	,A.ENROLL_DATE
-	,A.MODIFY_DATE
-	,A.DEL_YN
-	,AI.IMG_NO
-	,AI.IMG_NAME
-	,AI.PATH
-	,AI.ORIGIN_NAME
-	,M.ID
-	,M.PWD
-	FROM ANNOUNCEMENT A 
-	LEFT JOIN ANNOUNCEMENT_IMG AI ON A.ANNOUNCEMENT_NO = AI.ANNOUNCEMENT_NO
-	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
-	AND A.ANNOUNCEMENT_NO =#{announcementNo}
-	ORDER BY 
-	A.ANNOUNCEMENT_NO DESC 
-	, AI.IMG_NO 
+		SELECT
+		A.ANNOUNCEMENT_NO
+		,A.MANAGER_NO
+		,A.TITLE
+		,A.CONTENT
+		,A.ENROLL_DATE
+		,A.MODIFY_DATE
+		,A.DEL_YN
+		,AI.IMG_NO
+		,AI.IMG_NAME
+		,AI.PATH
+		,AI.ORIGIN_NAME
+		,M.ID
+		,M.PWD
+		FROM ANNOUNCEMENT A
+		LEFT JOIN ANNOUNCEMENT_IMG AI ON A.ANNOUNCEMENT_NO = AI.ANNOUNCEMENT_NO
+		JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
+		AND A.ANNOUNCEMENT_NO =#{announcementNo}
+		ORDER BY
+		A.ANNOUNCEMENT_NO DESC
+		, AI.IMG_NO
 	</select>
-	
-	<!-- 게시글 삭제  -->
+
+	<!-- 게시글 삭제 -->
 	<update id="delete">
-	UPDATE ANNOUNCEMENT 
-	SET 
-	DEL_YN ='Y' 
-	,MODIFY_DATE =SYSDATE 
-	WHERE DEL_YN ='N' AND ANNOUNCEMENT_NO=#{announcementNo}
+		UPDATE ANNOUNCEMENT
+		SET
+		DEL_YN ='Y'
+		,MODIFY_DATE =SYSDATE
+		WHERE DEL_YN ='N' AND ANNOUNCEMENT_NO=#{announcementNo}
 	</update>
-	
-	<!-- 삭제 취소  -->
+
+	<!-- 삭제 취소 -->
 	<update id="cancelDelete">
-	UPDATE ANNOUNCEMENT 
-	SET 
-	DEL_YN ='N' 
-	,MODIFY_DATE =SYSDATE 
-	WHERE DEL_YN ='Y' AND ANNOUNCEMENT_NO=#{announcementNo}
+		UPDATE ANNOUNCEMENT
+		SET
+		DEL_YN ='N'
+		,MODIFY_DATE =SYSDATE
+		WHERE DEL_YN ='Y' AND ANNOUNCEMENT_NO=#{announcementNo}
 	</update>
-	
-	<!-- 파일삭제  -->
+
+	<!-- 파일삭제 -->
 	<delete id="deleteFile">
-	DELETE 
-	ANNOUNCEMENT_IMG 
-	WHERE 
-	IMG_NO=#{imgNo}
+		DELETE
+		ANNOUNCEMENT_IMG
+		WHERE
+		IMG_NO=#{imgNo}
 	</delete>
-	
-	
-	
+
+
+
 	<update id="change">
-	UPDATE 
-	ANNOUNCEMENT 
-	SET 
-	MODIFY_DATE = SYSDATE 
-	<if test="title != null">
-	,TITLE = #{title}
-	</if>
-	<if test="content!=null"> 
-	,CONTENT = #{content}
-	</if> 
-	WHERE  ANNOUNCEMENT_NO= #{announcementNo}
-	AND DEL_YN='N'
+		UPDATE
+		ANNOUNCEMENT
+		SET
+		MODIFY_DATE = SYSDATE
+		<if test="title != null">
+			,TITLE = #{title}
+		</if>
+		<if test="content!=null">
+			,CONTENT = #{content}
+		</if>
+		WHERE ANNOUNCEMENT_NO= #{announcementNo}
+		AND DEL_YN='N'
 	</update>
-	
-	
-	<insert id="changeImg" parameterType="AnnouncementVo" >
-	INSERT ALL
-    <foreach collection="fileList" item="file">
-    INTO ANNOUNCEMENT_IMG 
-    (
-    IMG_NO
-    ,ANNOUNCEMENT_NO
-    ,IMG_NAME
-    ,PATH
-    ,ORIGIN_NAME
-    ) 
-    VALUES 
-    (
-    (SELECT GET_ITEM_SEQ_ANNOUNCEMENT_IMG() FROM DUAL)
-    ,#{announcementNo}
-    ,#{file.imgName}
-    ,#{file.path}
-    ,#{file.originName}
-    )
-    </foreach>
-    SELECT * FROM DUAL
+
+
+	<insert id="changeImg" parameterType="AnnouncementVo">
+		INSERT ALL
+		<foreach collection="fileList" item="file">
+			INTO ANNOUNCEMENT_IMG
+			(
+			IMG_NO
+			,ANNOUNCEMENT_NO
+			,IMG_NAME
+			,PATH
+			,ORIGIN_NAME
+			)
+			VALUES
+			(
+			(SELECT GET_ITEM_SEQ_ANNOUNCEMENT_IMG() FROM DUAL)
+			,#{announcementNo}
+			,#{file.imgName}
+			,#{file.path}
+			,#{file.originName}
+			)
+		</foreach>
+		SELECT * FROM DUAL
 	</insert>
-	
-	
+
+
 	<select id="getCurrentAnnouncementNo" resultType="String">
- 		SELECT SEQ_ANNOUNCEMENT_NO.CURRVAL AS  from dual			
+		SELECT SEQ_ANNOUNCEMENT_NO.CURRVAL AS from dual
 	</select>
-	
-	
-	<!-- 상위 5개  -->
+
+
+	<!-- 상위 5개 -->
 	<select id="topSelect" resultType="AnnouncementVo">
-	SELECT  
-	A.ANNOUNCEMENT_NO
-	,A.MANAGER_NO
-	,A.TITLE
-	,A.CONTENT
-	,A.ENROLL_DATE
-	,A.MODIFY_DATE
-	,A.DEL_YN
-	,M.ID
-	FROM ANNOUNCEMENT A 
-	JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
-    ORDER BY ANNOUNCEMENT_NO DESC
+		SELECT
+		A.ANNOUNCEMENT_NO
+		,A.MANAGER_NO
+		,A.TITLE
+		,A.CONTENT
+		,A.ENROLL_DATE
+		,A.MODIFY_DATE
+		,A.DEL_YN
+		,M.ID
+		FROM ANNOUNCEMENT A
+		JOIN MANAGER M ON M.MANAGER_NO = A.MANAGER_NO
+		ORDER BY ANNOUNCEMENT_NO DESC
 	</select>
-	
 
-	
-	
 
-	
-	
+
+
+
+
+
 
 
 </mapper>

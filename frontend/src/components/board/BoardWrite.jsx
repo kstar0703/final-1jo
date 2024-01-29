@@ -74,7 +74,8 @@ const BoardWrite = () => {
         setContent(e.target.value);
     }
     const handleChangeFile = (e)=>{
-        setFileObj(e.target.files[0]);
+       // setFileObj(e.target.files[0]);
+        setFileObj(e.target.files);
         // if(e.target.files.length > 0){
         //     setFileObj([...e.target.files]);
         // }else{
@@ -84,6 +85,7 @@ const BoardWrite = () => {
     useEffect(()=>{
         console.log(fileObj);
     }, [fileObj]);
+
     //const writerNo = JSON.parse(sessionStorage.getItem("loginMemberVo")).no
     const writerNo = 1
     const handleSubmit = (e)=>{
@@ -93,7 +95,11 @@ const BoardWrite = () => {
         formData.append("title", title);
         formData.append("content", content);
         formData.append("writerNo", writerNo);
-        formData.append("files", fileObj);
+        // formData.append("files", fileObj);
+        for (let i = 0; i < fileObj.length; i++) {
+            formData.append("files", fileObj[i]);
+         }
+
         // if(fileObj){
         //     if(Array.isArray(fileObj) && fileObj.length > 0){
         //         fileObj.forEach((file, index)=>{
