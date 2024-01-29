@@ -22,5 +22,6 @@ public class ManagementFeeVo {
 	private String name;
     private String ownerYn;
     private String email;
+    
 	
 }

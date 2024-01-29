@@ -69,6 +69,7 @@ const FacilityEdit = () => {
     
     let isFetching = false;
 
+   
     const [facilitiesName, setFacilitiesName] = useState("");
     const [delYn, setDelYn] = useState();
     const [contact, setContact] = useState();
@@ -112,6 +113,7 @@ const FacilityEdit = () => {
         e.preventDefault();
         const fd = new FormData();
         console.log(facilitiesName);
+        fd.append("facilitiesNo", facilitiesNo);
         fd.append("facilitiesName", facilitiesName);
         fd.append("delYn", delYn);
         fd.append("contact", contact);
@@ -124,9 +126,11 @@ const FacilityEdit = () => {
         console.log("FormData", fd);
         console.log("담은facilitiesName", facilitiesName);
         console.log("담은location", location);
+        console.log("facilitiesNo:", fd.get('facilitiesNo'));
+        console.log("delYn:", fd.get('delYn'));
 
         fetch("http://127.0.0.1:8888/app/facility/admin/edit", {
-            method: "PUT",
+            method: "POST",
             body: fd
         })
         .then(resp=>resp.json())

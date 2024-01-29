@@ -71,4 +71,20 @@
 	AND U.UNIT_NO = #{unitNo}
 	</select>
 	
+	<!-- view -->
+	<select id="selectChangedMonths" resultType="Map">
+    <![CDATA[
+    SELECT
+        current_year,
+        current_month,
+        current_amount
+    FROM
+        changed_management_fee_view
+    WHERE
+        current_month IS NOT NULL
+        AND current_amount != previous_amount;
+    ]]>
+	</select>
+
+	
 </mapper>

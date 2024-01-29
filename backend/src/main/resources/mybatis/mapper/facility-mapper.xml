@@ -69,33 +69,33 @@
 	<update id="edit">
 		UPDATE FACILITIES
 			<set>
-				<if test="facilitiesName != null and facilitiesName !='' ">
-					FACILITIES_NAME = #{facilitiesName}
-				</if>
-				<if test="unitPrice != null and unitPrice !='' ">
-					UNIT_PRICE = #{unitPrice}
-				</if>
-				<if test="location != null and location !='' ">
-					LOCATION = #{location}
-				</if>
-				<if test="operationTime != null and operationTime !='' ">
-					OPERATION_TIME = #{operationTime}
-				</if>
-				<if test="dayOff != null and dayOff !='' ">
-					DAY_OFF = #{dayOff}
-				</if>
-				<if test="contact != null and contact !='' ">
-					CONTACT = #{contact}
-				</if>
-				<if test="amenity != null and amenity !='' ">
-					AMENITY = #{amenity}
-				</if>
-				<if test="image != null and image !='' ">
-					IMAGE = #{image}
-				</if>
-			    MODIFY_DATE = SYSDATE
-			</set>
-			WHERE FACILITIES_NO = #{facilitiesNo}
+		        <if test="facilitiesName != null and facilitiesName !='' ">
+		            FACILITIES_NAME = #{facilitiesName},
+		        </if>
+		        <if test="unitPrice != null and unitPrice !='' ">
+		            UNIT_PRICE = #{unitPrice},
+		        </if>
+		        <if test="location != null and location !='' ">
+		            LOCATION = #{location},
+		        </if>
+		        <if test="operationTime != null and operationTime !='' ">
+		            OPERATION_TIME = #{operationTime},
+		        </if>
+		        <if test="dayOff != null and dayOff !='' ">
+		            DAY_OFF = #{dayOff},
+		        </if>
+		        <if test="contact != null and contact !='' ">
+		            CONTACT = #{contact},
+		        </if>
+		        <if test="amenity != null and amenity !='' ">
+		            AMENITY = #{amenity},
+		        </if>
+		        <if test="image != null and image !='' ">
+		            IMAGE = #{image},
+		        </if>
+		        MODIFY_DATE = SYSDATE
+		    </set>
+		    WHERE FACILITIES_NO = #{facilitiesNo}
 	</update>
 	
 	<!-- 커뮤니티시설 삭제 -->

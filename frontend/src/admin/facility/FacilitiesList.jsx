@@ -49,14 +49,18 @@ const FacilitiesList = () => {
         return parseInt(dataString).toLocaleString();
     }
 
-    const [vo, setVo] = useState();
-    const deleteFacilityVo = ()=>{
+    const [delYn, setDelYn] = useState();
+    const [vo, setVo] = useState({});
+    const deleteFacilityVo = (vo)=>{
         fetch("http://127.0.0.1:8888/app/facility/admin/delete", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(vo)
+            body: JSON.stringify({
+                ...vo,
+                delYn: delYn
+            })
         })
         .then(resp=>resp.json())
         .then(data=>{
@@ -65,31 +69,22 @@ const FacilitiesList = () => {
             }else{
                 alert("시설 사용전환 실패");
             }
+            loadFacilityVoList();
         })
     }
     const handleDelete = (vo)=>{
         const answerDel = window.confirm("사용전환 하시겠습니까?");
         if(answerDel){
-            if(vo.delYn == "N"){
-                setVo({
-                    ...vo,
-                    delYn: "Y"
-                });
-                console.log(vo);
-                deleteFacilityVo();
-
-        }else{
-            setVo({
-                ...vo,
-                delYn: "N"
-            });
-            console.log(vo);
-            deleteFacilityVo();
-
-        }
-        loadFacilityVoList();
+            const updatedDelYn = (vo.delYn === "N")? "Y": "N";
+            setDelYn(updatedDelYn);
+            setVo(vo);
         }
     }
+    useEffect(() => {
+        if (delYn !== undefined && vo !== undefined) {
+            deleteFacilityVo(vo);
+        }
+    }, [delYn, vo]);
     return (
         <StyledFacilitiesListDiv>
             <div className="ad_wrap_mod">
