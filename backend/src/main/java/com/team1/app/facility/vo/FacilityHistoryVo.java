@@ -22,4 +22,7 @@ public class FacilityHistoryVo {
 	private String dong;
 	private String ho;
 	
+	private String cancelManagerNo;
+	private String id;
+	
 }

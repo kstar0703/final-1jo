@@ -18,4 +18,5 @@ public class FacilityVo {
 	private String enrollDate;
 	private String modifyDate;
 	private String delYn;
+	private String cancelManagerNo;
 }
