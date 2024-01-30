@@ -9,15 +9,15 @@ const ChangePwdDiv = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     align-items: center;
     justify-content: center;
 
 
     & >:first-child{
-        width: 50%;
-        height: 50%;
-        background-color: #ccc;
+        width: 100%;
+        height: 100%;
+        background-color: #7C967B;
         display: flex;
         flex-direction: column;
        
@@ -45,6 +45,7 @@ const ChangePwdDiv = styled.div`
                 margin: 0.5em;
                 
                 & > input{
+                    border-radius: 100px;
                     width: 20vw;
                     height: 4vh;
                 }
@@ -56,6 +57,14 @@ const ChangePwdDiv = styled.div`
             }
 
         }
+    }
+
+    .div-h1{
+        margin-top :100px;
+    }
+
+    h1{
+        color: #fff;
     }
 ` 
 
@@ -248,7 +257,7 @@ const ChangePwd = () => {
         <ChangePwdDiv>
             <div>
                 {/* 1번 */}
-                <div>
+                <div className='div-h1'>
                     <h1>비밀번호 변경</h1>
                 </div>
 
@@ -270,9 +279,9 @@ const ChangePwd = () => {
                     </div>
                     
                     <div>
-                        <button onClick={clickChange}>비밀번호 변경</button>
+                        <button onClick={clickChange} className='sty02_btn'>비밀번호 변경</button>
 
-                        <button onClick={onClickCancel}>취소</button>
+                        <button onClick={onClickCancel} className='sty01_btn'>취소</button>
 
                     </div>
 

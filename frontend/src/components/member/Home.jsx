@@ -39,9 +39,8 @@ import styled from 'styled-components';
         padding: 10px;
 
         height: 40%;
-        border :1px solid black;
-        border-radius: 5%;
-        background-color: #7C967B;;
+        border-radius: 20px;
+        background-color: #EEE;;
         display: flex;
         flex-direction: column;
         gap :20px;
@@ -101,6 +100,22 @@ import styled from 'styled-components';
         }
      }
 
+     .div-span{
+        margin: 20px 10px;
+     }
+
+     .div-div-div-div{
+        display: flex;
+        flex-direction: column;
+     }
+
+     .div-dov{
+        display: inline-block;
+        flex-direction: column;
+        gap :0px
+     }
+
+     
  `
 
 
@@ -191,18 +206,20 @@ const Home = () => {
             </div>
 
             {/* 2 내현황  */}
-            <div>
+            <div className='div-div-div'>
                 {/* 1 */}
-                <div>
-                   <img src="" alt="" /> <span>내 현황</span>
+                <div className='div-span'>
+                  <span>내 현황</span>
                 </div>
                 {/* 2 */}
                 <div>
-                    <div>
+                    <div className='div-div-div-div'>
                         <button className='sty02_btn' onClick={()=>{
                             navigate("/facility/history")
                         }}>편의시설 예약 건수</button>
+                        
                         <span>{unitInfo?.facilitiesCount} 건</span>
+                        
                     </div>
                         
                     <div>
@@ -220,8 +237,14 @@ const Home = () => {
                             navigate("/parking/list")
                         }}>방문예약</button>
                         <span>{unitInfo?.parkingCnt} 건</span>
-                        <span>잔여시간</span>
-                        {unitInfo ? <h3>{Math.floor(unitInfo?.vehTime  / 60)  } 시간{unitInfo?.vehTime%60}분</h3> : ''}
+                      <div>
+                        <span>잔여시간
+                            <br />
+                        {unitInfo ? <>{Math.floor(unitInfo?.vehTime  / 60)  } 시간{unitInfo?.vehTime%60}분 </>  : ''}       
+                        </span>
+                     
+                      </div>
+                    
                     </div>        
                 </div>
 
@@ -230,7 +253,7 @@ const Home = () => {
             <div>
                 <div>
                    <span>공지사항</span>
-                   <button onClick={announcementMove} className='sty01_btn'>공지사항이동</button>
+                   <button onClick={announcementMove} className='sty02_btn'>공지사항이동</button>
                 </div>
 
                
