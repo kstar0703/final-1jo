@@ -3,9 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledComplaintDetailDiv = styled.div`
-width: 100%;
-height: 100%;
-
+  width: 100%;
+  height: 100%;
 
 `;
 
@@ -29,70 +28,76 @@ const ComplaintDetail = () => {
     },[])
 
     return (
-        <StyledComplaintDetailDiv>
-            <div className='wrap'>
-                <div className="detail_heard_box">
-                    <h1>민원 신청 정보</h1>
-                </div>
-                <div className="tbl_detail_box">
-          <table>
-            <caption>투표 상세보기 테이블</caption>
-            <colgroup>
-              <col width="" />
-              <col width="" />
-              <col width="" />
-              <col width="" />
-              <col width="" />
-              <col width="" />
-            </colgroup>
-            <tbody>
-              <tr>
-                <th scope="col">
-                  <div> {compVo?.title}</div>
-                  <div>{compVo?.complaintNo}</div>
-                </th>
-              </tr>
-              <tr>
-                <th>
-                  <div>
-                    {
-                      compVo?.status === 'N'
-                      ?
-                      "미처리"
-                      :
-                      "처리완료"
-                    }
-                    </div>
-                  <div>
-                    <div>접수일자 : {compVo?.enrollDate}</div>
-                  </div>
-                </th>
-              </tr>
+      <StyledComplaintDetailDiv>
+        <div className="wrap">
+          <div className="detail_heard_box">
+            <h1>민원 신청 정보</h1>
+          </div>
+          <div className="tbl_detail_box">
+            <table>
+              <caption>투표 상세보기 테이블</caption>
+              <colgroup>
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+              </colgroup>
+              <tbody>
                 <tr>
-                    <th>
-                        <div>{compVo?.content}</div>
-                    </th>
-              </tr>
-              <tr>
-                <th>
-                    <div>{compVo?.imgVoList.map((vo) => (
-
-                      <img width='50%' src={vo.path + vo.imgName} alt={vo.originName}/>
-                    
-                        ))}
+                  <th scope="col">
+                    <div> {compVo?.title}</div>
+                    <div>{compVo?.complaintNo}</div>
+                  </th>
+                </tr>
+                <tr>
+                  <th>
+                    <div>{compVo?.status === "N" ? "미처리" : "처리완료"}</div>
+                    <div>
+                      <div>접수일자 : {compVo?.enrollDate}</div>
                     </div>
-                </th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                  </th>
+                </tr>
+                <tr>
+                  <th>
+                    <div className="content_text">
+                      {compVo?.content
+                        ? compVo?.content.replaceAll("<br/>", "\r\n")
+                        : " "}
+                    </div>
+                  </th>
+                </tr>
+                <tr>
+                  <th>
+                    <div>
+                      {compVo?.imgVoList.map((vo) => (
+                        <img
+                          width="50%"
+                          src={vo.path + vo.imgName}
+                          alt={vo.originName}
+                        />
+                      ))}
+                    </div>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div className="d_btn_div">
-          <div>
-              <button className="sty01_btn" onClick={()=>{navigator('/complaint/list')}}>목록가기</button>
+            <div>
+              <button
+                className="sty01_btn"
+                onClick={() => {
+                  navigator("/complaint/list");
+                }}
+              >
+                목록가기
+              </button>
             </div>
-        </div>    
-            </div>
-        </StyledComplaintDetailDiv>
+          </div>
+        </div>
+      </StyledComplaintDetailDiv>
     );
 };
 

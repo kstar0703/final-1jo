@@ -147,8 +147,12 @@ const ComplaintDetall = () => {
                   <th scope="row">
                     <label form="">민원 내용</label>
                   </th>
-                  <td colspan="3">
-                    <p>{compVo.content}</p>
+                  <td colspan="3" className="content_text">
+                    <p>
+                      {compVo?.content
+                        ? compVo?.content.replaceAll("<br/>", "\r\n")
+                        : " "}
+                    </p>
                     {compVo?.imgVoList?.map((vo) => (
                       <img
                         width={500 + "px"}
@@ -197,16 +201,15 @@ const ComplaintDetall = () => {
                 목록가기
               </button>
             </div>
-            {compVo?.managerNo === loginMember
-              ?
-            <div>
-              <button onClick={modalOpenClicik} className="sty02_btn">
-                답변 수정
-              </button>
-            </div>
-              :
+            {compVo?.managerNo === loginMember ? (
+              <div>
+                <button onClick={modalOpenClicik} className="sty02_btn">
+                  답변 수정
+                </button>
+              </div>
+            ) : (
               ""
-            }
+            )}
           </div>
         </div>
       </div>

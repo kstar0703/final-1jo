@@ -91,62 +91,65 @@ const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
       }, []);
 
     return (
-        <ReactModal isOpen={isOpen} style={customModalStyles} onRequestClose={closeModal}>
-
-
+      <ReactModal
+        isOpen={isOpen}
+        style={customModalStyles}
+        onRequestClose={closeModal}
+      >
         <StyledReplyModalDiv>
-            <h1 onClick={()=>{
-            }}>{title}</h1>
-            <div>
-                <div className='ad_tbl_box'>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <label form="">민원 글 제목</label>
-                                </th>
-                                <td colspan="3">{compVo?.title}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <label form="">민원 내용</label>
-                                </th>
-                                <td colspan="3">
-                                    {compVo?.content}
-                                    <p>첨부된 사진은 상세 페이지에서 확인해주세요</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                <label for="inp_03">민원 처리 답변</label>
-                            </th>
-                                <td colspan='3'>
-                                <div class="form_box">
-                                    <textarea
-                                        ref={textRef}
-                                        value={reply}
-                                        onChange={(e) => {
-                                        setReply(e.target.value);
-                                        }}
-                                        onInput={handleResizeHeight}
-                                        type="text-area"
-                                        placeholder="값을 입력해주세요"
-                                    ></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className='ad_btn_div'>
-                    <button className='sty02_btn' onClick={hendleSubmit} >답변 완료</button>
-                    <button className='sty01_btn' onClick={closeModal}>목록가기</button>
-                </div>
+          <h1 onClick={() => {}}>{title}</h1>
+          <div>
+            <div className="ad_tbl_box">
+              <table>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      <label form="">민원 글 제목</label>
+                    </th>
+                    <td colspan="3">{compVo?.title}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <label form="">민원 내용</label>
+                    </th>
+                    <td className="content_text" colspan="3">
+                      {compVo?.content?compVo?.content.replaceAll("<br/>", "\r\n"):" "}
+                      <p>첨부된 사진은 상세 페이지에서 확인해주세요</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <label for="inp_03">민원 처리 답변</label>
+                    </th>
+                    <td colspan="3">
+                      <div class="form_box">
+                        <textarea
+                          ref={textRef}
+                          value={reply}
+                          onChange={(e) => {
+                            setReply(e.target.value);
+                          }}
+                          onInput={handleResizeHeight}
+                          type="text-area"
+                          placeholder="값을 입력해주세요"
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            <div className="ad_btn_div">
+              <button className="sty02_btn" onClick={hendleSubmit}>
+                답변 완료
+              </button>
+              <button className="sty01_btn" onClick={closeModal}>
+                목록가기
+              </button>
+            </div>
+          </div>
         </StyledReplyModalDiv>
-        </ReactModal>
-
-
+      </ReactModal>
     );
 };
 
