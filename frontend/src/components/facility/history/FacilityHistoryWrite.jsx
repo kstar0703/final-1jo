@@ -197,10 +197,10 @@ const FacilityHistoryWrite = ({facilityVo, onMove}) => {
                                 <th>환불정책</th>
                                 <td>전체 환불</td>
                             </tr>
-                            <tr>
+                            {/*<tr>
                                 <th>이용안내</th>
                                 <td></td>
-                            </tr>
+                            </tr>*/}
                         </table>
                     </div>
                 </div>
