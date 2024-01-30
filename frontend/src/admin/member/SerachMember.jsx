@@ -301,7 +301,7 @@ const SerachMember = () => {
               <tbody>
                  
                 
-                    {memberArr.map( (vo)=>(
+                    {memberArr?.length<=0 ? '검색결과 없음' :  memberArr?.map( (vo)=>(
                       <tr key={vo.no}>
                       <td>{vo.memberNo ? vo.memberNo : ''}</td>
                       <td>{vo.name ? vo.name : ''}</td>

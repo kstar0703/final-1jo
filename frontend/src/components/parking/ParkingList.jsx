@@ -7,6 +7,8 @@ import ParkingModal from './ParkingModal';
     width: 100%;
    display: flex;
    flex-direction : row;
+   background-color: white !important;
+   
 
    .new-class{
     display: flex;
@@ -34,6 +36,14 @@ import ParkingModal from './ParkingModal';
    .sty77_btn:hover{
       background-color:#ccc ;
       color: black;
+   }
+
+   .ad_wrap{
+    background-color: #fff;
+   }
+
+   .ad_search_box{
+    background-color:#eee ;
    }
 
 
@@ -262,7 +272,7 @@ const ParkingList = () => {
     return (
         <StyledMemberDiv>
         <div className="ad_wrap">
-          <div className="ad_search_box_b new-class">
+          <div className="ad_search_box_b new-class mt40">
             <div className="ad_tit new-class">
 
               <h2>나의 방문 예약</h2>

@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledDiv = styled.div`
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #7C967B;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,7 +60,27 @@ const StyledDiv = styled.div`
             }
         }
 
+        .div-div{
+            background-color: white;
+            border-radius: 20px;
+            padding-left : 20px;
+        }
+
         
+    }
+
+    .span-span{
+        color : #fff;
+    }
+    .div-div{
+        margin-top: 100px;
+    }
+    .div-div-div{
+        & span{
+            color : #fff;
+        }
+
+      
     }
 `
 
@@ -82,58 +103,58 @@ const Edit = () => {
     return (
         <StyledDiv>
             {/* 처음 메인창 */}
-            <div>
-             <img src="\resources\logo.svg" alt="logo" />
-             <span>개인정보 확인</span>
+            <div className='div-div'>
+             <img className='logo_img' src="\resources\logo.png" alt="logo" />
+             <span className='span-span'>개인정보 확인</span>
             </div>
             {/* 정보 수정 영역창 */}
             <div>
             
             {/* 전화번호 */}
-            <div>
+            <div className='div-div'>
             <img src='\resources\ico_tel.svg'/>
             <input type="text"  name='phone'  maxLength='13' disabled={true} value={loginMember.phone}/>
             </div>
 
             <div>
-                <div>
+                <div className='div-div'>
                 <img src="\resources\person.svg" alt="" /><input name='name' type="text" disabled={true} placeholder='이름' value={loginMember.name} />
                 </div>
             </div>
 
             <div>
-                <div>
+                <div className='div-div'>
                 <img src="\resources\person.svg" alt="" /><input name='name' type="text" placeholder='이메일' disabled={true} value={loginMember.email} />
                 </div>
             </div>
 
             <div>
-                <div>
+                <div className='div-div'>
                 <img src="\resources\person.svg" alt="" /><input name='name' type="text" placeholder='이메일' disabled={true} value={loginMember.birth} />
                 </div>
             </div>
 
-            <div>
+            <div className='div-div-div'>
                 <span>주소 :</span>
                 <span>101동 1400호</span>
             </div>
 
          
-            <div>
+            <div className='div-div-div'>
             <span>세대주/세대원 : </span>
             <label> <input type="radio" name="ownerYn" value="Y"  checked={loginMember.ownerYn === 'Y'} disabled={true}/>세대주  </label>
             <label> <input type="radio" name="ownerYn" value="N" checked={loginMember.ownerYn === 'N'} disabled={true}  /> 세대원 </label>
             </div>
 
-            <div>
+            <div className='div-div-div'>
             <span>성별 : </span>
             <label> <input type="radio" name="gender" value="Y" checked={loginMember.gender === 'M'} disabled={true}  />남자  </label>
             <label> <input type="radio" name="gender" value="N" checked={loginMember.gender === 'F'} disabled={true}  /> 여자 </label>
             </div>
 
             <div className='backDiv'>
-                <button onClick={back}>뒤로 가기</button>
-                <button onClick={changePwd}>비밀번호 변경</button>
+                <button onClick={back} className='sty01_btn'>뒤로 가기</button>
+                <button onClick={changePwd} className='sty02_btn'>비밀번호 변경</button>
             </div>
         </div>
 

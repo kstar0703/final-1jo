@@ -14,12 +14,9 @@ const StyledMainDiv = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    background-color:  #F5F5F5;
+    
 
-    & button:hover {
-        cursor: pointer;
-        background-color: cornflowerblue ;
-    }
+  
     
 `;
 

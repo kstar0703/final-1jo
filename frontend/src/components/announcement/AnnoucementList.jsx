@@ -38,6 +38,10 @@ const StyledBoardListDiv = styled.div`
     .input_date{
         width: 30%;
     }
+
+    .sty02_btn{
+        margin-right : 10px;
+    }
 }
 
 `
@@ -207,7 +211,7 @@ const AnnouncementList = () => {
                             </select>
                             <input  type='text'  ref={inputRef} placeholder='검색어를 입력하세요'/>
                             
-            
+                            
                             <button className='sty02_btn' onClick={onClickSearch} type='button'>검색</button>
                             <button className='sty01_btn' onClick={clickReset} type='button'>초기화</button> 
                              

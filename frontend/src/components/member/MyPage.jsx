@@ -7,8 +7,8 @@ import Modal from '../modal/Modal';
 
 
 const MyPageDiv = styled.div`
-    width: 60%;
-    height: 60%;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,11 +21,11 @@ const MyPageDiv = styled.div`
     }
 
     & > :first-child{
-        
+       height : 200px  ;
        width: 100%;
        justify-content: space-between;
        align-items: center;
-        background-color: lightcoral;
+        background-color: #7C967B;
        & {
         margin :20px;
        }
@@ -49,7 +49,28 @@ const MyPageDiv = styled.div`
     }
     
     & > :nth-child(3){
-        
+        margin-top: 50px;
+        margin-bottom : 50px ;
+        display: flex;
+    }
+
+    .btn-div{
+        display: flex;
+        flex-direction: row;
+
+        &  button{
+                width: 200px;
+                height: 50px;
+            }
+    }
+
+    span{
+        font-size: 1.5em;
+    }
+
+    h2{
+        font-size: 2em ;
+        color: #fff;
     }
 
    
@@ -156,7 +177,7 @@ const MyPage = () => {
        <MyPageDiv>
             {/* 1 */}
             <div>
-                <button onClick={onClickHome}>뒤로가기</button>
+                <div></div>
                 <h2>마이페이지</h2>
                 <div></div>
             </div>
@@ -165,15 +186,8 @@ const MyPage = () => {
                 <div>
                     <span>{loginMember.name } 님 [아파트먼트#{loginMember.memberNo}]  </span>
                     <span></span>
-                </div>
 
-                <div>
-                    <button onClick={changePwd}>비밀번호 변경</button>
-                    <button onClick={changePwdInfo}>내 정보 확인</button>
-                </div>
-            </div>
-            {/* 3 */}
-            <div>
+                    <div>
                 <div>
                     <span>관리자승인 : </span>
                     {loginMember ? <span> 승인됨</span> : "" }
@@ -191,14 +205,30 @@ const MyPage = () => {
                     </span>
                 </div>
             </div>
+                </div>
+
+                
+
+                <div>
+                    <button onClick={changePwd} className='sty01_btn'>비밀번호 변경</button>
+                    <button onClick={changePwdInfo} className='sty02_btn' >내 정보 확인</button>
+                </div>
+            </div>
+            {/* 3 */}
+           
 
             {/*3  */}
-            <div>
-                <button onClick={openModalLogout}>로그아웃</button>
+            <div className='btn-div'>
+                <button onClick={openModalLogout} className='sty01_btn'>로그아웃</button>
                 
-                <button onClick={openModal}>회원탈퇴</button>     
+                <button onClick={openModal} className='sty02_btn' >회원탈퇴</button>  
+
+          
             </div>
 
+            <div>
+                <button onClick={onClickHome} className='sty02_btn'>뒤로가기</button>   
+            </div>
             
            
            {/* 로그아웃 */}

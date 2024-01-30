@@ -329,7 +329,7 @@ const AnnoucementList = () => {
               </thead>
               <tbody>
                  
-              {announcement?.map( (vo)=>(
+              {announcement?.length<=0 ? '검색결과없음': announcement?.map( (vo)=>(
                       <tr key={vo.no}>
                        <td>{vo.announcementNo}</td> 
                        <td>{vo.title}</td> 
