@@ -1,5 +1,7 @@
 /* 둘다 공용 사용 가능*/
-
+.content_text {
+  white-space: pre-wrap;
+}
 /*회색버튼*/
 .sty01_btn{
     width: 100px;

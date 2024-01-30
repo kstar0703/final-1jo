@@ -35,6 +35,7 @@ public class ComplaintController {
 	//민원 접수 
 	@PostMapping("complaintSumit")
 	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws Exception {
+		vo.setContent(vo.getContent().replace("\r\n", "<br/>"));
 		return service.complaintSumit(vo,fileArr);
 	}
 	
@@ -66,6 +67,7 @@ public class ComplaintController {
 	//민원 해결 글 작성
 	@PostMapping("clear")
 	public int clear( @RequestBody ComplaintVo vo) {
+		vo.setContent(vo.getContent().replace("\r\n", "<br/>"));
 		return service.clear(vo);
 	}
 	

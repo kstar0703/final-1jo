@@ -113,65 +113,86 @@ const VoteList = () => {
     };
     
     return (
-        <StyledVoteListDiv>
-            <div className='wrap'>
-                <div className='seach_box_bg'>
-                  <div className='mb30'><h1>설문투표</h1></div> 
-                    <form onSubmit={handleSubmit}>
-                        <input onBlur={SearcInput} type='text' name='title' placeholder='키워드 검색'/>
-                        <input type='submit' value="검색"/>
-                    </form>
-                </div>
-
-                <div className="tbl_box mt40">
-                    <table>
-                        <caption>OOOO 테이블</caption>
-                        <colgroup>
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" />
-                            <col width="" /> 
-                            <col width="" />
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th scope="col">번호</th>
-                                <th scope="col">제목</th>
-                                <th scope="col">시작일자</th>
-                                <th scope="col">마감일자</th>
-                                <th scope="col">마감여부</th>
-                                <th scope="col">조회수</th>
-                                <th scope="col">내투표</th>
-                            </tr>
-                        </thead>
-                        <tbody> 
-                            {
-                                voteVoList.length ===0
-                                ?
-                                <h1>검색 결과 없음</h1>
-                                :
-                                voteVoList.map( vo=>
-                                    (<tr onClick={()=>{navigator(`/vote/detail/${vo.voteNo}`)}} key={vo.no} >{/*key={vo.no} */}
-                                        <td>{vo.voteNo}</td>
-                                        <td>{vo.title}</td>
-                                        <td>{vo.enrollDate}</td>
-                                        <td>{vo.deadlineDate}</td>
-                                        <td>{vo.hit}</td>
-                                        <td>{vo.acceptYn === 'Y' ? '진행' : '마감'}</td>
-                                        <td>{vo.replyStatus}</td>
-                                    </tr>)
-                                )
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                {}
-                <div>
-                  <Pagination pvo={pvo} currentPage={currentPage} onPageChange={handlePageChange}/>
-                </div>
+      <StyledVoteListDiv>
+        <div className="wrap">
+          <div className="seach_box_bg">
+            <div className="mb30">
+              <h1>설문투표</h1>
             </div>
-        </StyledVoteListDiv>
+            <form onSubmit={handleSubmit}>
+              <input
+                onBlur={SearcInput}
+                type="text"
+                name="title"
+                placeholder="키워드 검색"
+              />
+              <input type="submit" value="검색" />
+            </form>
+          </div>
+
+          <div className="tbl_box mt40">
+            <table>
+              <caption>OOOO 테이블</caption>
+              <colgroup>
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+                <col width="" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">번호</th>
+                  <th scope="col">제목</th>
+                  <th scope="col">시작일자</th>
+                  <th scope="col">마감일자</th>
+                  <th scope="col">조회수</th>
+                  <th scope="col">마감여부</th>
+                  <th scope="col">내투표</th>
+                </tr>
+              </thead>
+              <tbody>
+                {voteVoList.length === 0 ? (
+                  <h1>검색 결과 없음</h1>
+                ) : (
+                  voteVoList.map((vo) => (
+                    <tr
+                      onClick={() => {
+                        navigator(`/vote/detail/${vo.voteNo}`);
+                      }}
+                      key={vo.no}
+                    >
+                      {/*key={vo.no} */}
+                      <td>{vo.voteNo}</td>
+                      <td>{vo.title}</td>
+                      <td>{vo.enrollDate}</td>
+                      <td>{vo.deadlineDate}</td>
+                      <td>{vo.hit}</td>
+                      <td>
+                        {vo.acceptYn === "N"
+                          ? "마감"
+                          : vo.acceptYn === "R"
+                          ? "대기"
+                          : "진행"}
+                      </td>
+                      <td>{vo.replyStatus}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          {}
+          <div>
+            <Pagination
+              pvo={pvo}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
+      </StyledVoteListDiv>
     );
 };
 
