@@ -85,6 +85,52 @@
         AND current_amount != previous_amount;
     ]]>
 	</select>
+	
+	<!-- 청구번호 조회 -->
+	<select id="getBilingNo" resultType="String">
+		SELECT BILLING_NO
+		FROM MANAGEMENT_FEE
+		WHERE USAGE_YEAR = #{usageYear}
+		AND USAGE_MONTH = #{usageMonth}
+		AND UNIT_NO = #{unitNo}
+	</select>
+	
+	<!-- 관리비 추가(update) -->
+	<update id="updateFacilitiesFee">
+	UPDATE 
+		MANAGEMENT_FEE
+	SET 
+		FACILITIES_FEE = FACILITIES_FEE + #{price}
+	WHERE 
+		USAGE_YEAR = #{usageYear}
+		AND USAGE_MONTH = #{usageMonth}
+		AND UNIT_NO = #{unitNo}
+		
+	</update>
 
+	<!-- 관리비 추가(insert) -->
+	<insert id="insertFacilitiesFee">
+		INSERT INTO MANAGEMENT_FEE(
+    BILLING_NO
+    , UNIT_NO
+    , USAGE_PERIOD
+    , USAGE_YEAR
+    , USAGE_MONTH
+    , BASIC_FEE
+    , MAINTERNANCE_FEE
+    , FACILITIES_FEE
+    , TOTAL_AMOUNT
+) VALUES (
+    SEQ_MANAGEMENT_FEE_NO.NEXTVAL
+    , 1
+    , '2023-12-03'
+    , 2023
+    , 12
+    , 100000
+    , 130000
+    , 10000
+    , 210000
+);
+	</insert>
 	
 </mapper>
