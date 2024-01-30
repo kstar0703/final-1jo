@@ -88,10 +88,10 @@ const FacilityDetail = () => {
     };
 
     const handleMove = () => {
-        const answer = window.confirm("이동?");
-        if(answer){
-            navigator("/");
-        }
+        //const answer = window.confirm("이동하시겠습니까?");
+        //if(answer){
+        //    navigator("/facility/list");
+        //}
     };
     
     

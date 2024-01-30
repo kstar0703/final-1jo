@@ -105,11 +105,11 @@ const FacilityNoticeList = () => {
                         <colgroup>
                             <col width="100px" />
                             <col width="100px" />
-                            <col width="" />
+                            <col width="600px" />
+                            {/*<col width="100px" />*/}
                             <col width="100px" />
-                            <col width="100px" />
-                            <col width="100px" />
-                            <col width="100px" />
+                            <col width="200px" />
+                            <col width="200px" />
                             <col width="100px" />
                             <col width="100px" />
                         </colgroup>
@@ -118,7 +118,7 @@ const FacilityNoticeList = () => {
                             <th scope="col">번호</th>
                             <th scope="col">시설명</th>
                             <th scope="col">제목</th>
-                            <th scope='col'>조회</th>
+                            {/*<th scope='col'>조회</th>*/}
                             <th scope="col">작성자</th>
                             <th scope='col'>작성일</th>
                             <th scope='col'>수정일</th>
@@ -136,7 +136,7 @@ const FacilityNoticeList = () => {
                                             <td>{vo.facilitiesNoticeNo}</td>
                                             <td>{vo.facilitiesName}</td>
                                             <td>{vo.title}</td>
-                                            <td>조회수</td>
+                                            {/*<td>조회수</td>*/}
                                             <td>관리자 {vo.managerNo}<br/>({vo.id})</td>
                                             <td>{vo.enrollDate}</td>
                                             <td>{vo.modifyDate?vo.modifyDate:"-"}</td>

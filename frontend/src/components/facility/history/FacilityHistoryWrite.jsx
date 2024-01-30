@@ -135,7 +135,7 @@ const FacilityHistoryWrite = ({facilityVo, onMove}) => {
         .then(resp=>resp.json())
         .then(data=>{
             if(data.msg === "good"){
-                alert("성공");
+                alert(facilityVo.facilitiesName + " ( 예약일:" + historyVo.useDate + " ) 이용 신청 완료되었습니다.");
                 onMove();
             }else{
                 alert("신청실패");

@@ -105,9 +105,9 @@ const ManagementList = () => {
     }
     const differenceCheck = (dataString)=>{
         if(dataString > 0){
-            return <span className='red'>( ▲ {`${price(dataString)}`})</span>;
+            return <span className='red'>( ▼ {`${price(dataString)}`})</span>;
         }else if(dataString < 0){
-            return <span className='green'>(▼ {`${price(dataString)}`})</span>;
+            return <span className='green'>(▲ {`${price(-dataString)}`})</span>;
         }else{
             return `( + ${dataString})`;
         }
