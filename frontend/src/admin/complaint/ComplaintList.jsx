@@ -27,7 +27,7 @@ const ComplaintList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     
     const loadCompVoList = () => {
-      fetch("http://127.0.0.1:8888/app/complaint/adminList")
+      fetch(`http://127.0.0.1:8888/app/complaint/adminList?currentPage=${currentPage}`)
       .then(resp =>(resp.json()))
       .then((data)=>{
         setCompVoList(data.voList);
@@ -56,7 +56,9 @@ const ComplaintList = () => {
     }
     //필요 없으면 지우기
     const replySubmit = () => {
-      alert("성공함");
+      setUpdate(update +'1')
+      
+      // alert("성공함");
     } 
     
     //예 아니오 모달

@@ -59,10 +59,6 @@ const ComplaintWrite = () => {
     //접수 버튼
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(titleValue);
-        // console.log(contentValue);
-        // console.log(fileObj);
-        // console.log(memberNo);
         
         const fd = new FormData();
         fd.append("title", titleValue);
@@ -81,11 +77,11 @@ const ComplaintWrite = () => {
         .then(resp => (resp.json))
         .then((data)=>{
             if(data){
-                alert("참이야")
+              alert("접수가 완료되었습니다.")
+              navigator('/complaint/list')
             }else{
-                alert("거짓이야")
+                alert("오류가 발생했습니다.")
             }
-            console.log(data);
         })
         ;
     }
