@@ -124,7 +124,7 @@ const FacilityDetail = () => {
                                             </tr>
                                             <tr>
                                                 <th>운영 시간</th>
-                                                <td>{facilityVo.operationTime}월~금</td>
+                                                <td>{facilityVo.operationTime}</td>
                                             </tr>
                                             <tr>
                                                 <th>휴일</th>
@@ -144,6 +144,7 @@ const FacilityDetail = () => {
                                             </tr>
                                         </tbody>
                                     </table>
+                                        
                             </div>
                         </div>
                     </div>
@@ -169,7 +170,9 @@ const FacilityDetail = () => {
                     </div>                    
                 </div>
                 
-                    
+                <div>
+                    <button className='sty02_btn mtp50' onClick={()=>{navigator("/facility/list")}}>시설목록</button>
+                </div>     
         </StyledFacilityDetailDiv>
     );
 };

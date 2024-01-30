@@ -47,6 +47,7 @@ const BoardList = () => {
     }
     useEffect(()=>{
                 loadBoardVoList();
+                setBanYn(false);
     }, [banYn]);
 
 
