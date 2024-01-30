@@ -62,6 +62,7 @@
 		JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO
 		WHERE 
         B.DEL_YN = 'N'
+        AND BAN_YN = 'N'
         <if test="searchKeyword != null and searchKeyword != ''">
             AND (TITLE LIKE '%' || #{searchKeyword} || '%' OR CONTENT LIKE '%' || #{searchKeyword} || '%')
         </if>
