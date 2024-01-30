@@ -47,6 +47,7 @@ const ReplyModal = ({isOpen, closeModal, title, fecthJava, compVo}) => {
     //필요없으면 지우기
     const ajaxJava = async() =>{
         await fecthJava();
+        setReply('');
         closeModal();
     }
     const managerNo = JSON.parse(sessionStorage.getItem("loginMember")).managerNo
