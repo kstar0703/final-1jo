@@ -2,6 +2,8 @@ package com.team1.app.facility.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team1.app.facility.dao.FacilityDao;
 import com.team1.app.facility.vo.FacilityHistoryVo;
 import com.team1.app.facility.vo.FacilityVo;
+import com.team1.app.managementfee.dao.ManagementFeeDao;
+import com.team1.app.managementfee.vo.ManagementFeeVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +27,8 @@ public class FacilityService {
 
 	private final FacilityDao dao;
 	private final SqlSessionTemplate sst;
+	
+	private final ManagementFeeDao fDao;
 	
 	//커뮤니티시설 목록조회
 	public List<FacilityVo> list() {
@@ -42,8 +48,31 @@ public class FacilityService {
 
 	//예약추가(회원번호, 이용일)
 	public int apply(FacilityHistoryVo vo) {
+		//관리비 청구용 데이터 가공
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date = LocalDate.parse(vo.getUseDate(), formatter);
+		String usageYear = String.valueOf(date.getYear());
+		String usageMonth = String.valueOf(date.getMonthValue());
+		String unitNo = vo.getUnitNo();
+		String price = vo.getPrice();
+		ManagementFeeVo feeVo = new ManagementFeeVo();
+		feeVo.setUnitNo(unitNo);
+		feeVo.setUsageYear(usageYear);
+		feeVo.setUsageMonth(usageMonth);
+		feeVo.setPrice(price);
+		
+		String billingNo = fDao.getBilingNo(sst, feeVo);
+		System.out.println("조회된청구번호" + billingNo);
+		if(billingNo != null) {
+			fDao.updateFacilitiesFee(sst, feeVo);
+		}else {
+			
+		}
+		
 		return dao.apply(sst, vo);
 	}
+	
+	
 
 	//예약취소(신청번호)
 	public int cancel(FacilityHistoryVo vo) {

@@ -23,5 +23,9 @@ public class ManagementFeeVo {
     private String ownerYn;
     private String email;
     
+    private String usageYear;
+    private String usageMonth;
+    
+    private String price;
 	
 }

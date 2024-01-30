@@ -135,6 +135,8 @@ public class BoardService {
 	
 	//서버에 파일저장
 	private String saveFile(MultipartFile file, String savePath) throws IllegalStateException, Exception {
+		
+		System.out.println(savePath);
 
 		String originName = file.getOriginalFilename();
 		String extension = originName.substring(originName.lastIndexOf("."));
@@ -218,6 +220,11 @@ public class BoardService {
 	//작성자 번호로 최근 게시물 번호 1개 조회
 	public BoardVo findLatestPost(String writerNo) {
 		return dao.findLatestPost(sst, writerNo);
+	}
+
+	//관리자 규제
+	public int banByAdmin(String boardNo) {
+		return dao.banByAdmin(sst, boardNo);
 	}
 
 

@@ -33,6 +33,23 @@ const BoardList = () => {
         loadBoardVoList();
     }, []);
     const navigator = useNavigate();
+
+    const [banYn, setBanYn] = useState(false);
+    const handleBan = (boardNo)=>{
+        fetch(`http://127.0.0.1:8888/app/board/admin/ban/${boardNo}`)
+        .then(resp=>resp.json())
+        .then(data=>{
+            if(data.msg === "good"){
+                setBanYn(data.banYn);
+                alert("규제처리완료");
+            }
+        })
+    }
+    useEffect(()=>{
+                loadBoardVoList();
+    }, [banYn]);
+
+
     return (
         <StyledBoardListDiv>
             <div className="ad_wrap">
@@ -140,18 +157,22 @@ const BoardList = () => {
                                     ?
                                     <h1>loading..</h1>
                                     :
-                                    boardVoList.map(vo => <tr key={vo.boardNo} onClick={()=>{navigator(`/admin/board/detail/${vo.boardNo}`)}}>
+                                    boardVoList.map(vo => <tr key={vo.boardNo} >
                                             <td>{vo.boardNo}</td>
                                             <td>{vo.categoryName}</td>
-                                            <td>{vo.title}</td>
+                                            <td onClick={()=>{navigator(`/admin/board/detail/${vo.boardNo}`)}}>{vo.title}</td>
                                             <td>{vo.replyCount}</td>
                                             <td>{vo.dong}동 {vo.name}<br/>({vo.phone})</td>
                                             <td>{vo.hit}</td>
                                             <td>{vo.likeCount}</td>
                                             <td>{vo.enrollDate}</td>
                                             <td>{vo.delYn}</td>
-                                            <td><button className='sty02_btn mod_btn'>규제</button></td>
-                                            {/*규제되면 버튼 비활성화*/} 
+                                            <td>
+                                                {vo.banYn === "Y"?"규제완료"
+                                                :
+                                                <button className='sty02_btn mod_btn' onClick={()=>{handleBan(vo.boardNo)}}>규제</button>
+                                                }
+                                            </td>
                                         </tr>
                                     )
                                 }

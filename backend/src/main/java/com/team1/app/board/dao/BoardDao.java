@@ -160,6 +160,11 @@ public class BoardDao {
 		return sst.selectList("BoardMapper.topHitSelect","",rowBounds);
 	}
 
+	//관리자 규제
+	public int banByAdmin(SqlSessionTemplate sst, String boardNo) {
+		return sst.update("BoardMapper.banByAdmin", boardNo);
+	}
+
 
 
 

@@ -41,13 +41,17 @@ const FacilityHistoryList = () => {
         loadFacilityHistoryVoList();
     }, []);
 
+    const managerNo = JSON.parse(sessionStorage.getItem("loginMember")).managerNo;
+
     const handleDelete = (vo)=>{
+        console.log(managerNo);
         console.log(vo);
         fetch("http://127.0.0.1:8888/app/facility/cancel", {
             method: "PUT",
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify({
-                applicationNo: vo.applicationNo
+                applicationNo: vo.applicationNo,
+                cancelManagerNo: managerNo
             })
         })
         .then(resp=>resp.json())
@@ -137,6 +141,7 @@ const FacilityHistoryList = () => {
                             <col width="110px" />
                             <col width="150px" />
                             <col width="100px" />
+                            <col width="100px" />
                             <col width="150px" />
                             <col width="100px" />
                         
@@ -151,7 +156,7 @@ const FacilityHistoryList = () => {
                             <th scope='col'>신청인</th>
                             <th scope='col'>신청일시</th>
                             <th scope='col'>상태</th>
-                            {/*취소가능/취소완료/사용완료*/}
+                            <th scope='col'>취소인</th>
                             <th scope='col'>취소일시</th>
                             <th scope='col'>관리</th>
                             </tr>
@@ -171,6 +176,7 @@ const FacilityHistoryList = () => {
                                         <td>{vo.name}</td>
                                         <td>{vo.applicationDate}</td>
                                         <td>{vo.cancelDate?"취소완료": new Date(vo.useDate) > new Date()? "취소가능":"사용완료"}</td>
+                                        <td>{vo.cancelDate?(vo.id?vo.id:"본인"):"-"}</td>                                        
                                         <td>{vo.cancelDate?vo.cancelDate:"-"}</td>                                        
                                         <td>{vo.cancelDate == null && (new Date(vo.useDate) > new Date())?<button className='sty02_btn mod_btn' onClick={()=>{handleDelete(vo)}}>취소</button>:"-"}</td>
                                     </tr>

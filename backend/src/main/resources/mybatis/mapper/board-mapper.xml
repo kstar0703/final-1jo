@@ -21,6 +21,7 @@
 			, DONG
 			, HO
 			, PHONE
+			, BAN_YN
             , (
                 SELECT COUNT(REPLY_NO) 
                     FROM BOARD_REPLY R 
@@ -88,6 +89,7 @@
 		SELECT COUNT(REPLY_NO)
 			FROM BOARD_REPLY
 			WHERE BOARD_NO = #{boardNo}
+		 	AND DEY_YN = 'N'
 	</select>
 		
 	<!-- 좋아요수 조회 -->
@@ -490,5 +492,14 @@
 		WHERE B.DEL_YN = 'N'
 		ORDER BY B.HIT DESC		
 	</select>
+	
+	<!-- 관리자 규제 -->
+	<update id="banByAdmin">
+		UPDATE RESIDENT_BOARD
+			SET
+			    MODIFY_DATE = SYSDATE
+			    , BAN_YN = 'Y'
+			WHERE BOARD_NO = #{boardNo}
+	</update>
 
 </mapper>

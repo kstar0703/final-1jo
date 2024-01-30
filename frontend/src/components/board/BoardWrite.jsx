@@ -32,9 +32,9 @@ const StyledBoardWriteDiv = styled.div`
         & textarea {
             border: none;
                 width: 100%;
+                flex: 1;
                 margin-right: 20px;
                 resize: none;
-                border: 0.1px solid #ccc;
             }
     }
     .btn_space{
@@ -45,6 +45,14 @@ const StyledBoardWriteDiv = styled.div`
         display: flex;
         align-items: center;
         padding-top: 20px;
+    }
+    .info_box{
+        padding: 0;
+        height: 52px;
+        & div > input {
+            width: 100%;
+            height: 50px;
+        }
     }
 `;
 
