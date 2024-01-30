@@ -46,9 +46,7 @@ const StyledBoardDetailDiv = styled.div`
             justify-content: center;
             
         }
-        & :nth-child(2){
-            justify-content: initial;
-        }
+        
     }
     .btn_bottom {
         width: 80%;
@@ -84,6 +82,16 @@ const StyledBoardDetailDiv = styled.div`
     }
     .pink_btn{
         background-color: pink;
+    }
+    .img_area {
+        display: flex;
+        gap: 10px; 
+        width: 100%;
+        & img {
+            justify-content: baseline;
+            width: 33%; 
+            height: auto; 
+        }
     }
 `;
 
@@ -185,10 +193,10 @@ const BoardDetail = () => {
                                     <div>{boardVo.content}</div>
                                         {/*<div>댓글수 {replyCount}</div>*/}
                                    {/* 이미지 영역 */}
-                                    <div className='img_are'>
+                                    <div className='img_area'>
                                         <div>
                                             {boardVo?.imgs?.map((img)=>
-                                                <img src={img.path} alt="이미지" style={{width: '35%'}}/>
+                                                <img src={img.path} alt="이미지"/>
                                             
                                             )}
                                         </div>

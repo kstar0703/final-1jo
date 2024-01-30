@@ -23,7 +23,17 @@ const StyledBoardListDiv = styled.div`
     .btn_under{
         flex-direction: column;
     }
-
+    .replyCount_box{
+        border-radius: 10px;
+        background-color: #BAE2B9;
+        width: 25px;
+        height: 18px;
+        display: inline-block;
+        text-align: center;
+        font-size: 10px;
+        line-height: 15px;
+        margin-left: 10px;
+    }
 `;
 
 const BoardList = () => {
@@ -135,7 +145,7 @@ const BoardList = () => {
                                     <tr key={vo.boardNo}>
                                         <td>{vo.boardNo}</td>
                                         <td>{vo.categoryName}</td>
-                                        <td className='left' onClick={()=>{navigator(`/board/detail/${vo.boardNo}`)}}>{vo.title}</td>
+                                        <td className='left' onClick={()=>{navigator(`/board/detail/${vo.boardNo}`)}}>{vo.title} &nbsp;&nbsp;<span className='replyCount_box'>{vo.replyCount}</span></td>
                                         <td>{vo.dong}동 {vo.name}</td>
                                         <td>{formatDate(vo.enrollDate)}</td>
                                         <td>{vo.likeCount}</td>

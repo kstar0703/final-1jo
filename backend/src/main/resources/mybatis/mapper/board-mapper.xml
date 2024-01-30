@@ -89,6 +89,7 @@
 		SELECT COUNT(REPLY_NO)
 			FROM BOARD_REPLY
 			WHERE BOARD_NO = #{boardNo}
+		 	AND DEY_YN = 'N'
 	</select>
 		
 	<!-- 좋아요수 조회 -->
