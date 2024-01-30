@@ -56,7 +56,7 @@ const BoardList = () => {
             <div className="ad_wrap">
                 <div className="ad_search_box_bg">
                     <div className="ad_tit">
-                        <h2>소통 게시판</h2>
+                        <h2>소통 게시판</h2> 
                     </div>
 
                     <div className="ad_search_box">

@@ -133,16 +133,16 @@ const FacilityHistoryList = () => {
                         <caption>커뮤니티 예약목록</caption>
 
                         <colgroup>
-                            <col width="60px" />
-                            <col width="150px" />
-                            <col width="150px" />
+                            <col width="100px" />
+                            <col width="200px" />
+                            <col width="200px" />
                             <col width="80px" />
                             <col width="80px" />
                             <col width="110px" />
-                            <col width="150px" />
+                            <col width="200px" />
                             <col width="100px" />
-                            <col width="100px" />
-                            <col width="150px" />
+                            <col width="110px" />
+                            <col width="200px" />
                             <col width="100px" />
                         
                         </colgroup>

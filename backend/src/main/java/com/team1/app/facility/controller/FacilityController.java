@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -115,12 +116,19 @@ public class FacilityController {
 	
 	//커뮤니티시설 등록 (관리자)
 	@PostMapping("admin/insert")
-	public Map<String, String> insert(FacilityVo vo, @RequestParam(required = false) MultipartFile file) throws Exception{
+	public Map<String, String> insert(FacilityVo vo, @RequestParam(required = false) MultipartFile file, HttpServletRequest req) throws Exception{
 		System.out.println("시설등록:" + vo);
 		System.out.println("시설이미지:" + file);
 		
+		String rootDir = req.getServletContext().getRealPath("/");
+		String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
+		String route = "\\src\\main\\webapp";
+		String path = "\\resources\\upload\\board\\img\\";
+		String savePath = commonRoot + route + path;
+		
 		if(file != null) {
-		String fullPath = saveFile(file);
+		String imgName = saveFile(file, savePath);
+		String fullPath = "http://127.0.0.1:8888/app" + path + imgName;
 		vo.setImage(fullPath);
 		}
 		int result = service.insert(vo);
@@ -141,25 +149,44 @@ public class FacilityController {
 //		return map;
 	}
 	
-	private String saveFile(MultipartFile f) throws Exception{
+	private String saveFile(MultipartFile file, String savePath) throws Exception{
+		String originName = file.getOriginalFilename();
+		String extension = originName.substring(originName.lastIndexOf("."));
+		String imgName = UUID.randomUUID() + extension;
+		File target = new File(savePath + imgName);
+		file.transferTo(target);
+		return imgName;
+		
+		
+		
+		/**
 		String path = "C:\\dev\\khTeamPrj\\team1Repo\\backend\\src\\main\\webapp\\resources\\upload\\facility\\";
 		String orginName = f.getOriginalFilename();
 		//원래는 "changeName(랜덤값) + 확장자"로 해야함 
 		File target = new File(path + orginName); 
 		f.transferTo(target); 
 		return path + orginName; 
+		**/
 	}	
 	
 	
 	//커뮤니티시설 수정 (관리자)
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("admin/edit")
-	public Map<String, String> edit(@ModelAttribute FacilityVo vo, @RequestParam(required = false) MultipartFile file) throws Exception{
+	public Map<String, String> edit(@ModelAttribute FacilityVo vo, @RequestParam(required = false) MultipartFile file, HttpServletRequest req) throws Exception{
 		
 		System.out.println("file" + file);
+		
+		String rootDir = req.getServletContext().getRealPath("/");
+		String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
+		String route = "\\src\\main\\webapp";
+		String path = "\\resources\\upload\\board\\img\\";
+		String savePath = commonRoot + route + path;
+		
 		if(file != null) {
-			String fullPath = saveFile(file);
-			vo.setImage(fullPath);
+			String imgName = saveFile(file, savePath);
+			String image = "http://127.0.0.1:8888/app" + path + imgName;
+			vo.setImage(image);
 		}
 		int result = service.edit(vo);
 		Map<String, String> map = new HashMap<String, String>();

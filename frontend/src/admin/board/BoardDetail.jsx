@@ -64,7 +64,7 @@ const BoardDetail = () => {
                                     <th scope="row"><label form=''>삭제여부</label></th>
                                     <td>{boardVo.delYn}</td>
                                     <th scope="row"><label form=''>규제여부</label></th>
-                                    <td></td>
+                                    <td>{boardVo.banYn}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label form="">작성자명</label></th>
@@ -93,7 +93,14 @@ const BoardDetail = () => {
                                 </tr>
                                 <tr>
                                     <th scope="row"><label for="inp_03">첨부파일</label></th>
-                                    <td colspan="4">첨부파일이름</td>
+                                    <td colspan="4">첨부파일이름
+                                    <div>
+                                            {boardVo?.imgs?.map((img)=>
+                                                <img src={img.path} alt="이미지"/>
+                                            
+                                            )}
+                                        </div>
+                                    </td>
                                 </tr>
                                 <div></div>
                             </tbody>

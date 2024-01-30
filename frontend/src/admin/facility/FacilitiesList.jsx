@@ -132,20 +132,20 @@ const FacilitiesList = () => {
                         <caption>커뮤니티 시설목록</caption>
 
                         <colgroup>
-                            <col width="60px" />
-                            <col width="60px" />
-                            <col width="150px" />
-                            <col width="100px" />
                             <col width="70px" />
-                            <col width="110px" />
+                            <col width="120px" />
                             <col width="150px" />
                             <col width="100px" />
                             <col width="100px" />
+                            <col width="150px" />
+                            <col width="150px" />
+                            <col width="180px" />
+                            <col width="180px" />
+                            <col width="110px" />
                             <col width="100px" />
                             <col width="100px" />
                             <col width="100px" />
-                            <col width="100px" />
-                            <col width="100px" />
+                            <col width="120px" />
                         
                         </colgroup>
                         <thead>

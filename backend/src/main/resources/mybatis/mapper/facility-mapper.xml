@@ -19,6 +19,7 @@
 		    , MODIFY_DATE
 		    , DEL_YN
 		FROM FACILITIES
+		ORDER BY FACILITIES_NO
 	</select>
 	
 	  	<!-- 커뮤니티시설 상세조회 (관리자) -->
@@ -115,6 +116,7 @@
 		    , IMAGE
 		FROM FACILITIES
 		WHERE DEL_YN = 'N'
+		ORDER BY FACILITIES_NO
 	</select>
 	
 	<!-- 커뮤니티시설 상세정보조회 (사용자) -->
