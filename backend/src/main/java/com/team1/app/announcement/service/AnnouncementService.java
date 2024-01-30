@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.DefaultRowSorter;
 
 import org.apache.ibatis.session.RowBounds;
@@ -39,7 +40,7 @@ public class AnnouncementService {
 	private final SqlSessionTemplate sst;
 	
 	//공지사항 작성(admin)이미지 첨부
-	public Map<String, String> write(AnnouncementVo vo, MultipartFile[] fileArr) throws Exception {
+	public Map<String, String> write(AnnouncementVo vo, MultipartFile[] fileArr,HttpServletRequest req) throws Exception {
 	
 		//result 확인용
 		int resultCheck = 1;
@@ -50,12 +51,18 @@ public class AnnouncementService {
 		//디비 저장 경로
 		String path="http://127.0.0.1:8888/app/resources\\upload\\announcement\\img\\";
 		
+		String rootDir = req.getServletContext().getRealPath("/");
+		String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
+		String route = "\\src\\main\\webapp";
+		String realPath = "\\resources\\upload\\announcement\\img\\";
+		String savePath = commonRoot + route + realPath;
+		
 		//
 		Map<String,String> resultMap = new HashMap();
 		
 		//파일 이름 저장
 		if(fileArr !=null && fileArr.length>0) {
-			List<String> fileList = saveFile(fileArr);
+			List<String> fileList = saveFile(fileArr,savePath);
 			
 			resultCheck += fileList.size(); 
 			//MultipartFile[]용 인덱스
@@ -93,7 +100,7 @@ public class AnnouncementService {
 	}
 	
 		//공지사항 수정(관리자)
-	public Boolean change(AnnouncementVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
+	public Boolean change(AnnouncementVo vo, MultipartFile[] fileArr,HttpServletRequest req ) throws IllegalStateException, IOException {
 			
 			//업데이트 횟수
 			int imgUpdateResult = (fileArr == null) ? 1 : 1+ fileArr.length;
@@ -121,9 +128,16 @@ public class AnnouncementService {
 			//디비 저장 경로
 			String path="http://127.0.0.1:8888/app/resources\\upload\\announcement\\img\\";
 			
+			String rootDir = req.getServletContext().getRealPath("/");
+			String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
+			String route = "\\src\\main\\webapp";
+			String realPath = "\\resources\\upload\\announcement\\img\\";
+			String savePath = commonRoot + route + realPath;
+			
+			
 			//파일 이름 저장
 			if(fileArr !=null && fileArr.length>0) {
-				List<String> fileList = saveFile(fileArr);
+				List<String> fileList = saveFile(fileArr,savePath);
 				
 				
 				for(int i=0; i<fileList.size(); i++) {
@@ -148,9 +162,9 @@ public class AnnouncementService {
 	
 	
 	//파일저장
-	private List<String> saveFile(MultipartFile[] fileArr) throws IllegalStateException, IOException {
+	private List<String> saveFile(MultipartFile[] fileArr,String savePath) throws IllegalStateException, IOException {
 		//저장 파일 경로
-		String path ="E:\\dev\\FINAL_1JO\\backend\\src\\main\\webapp\\resources\\upload\\announcement\\img\\";
+//		String path ="E:\\dev\\FINAL_1JO\\backend\\src\\main\\webapp\\resources\\upload\\announcement\\img\\";
 		List<String> fileList = new ArrayList();
 		for (MultipartFile f : fileArr) {
 		
@@ -158,7 +172,7 @@ public class AnnouncementService {
 		String UUIDfileName = UUID.randomUUID().toString() +  System.currentTimeMillis();
 		//파일확장잔
 		String extendName = f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
-			File target = new File(path + UUIDfileName + extendName);
+			File target = new File(savePath + UUIDfileName + extendName);
 			f.transferTo(target);
 			fileList.add(UUIDfileName+extendName);
 			

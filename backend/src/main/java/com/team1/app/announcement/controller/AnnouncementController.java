@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +44,7 @@ public class AnnouncementController {
 	 * @throws Exception 
 	 */
 	@PostMapping("write")
-	public Map<String,String> write(AnnouncementVo vo,MultipartFile[] fileArr ) throws Exception{
+	public Map<String,String> write(AnnouncementVo vo,MultipartFile[] fileArr,HttpServletRequest req ) throws Exception{
 		
 		log.info("호출됌");
 		log.info("vo에 전달받은값 : {} ",vo);
@@ -51,7 +53,7 @@ public class AnnouncementController {
 		
 		Map<String,String> resultMap = new HashMap();
 			
-		resultMap = service.write(vo,fileArr);
+		resultMap = service.write(vo,fileArr,req);
 		
 		
 		
@@ -67,7 +69,7 @@ public class AnnouncementController {
 	 * @throws IllegalStateException 
 	 */
 	@PostMapping("change")
-	public Map<String,Object> change(@ModelAttribute AnnouncementVo vo,MultipartFile[] fileArr) throws IllegalStateException, IOException{
+	public Map<String,Object> change(@ModelAttribute AnnouncementVo vo,MultipartFile[] fileArr ,HttpServletRequest req) throws IllegalStateException, IOException{
 		
 		Map<String,Object> resultMap = new HashMap();
 		if(fileArr!=null) {
@@ -76,7 +78,7 @@ public class AnnouncementController {
 		log.info("들어온 파일정보 ::: {}",vo  );
 		log.info("들어온 삭제될 ::: {}",vo.getDeleteNoArr());
 
-		Boolean result = service.change(vo,fileArr);
+		Boolean result = service.change(vo,fileArr,req);
 		
 		if(result) {
 			resultMap.put("status", "good");
