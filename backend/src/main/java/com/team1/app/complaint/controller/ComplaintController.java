@@ -2,6 +2,8 @@ package com.team1.app.complaint.controller;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,9 +36,9 @@ public class ComplaintController {
 	
 	//민원 접수 
 	@PostMapping("complaintSumit")
-	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws Exception {
+	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr, HttpServletRequest req) throws Exception {
 		vo.setContent(vo.getContent().replace("\r\n", "<br/>"));
-		return service.complaintSumit(vo,fileArr);
+		return service.complaintSumit(vo,fileArr, req);
 	}
 	
 	//내 민원 상세 조회
