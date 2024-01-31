@@ -145,6 +145,11 @@ JOIN MEMBER M ON M.MEMBER_NO = P.MEMBER_NO
 JOIN UNIT U ON M.UNIT_NO = U.UNIT_NO 
 
 <trim prefix="WHERE" suffixOverrides="AND">
+	
+	 <if test="memberNo != null and memberNo.length() > 0">
+     P.MEMBER_NO = #{memberNo} AND
+	</if>
+
 	<if test = "name!= null" >	
 	 M.NAME LIKE '%' || #{name} || '%' AND
 	</if>
