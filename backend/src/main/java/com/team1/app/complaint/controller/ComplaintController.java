@@ -69,10 +69,7 @@ public class ComplaintController {
 	//민원 해결 글 작성
 	@PostMapping("clear")
 	public int clear( @RequestBody ComplaintVo vo) {
-		log.info("들어온 민원 vo :::  {}",vo);
-		if(vo.getContent()!=null) {
-		vo.setContent(vo.getContent().replace("\r\n", "<br/>"));
-		}
+
 		return service.clear(vo);
 	}
 	

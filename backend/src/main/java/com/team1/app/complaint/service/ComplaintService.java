@@ -128,6 +128,12 @@ public class ComplaintService {
 
 
 	public int clear(ComplaintVo vo) {
+
+		if(vo != null && vo.getContent() != null) {
+
+
+			vo.setContent(vo.getContent().replace("\r\n", "<br/>"));
+		}
 		return dao.clear(sst,vo);
 	}
 
