@@ -68,6 +68,15 @@ const ComplaintDetail = () => {
                     </div>
                   </th>
                 </tr>
+                {
+                  compVo?.reply 
+                  ?
+                  <tr>
+                    <th>답변 내용 : {compVo?.reply}</th>
+                </tr> 
+                  :
+                  <></>
+                }
                 <tr>
                   <th>
                     <div>
