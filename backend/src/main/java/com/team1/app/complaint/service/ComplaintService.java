@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +30,7 @@ public class ComplaintService {
 	}
 
 
-	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr) throws IllegalStateException, IOException {
+	public boolean complaintSumit(ComplaintVo vo, MultipartFile[] fileArr, HttpServletRequest req) throws IllegalStateException, IOException {
 		boolean result = false;
 		
 		//민원 글 접수
@@ -38,9 +40,14 @@ public class ComplaintService {
 		}
 		//저장 경로 
 		String path = "http://127.0.0.1:8888/app/resources/upload/complaint/img/";
+		String rootDir = req.getServletContext().getRealPath("/");
+		String commonRoot = rootDir.substring(0, rootDir.indexOf("backend") + "backend".length());
+		String route = "\\src\\main\\webapp";
+		String Spath = "\\resources\\upload\\complaint\\img\\";
+		String savePath = commonRoot + route + Spath;
 		
 		if(fileArr != null && fileArr.length > 0 ) {
-			List<String> fileList = saveFile(fileArr);
+			List<String> fileList = saveFile(fileArr,savePath);
 
 			if(fileList.size() <= 0) {
 				throw new IllegalStateException();
@@ -69,9 +76,9 @@ public class ComplaintService {
 		return result;
 	}
 	//파일저장
-	private List<String> saveFile(MultipartFile[] fileArr) throws IllegalStateException, IOException {
+	private List<String> saveFile(MultipartFile[] fileArr, String savePath) throws IllegalStateException, IOException {
 		
-		String savePath = "D:\\final\\finalPrj\\backend\\src\\main\\webapp\\resources\\upload\\complaint\\img\\";
+//		String savePath = "D:\\final\\finalPrj\\backend\\src\\main\\webapp\\resources\\upload\\complaint\\img\\";
 		List<String> fileList = new ArrayList<String>();
 		
 		for (MultipartFile f : fileArr) {
