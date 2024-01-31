@@ -69,6 +69,7 @@ public class ComplaintController {
 	//민원 해결 글 작성
 	@PostMapping("clear")
 	public int clear( @RequestBody ComplaintVo vo) {
+
 		return service.clear(vo);
 	}
 	

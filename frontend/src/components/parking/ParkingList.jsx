@@ -138,6 +138,8 @@ const ParkingList = () => {
     queryParams.append('currentPage',currentPage)
   }
 
+    queryParams.append("memberNo",loginMember.memberNo)
+
   
 
     const queryString = queryParams.toString();
